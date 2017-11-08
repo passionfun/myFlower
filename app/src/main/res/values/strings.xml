@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">YangHuaJi</string>
+
+
+    <string name="verification_code_login">验证码登录</string>
+    <string name="password_login">密码登录</string>
+    <string name="input_phone_number">请输入您的手机号码</string>
+    <string name="input_verification_code">请输入验证码</string>
+    <string name="get_verification_code">获取验证码</string>
+    <string name="login">登录</string>
+    <string name="create_new_account"><b>创建新账户</b></string>
+    <string name="wechat_login"><b>微信登录</b></string>
+    <string name="input_account">请输入账户</string>
+    <string name="input_password">请输入密码</string>
+    <string name="input_confirm_password">请再次输入密码</string>
+    <string name="forgot_password">忘记密码?</string>
+    <string name="bind_phone">绑定手机</string>
+    <string name="phone_number">手机号</string>
+    <string name="verification_code">验证码</string>
+    <string name="bind_immediately">立即绑定</string>
+    <string name="password">密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="register_and_agree">注册即同意</string>
+    <string name="yanghuaji_agreement">《养花机服务协议》</string>
+
 </resources>
