@@ -27,10 +27,12 @@ public class BindPhoneActivity extends Activity {
     ImageView mImgCheck;
 
     @BindView(R.id.et_input_verification_code)
-    EditText mEditInputPassword;
+    EditText mEditInputVerificationCode;
 
     @BindView(R.id.tv_get_verification_code)
     TextView mTvGetVerification;
+
+
 
     //显示的入口
     public static void show(Context context) {

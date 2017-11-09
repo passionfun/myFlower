@@ -12,8 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.account.LoginActivity"
-            android:theme="@style/BaseTheme"
-            >
+            android:theme="@style/BaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,9 +20,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/BaseTheme"
-            android:name=".ui.account.BindPhoneActivity" />
-        <activity android:name=".ui.account.RegisterActivity" />
+            android:name=".ui.account.BindPhoneActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.account.RegisterActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.account.ForgetPasswordActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:theme="@style/BaseTheme" />
+
 
     </application>
 

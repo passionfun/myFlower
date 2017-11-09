@@ -2,8 +2,11 @@ package bocai.com.yanghuaji.ui.account;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
@@ -12,12 +15,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 注册页面
- * 作者 yuanfei on 2017/11/8.
+ * 作者 yuanfei on 2017/11/9.
  * 邮箱 yuanfei221@126.com
  */
 
-public class RegisterActivity extends Activity {
+public class ForgetPasswordActivity extends Activity {
     @BindView(R.id.tv_title)
     TextView mTitle;
 
@@ -40,12 +42,19 @@ public class RegisterActivity extends Activity {
     EditText mEditInputPassword;
 
     @BindView(R.id.et_confirm_password)
-    EditText mEditConfirmPasswrd;
+    EditText mEditConfirmPassword;
+
+    @BindView(R.id.bt_register)
+    Button mSave;
+
+    @BindView(R.id.ll_consent_agreement)
+    LinearLayout mConsentAgreement;
+
 
 
     //显示的入口
     public static void show(Context context) {
-        context.startActivity(new Intent(context, RegisterActivity.class));
+        context.startActivity(new Intent(context, ForgetPasswordActivity.class));
     }
 
     @Override
@@ -56,7 +65,9 @@ public class RegisterActivity extends Activity {
     @Override
     protected void initWidget() {
         super.initWidget();
-        mTitle.setText(R.string.phone_register);
+        mTitle.setText(R.string.forget_password);
+        mSave.setText(R.string.save);
+        mConsentAgreement.setVisibility(View.INVISIBLE);
     }
 
     @OnClick(R.id.img_back)
@@ -70,9 +81,9 @@ public class RegisterActivity extends Activity {
 
     }
 
-    // todo 注册账户
+    // todo 保存新密码
     @OnClick(R.id.bt_register)
-    void onRegisterSubmit() {
+    void onSaveSubmit() {
 
     }
 }

@@ -35,7 +35,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#B8B8B8"
+                android:inputType="phone"
                 android:background="@null"
+                android:textSize="14sp"
                 android:hint="@string/input_phone_number" />
 
             <ImageView
@@ -76,7 +79,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:inputType="number"
                 android:background="@null"
+                android:textColor="#B8B8B8"
+                android:textSize="14sp"
                 android:hint="@string/input_verification_code" />
 
             <View
@@ -128,6 +134,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="14sp"
+                android:textColor="#B8B8B8"
                 android:inputType="textPassword"
                 android:background="@null"
                 android:hint="@string/input_password" />
@@ -165,7 +173,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="14sp"
                 android:inputType="textPassword"
+                android:textColor="#B8B8B8"
                 android:background="@null"
                 android:hint="@string/input_confirm_password" />
 
@@ -181,18 +191,19 @@
             android:background="#C6C6C6" />
 
         <Button
-            android:id="@+id/bt_bind"
+            android:id="@+id/bt_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="47dp"
             android:background="@mipmap/img_login_button_bg"
-            android:text="@string/bind_immediately"
+            android:text="@string/register_immediately"
             android:textColor="#FFFFFF"
             android:textSize="15sp" />
 
 
         <LinearLayout
+            android:id="@+id/ll_consent_agreement"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="98dp"
             android:layout_gravity="center_horizontal"
@@ -215,8 +226,6 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
-
-
 
 </ScrollView>
 

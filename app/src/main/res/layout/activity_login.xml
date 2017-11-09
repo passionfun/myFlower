@@ -117,6 +117,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="11dp"
                 android:background="@null"
+                android:textColor="#999999"
+                android:inputType="phone"
                 android:hint="@string/input_phone_number"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -135,6 +137,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="18dp"
                 android:layout_weight="1"
+                android:textColor="#999999"
+                android:inputType="textPassword"
                 android:background="@null"
                 android:hint="@string/input_verification_code"
                 android:textSize="13sp" />

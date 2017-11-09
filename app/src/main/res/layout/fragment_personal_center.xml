@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_marginTop="63dp"
+        android:layout_marginStart="29dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="#333333"
+                android:textSize="24sp"
+                android:text="沉迷工作的网银少女"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:drawablePadding="6dp"
+                android:drawableEnd="@mipmap/img_edit"
+                android:text="@string/check_and_edit_personal_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="65dp"
+            android:layout_marginEnd="32dp"
+            android:src="@mipmap/img_weichat"
+            android:layout_height="65dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="39dp"
+        android:background="#C6C6C6" />
+
+    <TextView
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="34dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/my_planting_record"
+        android:drawablePadding="20dp"
+        android:drawableStart="@mipmap/img_planting_record"
+        android:drawableEnd="@mipmap/img_personal_center_arrow"
+        android:layout_marginEnd="20dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="22dp"
+        android:background="@mipmap/img_dotted_background" />
+
+    <TextView
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="34dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/system_notification"
+        android:drawablePadding="20dp"
+        android:drawableStart="@mipmap/img_system_notification_new"
+        android:drawableEnd="@mipmap/img_personal_center_arrow"
+        android:layout_marginEnd="20dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="17dp"
+        android:background="@mipmap/img_dotted_background" />
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="34dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/modify_password"
+        android:drawablePadding="20dp"
+        android:drawableStart="@mipmap/img_modify_password"
+        android:drawableEnd="@mipmap/img_personal_center_arrow"
+        android:layout_marginEnd="20dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="19dp"
+        android:background="@mipmap/img_dotted_background" />
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="34dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/setting"
+        android:drawablePadding="20dp"
+        android:drawableStart="@mipmap/img_settings"
+        android:drawableEnd="@mipmap/img_personal_center_arrow"
+        android:layout_marginEnd="20dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="20dp"
+        android:background="@mipmap/img_dotted_background" />
+
+    <TextView
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="34dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/quit_application"
+        android:textColor="#75B62B"
+        android:drawablePadding="20dp"
+        android:drawableStart="@mipmap/img_power"
+        android:drawableEnd="@mipmap/img_personal_center_arrow_green"
+        android:layout_marginEnd="20dp"
+        />
+
+
+
+</LinearLayout>

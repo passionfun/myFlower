@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -81,7 +82,7 @@ public class LoginActivity extends Activity {
     // todo 账户登录
     @OnClick(R.id.bt_login)
     void onSubmitClick(){
-        BindPhoneActivity.show(this);
+        MainActivity.show(this);
     }
 
     // todo 创建新账户

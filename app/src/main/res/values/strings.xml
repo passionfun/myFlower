@@ -14,13 +14,39 @@
     <string name="input_password">请输入密码</string>
     <string name="input_confirm_password">请再次输入密码</string>
     <string name="forgot_password">忘记密码?</string>
+    <string name="forget_password">忘记密码</string>
     <string name="bind_phone">绑定手机</string>
     <string name="phone_number">手机号</string>
     <string name="verification_code">验证码</string>
     <string name="bind_immediately">立即绑定</string>
+    <string name="register_immediately">立即注册</string>
     <string name="password">密码</string>
     <string name="confirm_password">确认密码</string>
     <string name="register_and_agree">注册即同意</string>
     <string name="yanghuaji_agreement">《养花机服务协议》</string>
+    <string name="phone_register">手机注册</string>
+    <string name="save">保存</string>
+
+
+    <string name="check_and_edit_personal_data">查看并编辑个人资料</string>
+    <string name="my_planting_record">我的种植记录</string>
+    <string name="system_notification">系统通知</string>
+    <string name="modify_password">修改密码</string>
+    <string name="setting">设置</string>
+    <string name="quit_application">退出应用</string>
+
+
+
+    <string name="switch_permutation_pattern">切换排列模式</string>
+    <string name="go_to_shop">进入商城</string>
+    <string name="my_equipment">我的设备</string>
+    <string name="planting_diary_title">种植日记本</string>
+    <string name="go_to_add">去添加 +</string>
+    <string name="add_diary">添加日记本 +</string>
+
+
+    <string name="intelligent_planting">智能种植</string>
+    <string name="planting_diary">种植日记</string>
+    <string name="personal_center">个人中心</string>
 
 </resources>

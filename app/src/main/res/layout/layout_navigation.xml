@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<LinearLayout
+    android:layout_marginBottom="58dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:background="@mipmap/img_navigation_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_marginStart="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginTop="98dp"
+                android:layout_width="65dp"
+                android:src="@mipmap/ic_launcher"
+                android:layout_height="65dp" />
+
+            <LinearLayout
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="111dp"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textColor="#FFFFFF "
+                    android:textSize="17sp"
+                    android:text="沉迷工作的网银少女"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:textColor="#EEEEEE"
+                    android:textSize="12sp"
+                    android:drawablePadding="6dp"
+                    android:drawableEnd="@mipmap/img_edit"
+                    android:text="@string/check_and_edit_personal_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
+
+    <FrameLayout
+        android:gravity="center_vertical"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="58dp">
+
+        <TextView
+            android:gravity="center_vertical"
+            android:paddingStart="24dp"
+            android:drawablePadding="13dp"
+            android:drawableStart="@mipmap/img_change"
+            android:textSize="13sp"
+            android:textColor="#333333"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/switch_permutation_pattern"/>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="#E4E4E4" />
+
+        <TextView
+            android:paddingEnd="48dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="end|center_vertical"
+            android:drawablePadding="13dp"
+            android:drawableStart="@mipmap/img_shop"
+            android:textSize="13sp"
+            android:textColor="#333333"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/go_to_shop"/>
+    </FrameLayout>
+
+</FrameLayout>

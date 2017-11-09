@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/sub_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!--<com.ashokvarma.bottomnavigation.BottomNavigationBar-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:id="@+id/bottom_navigation_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="49dp"-->
+        <!--android:layout_alignParentBottom="true">-->
+
+    <!--</com.ashokvarma.bottomnavigation.BottomNavigationBar>-->
+
+    <LinearLayout
+        android:paddingTop="6dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="49dp">
+        <TextView
+            android:id="@+id/tv_intelligent_planting"
+            android:textSize="10sp"
+            android:textColor="#147809"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/img_intelligent_planting_selected"
+            android:text="@string/intelligent_planting"/>
+
+
+        <TextView
+            android:id="@+id/tv_planting_diary"
+            android:textSize="10sp"
+            android:textColor="#BCBCBC"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:drawablePadding="4dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/img_planting_diary_nomal"
+            android:text="@string/intelligent_planting"/>
+
+
+        <TextView
+            android:id="@+id/tv_personal_center"
+            android:textSize="10sp"
+            android:textColor="#BCBCBC"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:drawablePadding="4dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/img_persnal_center_nomal"
+            android:text="@string/intelligent_planting"/>
+    </LinearLayout>
+
+
+</FrameLayout>
