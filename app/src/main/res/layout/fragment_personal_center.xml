@@ -27,6 +27,7 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
+                android:id="@+id/tv_edit_personal_data"
                 android:textColor="#666666"
                 android:textSize="12sp"
                 android:drawablePadding="6dp"
@@ -40,7 +41,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="65dp"
             android:layout_marginEnd="32dp"
-            android:src="@mipmap/img_weichat"
+            android:src="@mipmap/img_portrait_empty"
             android:layout_height="65dp" />
     </LinearLayout>
 
@@ -53,11 +54,14 @@
         android:background="#C6C6C6" />
 
     <TextView
+        android:id="@+id/tv_my_planting_record"
         android:layout_marginTop="24dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/my_planting_record"
+        android:textColor="#333333"
+        android:textSize="15sp"
         android:drawablePadding="20dp"
         android:drawableStart="@mipmap/img_planting_record"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
@@ -73,11 +77,14 @@
         android:background="@mipmap/img_dotted_background" />
 
     <TextView
+        android:id="@+id/tv_system_notification"
         android:layout_marginTop="18dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/system_notification"
+        android:textColor="#333333"
+        android:textSize="16sp"
         android:drawablePadding="20dp"
         android:drawableStart="@mipmap/img_system_notification_new"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
@@ -93,11 +100,14 @@
         android:background="@mipmap/img_dotted_background" />
 
     <TextView
+        android:id="@+id/tv_modify_password"
         android:layout_marginTop="16dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/modify_password"
+        android:textColor="#333333"
+        android:textSize="15sp"
         android:drawablePadding="20dp"
         android:drawableStart="@mipmap/img_modify_password"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
@@ -113,11 +123,14 @@
         android:background="@mipmap/img_dotted_background" />
 
     <TextView
+        android:id="@+id/tv_setting"
         android:layout_marginTop="16dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/setting"
+        android:textColor="#333333"
+        android:textSize="15sp"
         android:drawablePadding="20dp"
         android:drawableStart="@mipmap/img_settings"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
@@ -133,11 +146,13 @@
         android:background="@mipmap/img_dotted_background" />
 
     <TextView
+        android:id="@+id/tv_exit"
         android:layout_marginTop="35dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/quit_application"
+        android:textSize="16sp"
         android:textColor="#75B62B"
         android:drawablePadding="20dp"
         android:drawableStart="@mipmap/img_power"

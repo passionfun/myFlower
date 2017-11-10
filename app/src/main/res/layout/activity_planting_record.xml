@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="30dp"
+        android:background="@mipmap/img_plant_record_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_planting"
+            android:background="@mipmap/img_plant_record_selected"
+            android:gravity="center"
+            android:text="种植中"
+            android:textSize="13sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="4dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="155dp"
+            android:layout_height="28dp"/>
+
+        <Button
+            android:id="@+id/bt_planted"
+            android:background="@drawable/bt_plant_record_bg"
+            android:gravity="center"
+            android:text="种植结束"
+            android:textSize="13sp"
+            android:layout_marginEnd="4dp"
+            android:textColor="#999999"
+            android:layout_gravity="center_vertical"
+            android:layout_width="154dp"
+            android:layout_height="28dp"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

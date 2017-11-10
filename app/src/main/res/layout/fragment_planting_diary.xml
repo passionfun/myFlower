@@ -41,7 +41,6 @@
             android:layout_gravity="end"
             android:layout_marginTop="40dp"
             android:background="@mipmap/img_add_diary"
-            android:text="@string/add_diary"
             android:textColor="#FFFFFF"
             android:textSize="12dp" />
 

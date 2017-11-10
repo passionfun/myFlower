@@ -88,7 +88,7 @@ public class LoginActivity extends Activity {
     // todo 创建新账户
     @OnClick(R.id.tv_create_new_account)
     void onCreateNewAccount(){
-
+        RegisterActivity.show(this);
     }
 
     // todo 微信登录
@@ -102,7 +102,7 @@ public class LoginActivity extends Activity {
     void onGetVerification(){
         //忘记密码
         if (isPasswordLogin){
-
+        ForgetPasswordActivity.show(this);
         }else {
             //获取验证码
         }

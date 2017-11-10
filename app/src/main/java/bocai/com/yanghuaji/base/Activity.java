@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
 
+import bocai.com.yanghuaji.util.ActivityUtil;
 import butterknife.ButterKnife;
 
 
@@ -67,6 +68,7 @@ public abstract class Activity extends AppCompatActivity {
      */
     protected void initWidget() {
         ButterKnife.bind(this);
+        ActivityUtil.addActivity(this);
     }
 
     /**

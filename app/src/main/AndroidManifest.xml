@@ -31,6 +31,21 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.personalCenter.EditPersonalDataActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.personalCenter.ModifyPasswordActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.personalCenter.PlantingRecordActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.personalCenter.SystemNotificationActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.personalCenter.SettingActivity"
+            android:theme="@style/BaseTheme" />
 
 
     </application>

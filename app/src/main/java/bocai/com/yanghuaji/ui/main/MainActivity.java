@@ -2,33 +2,33 @@ package bocai.com.yanghuaji.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Build;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
+import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class MainActivity extends Activity {
     private NavigationFragment mNavigationFragment;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @BindView(R.id.navigation_view)
-    NavigationView mNavigationView;
+    @BindView(R.id.frame_left)
+    FrameLayout mFrameLeft;
 
     @BindView(R.id.frame_container)
     FrameLayout mFrameLayout;
+
+
 
 
     //显示的入口
@@ -56,36 +56,28 @@ public class MainActivity extends Activity {
         }
     }
 
-
-    private int getHeight(){
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        Log.e("WangJ", "屏幕高:" + dm.heightPixels);
-
-        //应用区域
-        Rect outRect1 = new Rect();
-       getWindow().getDecorView().getWindowVisibleDisplayFrame(outRect1);
-        int viewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
-        int titleHeight1 = viewTop - outRect1.top;
-        return titleHeight1;
-    }
-
     @Override
     protected void initData() {
         super.initData();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mNavigationFragment = NavigationFragment.newInstance();
-        transaction.replace(R.id.frame_container,mNavigationFragment).commit();
+        transaction.replace(R.id.frame_container, mNavigationFragment).commit();
         mDrawerLayout.addDrawerListener(new MyDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-
-                WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-                Display display = manager.getDefaultDisplay();
-                int height = getHeight();
-                mFrameLayout.layout(mNavigationView.getRight(), -getHeight(), display.getHeight() + mNavigationView.getRight(), display.getHeight());
+                mFrameLayout.layout(mFrameLeft.getRight(), -UiTool.getHeight(MainActivity.this),
+                        UiTool.getScreenWidth(MainActivity.this) + mFrameLeft.getRight(), UiTool.getScreenHeight(MainActivity.this));
             }
         });
+    }
 
+
+    @OnClick(R.id.tv_edit_personal_data)
+    void onEditPersonalClick(){
+        EditPersonalDataActivity.show(this);
+    }
+
+    public void showLeft() {
+        mDrawerLayout.openDrawer(GravityCompat.START);
     }
 }
