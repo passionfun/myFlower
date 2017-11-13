@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/ll_root"
+    tools:context="bocai.com.yanghuaji.ui.plantingDiary.DiaryListActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_marginTop="36dp"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:title="">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_marginStart="30dp"
+            android:src="@mipmap/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+
+
+        <ImageView
+            android:layout_marginEnd="25dp"
+            android:id="@+id/img_share"
+            android:layout_gravity="end"
+            android:src="@mipmap/img_share"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+
+        <ImageView
+            android:layout_marginEnd="20dp"
+            android:id="@+id/img_data_card"
+            android:layout_gravity="end"
+            android:src="@mipmap/img_data_card"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:drawablePadding="9dp"
+                    android:textSize="25sp"
+                    android:textColor="#333333"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="29dp"
+                    android:drawableStart="@mipmap/img_diary_card"
+                    android:id="@+id/tv_diary_title"
+                    android:text="满天星的一生"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="29dp"
+                    android:src="@mipmap/img_diary_cover_empty"
+                    android:id="@+id/img_diary_cover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_write_diary"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="414dp"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_write_diary"/>
+        </FrameLayout>
+
+
+    </ScrollView>
+
+
+
+</LinearLayout>

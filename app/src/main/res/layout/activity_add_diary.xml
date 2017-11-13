@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_toolbar" />
+
+        <ImageView
+            android:layout_marginStart="29dp"
+            android:id="@+id/img_add_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/img_add_cover" />
+
+        <TextView
+            android:layout_marginStart="29dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:text="日记本名称"
+            android:textColor="#999999"
+            android:textSize="13sp" />
+
+
+        <EditText
+            android:layout_marginStart="29dp"
+            android:id="@+id/et_diary_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@null"
+            android:text="满天星的一生"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_marginStart="29dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="12dp"
+            android:background="#C6C6C6" />
+
+
+        <TextView
+            android:layout_marginStart="29dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="种植时间"
+            android:textColor="#999999"
+            android:textSize="13sp" />
+
+
+        <EditText
+            android:layout_marginStart="29dp"
+            android:id="@+id/et_planting_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@null"
+            android:text="2017年08月02日 11:50"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_marginStart="29dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginBottom="98dp"
+            android:background="#C6C6C6" />
+
+    </LinearLayout>
+
+
+</ScrollView>

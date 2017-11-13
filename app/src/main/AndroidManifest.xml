@@ -46,8 +46,24 @@
         <activity
             android:name=".ui.personalCenter.SettingActivity"
             android:theme="@style/BaseTheme" />
-
-
+        <activity
+            android:name=".ui.plantingDiary.AddDiaryActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.plantingDiary.DiaryListActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.plantingDiary.DiaryContentActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.plantingDiary.DiaryDetailActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.plantingDiary.WriteDiaryActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.plantingDiary.LocationActivity"
+            android:theme="@style/BaseTheme" />
     </application>
 
 </manifest>

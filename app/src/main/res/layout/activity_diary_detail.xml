@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="#FAFAFA"
+    android:layout_height="match_parent">
+
     <android.support.v7.widget.Toolbar
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="35dp"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="21dp"
@@ -21,9 +22,8 @@
 
 
         <ImageView
-            android:visibility="gone"
             android:layout_marginEnd="25dp"
-            android:id="@+id/img_right"
+            android:id="@+id/img_share"
             android:layout_gravity="end"
             android:src="@mipmap/img_share"
             android:layout_width="wrap_content"
@@ -31,38 +31,38 @@
 
 
         <ImageView
-            android:visibility="gone"
             android:layout_marginEnd="20dp"
-            android:id="@+id/img_right_second"
+            android:id="@+id/img_delete"
             android:layout_gravity="end"
-            android:src="@mipmap/img_back"
+            android:src="@mipmap/img_delete"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
-
-
-
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tv_right"
-            android:textSize="15sp"
-            android:textColor="#87BC52"
-            android:text="保存"
-            android:layout_marginEnd="24dp"
-            android:layout_gravity="end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        
     </android.support.v7.widget.Toolbar>
-    
+
+    <FrameLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="29dp"
+        android:background="#D1D1D1" />
+
     <TextView
-        android:id="@+id/tv_title"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="27dp"
-        android:textSize="25sp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="15dp"
+        android:text="杭州.联合大厦 2017年10月18日 11:40"
+        android:textSize="12sp"
+        android:drawablePadding="5dp"
+        android:drawableStart="@mipmap/img_location_green"
         android:textColor="#333333"
-        android:text="@string/bind_phone"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 </LinearLayout>

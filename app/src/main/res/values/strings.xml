@@ -36,7 +36,6 @@
     <string name="quit_application">退出应用</string>
 
 
-
     <string name="switch_permutation_pattern">切换排列模式</string>
     <string name="go_to_shop">进入商城</string>
     <string name="my_equipment">我的设备</string>
@@ -48,5 +47,6 @@
     <string name="intelligent_planting">智能种植</string>
     <string name="planting_diary">种植日记</string>
     <string name="personal_center">个人中心</string>
+    <string name="title_activity_diary_list">DiaryListActivity</string>
 
 </resources>

@@ -25,7 +25,7 @@ public class PlantingDiaryFragment extends Fragment {
 
     @OnClick(R.id.bt_add_diary)
     void onGoToAddClick(){
-
+        AddDiaryActivity.show(getContext());
     }
 
 }
