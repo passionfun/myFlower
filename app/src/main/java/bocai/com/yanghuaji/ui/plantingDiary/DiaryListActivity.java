@@ -42,7 +42,7 @@ public class DiaryListActivity extends Activity {
     @OnClick(R.id.img_share)
     void onShareClick() {
         final ShareDiaryListPopupWindow popupWindow = new ShareDiaryListPopupWindow(this);
-        popupWindow.setOnTtemClickListener(new SelectPicPopupWindow.ItemClickListener() {
+        popupWindow.setOnTtemClickListener(new ShareDiaryListPopupWindow.ItemClickListener() {
             @Override
             public void onItemClick(View view) {
                 switch (view.getId()) {
@@ -70,7 +70,9 @@ public class DiaryListActivity extends Activity {
 
     @OnClick(R.id.img_data_card)
     void onDataCardClick() {
-        DiaryContentActivity.show(this);
+        DiaryContentCardPopupWindow popupWindow = new DiaryContentCardPopupWindow(this);
+        ActivityUtil.setBackgroundAlpha(this, 0.19f);
+        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM,0,0);
     }
 
     @OnClick(R.id.img_diary_cover)

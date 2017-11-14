@@ -45,7 +45,7 @@ public class IntelligentPlantingFragment extends Fragment {
 
     @OnClick(R.id.bt_go_to_add)
     void onGoToAddClick(){
-
+        AddEquipmentActivity.show(getContext());
     }
 
 }

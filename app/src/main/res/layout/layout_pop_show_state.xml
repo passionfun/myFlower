@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:background="@drawable/ll_pop_add_picture_bg"
+            android:layout_marginStart="42dp"
+            android:layout_marginEnd="44dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="#333333"
+                android:textSize="17sp"
+                android:layout_marginTop="23dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="如何进入状态"/>
+
+
+            <TextView
+                android:paddingStart="31dp"
+                android:paddingEnd="29dp"
+                android:textColor="#999999"
+                android:textSize="12sp"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 进入高效率学习状态的人，存在以下明显感觉或特征："/>
+
+            <TextView
+                android:paddingStart="31dp"
+                android:paddingEnd="29dp"
+                android:textColor="#999999"
+                android:textSize="12sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     ①记忆上有一种超清晰的感觉，能清楚地知道今天比以前多学了哪些新知识"/>
+
+            <TextView
+                android:paddingStart="31dp"
+                android:paddingEnd="29dp"
+                android:textColor="#999999"
+                android:textSize="12sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     ②每天的学习处在一种亢奋的状态中，遇到疑难问题如获至宝"/>
+
+            <TextView
+                android:paddingStart="31dp"
+                android:paddingEnd="29dp"
+                android:textColor="#999999"
+                android:textSize="12sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     ③解题、记忆觉得极其顺畅，学过的内容自己感觉像刻在脑海中一样"/>
+
+            <TextView
+                android:paddingStart="31dp"
+                android:paddingEnd="29dp"
+                android:textColor="#999999"
+                android:textSize="12sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     ④充满着自信，并且感觉自信心不断膨胀"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="15dp"
+                android:background="@mipmap/img_dotted_background" />
+
+            <CheckBox
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableLeft="@mipmap/img_checkbox"
+                android:drawablePadding="7dp"
+                android:text="勾选状态按钮"
+                android:textColor="#6DBC30"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/img_confirm"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_confirm"/>
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_close"
+                android:src="@mipmap/img_close_diary_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </FrameLayout>
+    </LinearLayout>
+
+
+
+</FrameLayout>
+
+

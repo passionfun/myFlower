@@ -53,9 +53,6 @@
             android:name=".ui.plantingDiary.DiaryListActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.plantingDiary.DiaryContentActivity"
-            android:theme="@style/BaseTheme" />
-        <activity
             android:name=".ui.plantingDiary.DiaryDetailActivity"
             android:theme="@style/BaseTheme" />
         <activity
@@ -63,6 +60,18 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.plantingDiary.LocationActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.intelligentPlanting.AddEquipmentActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.intelligentPlanting.AddEquipmentDisplayActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.intelligentPlanting.AddWifiActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.intelligentPlanting.FirstSettingActivity"
             android:theme="@style/BaseTheme" />
     </application>
 

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#FAFAFA"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:layout_marginTop="30dp"
+        android:title="">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:src="@mipmap/img_back" />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="24dp"
+            android:text="添加设备"
+            android:textColor="#333333"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/img_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:paddingEnd="21dp"
+            android:layout_gravity="end"
+            android:src="@mipmap/img_search" />
+
+    </android.support.v7.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/img_scan"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/img_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="12sp"
+        android:textColor="#6FBD31"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="扫一扫产品后二维码"/>
+
+    <TextView
+        android:textSize="12sp"
+        android:textColor="#6FBD31"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="或点击如下对应产品图标"/>
+    
+    <LinearLayout
+        android:background="#FAFAFA"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:background="#4F9818"
+                android:layout_width="5dp"
+                android:layout_height="65dp"/>
+
+            <TextView
+                android:drawableStart="@mipmap/img_planting"
+                android:layout_marginStart="25dp"
+                android:drawablePadding="10dp"
+                android:layout_marginEnd="29dp"
+                android:drawableEnd="@mipmap/img_left_arrow"
+                android:layout_marginLeft="10dp"
+                android:textSize="15sp"
+                android:gravity="center_vertical"
+                android:textColor="#333333"
+                android:text="植记系列"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#E5E5E5"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:background="#67B91A"
+                android:layout_width="5dp"
+                android:layout_height="65dp"/>
+
+            <TextView
+                android:drawableStart="@mipmap/img_planting"
+                android:layout_marginStart="25dp"
+                android:drawablePadding="10dp"
+                android:layout_marginEnd="29dp"
+                android:drawableEnd="@mipmap/img_left_arrow"
+                android:textSize="15sp"
+                android:gravity="center_vertical"
+                android:textColor="#333333"
+                android:text="三生石系列"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#E5E5E5"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:background="#67B91A"
+                android:layout_width="5dp"
+                android:layout_height="65dp"/>
+
+            <TextView
+                android:drawableStart="@mipmap/img_planting"
+                android:layout_marginStart="25dp"
+                android:drawablePadding="10dp"
+                android:layout_marginEnd="29dp"
+                android:drawableEnd="@mipmap/img_left_arrow"
+                android:textSize="15sp"
+                android:gravity="center_vertical"
+                android:textColor="#333333"
+                android:text="其他系列"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

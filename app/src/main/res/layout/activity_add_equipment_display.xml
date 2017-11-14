@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FAFAFA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_toolbar" />
+
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="198dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="27dp"
+            android:src="@mipmap/img_diary_cover_empty" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="57dp"
+            android:drawablePadding="15dp"
+            android:drawableTop="@mipmap/img_wireless_network"
+            android:text="接通电源，确认设备进入配网状态"
+            android:textColor="#696969"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/img_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:src="@mipmap/img_next" />
+
+        <TextView
+            android:id="@+id/tv_show_pop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="36dp"
+            android:text="指示灯处于其他状态？"
+            android:textColor="#FDB46E"
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>
+
