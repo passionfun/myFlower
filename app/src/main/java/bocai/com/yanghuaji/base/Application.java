@@ -9,7 +9,10 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 
 import java.io.File;
 
-
+/**
+ * 作者 yuanfei on 2017/11/8.
+ * 邮箱 yuanfei221@126.com
+ */
 public class Application extends android.app.Application {
     private static Application instance;
 
@@ -19,11 +22,7 @@ public class Application extends android.app.Application {
         instance = this;
     }
 
-    /**
-     * 外部获取单例
-     *
-     * @return Application
-     */
+
     public static Application getInstance() {
         return instance;
     }
@@ -63,28 +62,6 @@ public class Application extends android.app.Application {
         return path.getAbsoluteFile();
     }
 
-    /**
-     * 获取声音文件的本地地址
-     *
-     * @param isTmp 是否是缓存文件， True，每次返回的文件地址是一样的
-     * @return 录音文件的地址
-     */
-    public static File getAudioTmpFile(boolean isTmp) {
-        File dir = new File(getCacheDirFile(), "audio");
-        //noinspection ResultOfMethodCallIgnored
-        dir.mkdirs();
-        File[] files = dir.listFiles();
-        if (files != null && files.length > 0) {
-            for (File file : files) {
-                //noinspection ResultOfMethodCallIgnored
-                file.delete();
-            }
-        }
-
-        // aar
-        File path = new File(getCacheDirFile(), isTmp ? "tmp.mp3" : SystemClock.uptimeMillis() + ".mp3");
-        return path.getAbsoluteFile();
-    }
 
     /**
      * 显示一个Toast

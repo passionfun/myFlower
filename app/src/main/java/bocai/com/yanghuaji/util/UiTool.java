@@ -1,6 +1,7 @@
 package bocai.com.yanghuaji.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Build;
@@ -74,4 +75,11 @@ public class UiTool {
         //int width = activity.getWindowManager().getDefaultDisplay().getWidth();
         return displayMetrics.heightPixels;
     }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+
 }

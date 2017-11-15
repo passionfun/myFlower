@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
-            android:layout_marginTop="43dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <ImageView
@@ -43,13 +43,21 @@
 
         <Button
             android:id="@+id/bt_go_to_add"
-            android:textColor="#FFFFFF"
-            android:textSize="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="68dp"
             android:background="@mipmap/img_go_to_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#FFFFFF"
+            android:textSize="12dp" />
 
     </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
 </LinearLayout>

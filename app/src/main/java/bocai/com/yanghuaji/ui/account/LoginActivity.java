@@ -41,19 +41,11 @@ public class LoginActivity extends Activity {
     TextView mTvGetVerification;
 
 
-
-
-
-
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_login;
     }
 
-    @Override
-    protected void initWidget() {
-        super.initWidget();
-    }
 
     @OnClick(R.id.verification_code_login)
     void onVerificationLogin(){

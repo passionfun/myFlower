@@ -1,6 +1,7 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -30,6 +31,14 @@ public class IntelligentPlantingFragment extends Fragment {
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_intelligent_planting;
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        HorizontalRecyclerFragment fragment = new HorizontalRecyclerFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.container,fragment).commit();
     }
 
     @Override

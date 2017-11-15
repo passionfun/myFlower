@@ -19,6 +19,7 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,6 +94,8 @@
             android:layout_height="44dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/edit_account_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="horizontal">
 
             <TextView
@@ -117,9 +120,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="11dp"
                 android:background="@null"
-                android:textColor="#999999"
-                android:inputType="phone"
                 android:hint="@string/input_phone_number"
+                android:inputType="phone"
+                android:textColor="#999999"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -137,10 +140,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="18dp"
                 android:layout_weight="1"
-                android:textColor="#999999"
-                android:inputType="textPassword"
                 android:background="@null"
                 android:hint="@string/input_verification_code"
+                android:inputType="textPassword"
+                android:textColor="#999999"
                 android:textSize="13sp" />
 
             <View
@@ -173,11 +176,11 @@
             android:textSize="15sp" />
 
         <TextView
-            android:layout_marginTop="11dp"
             android:id="@+id/tv_create_new_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="154dp"
+            android:layout_marginTop="11dp"
             android:drawableEnd="@mipmap/image_arrow"
             android:drawablePadding="10dp"
             android:text="@string/create_new_account"
@@ -186,9 +189,9 @@
 
 
         <LinearLayout
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="38dp"
             android:orientation="horizontal">
 
@@ -218,16 +221,16 @@
 
         <TextView
             android:id="@+id/tv_wechat_login"
-            android:layout_marginTop="11dp"
-            android:drawableTop="@mipmap/img_weichat"
-            android:drawablePadding="5dp"
-            android:layout_marginBottom="21dp"
-            android:textSize="12sp"
-            android:textColor="#87BC52"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/wechat_login"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="21dp"
+            android:layout_marginTop="11dp"
+            android:drawablePadding="5dp"
+            android:drawableTop="@mipmap/img_weichat"
+            android:text="@string/wechat_login"
+            android:textColor="#87BC52"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

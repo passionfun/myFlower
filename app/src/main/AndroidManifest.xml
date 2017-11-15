@@ -73,6 +73,12 @@
         <activity
             android:name=".ui.intelligentPlanting.FirstSettingActivity"
             android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.intelligentPlanting.SecondSettingActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.intelligentPlanting.EquipmentSettingActivity"
+            android:theme="@style/BaseTheme" />
     </application>
 
 </manifest>
