@@ -11,7 +11,7 @@ public interface RegisterContract {
 
     interface View extends BaseContract.View<Presenter>{
 
-        void getVerifiCationcodeSuccess();
+        void getVerifiCationcodeSuccess(String msg);
 
         void registerSuccess();
     }

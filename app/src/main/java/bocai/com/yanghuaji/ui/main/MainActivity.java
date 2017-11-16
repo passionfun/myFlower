@@ -6,17 +6,21 @@ import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
+import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MainActivity extends Activity {
+    private long firstTime=0;
     private NavigationFragment mNavigationFragment;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -74,5 +78,23 @@ public class MainActivity extends Activity {
 
     public void showLeft() {
         mDrawerLayout.openDrawer(GravityCompat.START);
+    }
+
+
+
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){     //KEYCODE_BACK：回退键
+            long secondTime= System.currentTimeMillis();
+            if (secondTime-firstTime>2000){
+                Application.showToast("再按一次退出程序");
+                firstTime=System.currentTimeMillis();
+                return true;
+            }else{
+                ActivityUtil.finishActivity();
+            }
+        }
+        return super.onKeyUp(keyCode, event);
     }
 }

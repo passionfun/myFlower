@@ -35,7 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="#B8B8B8"
+                android:textColor="#333333"
                 android:inputType="phone"
                 android:background="@null"
                 android:textSize="14sp"
@@ -82,7 +82,7 @@
                 android:layout_weight="1"
                 android:inputType="number"
                 android:background="@null"
-                android:textColor="#B8B8B8"
+                android:textColor="#333333"
                 android:textSize="14sp"
                 android:hint="@string/input_verification_code" />
 
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="14sp"
-                android:textColor="#B8B8B8"
+                android:textColor="#333333"
                 android:inputType="textPassword"
                 android:background="@null"
                 android:hint="@string/input_password" />
@@ -176,7 +176,7 @@
                 android:layout_weight="1"
                 android:textSize="14sp"
                 android:inputType="textPassword"
-                android:textColor="#B8B8B8"
+                android:textColor="#333333"
                 android:background="@null"
                 android:hint="@string/input_confirm_password" />
 

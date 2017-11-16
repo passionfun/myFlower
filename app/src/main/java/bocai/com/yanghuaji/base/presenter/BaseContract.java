@@ -9,6 +9,10 @@ public interface BaseContract {
         // 公共的：显示一个字符串错误
         void showError(@StringRes int str);
 
+        void showLoading();
+
+        void hideLoading();
+
         // 支持设置一个Presenter
         void setPresenter(T presenter);
     }

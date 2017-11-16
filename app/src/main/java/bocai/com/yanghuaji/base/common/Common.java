@@ -5,7 +5,6 @@ package bocai.com.yanghuaji.base.common;
 public class Common {
     /**
      * 一些不可变的永恒的参数
-     * 通常用于一些配置
      */
     public interface Constance {
         // 手机号的正则,11位手机号

@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
 import java.util.List;
 
 import bocai.com.yanghuaji.util.ActivityUtil;
@@ -85,12 +87,13 @@ public abstract class Activity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        // 当点击界面导航返回时，Finish当前界面
-        finish();
-        return super.onSupportNavigateUp();
-    }
+
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        // 当点击界面导航返回时，Finish当前界面
+//        finish();
+//        return super.onSupportNavigateUp();
+//    }
 
     @Override
     public void onBackPressed() {

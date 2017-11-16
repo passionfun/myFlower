@@ -1,14 +1,24 @@
 package bocai.com.yanghuaji.ui.account;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.regex.Pattern;
+
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.common.Common;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.presenter.account.LoginContract;
+import bocai.com.yanghuaji.presenter.account.LoginPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.util.adapter.account.CountDownTimerUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -17,7 +27,8 @@ import butterknife.OnClick;
  * 邮箱 yuanfei221@126.com
  */
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
+        implements LoginContract.View {
     private boolean isPasswordLogin = false;
     @BindView(R.id.tv_verification_code_login)
     TextView mTvVerificationCodeLogin;
@@ -40,6 +51,20 @@ public class LoginActivity extends Activity {
     @BindView(R.id.tv_get_verification_code)
     TextView mTvGetVerification;
 
+    @BindView(R.id.bt_login)
+    Button mLogin;
+
+    @BindView(R.id.tv_create_new_account)
+    TextView mRegister;
+
+    @BindView(R.id.tv_wechat_login)
+    TextView mWechatLogin;
+
+
+    //显示的入口
+    public static void show(Context context) {
+        context.startActivity(new Intent(context, LoginActivity.class));
+    }
 
     @Override
     protected int getContentLayoutId() {
@@ -48,7 +73,7 @@ public class LoginActivity extends Activity {
 
 
     @OnClick(R.id.verification_code_login)
-    void onVerificationLogin(){
+    void onVerificationLogin() {
         mTvVerificationCodeLogin.setTextColor(Color.parseColor("#87BC52"));
         mImgVerificationCodeLogin.setVisibility(View.VISIBLE);
         mTvPasswordLogin.setTextColor(Color.parseColor("#999999"));
@@ -60,7 +85,7 @@ public class LoginActivity extends Activity {
     }
 
     @OnClick(R.id.password_login)
-    void onPasswordLogin(){
+    void onPasswordLogin() {
         mTvVerificationCodeLogin.setTextColor(Color.parseColor("#999999"));
         mImgVerificationCodeLogin.setVisibility(View.INVISIBLE);
         mTvPasswordLogin.setTextColor(Color.parseColor("#87BC52"));
@@ -71,32 +96,77 @@ public class LoginActivity extends Activity {
         isPasswordLogin = true;
     }
 
-    // todo 账户登录
+    //  账户登录
     @OnClick(R.id.bt_login)
-    void onSubmitClick(){
-        MainActivity.show(this);
+    void onSubmitClick() {
+        String phone = mEditInputPhoneNumber.getText().toString();
+        String password = mEditInputPassword.getText().toString();
+        if (isPasswordLogin) {
+            //密码登录
+            mPresenter.passwordLogin(phone, password);
+        } else {
+            //手机验证码登录
+            mPresenter.smsCodeLogin(phone, password);
+        }
+
     }
 
-    // todo 创建新账户
+    //  创建新账户
     @OnClick(R.id.tv_create_new_account)
-    void onCreateNewAccount(){
+    void onCreateNewAccount() {
         RegisterActivity.show(this);
     }
 
     // todo 微信登录
     @OnClick(R.id.tv_wechat_login)
-    void onWechatLogin(){
+    void onWechatLogin() {
 
     }
 
-    // todo 获取验证码或者忘记密码
+    //  获取验证码或者忘记密码
     @OnClick(R.id.tv_get_verification_code)
-    void onGetVerification(){
-        //忘记密码
-        if (isPasswordLogin){
-        ForgetPasswordActivity.show(this);
-        }else {
+    void onGetVerification() {
+        //  忘记密码
+        if (isPasswordLogin) {
+            ForgetPasswordActivity.show(this);
+        } else {
             //获取验证码
+            String phone = mEditInputPhoneNumber.getText().toString();
+            if (!Pattern.matches(Common.Constance.REGEX_MOBILE, phone)) {
+                Application.showToast("请输入正确的手机号");
+            } else {
+                CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(mTvGetVerification, 60000, 1000);
+                mCountDownTimerUtils.start();
+                mPresenter.getMsmCode(phone);
+            }
+
         }
+    }
+
+    @Override
+    public void showLoading() {
+        super.showLoading();
+        mLogin.setEnabled(false);
+        mRegister.setEnabled(false);
+        mWechatLogin.setEnabled(false);
+    }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoading();
+        mLogin.setEnabled(true);
+        mRegister.setEnabled(true);
+        mWechatLogin.setEnabled(true);
+    }
+
+    @Override
+    public void loginSuccess() {
+        MainActivity.show(this);
+        finish();
+    }
+
+    @Override
+    protected LoginContract.Presenter initPresenter() {
+        return new LoginPresenter(this);
     }
 }

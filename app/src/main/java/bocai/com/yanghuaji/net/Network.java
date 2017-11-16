@@ -3,15 +3,16 @@ package bocai.com.yanghuaji.net;
 import android.text.TextUtils;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.common.Factory;
 import bocai.com.yanghuaji.util.persistence.Account;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,7 +36,12 @@ public class Network {
         if (instance.retrofit!=null){
             return instance.retrofit;
         }
+        final HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .addInterceptor(httpLoggingInterceptor)
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
@@ -56,7 +62,7 @@ public class Network {
         instance.retrofit = builder.baseUrl(Common.Constance.API_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(Factory.getGson()))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         return instance.retrofit;
     }

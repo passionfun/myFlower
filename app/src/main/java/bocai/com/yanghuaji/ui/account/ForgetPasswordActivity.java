@@ -9,8 +9,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.regex.Pattern;
+
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.common.Common;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.presenter.account.ForgetPasswordContract;
+import bocai.com.yanghuaji.presenter.account.ForgetPasswordPresenter;
+import bocai.com.yanghuaji.util.adapter.account.CountDownTimerUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -19,7 +26,8 @@ import butterknife.OnClick;
  * 邮箱 yuanfei221@126.com
  */
 
-public class ForgetPasswordActivity extends Activity {
+public class ForgetPasswordActivity extends PresenterActivity<ForgetPasswordContract.Presenter>
+        implements ForgetPasswordContract.View {
     @BindView(R.id.tv_title)
     TextView mTitle;
 
@@ -51,7 +59,6 @@ public class ForgetPasswordActivity extends Activity {
     LinearLayout mConsentAgreement;
 
 
-
     //显示的入口
     public static void show(Context context) {
         context.startActivity(new Intent(context, ForgetPasswordActivity.class));
@@ -75,15 +82,49 @@ public class ForgetPasswordActivity extends Activity {
         finish();
     }
 
-    // todo 获取验证码
+    //  获取验证码
     @OnClick(R.id.tv_get_verification_code)
     void onGetVerificationCodeClick() {
-
+         String phone = mEditInputPhoneNumber.getText().toString();
+        if (!Pattern.matches(Common.Constance.REGEX_MOBILE, phone)) {
+            Application.showToast("请输入正确的手机号");
+        } else {
+            CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(mTvGetVerification, 60000, 1000);
+            mCountDownTimerUtils.start();
+            mPresenter.getMsmCode(phone);
+        }
     }
 
-    // todo 保存新密码
+    //  保存新密码
     @OnClick(R.id.bt_register)
     void onSaveSubmit() {
+        String phone = mEditInputPhoneNumber.getText().toString();
+        String smsCode = mEditInputVerificationCode.getText().toString();
+        String newPassword = mEditInputPassword.getText().toString();
+        String rePassword = mEditConfirmPassword.getText().toString();
+        mPresenter.modifyPassword(phone, smsCode, newPassword, rePassword);
+    }
 
+    @Override
+    public void showLoading() {
+        super.showLoading();
+        mSave.setEnabled(false);
+    }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoading();
+        mSave.setEnabled(true);
+    }
+
+    @Override
+    public void modifyPasswordSuccess() {
+        LoginActivity.show(this);
+        finish();
+    }
+
+    @Override
+    protected ForgetPasswordContract.Presenter initPresenter() {
+        return new ForgetPasswordPresenter(this);
     }
 }
