@@ -1,4 +1,4 @@
-package bocai.com.yanghuaji.presenter;
+package bocai.com.yanghuaji.presenter.account;
 
 import bocai.com.yanghuaji.base.presenter.BaseContract;
 

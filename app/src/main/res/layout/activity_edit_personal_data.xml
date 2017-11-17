@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/ll_root"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 <LinearLayout
     android:layout_marginStart="30dp"
     android:orientation="horizontal"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/img_back"
@@ -33,11 +35,12 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_add_portrait"
         android:src="@mipmap/img_edit_portrait"
-        android:layout_marginStart="87dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="62dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="94dp"
+        android:layout_height="94dp" />
 </LinearLayout>
 
 
@@ -54,11 +57,10 @@
     <EditText
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:id="@+id/et_input_phone_number"
+        android:id="@+id/et_input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#333333"
-        android:inputType="phone"
         android:background="@null"
         android:textSize="15sp"
         android:hint="请输入用户名" />
@@ -83,6 +85,7 @@
 
 
     <TextView
+        android:id="@+id/tv_sex"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_width="match_parent"
@@ -112,6 +115,7 @@
         android:textSize="13sp" />
 
     <TextView
+        android:id="@+id/tv_birthday"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_width="match_parent"

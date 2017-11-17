@@ -67,6 +67,7 @@ public class WriteDiaryActivity extends Activity {
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
         picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM,0,0);
 
+
     }
 
 }

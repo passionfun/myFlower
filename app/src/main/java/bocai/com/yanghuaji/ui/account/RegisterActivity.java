@@ -15,7 +15,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
-import bocai.com.yanghuaji.presenter.RegisterContract;
+import bocai.com.yanghuaji.presenter.account.RegisterContract;
 import bocai.com.yanghuaji.presenter.account.RegisterPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.adapter.TextWatcherAdapter;

@@ -54,4 +54,7 @@
     <string name="net_error">网络错误</string>
     <string name="empty">空信息</string>
 
+
+    <string name="label_gallery_select_max_size">至多选择%d张</string>
+
 </resources>

@@ -7,7 +7,6 @@ import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.GetSmsCodeModel;
 import bocai.com.yanghuaji.net.Network;
-import bocai.com.yanghuaji.presenter.RegisterContract;
 import bocai.com.yanghuaji.util.persistence.Account;
 import io.reactivex.Observable;
 import io.reactivex.Observer;

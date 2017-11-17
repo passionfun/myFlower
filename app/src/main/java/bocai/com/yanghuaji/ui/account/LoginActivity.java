@@ -120,7 +120,7 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     // todo 微信登录
     @OnClick(R.id.tv_wechat_login)
     void onWechatLogin() {
-
+        MainActivity.show(this);
     }
 
     //  获取验证码或者忘记密码
