@@ -57,4 +57,8 @@
 
     <string name="label_gallery_select_max_size">至多选择%d张</string>
 
+    <string name="prompt_empty">Oh~, it empty!</string>
+    <string name="prompt_error">Sorry, you have or more error!</string>
+    <string name="prompt_loading">Loading…</string>
+
 </resources>

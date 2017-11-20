@@ -51,16 +51,7 @@ public abstract class PresenterActivity<Presenter extends BaseContract.Presenter
     ProgressDialog dialog;
     @Override
     public void showLoading() {
-//        if (mProgressDialog == null) {
-//            mProgressDialog = new QMUITipDialog.Builder(this)
-//                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-//                    .setTipWord("正在加载")
-//                    .create();
-//            mProgressDialog.setCancelable(true);
-//            mProgressDialog.show();
-//        } else if (!mProgressDialog.isShowing()) {
-//            mProgressDialog.show();
-//        }
+
         dialog  = new ProgressDialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -73,8 +64,5 @@ public abstract class PresenterActivity<Presenter extends BaseContract.Presenter
         if (dialog!=null&&dialog.isShowing()){
             dialog.dismiss();
         }
-//        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-//            mProgressDialog.dismiss();
-//        }
     }
 }

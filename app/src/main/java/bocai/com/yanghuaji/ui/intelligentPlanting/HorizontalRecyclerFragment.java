@@ -1,8 +1,8 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -10,9 +10,12 @@ import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Fragment;
-import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.CardScaleHelper;
-import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.HorizntalAdapter;
+import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.model.PlantModel;
+import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.GalleryLayoutManager;
+import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.ScaleTransformer;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -20,7 +23,6 @@ import butterknife.BindView;
  */
 
 public class HorizontalRecyclerFragment extends Fragment {
-    private HorizntalAdapter mAdapter;
 
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
@@ -31,9 +33,7 @@ public class HorizontalRecyclerFragment extends Fragment {
     @BindView(R.id.tv_total)
     TextView mTotalNum;
 
-    private List<Integer> mList = new ArrayList<>();
-    private CardScaleHelper mCardScaleHelper = null;
-    private int mLastPos = -1;
+    private List<PlantModel> mList = new ArrayList<>();
 
     @Override
     protected int getContentLayoutId() {
@@ -43,27 +43,55 @@ public class HorizontalRecyclerFragment extends Fragment {
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
-        for (int i=0;i<10;i++){
-            mList.add(i);
+        for (int i = 0; i < 10; i++) {
+            PlantModel model = new PlantModel();
+            mList.add(model);
         }
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new HorizntalAdapter(mList);
-        mRecyclerView.setAdapter(mAdapter);
-        mCardScaleHelper = new CardScaleHelper();
-        mCardScaleHelper.setCurrentItemPos(2);
-        mCardScaleHelper.attachToRecyclerView(mRecyclerView);
+        mTotalNum.setText(String.valueOf(mList.size()));
+        GalleryLayoutManager layoutManager = new GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL);
+        layoutManager.attach(mRecyclerView, 1);
+        layoutManager.setItemTransformer(new ScaleTransformer());
+        Adapter adapter = new Adapter();
+        adapter.add(mList);
+        mRecyclerView.setAdapter(adapter);
     }
 
-    @Override
-    protected void initData() {
-        super.initData();
-        mTotalNum.setText(String.valueOf(mAdapter.getItemCount()));
-        mAdapter.setOnCurrentPositionListener(new HorizntalAdapter.CurrentPositionListener() {
-            @Override
-            public void currentPosition() {
-                mCurrentNum.setText(String.valueOf(mAdapter.getPosition()+1));
-            }
-        });
+
+    private class Adapter extends RecyclerAdapter<PlantModel> {
+
+        @Override
+        protected int getItemViewType(int position, PlantModel plantModel) {
+            mCurrentNum.setText(String.valueOf(position));
+            return R.layout.item_main_horizontal;
+        }
+
+        @Override
+        protected ViewHolder<PlantModel> onCreateViewHolder(View root, int viewType) {
+
+            return new ViewHoler(root);
+        }
     }
+
+    class ViewHoler extends RecyclerAdapter.ViewHolder<PlantModel> {
+        @BindView(R.id.img_setting)
+        ImageView mSetting;
+
+        public ViewHoler(View itemView) {
+            super(itemView);
+
+        }
+
+        @Override
+        protected void onBind(PlantModel plantModel) {
+
+        }
+
+
+        @OnClick(R.id.img_setting)
+        void onSettingClick(){
+            SecondSettingActivity.show(mSetting.getContext());
+        }
+    }
+
+
 }

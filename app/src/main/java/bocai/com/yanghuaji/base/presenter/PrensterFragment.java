@@ -1,8 +1,7 @@
 package bocai.com.yanghuaji.base.presenter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
-
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.Fragment;
@@ -13,7 +12,8 @@ import bocai.com.yanghuaji.base.Fragment;
  */
 
 public abstract class PrensterFragment<Presenter extends BaseContract.Presenter> extends Fragment implements BaseContract.View<Presenter> {
-    private QMUITipDialog mProgressDialog;
+//    private QMUITipDialog mProgressDialog;
+    protected ProgressDialog dialog;
     protected Presenter mPresenter;
 
     @Override
@@ -32,6 +32,7 @@ public abstract class PrensterFragment<Presenter extends BaseContract.Presenter>
     @Override
     public void showError(int str) {
         Application.showToast(str);
+        hideLoading();
     }
 
     @Override
@@ -45,24 +46,18 @@ public abstract class PrensterFragment<Presenter extends BaseContract.Presenter>
 
     @Override
     public void showLoading() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new QMUITipDialog.Builder(getContext())
-                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-                    .setTipWord("正在加载")
-                    .create();
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.show();
-        } else if (!mProgressDialog.isShowing()) {
-            mProgressDialog.show();
-        }
+
+        dialog  = new ProgressDialog(getContext());
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
 
 
     @Override
     public void hideLoading() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+        if (dialog!=null&&dialog.isShowing()){
+            dialog.dismiss();
         }
     }
 }

@@ -55,6 +55,14 @@ public class SexSelectPopupWindow extends PopupWindow {
         });
     }
 
+    public void setTextTop(String content) {
+        mMan.setText(content);
+    }
+
+    public void setTextBottom(String content) {
+        mWomac.setText(content);
+    }
+
     interface ItemClickListener {
         void onItemClick(View view);
     }

@@ -2,10 +2,14 @@ package bocai.com.yanghuaji.ui.personalCenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.presenter.personalCenter.ModifyPasswordContract;
+import bocai.com.yanghuaji.presenter.personalCenter.ModifyPasswordPresenter;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -14,9 +18,19 @@ import butterknife.OnClick;
  * 邮箱 yuanfei221@126.com
  */
 
-public class ModifyPasswordActivity extends Activity {
+public class ModifyPasswordActivity extends PresenterActivity<ModifyPasswordContract.Presenter>
+        implements ModifyPasswordContract.View {
     @BindView(R.id.tv_title)
     TextView mTitle;
+
+    @BindView(R.id.et_input_password)
+    EditText mOriginalPassword;
+
+    @BindView(R.id.et_input_new_password)
+    EditText mNewPassword;
+
+    @BindView(R.id.et_confirm_password)
+    EditText mRePassword;
 
 
     //显示的入口
@@ -40,9 +54,24 @@ public class ModifyPasswordActivity extends Activity {
         finish();
     }
 
-    // todo 更改密码提价
+    // 修改密码
     @OnClick(R.id.bt_save)
     void onSaveSubmit() {
+        String token = Account.getToken();
+        String originalPas = mOriginalPassword.getText().toString();
+        String newPas = mNewPassword.getText().toString();
+        String reNewPas = mRePassword.getText().toString();
+        mPresenter.modifyPassword(token,originalPas,newPas,reNewPas);
+    }
 
+    @Override
+    protected ModifyPasswordContract.Presenter initPresenter() {
+        return new ModifyPasswordPresenter(this);
+    }
+
+
+    @Override
+    public void modifySuccess() {
+        finish();
     }
 }

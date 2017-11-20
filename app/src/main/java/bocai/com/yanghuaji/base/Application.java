@@ -9,6 +9,8 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 
 import java.io.File;
 
+import bocai.com.yanghuaji.base.common.Factory;
+
 /**
  * 作者 yuanfei on 2017/11/8.
  * 邮箱 yuanfei221@126.com
@@ -20,6 +22,7 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        Factory.setup();
     }
 
 
@@ -45,7 +48,6 @@ public class Application extends android.app.Application {
         // 得到头像目录的缓存地址
         File dir = new File(getCacheDirFile(), "portrait");
         // 创建所有的对应的文件夹
-        //noinspection ResultOfMethodCallIgnored
         dir.mkdirs();
 
         // 删除旧的一些缓存为文件

@@ -44,6 +44,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.account.LoginActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,6 +60,7 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.account.ForgetPasswordActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.main.MainActivity"
@@ -80,6 +82,7 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.plantingDiary.AddDiaryActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.plantingDiary.DiaryListActivity"

@@ -2,9 +2,14 @@ package bocai.com.yanghuaji.util.persistence;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.AccountRspModel;
+import bocai.com.yanghuaji.model.User;
+import bocai.com.yanghuaji.model.User_Table;
 
 /**
  * 数据持久化
@@ -79,4 +84,17 @@ public class Account {
     public static String getToken() {
         return token;
     }
+
+
+    /**
+     * 获取当前登录的用户信息
+     */
+    public static User getUser() {
+        // 如果为null返回一个new的User，其次从数据库查询
+        return TextUtils.isEmpty(userId) ? new User() : SQLite.select()
+                .from(User.class)
+                .where(User_Table.Id.eq(userId))
+                .querySingle();
+    }
+
 }

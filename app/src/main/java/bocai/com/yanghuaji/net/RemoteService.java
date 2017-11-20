@@ -4,6 +4,7 @@ import java.util.Map;
 
 import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.ImageModel;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -45,7 +46,7 @@ public interface RemoteService {
     Observable<BaseRspModel<AccountRspModel>> smsCodeLogin(@Field("Phone") String phone,
                                                            @Field("SmsCode")String smsCode,@Field("MobileDevice")String pushId);
 
-    //修改密码
+    //找回密码
     @POST("member/find")
     @FormUrlEncoded
     Observable<BaseRspModel> modifyPassword(@Field("Phone") String phone,@Field("SmsCode")String smsCode,
@@ -61,4 +62,19 @@ public interface RemoteService {
     @POST("uploads/photolist")
     @Multipart
     Observable<BaseRspModel<ImageModel>> modifyPortrait(@PartMap Map<String, RequestBody> params);
+
+
+    //修改密码
+    @POST("member/reset_password")
+    @FormUrlEncoded
+    Observable<BaseRspModel> fixPassword(@Field("Token") String token,@Field("Password")String originalPas,
+                                            @Field("NewPassword")String newPas,@Field("RePassword")String rePassword);
+
+
+    //获取日记首页列表
+    @POST("diary/index")
+    @FormUrlEncoded
+    Observable<BaseRspModel<DiaryListModel>> getDiaryList(@Field("Token") String token, @Field("Limit")String limit,
+                                                          @Field("Page")String page);
+
 }

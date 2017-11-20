@@ -4,10 +4,10 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.SpeedRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="350dp"/>
 
     <LinearLayout
         android:layout_marginTop="10dp"

@@ -21,9 +21,9 @@ public class AccountRspModel {
     private String Id;
     private String Token;
     private String Phone;
-    private Object NickName;
-    private Object Sex;
-    private Object Birthday;
+    private String NickName;
+    private String Sex;
+    private String Birthday;
     private AvatarBean Avatar;
 
     public String getId() {
@@ -50,28 +50,36 @@ public class AccountRspModel {
         this.Phone = Phone;
     }
 
-    public Object getNickName() {
+    public String getNickName() {
         return NickName;
     }
 
-    public void setNickName(Object NickName) {
-        this.NickName = NickName;
+    public void setNickName(String nickName) {
+        NickName = nickName;
     }
 
-    public Object getSex() {
+    public String getSex() {
         return Sex;
     }
 
-    public void setSex(Object Sex) {
-        this.Sex = Sex;
+    public void setSex(String sex) {
+        Sex = sex;
     }
 
-    public Object getBirthday() {
+    public String getBirthday() {
         return Birthday;
     }
 
-    public void setBirthday(Object Birthday) {
-        this.Birthday = Birthday;
+    public void setBirthday(String birthday) {
+        Birthday = birthday;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public AvatarBean getAvatar() {
@@ -82,29 +90,50 @@ public class AccountRspModel {
         this.Avatar = Avatar;
     }
 
+
+    // 缓存一个对应的User, 不能被GSON框架解析使用ø
+    private transient User user;
+
+    public User build() {
+        if (user == null) {
+            User user = new User();
+            user.setId(Id);
+            user.setToken(Token);
+            user.setPhone(Phone);
+            user.setNickName(NickName);
+            user.setSex(Sex);
+            user.setBirthday(Birthday);
+            user.setRelativePath(getAvatar().getRelativePath());
+            user.setSmallThumbnail(getAvatar().getSmallThumbnail());
+            this.user = user;
+        }
+        return user;
+    }
+
+
     public static class AvatarBean {
         /**
          * RelativePath : null
          * SmallThumbnail : null
          */
 
-        private Object RelativePath;
-        private Object SmallThumbnail;
+        private String RelativePath;
+        private String SmallThumbnail;
 
-        public Object getRelativePath() {
+        public String getRelativePath() {
             return RelativePath;
         }
 
-        public void setRelativePath(Object RelativePath) {
-            this.RelativePath = RelativePath;
+        public void setRelativePath(String relativePath) {
+            RelativePath = relativePath;
         }
 
-        public Object getSmallThumbnail() {
+        public String getSmallThumbnail() {
             return SmallThumbnail;
         }
 
-        public void setSmallThumbnail(Object SmallThumbnail) {
-            this.SmallThumbnail = SmallThumbnail;
+        public void setSmallThumbnail(String smallThumbnail) {
+            SmallThumbnail = smallThumbnail;
         }
     }
 }

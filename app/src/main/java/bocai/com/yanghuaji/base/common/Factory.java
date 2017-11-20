@@ -2,9 +2,14 @@ package bocai.com.yanghuaji.base.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.util.DBFlowExclusionStrategy;
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -28,7 +33,21 @@ public class Factory {
         gson = new GsonBuilder()
                 // 设置时间格式
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                //设置一个数据库过滤器
+                .setExclusionStrategies(new DBFlowExclusionStrategy())
                 .create();
+    }
+
+
+
+    /**
+     * Factory 中的初始化
+     */
+    public static void setup() {
+        // 初始化数据库
+        FlowManager.init(new FlowConfig.Builder(Application.getInstance())
+                .openDatabasesOnInit(true) // 数据库初始化的时候就开始打开
+                .build());
     }
 
 

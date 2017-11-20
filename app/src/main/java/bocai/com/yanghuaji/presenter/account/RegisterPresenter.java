@@ -6,6 +6,7 @@ import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.GetSmsCodeModel;
+import bocai.com.yanghuaji.model.User;
 import bocai.com.yanghuaji.net.Network;
 import bocai.com.yanghuaji.util.persistence.Account;
 import io.reactivex.Observable;
@@ -77,6 +78,8 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
                     public void onNext(BaseRspModel<AccountRspModel> accountRspModelBaseRspModel) {
                         if (accountRspModelBaseRspModel.getReturnCode().equals("200") ) {
                             AccountRspModel model = accountRspModelBaseRspModel.getData();
+                            User user = model.build();
+                            user.save();
                             //做持久化保存
                             Account.login(model);
                             view.registerSuccess();

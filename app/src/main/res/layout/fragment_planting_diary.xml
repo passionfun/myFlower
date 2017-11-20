@@ -50,6 +50,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_planting_diary"
         android:layout_weight="1"
+        android:background="#F4F4F4"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
 </LinearLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="16dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="客厅的满天星"/>
+
+        <ImageView
+            android:src="@mipmap/img_write_diary_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:textSize="12sp"
+        android:textColor="#999999"
+        android:layout_marginTop="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="更新日期：2017.08.25"/>
+
+    <FrameLayout
+        android:layout_marginTop="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:scaleType="centerCrop"
+            android:src="@mipmap/img_diary_cover_empty"
+            android:layout_width="103dp"
+            android:layout_height="103dp"/>
+
+        <ImageView
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/img_diary_cover_empty"
+            android:layout_width="103dp"
+            android:layout_height="103dp"/>
+
+        <ImageView
+            android:layout_gravity="end"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/img_diary_cover_empty"
+            android:layout_width="103dp"
+            android:layout_height="103dp"/>
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="15dp"
+        android:background="@mipmap/img_dotted_background" />
+
+</LinearLayout>
