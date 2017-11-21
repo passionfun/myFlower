@@ -3,12 +3,17 @@ package bocai.com.yanghuaji.ui.personalCenter;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Fragment;
+import bocai.com.yanghuaji.base.GlideApp;
+import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 个人中心
@@ -20,6 +25,12 @@ public class PersonalCenterFragment extends Fragment {
     @BindView(R.id.ll_root)
     LinearLayout mRootLayout;
 
+    @BindView(R.id.tv_name)
+    TextView mName;
+
+    @BindView(R.id.img_portrait)
+    CircleImageView mPortrait;
+
 
     public static PersonalCenterFragment newInstance() {
         return new PersonalCenterFragment();
@@ -30,6 +41,19 @@ public class PersonalCenterFragment extends Fragment {
         return R.layout.fragment_personal_center;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        User user = Account.getUser();
+        if (user != null){
+            mName.setText(user.getNickName());
+            GlideApp.with(getActivity())
+                    .load(user.getRelativePath())
+                    .centerCrop()
+                    .into(mPortrait);
+        }
+    }
 
     @OnClick(R.id.tv_modify_password)
     void onModifyPasswordClick() {

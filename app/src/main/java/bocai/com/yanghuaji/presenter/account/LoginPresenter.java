@@ -5,7 +5,7 @@ import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
-import bocai.com.yanghuaji.model.User;
+import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.net.Network;
 import bocai.com.yanghuaji.util.persistence.Account;
 import io.reactivex.Observable;

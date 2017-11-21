@@ -8,6 +8,7 @@ import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.ImageModel;
+import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.net.Network;
 import bocai.com.yanghuaji.util.persistence.Account;
 import io.reactivex.Observable;
@@ -48,12 +49,12 @@ public class EditPersonalDataPresenter extends BasePresenter<EditPersonalDataCon
                         if (accountRspModelBaseRspModel.getReturnCode().equals("200")) {
                             AccountRspModel model = accountRspModelBaseRspModel.getData();
                             Account.login(model);
+                            User user = model.build();
+                            user.save();
                             view.modifyDataSuccess();
                         }
                         Application.showToast(accountRspModelBaseRspModel.getMsg());
                         view.hideLoading();
-
-
                     }
 
                     @Override
@@ -82,10 +83,9 @@ public class EditPersonalDataPresenter extends BasePresenter<EditPersonalDataCon
 
                     @Override
                     public void onNext(BaseRspModel<ImageModel> imageModelBaseRspModel) {
-                        Application.showToast(imageModelBaseRspModel.getMsg());
                         if (imageModelBaseRspModel.getReturnCode().equals("200")) {
                             ImageModel model = imageModelBaseRspModel.getData();
-                            int id = model.getAvatar().getImg1().getId();
+                            int id = model.getAvatar().get(0).getId();
                             view.modifyPortraitSuccess(String.valueOf(id));
                         } else {
                             Application.showToast(imageModelBaseRspModel.getMsg());

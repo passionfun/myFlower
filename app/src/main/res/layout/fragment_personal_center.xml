@@ -20,6 +20,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_name"
                 android:textColor="#333333"
                 android:textSize="24sp"
                 android:text="沉迷工作的网银少女"
@@ -40,6 +41,7 @@
         </LinearLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_portrait"
             android:layout_width="65dp"
             android:layout_marginEnd="32dp"
             android:src="@mipmap/img_portrait_empty"

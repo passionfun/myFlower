@@ -76,7 +76,6 @@ public class Application extends android.app.Application {
         Run.onUiAsync(new Action() {
             @Override
             public void call() {
-                // 这里进行回调的时候一定就是主线程状态了
                 Toast.makeText(instance, msg, Toast.LENGTH_SHORT).show();
             }
         });

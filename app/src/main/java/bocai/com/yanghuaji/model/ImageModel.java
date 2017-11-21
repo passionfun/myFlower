@@ -1,5 +1,7 @@
 package bocai.com.yanghuaji.model;
 
+import java.util.List;
+
 /**
  * 作者 yuanfei on 2017/11/17.
  * 邮箱 yuanfei221@126.com
@@ -8,70 +10,49 @@ package bocai.com.yanghuaji.model;
 public class ImageModel {
 
 
-    /**
-     * Avatar : {"Img1":{"Id":16,"RelativePath":"http://121.41.128.239:8082/yhj/web/upload/2017/11/15/20171115171247Dpzj9239.jpg",
-     * "SmallThumbnail":"http://121.41.128.239:8082/yhj/web/upload/2017/11/15/thumbnail/20171115171247Dpzj9239.jpg"}}
-     */
+    private List<AvatarBean> Avatar;
 
-    private AvatarBean Avatar;
-
-    public AvatarBean getAvatar() {
+    public List<AvatarBean> getAvatar() {
         return Avatar;
     }
 
-    public void setAvatar(AvatarBean Avatar) {
+    public void setAvatar(List<AvatarBean> Avatar) {
         this.Avatar = Avatar;
     }
 
     public static class AvatarBean {
         /**
-         * Img1 : {"Id":16,"RelativePath":"http://121.41.128.239:8082/yhj/web/upload/2017/11/15/20171115171247Dpzj9239.jpg","SmallThumbnail":"http://121.41.128.239:8082/yhj/web/upload/2017/11/15/thumbnail/20171115171247Dpzj9239.jpg"}
+         * Id : 66
+         * RelativePath : http://121.41.128.239:8082/yhj/web/upload/2017/11/21/20171121103117wPsP4311.png
+         * SmallThumbnail : http://121.41.128.239:8082/yhj/web/upload/2017/11/21/thumbnail/20171121103117wPsP4311.png
          */
 
-        private Img1Bean Img1;
+        private int Id;
+        private String RelativePath;
+        private String SmallThumbnail;
 
-        public Img1Bean getImg1() {
-            return Img1;
+        public int getId() {
+            return Id;
         }
 
-        public void setImg1(Img1Bean Img1) {
-            this.Img1 = Img1;
+        public void setId(int Id) {
+            this.Id = Id;
         }
 
-        public static class Img1Bean {
-            /**
-             * Id : 16
-             * RelativePath : http://121.41.128.239:8082/yhj/web/upload/2017/11/15/20171115171247Dpzj9239.jpg
-             * SmallThumbnail : http://121.41.128.239:8082/yhj/web/upload/2017/11/15/thumbnail/20171115171247Dpzj9239.jpg
-             */
+        public String getRelativePath() {
+            return RelativePath;
+        }
 
-            private int Id;
-            private String RelativePath;
-            private String SmallThumbnail;
+        public void setRelativePath(String RelativePath) {
+            this.RelativePath = RelativePath;
+        }
 
-            public int getId() {
-                return Id;
-            }
+        public String getSmallThumbnail() {
+            return SmallThumbnail;
+        }
 
-            public void setId(int Id) {
-                this.Id = Id;
-            }
-
-            public String getRelativePath() {
-                return RelativePath;
-            }
-
-            public void setRelativePath(String RelativePath) {
-                this.RelativePath = RelativePath;
-            }
-
-            public String getSmallThumbnail() {
-                return SmallThumbnail;
-            }
-
-            public void setSmallThumbnail(String SmallThumbnail) {
-                this.SmallThumbnail = SmallThumbnail;
-            }
+        public void setSmallThumbnail(String SmallThumbnail) {
+            this.SmallThumbnail = SmallThumbnail;
         }
     }
 }

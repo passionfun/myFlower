@@ -50,4 +50,14 @@ public class SecondSettingActivity extends Activity {
         EquipmentSettingActivity.show(this);
     }
 
+    @OnClick(R.id.tv_plant_setting)
+    void onPlantSettingClick() {
+        PlantSettingActivity.show(this);
+    }
+
+    @OnClick(R.id.tv_equipment_info)
+    void onEquipmentInfoClick() {
+        EquipmentInfoActivity.show(this);
+    }
+
 }

@@ -90,9 +90,7 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     public void triggerEmpty() {
         mLoading.setVisibility(GONE);
@@ -104,9 +102,7 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
         changeBindViewVisibility(GONE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     public void triggerNetError() {
         mLoading.setVisibility(GONE);
@@ -118,9 +114,7 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
         changeBindViewVisibility(GONE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     public void triggerError(@StringRes int strRes) {
         Application.showToast(strRes);
@@ -128,9 +122,7 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
         changeBindViewVisibility(GONE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     public void triggerLoading() {
         mEmptyImg.setVisibility(GONE);
@@ -141,18 +133,14 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
         changeBindViewVisibility(GONE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     public void triggerOk() {
         setVisibility(GONE);
         changeBindViewVisibility(VISIBLE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     public void triggerOkOrEmpty(boolean isOk) {
         if (isOk)

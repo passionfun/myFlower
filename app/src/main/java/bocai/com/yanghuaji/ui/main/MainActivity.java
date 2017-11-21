@@ -9,15 +9,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.GlideApp;
+import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends Activity {
     private long firstTime=0;
@@ -30,6 +35,12 @@ public class MainActivity extends Activity {
 
     @BindView(R.id.frame_container)
     FrameLayout mFrameLayout;
+
+    @BindView(R.id.img_portrait)
+    CircleImageView mPortrait;
+
+    @BindView(R.id.tv_name)
+    TextView mName;
 
 
 
@@ -50,7 +61,7 @@ public class MainActivity extends Activity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             //将侧边栏顶部延伸至status bar
             mDrawerLayout.setFitsSystemWindows(true);
-            //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
+            //将主页面顶部延伸至status bar
             mDrawerLayout.setClipToPadding(false);
         }
     }
@@ -78,6 +89,14 @@ public class MainActivity extends Activity {
 
     public void showLeft() {
         mDrawerLayout.openDrawer(GravityCompat.START);
+        User user = Account.getUser();
+        if (user != null){
+            mName.setText(user.getNickName());
+            GlideApp.with(this)
+                    .load(user.getRelativePath())
+                    .centerCrop()
+                    .into(mPortrait);
+        }
     }
 
 

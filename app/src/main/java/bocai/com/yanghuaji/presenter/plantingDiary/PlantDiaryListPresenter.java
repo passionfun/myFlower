@@ -27,7 +27,6 @@ public class PlantDiaryListPresenter extends BasePresenter<PlantDiaryListContrac
 
     @Override
     public void getDiaryList(String token, String limit, String page) {
-        view.showLoading();
         Observable<BaseRspModel<DiaryListModel>> observable = Network.remote().getDiaryList(token, limit, page);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -41,9 +40,10 @@ public class PlantDiaryListPresenter extends BasePresenter<PlantDiaryListContrac
                     public void onNext(BaseRspModel<DiaryListModel> diaryListModelBaseRspModel) {
                         if (diaryListModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getDiaryListSuccess(diaryListModelBaseRspModel.getData());
+                        }else {
+                            Application.showToast(diaryListModelBaseRspModel.getMsg());
                         }
-                        Application.showToast(diaryListModelBaseRspModel.getMsg());
-                        view.hideLoading();
+
                     }
 
                     @Override

@@ -1,5 +1,7 @@
 package bocai.com.yanghuaji.model;
 
+import bocai.com.yanghuaji.model.db.User;
+
 /**
  * 作者 yuanfei on 2017/11/16.
  * 邮箱 yuanfei221@126.com

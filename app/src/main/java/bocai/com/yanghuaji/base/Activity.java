@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
-
 import java.util.List;
 
 import bocai.com.yanghuaji.util.ActivityUtil;
@@ -103,7 +101,6 @@ public abstract class Activity extends AppCompatActivity {
         // 判断是否为空
         if (fragments != null && fragments.size() > 0) {
             for (android.support.v4.app.Fragment fragment : fragments) {
-                // 判断是否为我们能够处理的Fragment类型
                 if (fragment instanceof bocai.com.yanghuaji.base.Fragment) {
                     // 判断是否拦截了返回按钮
                     if (((bocai.com.yanghuaji.base.Fragment) fragment).onBackPressed()) {

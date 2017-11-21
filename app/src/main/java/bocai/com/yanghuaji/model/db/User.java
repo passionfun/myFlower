@@ -1,11 +1,9 @@
-package bocai.com.yanghuaji.model;
+package bocai.com.yanghuaji.model.db;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import bocai.com.yanghuaji.model.db.AppDatabase;
 
 /**
  * 作者 yuanfei on 2017/11/20.
