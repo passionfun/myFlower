@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#FAFAFA"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/layout_toolbar" />
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_marginTop="21dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_marginStart="26dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/img_main_empty"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        />
+
+    <LinearLayout
+        android:layout_marginStart="9dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="2dp"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:text="设备名称："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/tv_equipment_name"
+            android:layout_marginTop="2dp"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:text="WG301+2222"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="11dp"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:text="MAC:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/tv_mac"
+            android:layout_marginTop="2dp"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:text="00-11-22-33-44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="30dp"
+        android:src="@mipmap/img_equipment_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="22dp"
+        android:background="#C6C6C6" />
+
+
+    <ImageView
+        android:layout_marginTop="93dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/img_equipment_success_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_marginTop="3dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:text="设备绑定成功"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/tv_next"
+        android:layout_marginTop="4dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="15sp"
+        android:textColor="#2A2A2A"
+        android:text="3s后进入下一步"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -16,12 +16,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <bocai.com.yanghuaji.util.widget.RoundAngleImageView
             android:layout_width="match_parent"
             android:layout_height="220dp"
+            app:roundHeightLeftUp="10dp"
+            app:roundHeightRightUp="10dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
-            android:src="@mipmap/img_main_empty" />
+            android:src="@mipmap/img_main_empty"/>
 
         <LinearLayout
             android:layout_width="match_parent"

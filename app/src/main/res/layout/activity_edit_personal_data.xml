@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_root"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -33,14 +34,36 @@
     </LinearLayout>
 
 
+<FrameLayout
+
+    android:layout_marginEnd="15dp"
+    android:layout_marginTop="62dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_add_portrait"
         android:src="@mipmap/img_edit_portrait"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="62dp"
         android:layout_width="94dp"
         android:layout_height="94dp" />
+
+    <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+        android:layout_width="94dp"
+        app:roundHeightLeftBottom="47dp"
+        app:roundHeightLeftUp="47dp"
+        android:background="#64000000"
+        app:roundHeightRightBottom="47dp"
+        app:roundHeightRightUp="47dp"
+        android:layout_height="94dp"/>
+
+
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/img_photo"/>
+
+</FrameLayout>
 </LinearLayout>
 
 

@@ -121,6 +121,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".ui.intelligentPlanting.PlantSettingActivity" />
         <activity android:name=".ui.intelligentPlanting.EquipmentInfoActivity" />
+        <activity android:name=".ui.intelligentPlanting.ConnectActivity" />
+        <activity android:name=".ui.intelligentPlanting.ConnectSuccessActivity" />
+        <activity android:name=".ui.intelligentPlanting.ConnectFailedActivity" />
+        <activity android:name=".ui.plantingDiary.AddPlantActivity" />
 
     </application>
 

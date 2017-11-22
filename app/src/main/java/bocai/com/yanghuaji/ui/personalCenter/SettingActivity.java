@@ -39,4 +39,10 @@ public class SettingActivity extends Activity {
     void onBackClick() {
         finish();
     }
+
+    @OnClick(R.id.tv_new_guide)
+    void onGuideClick() {
+        
+    }
+
 }

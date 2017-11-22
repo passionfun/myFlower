@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/layout_toolbar" />
+
+    <ImageView
+        android:layout_marginTop="27dp"
+        android:layout_marginStart="22dp"
+        android:src="@mipmap/img_connect_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:textSize="17sp"
+        android:textColor="#333333"
+        android:layout_marginTop="12dp"
+        android:text="设备连接失败！请排查以下问题："
+        android:layout_marginStart="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="13sp"
+        android:textColor="#999999"
+        android:layout_marginTop="10dp"
+        android:text="1.是否输入正确的WiFi名称和密码"
+        android:layout_marginStart="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="13sp"
+        android:textColor="#999999"
+        android:layout_marginTop="10dp"
+        android:text="2.请确保设备进入配网状态"
+        android:layout_marginStart="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="13sp"
+        android:textColor="#999999"
+        android:layout_marginTop="10dp"
+        android:text="3.请确保设备在WiFi覆盖范围内"
+        android:layout_marginStart="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="13sp"
+        android:textColor="#999999"
+        android:layout_marginTop="10dp"
+        android:text="4.请确保手机连接2.4G的WiFi网络"
+        android:layout_marginStart="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/tv_reload"
+        android:textSize="15sp"
+        android:textColor="#87BC52"
+        android:layout_marginTop="45dp"
+        android:text="@string/reload"
+        android:layout_marginStart="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

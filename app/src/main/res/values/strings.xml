@@ -8,7 +8,7 @@
     <string name="input_verification_code">请输入验证码</string>
     <string name="get_verification_code">获取验证码</string>
     <string name="login">登录</string>
-    <string name="create_new_account"><b>创建新账户</b></string>
+    <string name="create_new_account"><u>创建新账户</u></string>
     <string name="wechat_login"><b>微信登录</b></string>
     <string name="input_account">请输入账户</string>
     <string name="input_password">请输入密码</string>
@@ -60,5 +60,7 @@
     <string name="prompt_empty">Oh~, it empty!</string>
     <string name="prompt_error">Sorry, you have or more error!</string>
     <string name="prompt_loading">Loading…</string>
+
+    <string name="reload"><u>重新加载</u></string>
 
 </resources>

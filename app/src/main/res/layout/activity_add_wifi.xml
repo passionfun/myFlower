@@ -24,7 +24,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/et_input_phone_number"
+            android:id="@+id/et_wifi_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -61,7 +61,7 @@
 
 
     <EditText
-        android:id="@+id/et_input_password"
+        android:id="@+id/et_wifi_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"

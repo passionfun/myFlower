@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_marginTop="36dp"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:title="">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_marginStart="30dp"
+            android:src="@mipmap/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:textSize="12sp"
+            android:textColor="#87BC52"
+            android:text="暂不添加，跳过"
+            android:layout_marginEnd="26dp"
+            android:layout_gravity="end"
+            android:drawablePadding="5dp"
+            android:drawableEnd="@mipmap/img_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="27dp"
+        android:textSize="25sp"
+        android:textColor="#333333"
+        android:text="@string/bind_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+
+    <EditText
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="30dp"
+        android:drawableStart="@mipmap/img_search_location"
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:drawableEnd="@mipmap/img_search_delete"
+        android:drawablePadding="13dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:background="@null"
+        android:hint="添加植物" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="11dp"
+        android:background="#C6C6C6" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="98dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_content_empty"/>
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:text="搜索无相关匹配结果"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="请重新输入关键词搜索或选择通用种"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                android:textSize="12sp"/>
+
+            <Button
+                android:id="@+id/bt_common_plant"
+                android:layout_marginTop="90dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#87BC52"
+                android:textSize="13sp"
+                android:text="通用种植"
+                android:background="@drawable/bg_common_plant"
+                android:layout_width="95dp"
+                android:layout_height="29dp"
+                />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+
+</LinearLayout>

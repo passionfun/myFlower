@@ -28,14 +28,7 @@
             android:textColor="#333333"
             android:textSize="17sp" />
 
-        <ImageView
-            android:id="@+id/img_search"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="30dp"
-            android:paddingEnd="21dp"
-            android:layout_gravity="end"
-            android:src="@mipmap/img_search" />
+
 
     </android.support.v7.widget.Toolbar>
 
@@ -70,8 +63,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
+        <ImageView
+            android:background="@mipmap/img_shadow_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
         <LinearLayout
-            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <View
