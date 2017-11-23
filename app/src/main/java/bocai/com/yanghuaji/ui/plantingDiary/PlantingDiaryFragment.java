@@ -1,18 +1,23 @@
 package bocai.com.yanghuaji.ui.plantingDiary;
 
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.presenter.plantingDiary.PlantDiaryListContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.PlantDiaryListPresenter;
+import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
@@ -25,13 +30,14 @@ import butterknife.OnClick;
  */
 
 public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContract.Presenter>
-        implements PlantDiaryListContract.View {
+        implements PlantDiaryListContract.View, XRecyclerView.LoadingListener {
     @BindView(R.id.empty)
     EmptyView mEmptyView;
 
     @BindView(R.id.recycler_planting_diary)
-    RecyclerView mRecyclerView;
+    XRecyclerView mRecyclerView;
 
+    private int page = 1;
     private RecyclerAdapter<DiaryListModel.DiaryModl> mAdapter;
 
     public static PlantingDiaryFragment newInstance() {
@@ -60,6 +66,11 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
                 return new PlantingDiaryFragment.ViewHolder(root);
             }
         });
+        mRecyclerView.setPullRefreshEnabled(true);
+        mRecyclerView.setLoadingMoreEnabled(true);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+        mRecyclerView.setLoadingListener(this);
         mEmptyView.bind(mRecyclerView);
         setPlaceHolderView(mEmptyView);
     }
@@ -67,16 +78,12 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     @Override
     protected void onFirstInit() {
         super.onFirstInit();
-        for (int i = 0; i < 3; i++) {
-            DiaryListModel.DiaryModl model1 = new DiaryListModel.DiaryModl();
-            list.add(model1);
-        }
     }
 
     @Override
     protected void initData() {
         super.initData();
-        mPresenter.getDiaryList(Account.getToken(), "3", "1");
+        onRefresh();
     }
 
     @OnClick(R.id.bt_add_diary)
@@ -84,11 +91,15 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
         AddDiaryActivity.show(getContext());
     }
 
-    List<DiaryListModel.DiaryModl> list = new ArrayList<>();
     @Override
     public void getDiaryListSuccess(DiaryListModel model) {
-        mAdapter.add(list);
-//        mAdapter.replace(model.getList());
+        if (page == 1) {
+            mRecyclerView.refreshComplete();
+            mAdapter.replace(model.getList());
+        } else {
+            mRecyclerView.loadMoreComplete();
+            mAdapter.add(model.getList());
+        }
         mPlaceHolderView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
     }
 
@@ -97,15 +108,76 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
         return new PlantDiaryListPresenter(this);
     }
 
+    @Override
+    public void onRefresh() {
+        page = 1;
+        mPresenter.getDiaryList(Account.getToken(), "3", page + "");
+    }
+
+    @Override
+    public void onLoadMore() {
+        page++;
+        mPresenter.getDiaryList(Account.getToken(), "3", page + "");
+    }
+
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<DiaryListModel.DiaryModl> {
+        @BindView(R.id.tv_diary_title)
+        TextView mTitle;
+
+        @BindView(R.id.tv_modify_time)
+        TextView mTime;
+
+        @BindView(R.id.img_first)
+        ImageView mFirst;
+
+        @BindView(R.id.img_second)
+        ImageView mSecond;
+
+        @BindView(R.id.img_third)
+        ImageView mThird;
+
         public ViewHolder(View itemView) {
             super(itemView);
         }
 
         @Override
         protected void onBind(DiaryListModel.DiaryModl diaryListModel) {
+            mTitle.setText(diaryListModel.getBookName());
+            mTime.setText("更新日期:"+ DateUtils.timet(diaryListModel.getTimeline()));
+            List<String> photos = diaryListModel.getPhotos();
+            mFirst.setVisibility(View.INVISIBLE);
+            mSecond.setVisibility(View.INVISIBLE);
+            mThird.setVisibility(View.INVISIBLE);
+            for (int i = 0;i<photos.size();i++){
+                if (i==0){
+                    GlideApp.with(getContext())
+                            .load(photos.get(0))
+                            .centerCrop()
+                            .into(mFirst);
+                    mFirst.setVisibility(View.VISIBLE);
+                }
+                if (i==1){
+                    GlideApp.with(getContext())
+                            .load(photos.get(1))
+                            .centerCrop()
+                            .into(mSecond);
+                    mSecond.setVisibility(View.VISIBLE);
+                }
+                if (i==2){
+                    GlideApp.with(getContext())
+                            .load(photos.get(2))
+                            .centerCrop()
+                            .into(mThird);
+                    mThird.setVisibility(View.VISIBLE);
+                }
+            }
+        }
 
+        @OnClick(R.id.img_write_diary)
+        void onWriteDiaryClick() {
+            DiaryListModel.DiaryModl diaryModl = mAdapter.getItems().get(getAdapterPosition()-1);
+            WriteDiaryActivity.show(getContext(),diaryModl.getId());
         }
     }
 }

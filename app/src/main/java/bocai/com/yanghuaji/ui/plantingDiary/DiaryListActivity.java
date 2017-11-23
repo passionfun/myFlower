@@ -82,6 +82,6 @@ public class DiaryListActivity extends Activity {
 
     @OnClick(R.id.img_write_diary)
     void onWriteDiaryClick() {
-        WriteDiaryActivity.show(this);
+        WriteDiaryActivity.show(this,"");
     }
 }

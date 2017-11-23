@@ -108,6 +108,11 @@ public abstract class RecyclerAdapter<Data>
         }
     }
 
+    public void remove(Data data){
+        mDataList.remove(data);
+        notifyDataSetChanged();
+    }
+
     /**
      * 插入一堆数据，并通知这段集合更新
      */

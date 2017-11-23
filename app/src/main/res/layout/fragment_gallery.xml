@@ -9,14 +9,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:textAlignment="center"
-            app:title="选择图片"
-            app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:titleTextColor="#4e5864" />
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textAlignment="center"
+                app:title="选择图片"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:titleTextColor="#4e5864" >
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_confirm"
+                    android:textColor="#4e5864"
+                    android:textSize="15sp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_gravity="end"
+                    android:text="确定"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </android.support.v7.widget.Toolbar>
+        </FrameLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <bocai.com.yanghuaji.media.widget.GalleryView

@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tv_diary_title"
             android:textSize="16sp"
             android:textColor="#333333"
             android:layout_width="0dp"
@@ -21,6 +22,7 @@
             android:text="客厅的满天星"/>
 
         <ImageView
+            android:id="@+id/img_write_diary"
             android:src="@mipmap/img_write_diary_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -28,6 +30,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_modify_time"
         android:textSize="12sp"
         android:textColor="#999999"
         android:layout_marginTop="2dp"
@@ -40,12 +43,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/img_first"
             android:scaleType="centerCrop"
             android:src="@mipmap/img_diary_cover_empty"
             android:layout_width="103dp"
             android:layout_height="103dp"/>
 
         <ImageView
+            android:id="@+id/img_second"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:src="@mipmap/img_diary_cover_empty"
@@ -53,6 +58,7 @@
             android:layout_height="103dp"/>
 
         <ImageView
+            android:id="@+id/img_third"
             android:layout_gravity="end"
             android:scaleType="centerCrop"
             android:src="@mipmap/img_diary_cover_empty"

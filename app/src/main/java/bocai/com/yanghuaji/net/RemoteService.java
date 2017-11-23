@@ -6,6 +6,7 @@ import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.ImageModel;
+import bocai.com.yanghuaji.model.db.EquipmentListModel;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Field;
@@ -76,5 +77,11 @@ public interface RemoteService {
     @FormUrlEncoded
     Observable<BaseRspModel<DiaryListModel>> getDiaryList(@Field("Token") String token, @Field("Limit")String limit,
                                                           @Field("Page")String page);
+
+
+    //获取设备
+    @POST("diary/get_equipment")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentListModel>> getEquipmentList(@Field("Token") String token);
 
 }

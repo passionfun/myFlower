@@ -55,7 +55,7 @@
 
 </bocai.com.yanghuaji.util.widget.EmptyView>
 
-    <android.support.v7.widget.RecyclerView
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/recycler_planting_diary"
         android:layout_weight="1"
         android:background="#F4F4F4"

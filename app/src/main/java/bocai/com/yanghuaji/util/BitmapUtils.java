@@ -1,8 +1,12 @@
 package bocai.com.yanghuaji.util;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 
 public class BitmapUtils {
     public static int MIN_WIDTH = 100;
@@ -55,4 +59,24 @@ public class BitmapUtils {
             return inSampleSize;
         }
     }
+
+
+    //创建一个uri用来存储拍照后的照片
+    public static Uri createImageUri(Context context) {
+        String name = "takePhoto" + System.currentTimeMillis();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Images.Media.TITLE, name);
+        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name + ".jpeg");
+        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+        return uri;
+    }
+
+
+    //用来删除一个本地uri
+    public static void delteImageUri(Context context, Uri uri) {
+        context.getContentResolver().delete(uri, null, null);
+
+    }
+
 }
