@@ -43,20 +43,32 @@
         android:layout_height="wrap_content"
         />
 
-
+<LinearLayout
+    android:layout_marginTop="27dp"
+    android:layout_marginEnd="35dp"
+    android:layout_marginStart="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <EditText
-        android:layout_marginEnd="35dp"
-        android:layout_marginStart="30dp"
+        android:id="@+id/et_search"
         android:drawableStart="@mipmap/img_search_location"
         android:textColor="#333333"
         android:textSize="14sp"
-        android:drawableEnd="@mipmap/img_search_delete"
+        android:singleLine="true"
         android:drawablePadding="13dp"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
         android:background="@null"
-        android:hint="添加植物" />
+        android:hint="搜索植物" />
+
+    <ImageView
+        android:id="@+id/img_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/img_search_delete"/>
+</LinearLayout>
+
 
 
     <View
@@ -71,6 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
+            android:id="@+id/ll_empty"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -114,8 +127,9 @@
                 />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
             android:id="@+id/recycler"
+            android:layout_marginStart="27dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </FrameLayout>

@@ -20,7 +20,7 @@
             android:src="@mipmap/img_back" />
 
         <TextView
-            android:id="@+id/tv_right"
+            android:id="@+id/tv_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -33,6 +33,7 @@
 
 
     <EditText
+        android:id="@+id/et_content"
         android:textColor="#333333"
         android:textSize="14sp"
         android:gravity="start|top"

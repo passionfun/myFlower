@@ -18,9 +18,13 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentModel;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessContract;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessPresenter;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -29,7 +33,8 @@ import butterknife.OnClick;
  * 邮箱 yuanfei221@126.com
  */
 
-public class ConnectSuccessActivity extends Activity {
+public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessContract.Presenter>
+        implements ConnectSuccessContract.View {
     @BindView(R.id.tv_title)
     TextView mTitle;
 
@@ -47,6 +52,8 @@ public class ConnectSuccessActivity extends Activity {
 
     public static final String KEY_JSON_CONTENT = "KEY_JSON_CONTENT";
     private String jsonContent;
+    private String mEquipmentName;
+    private String mEquipmentId;
 
     //显示的入口
     public static void show(Context context, String jsonString) {
@@ -71,18 +78,13 @@ public class ConnectSuccessActivity extends Activity {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
+    protected void initWidget() {
+        super.initWidget();
         mTitle.setText("连接设备");
-        Gson gson = new Gson();
-         List<EquipmentModel> equipmentModels =  gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>(){}.getType());
-        mName.setText(equipmentModels.get(0).getName());
-        mMac.setText(equipmentModels.get(0).getMAC());
-
-        new CountDownTimer(4000,1000){
+        new CountDownTimer(4000, 1000) {
             @Override
             public void onTick(long l) {
-                mNext.setText(l/1000+"s后进入下一步");
+                mNext.setText(l / 1000 + "s后进入下一步");
                 SpannableString spannableString = new SpannableString(mNext.getText().toString());
                 ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#87BC52"));
 
@@ -92,13 +94,46 @@ public class ConnectSuccessActivity extends Activity {
 
             @Override
             public void onFinish() {
-
+                AddPlantActivity.show(ConnectSuccessActivity.this,mEquipmentName,mEquipmentId);
             }
         }.start();
+
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        Gson gson = new Gson();
+        List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
+        }.getType());
+        mEquipmentName = equipmentModels.get(0).getName();
+        String macAddress = equipmentModels.get(0).getMAC();
+        mName.setText(mEquipmentName);
+        mMac.setText(macAddress);
+        String token = Account.getToken();
+        String serialNum = "11074";
+        String version = "1.0";
+        mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version);
     }
 
     @OnClick(R.id.img_back)
     void onBackClick() {
         finish();
+    }
+
+    @Override
+    public void addEquipmentSuccess(EquipmentCard card) {
+        mEquipmentId = card.getId();
+        mEquipmentName = card.getEquipName();
+    }
+
+    @Override
+    public void addEquipmentFailed() {
+        AddWifiActivity.show(this);
+    }
+
+    @Override
+    protected ConnectSuccessContract.Presenter initPresenter() {
+        return new ConnectSuccessPresenter(this);
     }
 }

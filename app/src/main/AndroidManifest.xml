@@ -44,8 +44,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.account.LoginActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/BaseTheme">
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,8 +60,8 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.account.ForgetPasswordActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/BaseTheme" />
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.main.MainActivity"
             android:theme="@style/BaseTheme" />
@@ -82,8 +82,8 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.plantingDiary.AddDiaryActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/BaseTheme" />
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.plantingDiary.DiaryListActivity"
             android:theme="@style/BaseTheme" />
@@ -124,7 +124,10 @@
         <activity android:name=".ui.intelligentPlanting.ConnectActivity" />
         <activity android:name=".ui.intelligentPlanting.ConnectSuccessActivity" />
         <activity android:name=".ui.intelligentPlanting.ConnectFailedActivity" />
-        <activity android:name=".ui.plantingDiary.AddPlantActivity" />
+        <activity android:name=".ui.personalCenter.GuideActivity" />
+        <activity
+            android:name=".ui.intelligentPlanting.AddPlantActivity"
+            android:windowSoftInputMode="adjustPan" />
 
     </application>
 

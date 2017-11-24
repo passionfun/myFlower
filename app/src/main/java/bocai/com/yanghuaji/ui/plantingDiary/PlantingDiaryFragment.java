@@ -3,6 +3,7 @@ package bocai.com.yanghuaji.ui.plantingDiary;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
@@ -122,6 +123,9 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
 
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<DiaryListModel.DiaryModl> {
+        @BindView(R.id.ll_root)
+        LinearLayout mRoot;
+
         @BindView(R.id.tv_diary_title)
         TextView mTitle;
 
@@ -179,5 +183,14 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
             DiaryListModel.DiaryModl diaryModl = mAdapter.getItems().get(getAdapterPosition()-1);
             WriteDiaryActivity.show(getContext(),diaryModl.getId());
         }
+        @OnClick(R.id.ll_root)
+        void onItemClick() {
+            DiaryListModel.DiaryModl diaryModl = mAdapter.getItems().get(getAdapterPosition()-1);
+            DiaryListActivity.show(getContext(),diaryModl.getId());
+        }
+
     }
+
+
 }
+

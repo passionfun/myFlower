@@ -89,7 +89,7 @@ public class HorizontalRecyclerFragment extends Fragment {
 
         @OnClick(R.id.img_setting)
         void onSettingClick(){
-            SecondSettingActivity.show(mSetting.getContext());
+            AddPlantActivity.show(getContext(),"shc","1");
         }
     }
 

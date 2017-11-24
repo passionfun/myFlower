@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.media.GalleryFragment;
@@ -138,18 +139,23 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
 
     @Override
     public void getEquipmentListSuccess(List<EquipmentCard> cards) {
-        EquipmentListPopupWindow popupWindow = new EquipmentListPopupWindow(this);
-        ActivityUtil.setBackgroundAlpha(this, 0.19f);
-        popupWindow.addData(cards);
-        popupWindow.showAtLocation(mRoot, Gravity.CENTER,0,0);
-        popupWindow.setOnSelectListener(new EquipmentListPopupWindow.SelectListener() {
-            @Override
-            public void selected(EquipmentCard card) {
-                mName = card.getEquipName();
-                mEquipmentName.setText(mName);
-                mEquipmentId = card.getId();
-            }
-        });
+        if (cards !=null&&cards.size()>0){
+            EquipmentListPopupWindow popupWindow = new EquipmentListPopupWindow(this);
+            ActivityUtil.setBackgroundAlpha(this, 0.19f);
+            popupWindow.addData(cards);
+            popupWindow.showAtLocation(mRoot, Gravity.CENTER,0,0);
+            popupWindow.setOnSelectListener(new EquipmentListPopupWindow.SelectListener() {
+                @Override
+                public void selected(EquipmentCard card) {
+                    mName = card.getEquipName();
+                    mEquipmentName.setText(mName);
+                    mEquipmentId = card.getId();
+                }
+            });
+        }else {
+            Application.showToast("暂无设备");
+        }
+
     }
 
     @Override

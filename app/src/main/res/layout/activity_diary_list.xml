@@ -42,52 +42,12 @@
             android:layout_height="match_parent" />
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:drawablePadding="9dp"
-                    android:textSize="25sp"
-                    android:textColor="#333333"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginStart="29dp"
-                    android:drawableStart="@mipmap/img_diary_card"
-                    android:id="@+id/tv_diary_title"
-                    android:text="满天星的一生"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-
-                <ImageView
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="29dp"
-                    android:src="@mipmap/img_diary_cover_empty"
-                    android:id="@+id/img_diary_cover"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/img_write_diary"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="414dp"
-                android:layout_gravity="end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/img_write_diary"/>
-        </FrameLayout>
-
-
-    </ScrollView>
-
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dp" />
 
 
 </LinearLayout>

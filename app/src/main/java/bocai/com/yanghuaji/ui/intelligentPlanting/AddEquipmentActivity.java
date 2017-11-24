@@ -33,5 +33,10 @@ public class AddEquipmentActivity extends Activity {
         finish();
     }
 
+    @OnClick(R.id.img_scan)
+    void onScanClick() {
+        AddEquipmentDisplayActivity.show(this);
+    }
+
 
 }

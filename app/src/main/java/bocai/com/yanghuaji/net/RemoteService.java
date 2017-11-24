@@ -5,7 +5,9 @@ import java.util.Map;
 import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.DiaryListModel;
+import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.ImageModel;
+import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.model.db.EquipmentListModel;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -83,5 +85,33 @@ public interface RemoteService {
     @POST("diary/get_equipment")
     @FormUrlEncoded
     Observable<BaseRspModel<EquipmentListModel>> getEquipmentList(@Field("Token") String token);
+
+
+    //写日记
+    @POST("diary/create_diary")
+    @FormUrlEncoded
+    Observable<BaseRspModel> writeDiary(@Field("Token") String token,@Field("Content") String content,
+                                        @Field("Location") String location,@Field("Photos") String photosId,@Field("Bid") String diaryId);
+
+
+    //添加设备
+    @POST("equipment/create_equipment")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentCard>> addEquipment(@Field("Token") String token, @Field("EquipName") String equipmentName,
+                                                         @Field("Mac") String macAddress, @Field("SerialNum") String serialNum, @Field("Version") String version);
+
+
+    //添加设备
+    @POST("plant/plant_search")
+    @FormUrlEncoded
+    Observable<BaseRspModel<PlantRspModel>> searchPlant(@Field("Keyword") String keyword, @Field("Limit") String limit,
+                                                         @Field("Page") String page);
+
+
+    //第一次设置
+    @POST("equipment/first_setup")
+    @FormUrlEncoded
+    Observable<BaseRspModel> firstSetting(@Field("Token") String token, @Field("EquipName") String equipmentName,
+                                                        @Field("PlantName") String plantName,@Field("Pid") String plantId,@Field("Id") String equipmentId);
 
 }

@@ -9,24 +9,37 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.ImageModel;
+import bocai.com.yanghuaji.presenter.plantingDiary.WriteDiaryContract;
+import bocai.com.yanghuaji.presenter.plantingDiary.WriteDiaryPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.BitmapUtils;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 作者 yuanfei on 2017/11/13.
  * 邮箱 yuanfei221@126.com
  */
 
-public class WriteDiaryActivity extends Activity {
+public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Presenter> implements WriteDiaryContract.View {
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
@@ -35,6 +48,12 @@ public class WriteDiaryActivity extends Activity {
 
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
+
+    @BindView(R.id.et_content)
+    EditText mContent;
+
+    @BindView(R.id.tv_location)
+    TextView mLocation;
 
     @BindView(R.id.img_add_picture)
     ImageView mAdd;
@@ -128,6 +147,14 @@ public class WriteDiaryActivity extends Activity {
     }
 
 
+    @OnClick(R.id.tv_save)
+    void onSaveClick() {
+        List<String> photoPaths = mAdapter.getItems();
+        photoPaths.remove("add");
+        uploadPhotos(photoPaths);
+    }
+
+
     @OnClick(R.id.img_add_picture)
     void onAddPictureClick() {
         showPop();
@@ -159,7 +186,7 @@ public class WriteDiaryActivity extends Activity {
                                 switchVisibility(true);
                             }
                         });
-                        fragment.show(getSupportFragmentManager(),MyGalleryFragment.class.getName());
+                        fragment.show(getSupportFragmentManager(), MyGalleryFragment.class.getName());
                         fragment.setMaxCount(10 - mAdapter.getItemCount());
                         break;
                     case R.id.tv_cancel:
@@ -170,6 +197,21 @@ public class WriteDiaryActivity extends Activity {
         });
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
         picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM, 0, 0);
+    }
+
+
+    private void uploadPhotos(List<String> pathList) {
+        Map<String, RequestBody> params = new HashMap<>();
+
+
+        if (pathList != null && pathList.size() > 0) {
+            for (int i = 0; i < pathList.size(); i++) {
+                File file = new File(pathList.get(i));
+                RequestBody body = RequestBody.create(MediaType.parse("image/jpeg;charset=utf-8"), file);
+                params.put("pic_head" + "\";" + "filename=\"" + file, body);
+            }
+            mPresenter.addPhotos(params);
+        }
     }
 
 
@@ -197,6 +239,33 @@ public class WriteDiaryActivity extends Activity {
 
     }
 
+    @Override
+    public void addPhotosSuccess(List<ImageModel.AvatarBean> avatar) {
+        String token = Account.getToken();
+        String content = mContent.getText().toString();
+        String location = mLocation.getText().toString();
+        StringBuffer buffer = new StringBuffer();
+        if (avatar != null && avatar.size() > 0) {
+            for (ImageModel.AvatarBean avatarBean : avatar) {
+                String photoId = avatarBean.getId() + "";
+                buffer.append(photoId).append(",");
+            }
+        }
+        String photosId = buffer.toString();
+        String diaryId = mDiaryId;
+        mPresenter.writeDiary(token, content, location, photosId, diaryId);
+    }
+
+    @Override
+    public void writeDiarySuccess() {
+        finish();
+    }
+
+    @Override
+    protected WriteDiaryContract.Presenter initPresenter() {
+        return new WriteDiaryPresenter(this);
+    }
+
     class ViewHolder extends RecyclerAdapter.ViewHolder<String> {
         @BindView(R.id.img_photo)
         ImageView photo;
@@ -210,10 +279,7 @@ public class WriteDiaryActivity extends Activity {
 
         @Override
         protected void onBind(String s) {
-            GlideApp.with(WriteDiaryActivity.this)
-                    .load(s)
-                    .centerCrop()
-                    .into(photo);
+
             if (s.equals("add")) {
                 GlideApp.with(WriteDiaryActivity.this)
                         .load(R.mipmap.img_add_photos)
@@ -221,14 +287,18 @@ public class WriteDiaryActivity extends Activity {
                         .into(photo);
                 delete.setVisibility(View.GONE);
             } else {
+                GlideApp.with(WriteDiaryActivity.this)
+                        .load(s)
+                        .centerCrop()
+                        .into(photo);
                 delete.setVisibility(View.VISIBLE);
             }
             //最多只能九张
             if (mAdapter.getItemCount() > 9) {
-                if (s.equals("add")){
+                if (s.equals("add")) {
                     photo.setVisibility(View.GONE);
                     delete.setVisibility(View.GONE);
-                }else {
+                } else {
                     photo.setVisibility(View.VISIBLE);
                     delete.setVisibility(View.VISIBLE);
                 }

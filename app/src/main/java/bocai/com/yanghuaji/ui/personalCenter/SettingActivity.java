@@ -40,9 +40,10 @@ public class SettingActivity extends Activity {
         finish();
     }
 
+    //新手指南
     @OnClick(R.id.tv_new_guide)
     void onGuideClick() {
-        
+        GuideActivity.show(this);
     }
 
 }
