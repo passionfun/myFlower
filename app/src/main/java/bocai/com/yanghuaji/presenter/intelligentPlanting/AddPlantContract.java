@@ -14,9 +14,12 @@ public interface AddPlantContract {
 
     interface View extends BaseContract.View<Presenter>{
         void searchSuccess(List<PlantRspModel.PlantCard> cards);
+
+        void searchCommonPlantSuccess(List<PlantRspModel.PlantCard> cards);
     }
 
     interface Presenter extends BaseContract.Presenter{
         void search(String keyword,String limit,String page);
+        void searchCommonPlant();
     }
 }

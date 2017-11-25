@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/img_main_vertical_bg"
+    android:orientation="horizontal"
+    android:paddingLeft="20dp"
+    android:paddingTop="15dp">
+
+    <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+        android:layout_width="105dp"
+        android:layout_height="112dp"
+        android:src="@mipmap/img_main_empty"
+        app:roundHeightLeftBottom="5dp"
+        app:roundHeightLeftUp="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="WG301+3231"
+                android:textColor="#333333"
+                android:textSize="17sp" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:scaleType="center"
+                android:src="@mipmap/img_list_dot" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:drawablePadding="6dp"
+                android:drawableStart="@mipmap/img_plant"
+                android:text="绿藤大叶"
+                android:textColor="#818181"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@mipmap/img_location"
+                android:text="书房"
+                android:textColor="#818181"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:drawablePadding="6dp"
+                android:drawableStart="@mipmap/img_calendar"
+                android:text="10天"
+                android:textColor="#818181"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/img_dotted_background" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="17dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:drawableEnd="@mipmap/img_temperature_trending_up"
+                android:drawablePadding="4dp"
+                android:drawableStart="@mipmap/img_temperature"
+                android:text="45°C"
+                android:textColor="#FBB179"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@mipmap/img_temperature"
+                android:text="正常"
+                android:textColor="#FBB179"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@mipmap/img_light"
+                android:text="台灯"
+                android:textColor="#90BDFF"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@mipmap/img_ec"
+                android:text="正常"
+                android:textColor="#9FD166"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
+

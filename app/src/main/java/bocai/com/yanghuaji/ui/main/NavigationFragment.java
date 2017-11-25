@@ -132,4 +132,8 @@ public class NavigationFragment extends Fragment {
         transaction.add(R.id.sub_content, mIntelligentPlantingFragment).commit();
     }
 
+    public void switchType(){
+        mIntelligentPlantingFragment.switchType();
+    }
+
 }

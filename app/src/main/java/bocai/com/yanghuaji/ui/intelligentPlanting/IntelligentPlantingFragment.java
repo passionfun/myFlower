@@ -24,8 +24,26 @@ public class IntelligentPlantingFragment extends Fragment {
     @BindView(R.id.bt_go_to_add)
     Button mBtGoToAdd;
 
+    private HorizontalRecyclerFragment mHorizontalFragment;
+    private VeticalRecyclerFragment mVerticalFragment;
+    private boolean isHorizontal = true;
+    private FragmentTransaction mTransaction;
+
     public static IntelligentPlantingFragment newInstance() {
         return new IntelligentPlantingFragment();
+    }
+
+    public void switchType(){
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        isHorizontal = !isHorizontal;
+        if (isHorizontal){
+            transaction.replace(R.id.container,mHorizontalFragment).commit();
+        }else {
+            if (mVerticalFragment ==null){
+                mVerticalFragment = new VeticalRecyclerFragment();
+            }
+            transaction.replace(R.id.container,mVerticalFragment).commit();
+        }
     }
 
     @Override
@@ -36,9 +54,9 @@ public class IntelligentPlantingFragment extends Fragment {
     @Override
     protected void initData() {
         super.initData();
-        HorizontalRecyclerFragment fragment = new HorizontalRecyclerFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.container,fragment).commit();
+        mHorizontalFragment = new HorizontalRecyclerFragment();
+        mTransaction = getChildFragmentManager().beginTransaction();
+        mTransaction.replace(R.id.container,mHorizontalFragment).commit();
     }
 
     @Override
@@ -56,5 +74,7 @@ public class IntelligentPlantingFragment extends Fragment {
     void onGoToAddClick(){
         AddEquipmentActivity.show(getContext());
     }
+
+
 
 }

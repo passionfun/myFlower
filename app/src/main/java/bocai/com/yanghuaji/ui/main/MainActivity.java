@@ -6,16 +6,29 @@ import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
+
+import java.util.List;
+
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
+import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.db.User;
+import bocai.com.yanghuaji.presenter.main.MainActivityContract;
+import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
@@ -24,8 +37,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends Activity {
-    private long firstTime=0;
+public class MainActivity extends PresenterActivity<MainActivityContract.Presenter>
+        implements MainActivityContract.View, XRecyclerView.LoadingListener {
+    private long firstTime = 0;
     private NavigationFragment mNavigationFragment;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -42,7 +56,23 @@ public class MainActivity extends Activity {
     @BindView(R.id.tv_name)
     TextView mName;
 
+    @BindView(R.id.recycler_all_equipment)
+    XRecyclerView mRecyclerAll;
 
+    @BindView(R.id.view_all_equipments)
+    View mDivideAllEquipments;
+
+    @BindView(R.id.cb_all_equipments)
+    CheckBox mCbAllEquipments;
+
+
+    @BindView(R.id.recycler_group)
+    XRecyclerView mRecyclerGroup;
+
+    private int page = 1;
+    private int pageGroup = 1;
+    private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
+    private RecyclerAdapter<GroupRspModel.ListBean> mGroupAdapter;
 
 
     //显示的入口
@@ -53,6 +83,12 @@ public class MainActivity extends Activity {
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_main;
+    }
+
+    @OnClick(R.id.tv_switch_type)
+    void onSwitchClick() {
+        //切换横竖列表
+        mNavigationFragment.switchType();
     }
 
     @Override
@@ -79,18 +115,95 @@ public class MainActivity extends Activity {
                         UiTool.getScreenWidth(MainActivity.this) + mFrameLeft.getRight(), UiTool.getScreenHeight(MainActivity.this));
             }
         });
+        initAllEquipments();
+        initAllGroups();
+    }
+
+    private void initAllGroups() {
+        mRecyclerGroup.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerGroup.setAdapter(mGroupAdapter = new RecyclerAdapter<GroupRspModel.ListBean>() {
+            @Override
+            protected int getItemViewType(int position, GroupRspModel.ListBean listBean) {
+                return R.layout.item_groups;
+            }
+
+            @Override
+            protected ViewHolder<GroupRspModel.ListBean> onCreateViewHolder(View root, int viewType) {
+                return new GroupViewHolder(root);
+            }
+        });
+
+
+        mRecyclerGroup.setPullRefreshEnabled(true);
+        mRecyclerGroup.setLoadingMoreEnabled(true);
+        mRecyclerGroup.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerGroup.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+        mRecyclerGroup.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                pageGroup = 1;
+                mPresenter.getAllGroups(Account.getToken(), "10", pageGroup + "");
+            }
+
+            @Override
+            public void onLoadMore() {
+                pageGroup++;
+                mPresenter.getAllGroups(Account.getToken(), "10", pageGroup + "");
+            }
+        });
+        pageGroup = 1;
+        mPresenter.getAllGroups(Account.getToken(), "10", pageGroup + "");
+    }
+
+    private void initAllEquipments() {
+        mRecyclerAll.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerAll.setAdapter(mAdapter = new RecyclerAdapter<EquipmentRspModel.ListBean>() {
+            @Override
+            protected int getItemViewType(int position, EquipmentRspModel.ListBean listBean) {
+                return R.layout.item_equipment;
+            }
+
+            @Override
+            protected ViewHolder<EquipmentRspModel.ListBean> onCreateViewHolder(View root, int viewType) {
+                return new MainActivity.ViewHolder(root);
+            }
+        });
+
+        mRecyclerAll.setPullRefreshEnabled(true);
+        mRecyclerAll.setLoadingMoreEnabled(true);
+        mRecyclerAll.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerAll.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+        mRecyclerAll.setLoadingListener(this);
+
+
+        mCbAllEquipments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mCbAllEquipments.isChecked()) {
+                    mRecyclerAll.setVisibility(View.GONE);
+                    mDivideAllEquipments.setVisibility(View.VISIBLE);
+                } else {
+                    mRecyclerAll.setVisibility(View.VISIBLE);
+                    mDivideAllEquipments.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+        page = 1;
+        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
     }
 
 
     @OnClick(R.id.tv_edit_personal_data)
-    void onEditPersonalClick(){
+    void onEditPersonalClick() {
         EditPersonalDataActivity.show(this);
     }
 
     public void showLeft() {
         mDrawerLayout.openDrawer(GravityCompat.START);
         User user = Account.getUser();
-        if (user != null){
+        if (user != null) {
             mName.setText(user.getNickName());
             GlideApp.with(this)
                     .load(user.getRelativePath())
@@ -100,20 +213,162 @@ public class MainActivity extends Activity {
     }
 
 
-
-
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK){     //KEYCODE_BACK：回退键
-            long secondTime= System.currentTimeMillis();
-            if (secondTime-firstTime>2000){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {     //KEYCODE_BACK：回退键
+            long secondTime = System.currentTimeMillis();
+            if (secondTime - firstTime > 2000) {
                 Application.showToast("再按一次退出程序");
-                firstTime=System.currentTimeMillis();
+                firstTime = System.currentTimeMillis();
                 return true;
-            }else{
+            } else {
                 ActivityUtil.finishActivity();
             }
         }
         return super.onKeyUp(keyCode, event);
     }
+
+    @Override
+    public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
+        if (page == 1) {
+            mRecyclerAll.refreshComplete();
+            mAdapter.replace(listBeans);
+        } else {
+            if (listBeans == null || listBeans.size() == 0) {
+                Application.showToast("没有更多");
+            }
+            mRecyclerAll.loadMoreComplete();
+            mAdapter.add(listBeans);
+        }
+
+        if (mAdapter.getItems().size() == 0) {
+            mRecyclerAll.setVisibility(View.GONE);
+            mDivideAllEquipments.setVisibility(View.VISIBLE);
+        } else {
+            mRecyclerAll.setVisibility(View.VISIBLE);
+            mDivideAllEquipments.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void getAllGroupsSuccess(List<GroupRspModel.ListBean> listBeans) {
+        if (pageGroup == 1) {
+            mRecyclerGroup.refreshComplete();
+            mGroupAdapter.replace(listBeans);
+        } else {
+            if (listBeans == null || listBeans.size() == 0) {
+                Application.showToast("没有更多");
+            }
+            mRecyclerAll.loadMoreComplete();
+            mGroupAdapter.add(listBeans);
+        }
+
+        if (listBeans != null && listBeans.size() > 0) {
+            mRecyclerGroup.setVisibility(View.VISIBLE);
+        } else {
+            mRecyclerGroup.setVisibility(View.GONE);
+        }
+
+
+    }
+
+    @Override
+    protected MainActivityContract.Presenter initPresenter() {
+        return new MainActivityPresenter(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        page = 1;
+        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+    }
+
+    @Override
+    public void onLoadMore() {
+        page++;
+        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+    }
+
+
+    class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
+        @BindView(R.id.tv_equipment_name)
+        TextView mName;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
+
+
+        @Override
+        protected void onBind(EquipmentRspModel.ListBean listBean) {
+            mName.setText(listBean.getEquipName());
+        }
+    }
+
+    class GroupViewHolder extends RecyclerAdapter.ViewHolder<GroupRspModel.ListBean> {
+        @BindView(R.id.checkbox)
+        CheckBox mCheckbox;
+
+        @BindView(R.id.recycler)
+        RecyclerView mRecycler;
+
+        @BindView(R.id.view_divider)
+        View divider;
+
+        private RecyclerAdapter<GroupRspModel.ListBean.EquipmentBean> mAdapter;
+
+        public GroupViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        protected void onBind(GroupRspModel.ListBean listBean) {
+            mCheckbox.setText(listBean.getGroupName());
+            mRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            mRecycler.setAdapter(mAdapter = new RecyclerAdapter<GroupRspModel.ListBean.EquipmentBean>() {
+                @Override
+                protected int getItemViewType(int position, GroupRspModel.ListBean.EquipmentBean equipmentBean) {
+                    return R.layout.item_equipment;
+                }
+
+                @Override
+                protected ViewHolder<GroupRspModel.ListBean.EquipmentBean> onCreateViewHolder(View root, int viewType) {
+                    return new GroupViewHolder.ViewHolder(root);
+                }
+            });
+            mAdapter.replace(listBean.getEquipment());
+        }
+
+
+        @OnClick(R.id.checkbox)
+        void onCheckboxClick() {
+            if (mCheckbox.isChecked()) {
+                mRecycler.setVisibility(View.GONE);
+                divider.setVisibility(View.VISIBLE);
+            } else {
+                mRecycler.setVisibility(View.VISIBLE);
+                divider.setVisibility(View.GONE);
+            }
+        }
+
+
+        class ViewHolder extends RecyclerAdapter.ViewHolder<GroupRspModel.ListBean.EquipmentBean> {
+
+            @BindView(R.id.tv_equipment_name)
+            TextView mName;
+
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+            }
+
+            @Override
+            protected void onBind(GroupRspModel.ListBean.EquipmentBean equipmentBean) {
+                mName.setText(equipmentBean.getEquipName());
+            }
+        }
+
+    }
+
+
 }

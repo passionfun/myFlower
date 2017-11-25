@@ -63,121 +63,80 @@
             </LinearLayout>
         </FrameLayout>
 
-        <ScrollView
-            android:background="#FFFFFF"
+        <!--<ScrollView-->
+        <!--android:background="#FFFFFF"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cb_all_equipments"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <CheckBox
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginStart="22dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:drawableStart="@mipmap/img_all_equrment"
-                    android:drawablePadding="10dp"
-                    android:drawableEnd="@drawable/selector_cb_arrow"
-                    android:text="所有设备"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="18dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="16dp"
+                android:button="@null"
+                android:drawableEnd="@drawable/selector_cb_arrow"
+                android:drawablePadding="10dp"
+                android:drawableStart="@mipmap/img_all_equrment"
+                android:text="所有设备"
+                android:textColor="#333333"
+                android:textSize="15sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="11dp"
-                    android:background="#E7E7E7" />
+            <View
+                android:id="@+id/view_all_equipments"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="11dp"
+                android:background="#E7E7E7" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:visibility="gone"
-                    android:id="@+id/recycler_all_equipment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/recycler_all_equipment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
 
-                <CheckBox
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginStart="22dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:drawableStart="@mipmap/img_location_left"
-                    android:drawablePadding="10dp"
-                    android:drawableEnd="@drawable/selector_cb_arrow"
-                    android:text="阳台"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/recycler_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="11dp"
-                    android:background="#E7E7E7" />
+        </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:visibility="gone"
-                    android:id="@+id/recycler_balcony"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <CheckBox
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginStart="22dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:drawableStart="@mipmap/img_location_left"
-                    android:drawablePadding="10dp"
-                    android:drawableEnd="@drawable/selector_cb_arrow"
-                    android:text="客厅"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="11dp"
-                    android:background="#E7E7E7" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:visibility="gone"
-                    android:id="@+id/recycler_living_room"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </android.support.v7.widget.RecyclerView>
-
-            </LinearLayout>
-        </ScrollView>
+        <!--</ScrollView>-->
     </LinearLayout>
 
+
     <TextView
-        android:layout_marginTop="26dp"
-        android:layout_marginBottom="80dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:drawableStart="@mipmap/img_classified_management"
-        android:textSize="13sp"
-        android:textColor="#666666"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="分类管理"/>
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="80dp"
+        android:layout_marginTop="26dp"
+        android:drawableStart="@mipmap/img_classified_management"
+        android:text="分组管理"
+        android:textColor="#666666"
+        android:textSize="13sp" />
+
 
     <FrameLayout
-
-        android:background="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_gravity="bottom"
+        android:background="#FFFFFF"
         android:gravity="center_vertical">
 
         <TextView
+            android:id="@+id/tv_switch_type"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawablePadding="13dp"

@@ -1,10 +1,11 @@
-package bocai.com.yanghuaji.presenter.intelligentPlanting;
+package bocai.com.yanghuaji.presenter.main;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.BaseRspModel;
-import bocai.com.yanghuaji.model.PlantRspModel;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.net.Network;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -13,35 +14,35 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 作者 yuanfei on 2017/11/24.
+ * 作者 yuanfei on 2017/11/25.
  * 邮箱 yuanfei221@126.com
  */
 
-public class AddPlantPresenter extends BasePresenter<AddPlantContract.View>
-        implements AddPlantContract.Presenter {
-    AddPlantContract.View view = getView();
+public class MainActivityPresenter extends BasePresenter<MainActivityContract.View>
+        implements MainActivityContract.Presenter {
+    MainActivityContract.View view = getView();
 
-    public AddPlantPresenter(AddPlantContract.View view) {
+    public MainActivityPresenter(MainActivityContract.View view) {
         super(view);
     }
 
     @Override
-    public void search(String keyword, String limit, String page) {
-        Observable<BaseRspModel<PlantRspModel>> observable = Network.remote().searchPlant(keyword, limit, page);
+    public void getAllEquipments(String token, String limit, String page) {
+        Observable<BaseRspModel<EquipmentRspModel>> observable = Network.remote().getAllEquipments(token, limit, page);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseRspModel<PlantRspModel>>() {
+                .subscribe(new Observer<BaseRspModel<EquipmentRspModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(BaseRspModel<PlantRspModel> plantRspModelBaseRspModel) {
-                        if (plantRspModelBaseRspModel.getReturnCode().equals("200")) {
-                            view.searchSuccess(plantRspModelBaseRspModel.getData().getList());
+                    public void onNext(BaseRspModel<EquipmentRspModel> equipmentRspModelBaseRspModel) {
+                        if (equipmentRspModelBaseRspModel.getReturnCode().equals("200")) {
+                            view.getAllEquipmentsSuccess(equipmentRspModelBaseRspModel.getData().getList());
                         } else {
-                            Application.showToast(plantRspModelBaseRspModel.getMsg());
+                            Application.showToast(equipmentRspModelBaseRspModel.getMsg());
                         }
                     }
 
@@ -58,25 +59,23 @@ public class AddPlantPresenter extends BasePresenter<AddPlantContract.View>
     }
 
     @Override
-    public void searchCommonPlant() {
-        view.showLoading();
-        Observable<BaseRspModel<PlantRspModel>> observable = Network.remote().searchCommonPlant();
+    public void getAllGroups(String token, String limit, String page) {
+        Observable<BaseRspModel<GroupRspModel>> observable = Network.remote().getAllGroups(token, limit, page);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseRspModel<PlantRspModel>>() {
+                .subscribe(new Observer<BaseRspModel<GroupRspModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(BaseRspModel<PlantRspModel> plantRspModelBaseRspModel) {
-                        if (plantRspModelBaseRspModel.getReturnCode().equals("200")) {
-                            view.searchCommonPlantSuccess(plantRspModelBaseRspModel.getData().getList());
+                    public void onNext(BaseRspModel<GroupRspModel> groupRspModelBaseRspModel) {
+                        if (groupRspModelBaseRspModel.getReturnCode().equals("200")) {
+                            view.getAllGroupsSuccess(groupRspModelBaseRspModel.getData().getList());
                         } else {
-                            Application.showToast(plantRspModelBaseRspModel.getMsg());
+                            Application.showToast(groupRspModelBaseRspModel.getMsg());
                         }
-                        view.hideLoading();
                     }
 
                     @Override
@@ -89,5 +88,9 @@ public class AddPlantPresenter extends BasePresenter<AddPlantContract.View>
 
                     }
                 });
+
+
+
+
     }
 }

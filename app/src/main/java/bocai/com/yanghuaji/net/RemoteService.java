@@ -6,6 +6,8 @@ import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.ImageModel;
 import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.model.db.EquipmentListModel;
@@ -13,6 +15,7 @@ import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
@@ -101,7 +104,7 @@ public interface RemoteService {
                                                          @Field("Mac") String macAddress, @Field("SerialNum") String serialNum, @Field("Version") String version);
 
 
-    //添加设备
+    //搜索植物
     @POST("plant/plant_search")
     @FormUrlEncoded
     Observable<BaseRspModel<PlantRspModel>> searchPlant(@Field("Keyword") String keyword, @Field("Limit") String limit,
@@ -113,5 +116,26 @@ public interface RemoteService {
     @FormUrlEncoded
     Observable<BaseRspModel> firstSetting(@Field("Token") String token, @Field("EquipName") String equipmentName,
                                                         @Field("PlantName") String plantName,@Field("Pid") String plantId,@Field("Id") String equipmentId);
+
+
+    //通用植物
+    @GET("plant/plant_habit")
+    Observable<BaseRspModel<PlantRspModel>> searchCommonPlant();
+
+
+    //首页设备列表
+    @POST("equipment/equipment_list")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentRspModel>> getAllEquipments(@Field("Token") String token, @Field("Limit") String limit,
+                                                                 @Field("Page") String page);
+
+
+
+    //获取所有分组
+    @POST("group/all_equipment")
+    @FormUrlEncoded
+    Observable<BaseRspModel<GroupRspModel>> getAllGroups(@Field("Token") String token, @Field("Limit") String limit,
+                                                             @Field("Page") String page);
+
 
 }

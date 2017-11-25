@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="16dp"
+        android:button="@null"
+        android:drawableEnd="@drawable/selector_cb_arrow"
+        android:drawablePadding="10dp"
+        android:drawableStart="@mipmap/img_location_left"
+        android:text="客厅"
+        android:textColor="#333333"
+        android:textSize="15sp" />
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="11dp"
+        android:background="#E7E7E7" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

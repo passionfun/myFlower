@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantPresenter;
+import bocai.com.yanghuaji.util.ActivityUtil;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -35,6 +38,8 @@ import butterknife.OnClick;
 
 public class AddPlantActivity extends PresenterActivity<AddPlantContract.Presenter>
         implements XRecyclerView.LoadingListener, AddPlantContract.View {
+    @BindView(R.id.ll_root)
+    LinearLayout mRoot;
 
     @BindView(R.id.tv_title)
     TextView mTitle;
@@ -60,6 +65,8 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
     public static String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
     private String mEquipmentName;
     private String mEquipmentId;
+    private String mPlantName;
+    private String mPlantId;
 
 
     //显示的入口
@@ -126,6 +133,11 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
         });
     }
 
+    @OnClick(R.id.img_back)
+    void onBackClick() {
+        finish();
+    }
+
     @OnClick(R.id.img_delete)
     void onDeleteClick() {
         mSearch.setText("");
@@ -134,7 +146,14 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
 
     @OnClick(R.id.tv_right)
     void onSkipClick() {
-        FirstSettingActivity.show(this,mEquipmentName,mEquipmentId);
+        FirstSettingActivity.show(this, mEquipmentName, mEquipmentId);
+        AddPlantActivity.this.finish();
+    }
+
+
+    @OnClick(R.id.bt_common_plant)
+    void onCommonPlantClick() {
+        mPresenter.searchCommonPlant();
     }
 
     @Override
@@ -164,12 +183,33 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
             mAdapter.add(cards);
         }
 
-        if (mAdapter.getItems().size()==0){
+        if (mAdapter.getItems().size() == 0) {
             mRecyclerView.setVisibility(View.GONE);
             mLinearlayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mRecyclerView.setVisibility(View.VISIBLE);
             mLinearlayout.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void searchCommonPlantSuccess(List<PlantRspModel.PlantCard> cards) {
+        if (cards !=null&&cards.size()>0){
+            CommonPlantListPopupWindow popupWindow = new CommonPlantListPopupWindow(this);
+            ActivityUtil.setBackgroundAlpha(this, 0.19f);
+            popupWindow.addData(cards);
+            popupWindow.showAtLocation(mRoot, Gravity.CENTER,0,0);
+            popupWindow.setOnSelectListener(new CommonPlantListPopupWindow.SelectListener() {
+                @Override
+                public void selected(PlantRspModel.PlantCard card) {
+                    mPlantName = card.getPlantName();
+                    mPlantId = card.getId();
+                    FirstSettingActivity.show(AddPlantActivity.this,mEquipmentName,mEquipmentId,mPlantName,mPlantId);
+                    AddPlantActivity.this.finish();
+                }
+            });
+        }else {
+            Application.showToast("暂无数据");
         }
     }
 
@@ -180,6 +220,9 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
 
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<PlantRspModel.PlantCard> {
+        @BindView(R.id.frame_root)
+        FrameLayout mroot;
+
         @BindView(R.id.image)
         ImageView mImage;
 
@@ -198,5 +241,16 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
                     .into(mImage);
             mName.setText(plantCard.getPlantName());
         }
+
+        @OnClick(R.id.frame_root)
+        void onItemClick(){
+            PlantRspModel.PlantCard plantCard = mAdapter.getItems().get(getAdapterPosition() - 1);
+            String plantName = plantCard.getPlantName();
+            String plantId = plantCard.getId();
+            FirstSettingActivity.show(AddPlantActivity.this,mEquipmentName,mEquipmentId,plantName,plantId);
+            AddPlantActivity.this.finish();
+        }
+
+
     }
 }
