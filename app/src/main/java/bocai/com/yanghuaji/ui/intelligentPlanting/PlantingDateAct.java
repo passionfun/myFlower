@@ -1,69 +1,61 @@
-package bocai.com.yanghuaji.ui.personalCenter;
+package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
-import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.util.ActivityUtil;
-import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
-import butterknife.OnClick;
 
-/**
- * 系统通知
- * 作者 yuanfei on 2017/11/10.
- * 邮箱 yuanfei221@126.com
- */
+public class PlantingDateAct extends Activity {
 
-public class SystemNotificationActivity extends Activity {
-    @BindView(R.id.tv_title)
-    TextView mTitle;
 
+    private static String MID = "mid";
+    @BindView(R.id.img_back)
+    ImageView imgBack;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.progress)
     ProgressBar progress;
-
-    @BindView(R.id.web_view)
+    @BindView(R.id.webView)
     WebView webView;
+    private String mUrl;
 
     //显示的入口
-    public static void show(Context context) {
-        context.startActivity(new Intent(context, SystemNotificationActivity.class));
+    public static void show(Context context, String  url) {
+        Intent intent = new Intent(context, PlantingDateAct.class);
+        intent.putExtra(MID,url);
+        context.startActivity(intent);
     }
-
     @Override
     protected int getContentLayoutId() {
-        return R.layout.activity_system_notification;
+        return R.layout.activity_planting_date;
     }
 
     @Override
     protected void initData() {
         super.initData();
-        mTitle.setVisibility(View.GONE);
-
+        mUrl = getIntent().getExtras().getString(MID);
         ActivityUtil.initWebSetting(webView.getSettings());
+
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.d("test",url);
+                Log.d("test", url);
                 view.loadUrl(url);
                 return true;
             }
-
         });
-
         webView.setWebChromeClient(new WebChromeClient() {
 
             @Override
@@ -79,15 +71,10 @@ public class SystemNotificationActivity extends Activity {
                 super.onProgressChanged(view, newProgress);
             }
         });
-        Log.d("test",Common.Constance.H5_BASE+"notice.html?token="+ Account.getToken());
-        webView.loadUrl(Common.Constance.H5_BASE+"notice.html?token="+ Account.getToken());
+        //设置不用系统浏览器打开,直接显示在当前Webview
 
+        Log.d("test",mUrl);
+        webView.loadUrl(mUrl );
     }
-
-    @OnClick(R.id.img_back)
-    void onBackClick() {
-        finish();
-    }
-
 
 }

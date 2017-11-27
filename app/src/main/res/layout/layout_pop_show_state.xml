@@ -14,7 +14,8 @@
             android:layout_marginEnd="44dp"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <TextView
                 android:textColor="#333333"
@@ -26,57 +27,66 @@
                 android:text="如何进入状态"/>
 
 
-            <TextView
-                android:paddingStart="31dp"
-                android:paddingEnd="29dp"
-                android:textColor="#999999"
-                android:textSize="12sp"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" 进入高效率学习状态的人，存在以下明显感觉或特征："/>
+            <!--<TextView-->
+                <!--android:paddingStart="31dp"-->
+                <!--android:paddingEnd="29dp"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="12sp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text=" 进入高效率学习状态的人，存在以下明显感觉或特征："/>-->
 
-            <TextView
-                android:paddingStart="31dp"
-                android:paddingEnd="29dp"
-                android:textColor="#999999"
-                android:textSize="12sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="     ①记忆上有一种超清晰的感觉，能清楚地知道今天比以前多学了哪些新知识"/>
+            <!--<TextView-->
+                <!--android:paddingStart="31dp"-->
+                <!--android:paddingEnd="29dp"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="12sp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="     ①记忆上有一种超清晰的感觉，能清楚地知道今天比以前多学了哪些新知识"/>-->
 
-            <TextView
-                android:paddingStart="31dp"
-                android:paddingEnd="29dp"
-                android:textColor="#999999"
-                android:textSize="12sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="     ②每天的学习处在一种亢奋的状态中，遇到疑难问题如获至宝"/>
+            <!--<TextView-->
+                <!--android:paddingStart="31dp"-->
+                <!--android:paddingEnd="29dp"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="12sp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="     ②每天的学习处在一种亢奋的状态中，遇到疑难问题如获至宝"/>-->
 
-            <TextView
-                android:paddingStart="31dp"
-                android:paddingEnd="29dp"
-                android:textColor="#999999"
-                android:textSize="12sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="     ③解题、记忆觉得极其顺畅，学过的内容自己感觉像刻在脑海中一样"/>
+            <!--<TextView-->
+                <!--android:paddingStart="31dp"-->
+                <!--android:paddingEnd="29dp"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="12sp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="     ③解题、记忆觉得极其顺畅，学过的内容自己感觉像刻在脑海中一样"/>-->
 
-            <TextView
-                android:paddingStart="31dp"
-                android:paddingEnd="29dp"
-                android:textColor="#999999"
-                android:textSize="12sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="     ④充满着自信，并且感觉自信心不断膨胀"/>
-
+            <!--<TextView-->
+                <!--android:paddingStart="31dp"-->
+                <!--android:paddingEnd="29dp"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="12sp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="     ④充满着自信，并且感觉自信心不断膨胀"/>-->
+            <ProgressBar
+                android:id="@+id/progress"
+                style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp" />
+            <WebView
+                android:id="@+id/webView"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"

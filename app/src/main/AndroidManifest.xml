@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="bocai.com.yanghuaji">
 
-
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位 -->
@@ -32,7 +31,6 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-
 
     <application
         android:name=".base.Application"
@@ -114,7 +112,7 @@
         <activity
             android:name=".ui.intelligentPlanting.EquipmentSettingActivity"
             android:theme="@style/BaseTheme" />
-        <!--图片剪切-->
+        <!-- 图片剪切 -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -129,7 +127,7 @@
             android:name=".ui.intelligentPlanting.AddPlantActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.intelligentPlanting.GroupManagerActivity" />
-
+        <activity android:name=".ui.intelligentPlanting.PlantingDateAct"></activity>
     </application>
 
 </manifest>

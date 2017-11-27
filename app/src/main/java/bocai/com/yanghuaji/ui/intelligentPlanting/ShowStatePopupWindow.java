@@ -3,13 +3,23 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.util.ActivityUtil;
 
 /**
@@ -28,6 +38,9 @@ public class ShowStatePopupWindow extends PopupWindow {
         this.setContentView(view);
         mConfirm = view.findViewById(R.id.img_confirm);
         mClose = view.findViewById(R.id.img_close);
+        WebView webView = view.findViewById(R.id.webView);
+        ProgressBar progress = view.findViewById(R.id.progress);
+        initWeb(webView,progress);
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +62,35 @@ public class ShowStatePopupWindow extends PopupWindow {
                 ActivityUtil.setBackgroundAlpha((Activity) context, 1f);
             }
         });
+    }
+
+    private void initWeb(WebView webView, final ProgressBar progress) {
+        ActivityUtil.initWebSetting(webView.getSettings());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d("test",url);
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress == 100) {
+                    progress.setVisibility(View.GONE);
+                } else {
+                    if (progress.getVisibility() == View.GONE) {
+                        progress.setVisibility(View.VISIBLE);
+                    }
+                    progress.setProgress(newProgress);
+                }
+                super.onProgressChanged(view, newProgress);
+            }
+        });
+
+        webView.loadUrl(Common.Constance.H5_BASE +"single.html?id="+3);
     }
 
     public void setOnTtemClickListener(ItemClickListener listener) {

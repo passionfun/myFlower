@@ -381,8 +381,5 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                 mName.setText(equipmentBean.getEquipName());
             }
         }
-
     }
-
-
 }

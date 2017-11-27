@@ -43,7 +43,12 @@ public class SettingActivity extends Activity {
     //新手指南
     @OnClick(R.id.tv_new_guide)
     void onGuideClick() {
-        GuideActivity.show(this);
+        GuideActivity.show(this,1);
+    }
+
+    @OnClick(R.id.tv_service_term)
+    void serviceTerm(){
+        GuideActivity.show(this,2);
     }
 
 }

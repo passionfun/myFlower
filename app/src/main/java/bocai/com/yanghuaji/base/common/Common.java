@@ -13,5 +13,7 @@ public class Common {
         // 基础的网络请求地址
         String API_URL = "http://121.41.128.239:8082/yhj/web/api/index.php/";
 
+        String H5_BASE = "http://121.41.128.239:8082/yhj/web/h5/yhj/";
+
     }
 }
