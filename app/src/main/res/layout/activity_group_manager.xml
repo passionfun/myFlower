@@ -15,68 +15,9 @@
         android:layout_marginTop="34dp"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-        <ImageView
-            android:id="@+id/img_delete"
-            android:visibility="gone"
-            android:scaleType="center"
-            android:src="@mipmap/img_delete_group"
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="办公室"
-            android:textSize="14sp"
-            android:textColor="#333333"/>
-
-
-        <ImageView
-            android:id="@+id/img_open_manager"
-            android:scaleType="center"
-            android:layout_marginEnd="25dp"
-            android:layout_gravity="center_vertical"
-            android:src="@mipmap/img_group_manager"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            />
-
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tv_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="编辑"
-            android:textSize="14sp"
-            android:textColor="#999999"/>
-
-
-
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tv_confirm"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="完成"
-            android:textSize="14sp"
-            android:textColor="#999999"/>
-
-
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

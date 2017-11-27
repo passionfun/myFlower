@@ -129,6 +129,7 @@
             android:name=".ui.intelligentPlanting.AddPlantActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.intelligentPlanting.GroupManagerActivity" />
+        <activity android:name=".ui.intelligentPlanting.EditGroupActivity" />
 
     </application>
 
