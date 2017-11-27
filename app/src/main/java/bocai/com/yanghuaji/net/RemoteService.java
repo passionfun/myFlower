@@ -7,6 +7,7 @@ import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.EquipmentsByGroupModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.ImageModel;
 import bocai.com.yanghuaji.model.PlantRspModel;
@@ -150,6 +151,27 @@ public interface RemoteService {
     @POST("group/create_group")
     @FormUrlEncoded
     Observable<BaseRspModel<GroupRspModel.ListBean>> addGroup(@Field("Token") String token,@Field("GroupName") String groupName);
+
+
+
+    //分组下设备列表
+    @POST("group/group_data")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentsByGroupModel>> getEquipmentsByGroup(@Field("Token") String token,@Field("Id") String id);
+
+
+
+    //编辑分组
+    @POST("group/edit_group")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentsByGroupModel>> editGroup(@Field("Id") String groupId,@Field("Token") String token,
+                                                               @Field("GroupName") String groupName,@Field("Eids") String deleteIds);
+
+
+//    //分组列表（获取所有分组）
+//    @POST("group/group_list")
+//    @FormUrlEncoded
+//    Observable<BaseRspModel<GroupRspModel>> getAllGroupList(@Field("Token") String token);
 
 
 }
