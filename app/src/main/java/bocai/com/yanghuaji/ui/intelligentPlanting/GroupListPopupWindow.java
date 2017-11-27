@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,10 +19,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.GroupListContract;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.GroupListPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 
 /**
@@ -29,17 +34,20 @@ import butterknife.BindView;
  * 邮箱 yuanfei221@126.com
  */
 
-public class GroupListPopupWindow extends PopupWindow {
+public class GroupListPopupWindow extends PopupWindow implements GroupListContract.View {
     private Context mContext;
     private RecyclerView mRecycler;
     private ImageView mAdd;
     private RecyclerAdapter<GroupRspModel.ListBean> mAdapter;
     private SelectListener mListener;
+    private GroupListContract.Presenter mPresenter;
+    private ProgressDialog dialog;
 
     public GroupListPopupWindow(final Context context) {
         mContext = context;
+        mPresenter = new GroupListPresenter(this);
         View view = LayoutInflater.from(context).inflate(R.layout.layout_pop_group_list, null);
-        this.setWidth(UiTool.dip2px(mContext,240));
+        this.setWidth(UiTool.dip2px(mContext, 240));
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         this.setContentView(view);
         this.setBackgroundDrawable(new BitmapDrawable());
@@ -56,7 +64,7 @@ public class GroupListPopupWindow extends PopupWindow {
         init();
     }
 
-    private void init(){
+    private void init() {
         mRecycler.setLayoutManager(new LinearLayoutManager(mContext));
         mRecycler.setAdapter(mAdapter = new RecyclerAdapter<GroupRspModel.ListBean>() {
 
@@ -83,14 +91,15 @@ public class GroupListPopupWindow extends PopupWindow {
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO 添加分组
+                //  添加分组
                 final EditText editText = new EditText(view.getContext());
                 editText.setHint("请输入组名：");
-                AlertDialog.Builder addGroupDialog= new AlertDialog.Builder(view.getContext());
+                AlertDialog.Builder addGroupDialog = new AlertDialog.Builder(view.getContext());
                 addGroupDialog.setTitle("添加分组").setView(editText);
                 addGroupDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        mPresenter.addGroup(Account.getToken(), editText.getText().toString());
 
                     }
                 });
@@ -98,7 +107,7 @@ public class GroupListPopupWindow extends PopupWindow {
                 addGroupDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        GroupListPopupWindow.this.dismiss();
                     }
                 });
                 addGroupDialog.show();
@@ -106,7 +115,38 @@ public class GroupListPopupWindow extends PopupWindow {
         });
     }
 
-    class ViewHolder extends RecyclerAdapter.ViewHolder<GroupRspModel.ListBean>{
+    @Override
+    public void showError(int str) {
+        hideLoading();
+        Application.showToast(str);
+    }
+
+    @Override
+    public void showLoading() {
+        dialog = new ProgressDialog(mContext);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    public void setPresenter(GroupListContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void addGroupSuccess(GroupRspModel.ListBean groupCard) {
+        mListener.selected(groupCard);
+        this.dismiss();
+    }
+
+    class ViewHolder extends RecyclerAdapter.ViewHolder<GroupRspModel.ListBean> {
         @BindView(R.id.tv_equipment_name)
         TextView name;
 
@@ -120,15 +160,15 @@ public class GroupListPopupWindow extends PopupWindow {
         }
     }
 
-    public void addData(List<GroupRspModel.ListBean> groupCards){
+    public void addData(List<GroupRspModel.ListBean> groupCards) {
         mAdapter.add(groupCards);
     }
 
-    public void setOnSelectListener(SelectListener listener){
+    public void setOnSelectListener(SelectListener listener) {
         mListener = listener;
     }
 
-    public static interface SelectListener{
+    public  interface SelectListener {
         void selected(GroupRspModel.ListBean groupCard);
     }
 

@@ -1,5 +1,7 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
+import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
@@ -37,14 +39,16 @@ public class GroupListPresenter extends BasePresenter<GroupListContract.View>
 
                     @Override
                     public void onNext(BaseRspModel<GroupRspModel.ListBean> listBeanBaseRspModel) {
-                        if (listBeanBaseRspModel.getReturnCode().equals("200")){
-
+                        if (listBeanBaseRspModel.getReturnCode().equals("200")) {
+                            view.addGroupSuccess(listBeanBaseRspModel.getData());
                         }
+                        Application.showToast(listBeanBaseRspModel.getMsg());
+                        view.hideLoading();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        view.showError(R.string.net_error);
                     }
 
                     @Override
