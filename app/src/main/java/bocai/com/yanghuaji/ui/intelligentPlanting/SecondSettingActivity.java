@@ -52,12 +52,14 @@ public class SecondSettingActivity extends Activity {
 
     @OnClick(R.id.tv_plant_setting)
     void onPlantSettingClick() {
-        PlantSettingActivity.show(this);
+        // 往里面传 植物id 和设备id
+//        PlantSettingActivity.show(this);
     }
 
     @OnClick(R.id.tv_equipment_info)
     void onEquipmentInfoClick() {
-        EquipmentInfoActivity.show(this);
+        // 往里面传 设备id
+//        EquipmentInfoActivity.show(this,);
     }
 
 }
