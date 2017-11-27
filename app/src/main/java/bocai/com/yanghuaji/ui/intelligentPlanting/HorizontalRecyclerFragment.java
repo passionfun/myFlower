@@ -1,8 +1,10 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Fragment;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.model.PlantModel;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.GalleryLayoutManager;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.ScaleTransformer;
@@ -54,6 +57,18 @@ public class HorizontalRecyclerFragment extends Fragment {
         Adapter adapter = new Adapter();
         adapter.add(mList);
         mRecyclerView.setAdapter(adapter);
+        adapter.setListener(new RecyclerAdapter.AdapterListener<PlantModel>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, PlantModel plantModel) {
+                Log.d("test", Common.Constance.H5_BASE + "product.html?id="+ plantModel.getPlantType());
+                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id="+ plantModel.getPlantType());
+            }
+
+            @Override
+            public void onItemLongClick(RecyclerAdapter.ViewHolder holder, PlantModel plantModel) {
+
+            }
+        });
     }
 
 
@@ -76,14 +91,21 @@ public class HorizontalRecyclerFragment extends Fragment {
         @BindView(R.id.img_setting)
         ImageView mSetting;
 
+        private LinearLayout lldata;
         public ViewHoler(View itemView) {
             super(itemView);
-
+            lldata = itemView.findViewById(R.id.ll_data);
         }
 
         @Override
-        protected void onBind(PlantModel plantModel) {
-
+        protected void onBind(final PlantModel plantModel) {
+            lldata.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("test",Common.Constance.H5_BASE + "product_data.html?id="+ plantModel.getPlantType());
+                    PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id="+ plantModel.getPlantType());
+                }
+            });
         }
 
 

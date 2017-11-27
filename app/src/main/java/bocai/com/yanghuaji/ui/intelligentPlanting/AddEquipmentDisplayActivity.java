@@ -68,7 +68,7 @@ public class AddEquipmentDisplayActivity extends Activity {
         });
 
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
-        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM,0,0);
+        popupWindow.showAtLocation(mRoot, Gravity.CENTER,0,0);
     }
 
 }

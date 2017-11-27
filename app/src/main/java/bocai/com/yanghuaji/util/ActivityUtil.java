@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,5 +109,18 @@ public class ActivityUtil {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);//此行代码主要是解决在华为手机上半透明效果无效的bug
         }
         activity.getWindow().setAttributes(lp);
+    }
+
+    /**
+     * 初始化webview
+     */
+    public static void initWebSetting(WebSettings webSettings) {
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setAllowContentAccess(true);
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setBuiltInZoomControls(false);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
     }
 }

@@ -3,15 +3,20 @@ package bocai.com.yanghuaji.ui.plantingDiary;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.BaseContract;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
@@ -27,6 +32,9 @@ public class DiaryListActivity extends PresenterActivity {
 
     @BindView(R.id.webView)
     WebView mWebview;
+
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     public static final String KEY_DIARY_ID = "KEY_DIARY_ID";
     private String mDiaryId;
@@ -56,21 +64,23 @@ public class DiaryListActivity extends PresenterActivity {
     @Override
     protected void initData() {
         super.initData();
+        ActivityUtil.initWebSetting(mWebview.getSettings());
 
-        mWebview.loadUrl("http://121.41.128.239:8082/yhj/web/h5/yhj/diary.html?id=4");
 //        mWebview.loadUrl("http://www.baidu.com/");
 
-        mWebview.setWebChromeClient(new WebChromeClient() {
 
-            //获取加载进度
+        mWebview.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                if (newProgress < 100) {
-                    String progress = newProgress + "%";
-                } else if (newProgress == 100) {
-                    String progress = newProgress + "%";
-//                    hideLoading();
+                if (newProgress == 100) {
+                    progress.setVisibility(View.GONE);
+                } else {
+                    if (progress.getVisibility() == View.GONE) {
+                        progress.setVisibility(View.VISIBLE);
+                    }
+                    progress.setProgress(newProgress);
                 }
+                super.onProgressChanged(view, newProgress);
             }
         });
 
@@ -79,10 +89,13 @@ public class DiaryListActivity extends PresenterActivity {
         mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d("test",url);
                 view.loadUrl(url);
                 return true;
             }
         });
+
+        mWebview.loadUrl(Common.Constance.H5_BASE+"diary.html?id="+mDiaryId);
     }
 
     @OnClick(R.id.img_back)

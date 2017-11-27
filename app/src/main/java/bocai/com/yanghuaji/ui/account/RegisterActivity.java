@@ -18,6 +18,7 @@ import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.presenter.account.RegisterContract;
 import bocai.com.yanghuaji.presenter.account.RegisterPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.ui.personalCenter.GuideActivity;
 import bocai.com.yanghuaji.util.adapter.TextWatcherAdapter;
 import bocai.com.yanghuaji.util.adapter.account.CountDownTimerUtils;
 import butterknife.BindView;
@@ -109,6 +110,7 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
         }
     }
 
+
     // todo 注册账户
     @OnClick(R.id.bt_register)
     void onRegisterSubmit() {
@@ -117,6 +119,11 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
         String passWord = mEditInputPassword.getText().toString();
         String rePassWord = mEditConfirmPasswrd.getText().toString();
         mPresenter.register(phone,smsCode,passWord,rePassWord);
+    }
+
+    @OnClick(R.id.tv_register)
+    void registerAgree(){
+        GuideActivity.show(this,0);
     }
 
     @Override
