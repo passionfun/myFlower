@@ -6,14 +6,18 @@ import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
+import bocai.com.yanghuaji.model.EquipmentInfoModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.ImageModel;
+import bocai.com.yanghuaji.model.LifeCycleModel;
 import bocai.com.yanghuaji.model.PlantRspModel;
+import bocai.com.yanghuaji.model.PlantSettingModel;
 import bocai.com.yanghuaji.model.db.EquipmentListModel;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -150,6 +154,25 @@ public interface RemoteService {
     @POST("group/create_group")
     @FormUrlEncoded
     Observable<BaseRspModel<GroupRspModel.ListBean>> addGroup(@Field("Token") String token,String groupName);
+
+    //设备设置
+    @POST("equipment/setup_plant")
+    @FormUrlEncoded
+    Observable<BaseRspModel<PlantSettingModel>> setupPlant(@FieldMap Map<String,String> map);
+
+    //植物设置-种植模式获取
+    @POST("equipment/plant_mode")
+    Observable<BaseRspModel<LifeCycleModel>> plantMode();
+
+
+    //植物设置-获取生长周期
+    @POST("equipment/life_cycle")
+    Observable<BaseRspModel<LifeCycleModel>> lifeCycle();
+
+    //设备信息
+    @POST("equipment/equipment_info")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentInfoModel>> equipmentInfo(@FieldMap Map<String,String> map);
 
 
 }
