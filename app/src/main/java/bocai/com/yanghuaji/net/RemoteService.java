@@ -149,7 +149,7 @@ public interface RemoteService {
     //新增分组
     @POST("group/create_group")
     @FormUrlEncoded
-    Observable<BaseRspModel<GroupRspModel.ListBean>> addGroup(@Field("Token") String token,String groupName);
+    Observable<BaseRspModel<GroupRspModel.ListBean>> addGroup(@Field("Token") String token,@Field("GroupName") String groupName);
 
 
 }
