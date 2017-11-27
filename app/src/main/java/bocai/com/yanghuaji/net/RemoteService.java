@@ -145,4 +145,11 @@ public interface RemoteService {
     Observable<BaseRspModel<GroupRspModel>> getAllGroupList(@Field("Token") String token);
 
 
+
+    //新增分组
+    @POST("group/create_group")
+    @FormUrlEncoded
+    Observable<BaseRspModel<GroupRspModel.ListBean>> addGroup(@Field("Token") String token,String groupName);
+
+
 }
