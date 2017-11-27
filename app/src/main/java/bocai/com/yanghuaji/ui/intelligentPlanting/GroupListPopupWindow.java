@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -83,13 +84,24 @@ public class GroupListPopupWindow extends PopupWindow {
             @Override
             public void onClick(View view) {
                 // TODO 添加分组
-                AlertDialog.Builder addGroupDialog= new AlertDialog.Builder(view.getContext(),R.layout.layout_add_group);
-                addGroupDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                final EditText editText = new EditText(view.getContext());
+                editText.setHint("请输入组名：");
+                AlertDialog.Builder addGroupDialog= new AlertDialog.Builder(view.getContext());
+                addGroupDialog.setTitle("添加分组").setView(editText);
+                addGroupDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                     }
                 });
+
+                addGroupDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                addGroupDialog.show();
             }
         });
     }

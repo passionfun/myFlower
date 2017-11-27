@@ -17,11 +17,19 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
+        maven { url 'https://maven.google.com' }
     }
 }
 
+
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext{
+    dbflowVersion = "4.0.0-beta7"
 }
