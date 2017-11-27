@@ -98,7 +98,7 @@ public class EquipmentListPopupWindow extends PopupWindow {
         mlistener = listener;
     }
 
-    public static interface SelectListener{
+    public  interface SelectListener{
         void selected(EquipmentCard card);
     }
 

@@ -29,6 +29,8 @@ import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.main.MainActivityContract;
 import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
+import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
+import bocai.com.yanghuaji.ui.intelligentPlanting.SecondSettingActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
@@ -198,6 +200,18 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @OnClick(R.id.tv_edit_personal_data)
     void onEditPersonalClick() {
         EditPersonalDataActivity.show(this);
+    }
+
+
+    @OnClick(R.id.tv_group_manager)
+    void onGroupManagerClick() {
+        GroupManagerActivity.show(this);
+    }
+
+
+    @OnClick(R.id.tv_shopping)
+    void onShoppingClick() {
+        SecondSettingActivity.show(this);
     }
 
     public void showLeft() {

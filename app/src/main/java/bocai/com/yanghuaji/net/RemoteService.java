@@ -131,11 +131,18 @@ public interface RemoteService {
 
 
 
-    //获取所有分组
+    //获取所有设备列表
     @POST("group/all_equipment")
     @FormUrlEncoded
     Observable<BaseRspModel<GroupRspModel>> getAllGroups(@Field("Token") String token, @Field("Limit") String limit,
                                                              @Field("Page") String page);
+
+
+
+    //分组列表（获取所有分组）
+    @POST("group/group_list")
+    @FormUrlEncoded
+    Observable<BaseRspModel<GroupRspModel>> getAllGroupList(@Field("Token") String token);
 
 
 }
