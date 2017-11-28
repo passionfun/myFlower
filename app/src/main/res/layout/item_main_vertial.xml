@@ -9,6 +9,7 @@
     android:paddingTop="15dp">
 
     <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+        android:id="@+id/image"
         android:layout_width="105dp"
         android:layout_height="112dp"
         android:src="@mipmap/img_main_empty"
@@ -26,6 +27,7 @@
             android:layout_marginTop="12dp">
 
             <TextView
+                android:id="@+id/tv_equipment_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -52,6 +54,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_plant_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
@@ -62,6 +65,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/tv_group_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="13dp"
@@ -72,6 +76,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/tv_plant_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

@@ -83,7 +83,8 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
 
     @Override
     public void deleteGroupSuccess() {
-
+        //删除成功，刷新界面
+        mPresenter.getAllGroups(Account.getToken());
     }
 
     @Override
@@ -159,7 +160,7 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
             deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                    mPresenter.deleteGroup(mGroupId);
                 }
             });
             deleteDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

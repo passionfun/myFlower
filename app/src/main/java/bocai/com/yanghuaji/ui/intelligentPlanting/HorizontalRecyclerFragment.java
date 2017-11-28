@@ -7,16 +7,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Fragment;
+import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.common.Common;
-import bocai.com.yanghuaji.model.PlantModel;
+import bocai.com.yanghuaji.base.presenter.PrensterFragment;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContract;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.GalleryLayoutManager;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.ScaleTransformer;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -25,8 +29,8 @@ import butterknife.OnClick;
  * 邮箱 yuanfei221@126.com
  */
 
-public class HorizontalRecyclerFragment extends Fragment {
-
+public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlantContract.Presenter>
+        implements IntelligentPlantContract.View  {
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
 
@@ -36,7 +40,8 @@ public class HorizontalRecyclerFragment extends Fragment {
     @BindView(R.id.tv_total)
     TextView mTotalNum;
 
-    private List<PlantModel> mList = new ArrayList<>();
+    private int page = 1;
+    private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
 
     @Override
     protected int getContentLayoutId() {
@@ -46,74 +51,115 @@ public class HorizontalRecyclerFragment extends Fragment {
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
-        for (int i = 0; i < 10; i++) {
-            PlantModel model = new PlantModel();
-            mList.add(model);
-        }
-        mTotalNum.setText(String.valueOf(mList.size()));
         GalleryLayoutManager layoutManager = new GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL);
         layoutManager.attach(mRecyclerView, 1);
         layoutManager.setItemTransformer(new ScaleTransformer());
-        Adapter adapter = new Adapter();
-        adapter.add(mList);
-        mRecyclerView.setAdapter(adapter);
-        adapter.setListener(new RecyclerAdapter.AdapterListener<PlantModel>() {
+        mRecyclerView.setAdapter(mAdapter = new Adapter());
+        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<EquipmentRspModel.ListBean>() {
             @Override
-            public void onItemClick(RecyclerAdapter.ViewHolder holder, PlantModel plantModel) {
-                Log.d("test", Common.Constance.H5_BASE + "product.html?id="+ plantModel.getPlantType());
-                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id="+ plantModel.getPlantType());
-            }
-
-            @Override
-            public void onItemLongClick(RecyclerAdapter.ViewHolder holder, PlantModel plantModel) {
-
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentRspModel.ListBean plantModel) {
+                Log.d("test", Common.Constance.H5_BASE + "product.html?id="+ plantModel.getId());
+                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id="+ plantModel.getId());
             }
         });
     }
 
+    @Override
+    protected void initData() {
+        super.initData();
+        page = 1;
+        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+    }
 
-    private class Adapter extends RecyclerAdapter<PlantModel> {
+    @Override
+    public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
+        if (page == 1) {
+            mAdapter.replace(listBeans);
+        } else {
+            if (listBeans != null && listBeans.size() == 0) {
+                Application.showToast("没有更多");
+            }
+            mAdapter.add(listBeans);
+        }
+        mTotalNum.setText(String.valueOf(listBeans.size()));
+    }
+
+    @Override
+    protected IntelligentPlantContract.Presenter initPresenter() {
+        return new IntelligentPlantPresenter(this);
+    }
+
+
+     class Adapter extends RecyclerAdapter<EquipmentRspModel.ListBean> {
 
         @Override
-        protected int getItemViewType(int position, PlantModel plantModel) {
+        protected int getItemViewType(int position, EquipmentRspModel.ListBean plantModel) {
             mCurrentNum.setText(String.valueOf(position));
             return R.layout.item_main_horizontal;
         }
 
         @Override
-        protected ViewHolder<PlantModel> onCreateViewHolder(View root, int viewType) {
+        protected ViewHolder<EquipmentRspModel.ListBean> onCreateViewHolder(View root, int viewType) {
 
-            return new ViewHoler(root);
+            return new MyViewHolder(root);
         }
+
+
+        class MyViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
+            @BindView(R.id.img_setting)
+            ImageView mSetting;
+
+            @BindView(R.id.tv_equipment_name)
+            TextView mEquipmentName;
+
+            @BindView(R.id.tv_plant_name)
+            TextView mPlantName;
+
+            @BindView(R.id.tv_group_name)
+            TextView mGroupName;
+
+            @BindView(R.id.tv_plant_time)
+            TextView mTime;
+
+            @BindView(R.id.image)
+            ImageView mImage;
+
+            private LinearLayout lldata;
+            private EquipmentRspModel.ListBean  mModel;
+
+            public MyViewHolder(View itemView) {
+                super(itemView);
+                lldata = itemView.findViewById(R.id.ll_data);
+            }
+
+            @Override
+            protected void onBind(final EquipmentRspModel.ListBean plantModel) {
+                mModel = plantModel;
+                mEquipmentName.setText(plantModel.getEquipName());
+                mPlantName.setText(plantModel.getPlantName());
+                mGroupName.setText(plantModel.getGroupName());
+                mTime.setText(plantModel.getDays()+"");
+                GlideApp.with(getContext())
+                        .load(plantModel.getPhoto())
+                        .centerCrop()
+                        .placeholder(R.mipmap.img_main_empty)
+                        .into(mImage);
+            }
+
+            @OnClick(R.id.ll_data)
+            void onDataClick(){
+                Log.d("test",Common.Constance.H5_BASE + "product_data.html?id="+ mModel.getId());
+                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id="+ mModel.getId());
+            }
+
+
+            @OnClick(R.id.img_setting)
+            void onSettingClick(){
+                AddPlantActivity.show(getContext(),"shc","1");
+            }
+        }
+
+
     }
-
-    class ViewHoler extends RecyclerAdapter.ViewHolder<PlantModel> {
-        @BindView(R.id.img_setting)
-        ImageView mSetting;
-
-        private LinearLayout lldata;
-        public ViewHoler(View itemView) {
-            super(itemView);
-            lldata = itemView.findViewById(R.id.ll_data);
-        }
-
-        @Override
-        protected void onBind(final PlantModel plantModel) {
-            lldata.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("test",Common.Constance.H5_BASE + "product_data.html?id="+ plantModel.getPlantType());
-                    PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id="+ plantModel.getPlantType());
-                }
-            });
-        }
-
-
-        @OnClick(R.id.img_setting)
-        void onSettingClick(){
-            AddPlantActivity.show(getContext(),"shc","1");
-        }
-    }
-
 
 }

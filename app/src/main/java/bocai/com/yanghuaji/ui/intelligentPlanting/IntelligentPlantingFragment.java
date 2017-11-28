@@ -27,7 +27,7 @@ public class IntelligentPlantingFragment extends Fragment {
     private HorizontalRecyclerFragment mHorizontalFragment;
     private VeticalRecyclerFragment mVerticalFragment;
     private boolean isHorizontal = true;
-    private FragmentTransaction mTransaction;
+
 
     public static IntelligentPlantingFragment newInstance() {
         return new IntelligentPlantingFragment();
@@ -55,7 +55,7 @@ public class IntelligentPlantingFragment extends Fragment {
     protected void initData() {
         super.initData();
         mHorizontalFragment = new HorizontalRecyclerFragment();
-        mTransaction = getChildFragmentManager().beginTransaction();
+        FragmentTransaction mTransaction = getChildFragmentManager().beginTransaction();
         mTransaction.replace(R.id.container,mHorizontalFragment).commit();
     }
 

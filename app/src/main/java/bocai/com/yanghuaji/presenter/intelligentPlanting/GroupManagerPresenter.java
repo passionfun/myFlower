@@ -61,6 +61,34 @@ public class GroupManagerPresenter extends BasePresenter<GroupManagerContract.Vi
 
     @Override
     public void deleteGroup(String groupId) {
+        Observable<BaseRspModel> observable = Network.remote().deleteGroup(groupId);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel baseRspModel) {
+                        if (baseRspModel.getReturnCode().equals("200")) {
+                            view.deleteGroupSuccess();
+                        }
+                        Application.showToast(baseRspModel.getMsg());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
 
     }
 }
