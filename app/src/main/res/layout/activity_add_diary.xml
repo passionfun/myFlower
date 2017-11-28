@@ -63,9 +63,9 @@
             android:textSize="13sp" />
 
 
-        <EditText
+        <TextView
             android:layout_marginStart="29dp"
-            android:id="@+id/et_planting_time"
+            android:id="@+id/tv_planting_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

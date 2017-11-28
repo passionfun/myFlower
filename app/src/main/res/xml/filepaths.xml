@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <paths xmlns:android="http://schemas.android.com/apk/res/android">
+        <files-path name="my_images" path="images"/>
+        <files-path name="my_docs" path="docs"/>
+        <external-files-path name="my_video" path="video" />
+        <root-path path="" name="camera_photos" />
+        //...
+    </paths>
+</PreferenceScreen>

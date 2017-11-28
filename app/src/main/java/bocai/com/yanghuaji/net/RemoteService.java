@@ -8,6 +8,7 @@ import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentInfoModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.EquipmentSetupModel;
 import bocai.com.yanghuaji.model.EquipmentsByGroupModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.ImageModel;
@@ -94,6 +95,10 @@ public interface RemoteService {
     @FormUrlEncoded
     Observable<BaseRspModel<EquipmentListModel>> getEquipmentList(@Field("Token") String token);
 
+    //植物设置
+    @POST("diary/create_diary_book")
+    @FormUrlEncoded
+    Observable<BaseRspModel> addDiary(@FieldMap Map<String,String> map);
 
     //写日记
     @POST("diary/create_diary")
@@ -177,7 +182,7 @@ public interface RemoteService {
 //    @FormUrlEncoded
 //    Observable<BaseRspModel<GroupRspModel>> getAllGroupList(@Field("Token") String token);
 
-    //设备设置
+    //植物设置
     @POST("equipment/setup_plant")
     @FormUrlEncoded
     Observable<BaseRspModel<PlantSettingModel>> setupPlant(@FieldMap Map<String,String> map);
@@ -196,5 +201,8 @@ public interface RemoteService {
     @FormUrlEncoded
     Observable<BaseRspModel<EquipmentInfoModel>> equipmentInfo(@FieldMap Map<String,String> map);
 
-
+    //植物设置
+    @POST("equipment/setup_equipment")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentSetupModel>> setupEquipment(@FieldMap Map<String,String> map);
 }

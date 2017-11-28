@@ -14,6 +14,15 @@ public class EquipmentCard {
 
     private String Id;
     private String EquipName;
+    private String PlantTime;
+
+    public String getPlantTime() {
+        return PlantTime;
+    }
+
+    public void setPlantTime(String plantTime) {
+        PlantTime = plantTime;
+    }
 
     public String getId() {
         return Id;

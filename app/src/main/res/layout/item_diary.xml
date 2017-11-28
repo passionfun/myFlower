@@ -39,33 +39,66 @@
         android:layout_height="wrap_content"
         android:text="更新日期：2017.08.25"/>
 
-    <FrameLayout
-        android:layout_marginTop="14dp"
+    <!--<FrameLayout-->
+        <!--android:layout_marginTop="14dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<ImageView-->
+            <!--android:id="@+id/img_first"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:src="@mipmap/img_diary_cover_empty"-->
+            <!--android:layout_width="103dp"-->
+            <!--android:layout_height="103dp"/>-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/img_second"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:src="@mipmap/img_diary_cover_empty"-->
+            <!--android:layout_width="103dp"-->
+            <!--android:layout_height="103dp"/>-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/img_third"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:src="@mipmap/img_diary_cover_empty"-->
+            <!--android:layout_width="103dp"-->
+            <!--android:layout_height="103dp"/>-->
+    <!--</FrameLayout>-->
+
+    <LinearLayout
+        android:id="@+id/ll_icon"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
         <ImageView
             android:id="@+id/img_first"
-            android:scaleType="centerCrop"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="103dp"
             android:src="@mipmap/img_diary_cover_empty"
-            android:layout_width="103dp"
-            android:layout_height="103dp"/>
+            android:scaleType="centerCrop" />
 
         <ImageView
             android:id="@+id/img_second"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="103dp"
             android:src="@mipmap/img_diary_cover_empty"
-            android:layout_width="103dp"
-            android:layout_height="103dp"/>
+            android:layout_marginLeft="8dp"
+            android:scaleType="centerCrop" />
 
         <ImageView
             android:id="@+id/img_third"
-            android:layout_gravity="end"
-            android:scaleType="centerCrop"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="103dp"
             android:src="@mipmap/img_diary_cover_empty"
-            android:layout_width="103dp"
-            android:layout_height="103dp"/>
-    </FrameLayout>
+            android:layout_marginLeft="8dp"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

@@ -70,4 +70,11 @@ dependencies {
     }
 
     compile 'com.android.support:design:26.1.0'
+
+    // 图片选择框架
+    compile 'me.iwf.photopicker:PhotoPicker:0.9.5@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+
+    //万能adapter
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
 }

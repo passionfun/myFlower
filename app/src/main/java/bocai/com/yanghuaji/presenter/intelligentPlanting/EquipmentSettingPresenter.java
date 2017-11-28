@@ -1,9 +1,12 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
+import java.util.Map;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.EquipmentSetupModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.net.Network;
 import io.reactivex.Observable;
@@ -43,6 +46,40 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
                             view.getGroupListSuccess(groupRspModelBaseRspModel.getData().getList());
                         } else {
                             Application.showToast(groupRspModelBaseRspModel.getMsg());
+                        }
+                        view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void setupEquipment(Map<String, String> map) {
+        view.showLoading();
+        Observable<BaseRspModel<EquipmentSetupModel>> observable = Network.remote().setupEquipment(map);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<EquipmentSetupModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<EquipmentSetupModel> equipmentSetupModelBaseRspModel) {
+                        if (equipmentSetupModelBaseRspModel.getReturnCode().equals("200")) {
+                            view.setupEquipmentSuccess(equipmentSetupModelBaseRspModel.getData());
+                        } else {
+                            Application.showToast(equipmentSetupModelBaseRspModel.getMsg());
                         }
                         view.hideLoading();
                     }

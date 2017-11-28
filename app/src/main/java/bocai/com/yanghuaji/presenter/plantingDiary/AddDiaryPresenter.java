@@ -105,7 +105,36 @@ public class AddDiaryPresenter extends BasePresenter<AddDiaryContract.View>
     }
 
     @Override
-    public void addDiary(String token, String photoId, String diaryName, String equipName, String equipId, String plantTime) {
+    public void addDiary(Map<String, String> map) {
+        view.showLoading();
+        Observable<BaseRspModel> observable = Network.remote().addDiary(map);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel baseRspModel) {
+                        if (baseRspModel.getReturnCode().equals("200")) {
+                            view.addDiarySuccess();
+                        } else {
+                            Application.showToast(baseRspModel.getMsg());
+                        }
+                        view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        view.hideLoading();
+                    }
+                });
     }
 }

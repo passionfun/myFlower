@@ -1,7 +1,13 @@
 package bocai.com.yanghuaji.ui.plantingDiary;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -20,13 +26,14 @@ import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.media.GalleryFragment;
 import bocai.com.yanghuaji.model.EquipmentCard;
-import bocai.com.yanghuaji.ui.personalCenter.EquipmentListPopupWindow;
 import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryPresenter;
+import bocai.com.yanghuaji.ui.personalCenter.EquipmentListPopupWindow;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.RoundAngleImageView;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -37,6 +44,7 @@ import okhttp3.RequestBody;
  */
 
 public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Presenter> implements AddDiaryContract.View {
+    public final static int PERMISSON_STORGE = 10;
     @BindView(R.id.scroll_root)
     ScrollView mRoot;
 
@@ -52,18 +60,25 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
     @BindView(R.id.et_diary_name)
     EditText mEditInputDiaryName;
 
-    @BindView(R.id.et_planting_time)
-    EditText mEditInputPlantingTime;
 
     @BindView(R.id.img_add_cover)
     RoundAngleImageView mCover;
 
     @BindView(R.id.tv_equipment_name)
     TextView mEquipmentName;
+    @BindView(R.id.img_right)
+    ImageView imgRight;
+    @BindView(R.id.img_right_second)
+    ImageView imgRightSecond;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.tv_planting_time)
+    TextView tvPlantingTime;
 
     private String mCoverId;
-    private String mName;
+    private String mName,plantTime;
     private String mEquipmentId;
+    private Map<String, String> map = new HashMap<>();
 
 
     //显示的入口
@@ -91,16 +106,23 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
     @OnClick(R.id.img_add_cover)
     void onAddCoverClick() {
 //        DiaryListActivity.show(this);
-        new GalleryFragment().setListener(new GalleryFragment.OnSelectedListener() {
-            @Override
-            public void onSelectedImage(String path) {
-                GlideApp.with(AddDiaryActivity.this)
-                        .load(path)
-                        .centerCrop()
-                        .into(mCover);
-                loadCover(path);
-            }
-        }).show(getSupportFragmentManager(), GalleryFragment.class.getName());
+
+        if (ContextCompat.checkSelfPermission(AddDiaryActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            //应用还未获取读取本地文件 的权限，询问是否允许
+            ActivityCompat.requestPermissions(AddDiaryActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSON_STORGE);
+        } else {
+            new GalleryFragment().setListener(new GalleryFragment.OnSelectedListener() {
+                @Override
+                public void onSelectedImage(String path) {
+                    GlideApp.with(AddDiaryActivity.this)
+                            .load(path)
+                            .centerCrop()
+                            .into(mCover);
+                    loadCover(path);
+                }
+            }).show(getSupportFragmentManager(), GalleryFragment.class.getName());
+        }
+
     }
 
     private void loadCover(String filePath) {
@@ -119,17 +141,19 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
 
     @OnClick(R.id.tv_right)
     void onSaveClick() {
-        String token = Account.getToken();
-        String coverId = mCoverId;
-        String diaryName = mEditInputDiaryName.getText().toString();
-        String equipmentId = mEquipmentId;
-        String equipmentName = mName;
-//        mPresenter.addDiary();
+        //非空判断自己写
+        map.put("Token", Account.getToken());
+        map.put("Photo", mCoverId);
+        map.put("BookName", mEditInputDiaryName.getText().toString());
+        map.put("EquipName", mName);
+        map.put("Eid", mEquipmentId);
+        map.put("PlantTime", plantTime);
+        mPresenter.addDiary(map);
     }
 
     @Override
     public void addDiarySuccess() {
-
+        finish();
     }
 
     @Override
@@ -139,20 +163,22 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
 
     @Override
     public void getEquipmentListSuccess(List<EquipmentCard> cards) {
-        if (cards !=null&&cards.size()>0){
+        if (cards != null && cards.size() > 0) {
             EquipmentListPopupWindow popupWindow = new EquipmentListPopupWindow(this);
             ActivityUtil.setBackgroundAlpha(this, 0.19f);
             popupWindow.addData(cards);
-            popupWindow.showAtLocation(mRoot, Gravity.CENTER,0,0);
+            popupWindow.showAtLocation(mRoot, Gravity.CENTER, 0, 0);
             popupWindow.setOnSelectListener(new EquipmentListPopupWindow.SelectListener() {
                 @Override
                 public void selected(EquipmentCard card) {
                     mName = card.getEquipName();
-                    mEquipmentName.setText(mName);
+                    plantTime=card.getPlantTime();
                     mEquipmentId = card.getId();
+                    mEquipmentName.setText(mName);
+                    tvPlantingTime.setText(plantTime);
                 }
             });
-        }else {
+        } else {
             Application.showToast("暂无设备");
         }
 
@@ -162,4 +188,5 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
     protected AddDiaryContract.Presenter initPresenter() {
         return new AddDiaryPresenter(this);
     }
+
 }
