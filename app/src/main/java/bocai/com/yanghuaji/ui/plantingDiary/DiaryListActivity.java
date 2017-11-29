@@ -3,11 +3,9 @@ package bocai.com.yanghuaji.ui.plantingDiary;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -114,7 +112,6 @@ public class DiaryListActivity extends PresenterActivity {
                         popupWindow.dismiss();
                         break;
                     case R.id.img_copy_link:
-                        mWebview.loadUrl("http://www.baidu.com/");
                         popupWindow.dismiss();
                         // TODO 分享链接
                         break;

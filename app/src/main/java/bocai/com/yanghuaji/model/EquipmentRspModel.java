@@ -20,10 +20,11 @@ public class EquipmentRspModel {
      * Count : 3
      *
      *
-     * Id	设备id	String	false
+         * Id	设备id	String	false
      Pstatus	种植状态  0未种植  1种植中  2种植结束	String	false
      EquipName	设备名称	String	false
      PlantName	植物名称	String	true
+     Pid        植物id
      GroupName	分组名称	String	true
      Days	记录天数	String	true
      Degree	温度	String	true
@@ -69,6 +70,7 @@ public class EquipmentRspModel {
          * Pstatus : 2
          * EquipName : WG222+333
          * PlantName : 满天星
+         * Pid:"2"
          * GroupName : 办公室
          * Days : 132
          * Degree : 26
@@ -84,6 +86,7 @@ public class EquipmentRspModel {
         private String Pstatus;
         private String EquipName;
         private String PlantName;
+        private String Pid;
         private String GroupName;
         private int Days;
         private String Degree;
@@ -123,6 +126,14 @@ public class EquipmentRspModel {
 
         public void setEquipName(String EquipName) {
             this.EquipName = EquipName;
+        }
+
+        public String getPid() {
+            return Pid;
+        }
+
+        public void setPid(String Pid) {
+            this.Pid = Pid;
         }
 
         public String getPlantName() {

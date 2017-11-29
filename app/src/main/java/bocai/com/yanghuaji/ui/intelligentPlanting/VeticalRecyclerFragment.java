@@ -3,6 +3,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.common.Common;
@@ -66,13 +66,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         mRecycler.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecycler.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecycler.setLoadingListener(this);
-        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<EquipmentRspModel.ListBean>() {
-            @Override
-            public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentRspModel.ListBean plantModel) {
-                Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
-                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
-            }
-        });
     }
 
     @Override
@@ -100,9 +93,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mRecycler.refreshComplete();
             mAdapter.replace(listBeans);
         } else {
-            if (listBeans != null && listBeans.size() == 0) {
-                Application.showToast("没有更多");
-            }
             mRecycler.loadMoreComplete();
             mAdapter.add(listBeans);
         }
@@ -115,6 +105,12 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
+        @BindView(R.id.ll_root)
+        LinearLayout mRoot;
+
+        @BindView(R.id.frame_more)
+        FrameLayout mMoreRoot;
+
         @BindView(R.id.ll_data)
         LinearLayout lldata;
 
@@ -134,6 +130,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         ImageView mImage;
 
         private EquipmentRspModel.ListBean  mModel;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -157,6 +154,29 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         void onDataClick() {
             Log.d("test", Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
             PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
+        }
+
+        @OnClick(R.id.img_more)
+        void onMoreClick() {
+            mMoreRoot.setVisibility(View.VISIBLE);
+        }
+
+        @OnClick(R.id.img_close)
+        void onCloseClick() {
+            mMoreRoot.setVisibility(View.GONE);
+        }
+
+        @OnClick(R.id.ll_root)
+        void onItemClick() {
+            Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + mModel.getId());
+            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + mModel.getId());
+        }
+
+        @OnClick(R.id.tv_setting)
+        void onSettingClick() {
+            String mEquipmentId = mModel.getId();
+             String mPlantId = mModel.getPid();
+            SecondSettingActivity.show(getContext(),mEquipmentId,mPlantId);
         }
 
     }

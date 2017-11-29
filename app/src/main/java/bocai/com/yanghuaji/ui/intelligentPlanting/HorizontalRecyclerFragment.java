@@ -3,6 +3,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -106,6 +107,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
 
         class MyViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
+            @BindView(R.id.frame_setting)
+            FrameLayout mSettingView;
+
             @BindView(R.id.img_setting)
             ImageView mSetting;
 
@@ -126,6 +130,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             private LinearLayout lldata;
             private EquipmentRspModel.ListBean  mModel;
+            private boolean isShowSetting = false;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -135,6 +140,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             protected void onBind(final EquipmentRspModel.ListBean plantModel) {
                 mModel = plantModel;
+                mSettingView.setVisibility(View.INVISIBLE);
                 mEquipmentName.setText(plantModel.getEquipName());
                 mPlantName.setText(plantModel.getPlantName());
                 mGroupName.setText(plantModel.getGroupName());
@@ -152,10 +158,24 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id="+ mModel.getId());
             }
 
+            @OnClick(R.id.tv_setting_second)
+            void onSecondSettingClick(){
+                String mEquipmentId = mModel.getId();
+                String mPlantId = mModel.getPid();
+                SecondSettingActivity.show(getContext(),mEquipmentId,mPlantId);
+            }
+
 
             @OnClick(R.id.img_setting)
             void onSettingClick(){
-                AddPlantActivity.show(getContext(),"shc","1");
+                isShowSetting = !isShowSetting;
+                if (isShowSetting){
+                    mSettingView.setVisibility(View.VISIBLE);
+                    mSetting.setImageResource(R.mipmap.img_close_main_horizontal);
+                }else {
+                    mSettingView.setVisibility(View.GONE);
+                    mSetting.setImageResource(R.mipmap.img_item_setting);
+                }
             }
         }
 

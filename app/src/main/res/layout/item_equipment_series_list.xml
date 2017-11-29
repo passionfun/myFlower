@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_left"
+            android:layout_width="5dp"
+            android:layout_height="65dp"
+            android:background="#4F9818" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="29dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_weight="1"
+            android:drawableEnd="@mipmap/img_left_arrow"
+            android:drawablePadding="10dp"
+            android:drawableStart="@mipmap/img_planting"
+            android:gravity="center_vertical"
+            android:text="植记系列"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E5E5E5" />
+
+</LinearLayout>

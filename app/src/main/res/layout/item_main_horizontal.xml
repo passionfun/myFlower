@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame_container"
     android:layout_width="260dp"
-    android:padding="2dp"
+    android:layout_height="wrap_content"
     android:elevation="12dp"
-    android:layout_height="wrap_content">
+    android:padding="2dp">
 
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/bg_shadow"
-        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <bocai.com.yanghuaji.util.widget.RoundAngleImageView
             android:id="@+id/image"
             android:layout_width="250dp"
             android:layout_height="220dp"
-            app:roundHeightLeftUp="10dp"
-            app:roundHeightRightUp="10dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
-            android:src="@mipmap/img_main_empty"/>
+            android:src="@mipmap/img_main_empty"
+            app:roundHeightLeftUp="10dp"
+            app:roundHeightRightUp="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -151,6 +151,169 @@
         </LinearLayout>
     </LinearLayout>
 
+
+
+
+    <FrameLayout
+        android:id="@+id/frame_setting"
+        android:layout_width="250dp"
+        android:layout_height="220dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_recycler_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+
+            <View
+                android:background="@mipmap/img_divide_vertical"
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:background="@mipmap/img_divide_vertical"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <View
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/img_divide_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/sel_cb_push_horizontal"
+                    android:gravity="center"
+                    android:text="消息推送"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
+
+
+                <CheckBox
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/sel_cb_light_horizontal"
+                    android:gravity="center"
+                    android:text="光照"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_setting"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@mipmap/img_refresh_horizontal"
+                    android:gravity="center"
+                    android:text="刷新"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_setting_second"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@mipmap/img_setting_horizontal"
+                    android:gravity="center"
+                    android:text="种植设置"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@mipmap/img_update_horizontal"
+                    android:gravity="center"
+                    android:text="设备升级"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
+
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@mipmap/img_more_horizontal" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
     <ImageView
         android:id="@+id/img_setting"
         android:layout_width="wrap_content"
@@ -159,6 +322,7 @@
         android:layout_marginEnd="14dp"
         android:layout_marginTop="185dp"
         android:src="@mipmap/img_item_setting" />
+
 
 </FrameLayout>
 

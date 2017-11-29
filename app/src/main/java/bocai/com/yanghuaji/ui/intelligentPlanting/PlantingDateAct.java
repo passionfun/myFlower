@@ -15,6 +15,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class PlantingDateAct extends Activity {
 
@@ -39,6 +40,11 @@ public class PlantingDateAct extends Activity {
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_planting_date;
+    }
+
+    @OnClick(R.id.img_back)
+    void onBackClick(){
+        finish();
     }
 
     @Override

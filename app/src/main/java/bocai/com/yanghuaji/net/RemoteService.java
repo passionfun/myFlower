@@ -14,6 +14,7 @@ import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.ImageModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
 import bocai.com.yanghuaji.model.PlantRspModel;
+import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
 import bocai.com.yanghuaji.model.db.EquipmentListModel;
 import io.reactivex.Observable;
@@ -203,8 +204,22 @@ public interface RemoteService {
     Observable<BaseRspModel> deleteGroup(@Field("Id") String groupId);
 
 
-    //植物设置
+    //种植机设置
     @POST("equipment/setup_equipment")
     @FormUrlEncoded
     Observable<BaseRspModel<EquipmentSetupModel>> setupEquipment(@FieldMap Map<String,String> map);
+
+
+    //添加日记本
+    @POST("diary/create_diary_book")
+    @FormUrlEncoded
+    Observable<BaseRspModel> addDiary(@FieldMap Map<String,String> map);
+
+
+    //获取设备系列
+    @POST("equipment/equipment_series")
+    @FormUrlEncoded
+    Observable<BaseRspModel<PlantSeriesModel>> getPlantSeries( @Field("Limit") String limit,
+                                                            @Field("Page") String page);
+
 }

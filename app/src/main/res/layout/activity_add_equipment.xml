@@ -55,14 +55,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="或点击如下对应产品图标"/>
-    
-    <LinearLayout
+
+    <FrameLayout
         android:layout_marginTop="20dp"
         android:background="#FAFAFA"
-        android:orientation="vertical"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp">
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
 
         <ImageView
             android:layout_marginStart="5dp"
@@ -71,88 +76,10 @@
             android:layout_height="wrap_content"
             />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <View
-                android:background="#4F9818"
-                android:layout_width="5dp"
-                android:layout_height="65dp"/>
-
-            <TextView
-                android:drawableStart="@mipmap/img_planting"
-                android:layout_marginStart="25dp"
-                android:drawablePadding="10dp"
-                android:layout_marginEnd="29dp"
-                android:drawableEnd="@mipmap/img_left_arrow"
-                android:layout_marginLeft="10dp"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
-                android:textColor="#333333"
-                android:text="植记系列"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#E5E5E5"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <View
-                android:background="#67B91A"
-                android:layout_width="5dp"
-                android:layout_height="65dp"/>
-
-            <TextView
-                android:drawableStart="@mipmap/img_planting"
-                android:layout_marginStart="25dp"
-                android:drawablePadding="10dp"
-                android:layout_marginEnd="29dp"
-                android:drawableEnd="@mipmap/img_left_arrow"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
-                android:textColor="#333333"
-                android:text="三生石系列"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#E5E5E5"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <View
-                android:background="#67B91A"
-                android:layout_width="5dp"
-                android:layout_height="65dp"/>
-
-            <TextView
-                android:drawableStart="@mipmap/img_planting"
-                android:layout_marginStart="25dp"
-                android:drawablePadding="10dp"
-                android:layout_marginEnd="29dp"
-                android:drawableEnd="@mipmap/img_left_arrow"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
-                android:textColor="#333333"
-                android:text="其他系列"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-
+    </FrameLayout>
 </LinearLayout>
+
+
+
+
+

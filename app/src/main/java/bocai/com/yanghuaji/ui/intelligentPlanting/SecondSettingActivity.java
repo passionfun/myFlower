@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,15 +24,30 @@ public class SecondSettingActivity extends Activity {
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
+    public static final String KEY_PLANT_ID = "KEY_PLANT_ID";
+    public static final String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
+    private String mEquipmentId;
+    private String mPlantId;
+
 
     //显示的入口
-    public static void show(Context context) {
-        context.startActivity(new Intent(context, SecondSettingActivity.class));
+    public static void show(Context context,String equipmentId,String plantId) {
+        Intent intent = new Intent(context, SecondSettingActivity.class);
+        intent.putExtra(KEY_EQUIPMENT_ID,equipmentId);
+        intent.putExtra(KEY_PLANT_ID,plantId);
+        context.startActivity(intent);
     }
 
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_second_setting;
+    }
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+        mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
+        mPlantId = bundle.getString(KEY_PLANT_ID);
+        return super.initArgs(bundle);
     }
 
     @Override
@@ -48,19 +64,19 @@ public class SecondSettingActivity extends Activity {
     @OnClick(R.id.tv_equipment_setting)
     void onEquipmentSettingClick() {
         // 往里面传 设备id
-        EquipmentSettingActivity.show(this,"13");
+        EquipmentSettingActivity.show(this,mEquipmentId);
     }
 
     @OnClick(R.id.tv_plant_setting)
     void onPlantSettingClick() {
         // 往里面传 植物id 和设备id
-//        PlantSettingActivity.show(this);
+        PlantSettingActivity.show(this,mPlantId,mEquipmentId);
     }
 
     @OnClick(R.id.tv_equipment_info)
     void onEquipmentInfoClick() {
         // 往里面传 设备id
-        EquipmentInfoActivity.show(this,"13");
+        EquipmentInfoActivity.show(this,mEquipmentId);
     }
 
 }

@@ -29,7 +29,6 @@ import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.main.MainActivityContract;
 import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
-import bocai.com.yanghuaji.ui.intelligentPlanting.SecondSettingActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
@@ -90,6 +89,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     void onSwitchClick() {
         //切换横竖列表
         mNavigationFragment.switchType();
+        hideLeft();
     }
 
     @Override
@@ -101,6 +101,16 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             //将主页面顶部延伸至status bar
             mDrawerLayout.setClipToPadding(false);
         }
+
+        User user = Account.getUser();
+        if (user != null) {
+            mName.setText(user.getNickName());
+            GlideApp.with(this)
+                    .load(user.getRelativePath())
+                    .centerCrop()
+                    .into(mPortrait);
+        }
+
     }
 
     @Override
@@ -210,19 +220,15 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
     @OnClick(R.id.tv_shopping)
     void onShoppingClick() {
-        SecondSettingActivity.show(this);
+
     }
 
     public void showLeft() {
         mDrawerLayout.openDrawer(GravityCompat.START);
-        User user = Account.getUser();
-        if (user != null) {
-            mName.setText(user.getNickName());
-            GlideApp.with(this)
-                    .load(user.getRelativePath())
-                    .centerCrop()
-                    .into(mPortrait);
-        }
+    }
+
+    public void hideLeft(){
+        mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
 
