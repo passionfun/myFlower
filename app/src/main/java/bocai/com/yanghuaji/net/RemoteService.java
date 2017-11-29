@@ -202,4 +202,8 @@ public interface RemoteService {
     Observable<BaseRspModel> deleteGroup(@Field("Id") String groupId);
 
 
+    //植物设置
+    @POST("equipment/setup_equipment")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentSetupModel>> setupEquipment(@FieldMap Map<String,String> map);
 }

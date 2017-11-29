@@ -153,28 +153,39 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
             mFirst.setVisibility(View.INVISIBLE);
             mSecond.setVisibility(View.INVISIBLE);
             mThird.setVisibility(View.INVISIBLE);
-            for (int i = 0;i<photos.size();i++){
-                if (i==0){
-                    GlideApp.with(getContext())
-                            .load(photos.get(0))
-                            .centerCrop()
-                            .into(mFirst);
-                    mFirst.setVisibility(View.VISIBLE);
-                }
-                if (i==1){
-                    GlideApp.with(getContext())
-                            .load(photos.get(1))
-                            .centerCrop()
-                            .into(mSecond);
-                    mSecond.setVisibility(View.VISIBLE);
-                }
-                if (i==2){
-                    GlideApp.with(getContext())
-                            .load(photos.get(2))
-                            .centerCrop()
-                            .into(mThird);
-                    mThird.setVisibility(View.VISIBLE);
-                }
+            if (photos.size()==1) {
+                mFirst.setVisibility(View.VISIBLE);
+                GlideApp.with(getContext())
+                        .load(photos.get(0))
+                        .centerCrop()
+                        .into(mFirst);
+            }else if (photos.size()==2){
+                mFirst.setVisibility(View.VISIBLE);
+                mSecond.setVisibility(View.VISIBLE);
+                GlideApp.with(getContext())
+                        .load(photos.get(0))
+                        .centerCrop()
+                        .into(mFirst);
+                GlideApp.with(getContext())
+                        .load(photos.get(1))
+                        .centerCrop()
+                        .into(mSecond);
+            }else if (photos.size()==3){
+                mFirst.setVisibility(View.VISIBLE);
+                mSecond.setVisibility(View.VISIBLE);
+                mThird.setVisibility(View.VISIBLE);
+                GlideApp.with(getContext())
+                        .load(photos.get(0))
+                        .centerCrop()
+                        .into(mFirst);
+                GlideApp.with(getContext())
+                        .load(photos.get(1))
+                        .centerCrop()
+                        .into(mSecond);
+                GlideApp.with(getContext())
+                        .load(photos.get(2))
+                        .centerCrop()
+                        .into(mThird);
             }
         }
 

@@ -76,19 +76,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:visibility="gone"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+
     </FrameLayout>
 
-
-    <ImageView
-        android:id="@+id/image_ll"
-        android:layout_width="300dp"
-        android:layout_height="300dp" />
+    <bocai.com.yanghuaji.util.widget.MyRecyclerView
+        android:id="@+id/recycler"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
 
 </LinearLayout>

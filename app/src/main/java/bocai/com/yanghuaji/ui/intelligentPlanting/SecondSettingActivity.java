@@ -47,7 +47,8 @@ public class SecondSettingActivity extends Activity {
 
     @OnClick(R.id.tv_equipment_setting)
     void onEquipmentSettingClick() {
-        EquipmentSettingActivity.show(this);
+        // 往里面传 设备id
+        EquipmentSettingActivity.show(this,"13");
     }
 
     @OnClick(R.id.tv_plant_setting)
@@ -59,7 +60,7 @@ public class SecondSettingActivity extends Activity {
     @OnClick(R.id.tv_equipment_info)
     void onEquipmentInfoClick() {
         // 往里面传 设备id
-//        EquipmentInfoActivity.show(this,);
+        EquipmentInfoActivity.show(this,"13");
     }
 
 }

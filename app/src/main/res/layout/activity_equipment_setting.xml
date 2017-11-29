@@ -23,7 +23,7 @@
 
 
         <EditText
-            android:id="@+id/et_input_password"
+            android:id="@+id/et_equipName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -52,6 +52,7 @@
             android:textSize="13sp" />
 
         <CheckBox
+            android:id="@+id/checkbox"
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:button="@drawable/sel_cb_button"
@@ -79,6 +80,7 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/tv_lightStart"
             android:layout_marginEnd="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,6 +111,7 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/tv_BanStart"
             android:layout_marginEnd="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -139,6 +142,7 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/tv_BanStop"
             android:layout_marginEnd="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

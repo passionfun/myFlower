@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="bocai.com.yanghuaji">
 
 
@@ -91,9 +92,6 @@
             android:name=".ui.plantingDiary.DiaryDetailActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.plantingDiary.WriteDiaryActivity"
-            android:theme="@style/BaseTheme" />
-        <activity
             android:name=".ui.plantingDiary.LocationActivity"
             android:theme="@style/BaseTheme" />
         <activity
@@ -130,7 +128,23 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.intelligentPlanting.GroupManagerActivity" />
         <activity android:name=".ui.intelligentPlanting.EditGroupActivity" />
+        <activity android:name=".ui.intelligentPlanting.PlantingDateAct"/>
+        <activity android:name=".ui.plantingDiary.WriteDiaryActivity"/>
 
+        <activity
+            android:name="me.iwf.photopicker.PhotoPickerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="bocai.com.yanghuaji.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"
+                tools:replace="android:resource"/>
+        </provider>
     </application>
 
 </manifest>

@@ -27,7 +27,7 @@ public interface AddDiaryContract {
 
         void loadCover(Map<String, RequestBody> params);
 
-        void addDiary(String token,String photoId,String diaryName,String equipName,String equipId,String plantTime);
+        void addDiary(Map<String,String> map);
     }
 
 }
