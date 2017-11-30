@@ -44,7 +44,6 @@ public class WriteDiaryPresenter extends BasePresenter<WriteDiaryContract.View>
                     public void onNext(BaseRspModel<ImageModel> imageModelBaseRspModel) {
                         if (imageModelBaseRspModel.getReturnCode().equals("200")) {
                             ImageModel model = imageModelBaseRspModel.getData();
-                            int id = model.getAvatar().get(0).getId();
                             view.addPhotosSuccess(model.getAvatar());
                         } else {
                             Application.showToast(imageModelBaseRspModel.getMsg());

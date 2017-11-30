@@ -40,30 +40,18 @@
             android:layout_height="match_parent" />
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:layout_weight="1"
+    <ProgressBar
+        android:layout_marginTop="10dp"
+        android:id="@+id/progress"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
-
-    </FrameLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="29dp"
-        android:background="#D1D1D1" />
-
-    <TextView
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="15dp"
-        android:text="杭州.联合大厦 2017年10月18日 11:40"
-        android:textSize="12sp"
-        android:drawablePadding="5dp"
-        android:drawableStart="@mipmap/img_location_green"
-        android:textColor="#333333"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="3dp"
         />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+
 </LinearLayout>

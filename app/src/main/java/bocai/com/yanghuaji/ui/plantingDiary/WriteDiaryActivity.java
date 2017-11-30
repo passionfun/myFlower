@@ -110,11 +110,6 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
             }
 
             @Override
-            public int getItemCount() {
-                return super.getItemCount();
-            }
-
-            @Override
             protected int getItemViewType(int position, String s) {
                 return R.layout.item_diary_photos;
             }
@@ -187,7 +182,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                             }
                         });
                         fragment.show(getSupportFragmentManager(), MyGalleryFragment.class.getName());
-                        fragment.setMaxCount(10 - mAdapter.getItemCount());
+                        //fragment.setMaxCount(10 - mAdapter.getItemCount());
                         break;
                     case R.id.tv_cancel:
                         picPopupWindow.dismiss();
@@ -208,7 +203,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
             for (int i = 0; i < pathList.size(); i++) {
                 File file = new File(pathList.get(i));
                 RequestBody body = RequestBody.create(MediaType.parse("image/jpeg;charset=utf-8"), file);
-                params.put("pic_head" + "\";" + "filename=\"" + file, body);
+                params.put("pic_head" + (i + 1) + "\";" + "filename=\"" + file, body);
             }
             mPresenter.addPhotos(params);
         }
@@ -293,17 +288,16 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                         .into(photo);
                 delete.setVisibility(View.VISIBLE);
             }
-            //最多只能九张
-            if (mAdapter.getItemCount() > 9) {
-                if (s.equals("add")) {
-                    photo.setVisibility(View.GONE);
-                    delete.setVisibility(View.GONE);
-                } else {
-                    photo.setVisibility(View.VISIBLE);
-                    delete.setVisibility(View.VISIBLE);
-                }
-
-            }
+//            //最多只能九张
+//            if (mAdapter.getItemCount() > 9) {
+//                if (s.equals("add")) {
+//                    photo.setVisibility(View.GONE);
+//                    delete.setVisibility(View.GONE);
+//                } else {
+//                    photo.setVisibility(View.VISIBLE);
+//                    delete.setVisibility(View.VISIBLE);
+//                }
+//            }
         }
 
         @OnClick(R.id.img_delete)

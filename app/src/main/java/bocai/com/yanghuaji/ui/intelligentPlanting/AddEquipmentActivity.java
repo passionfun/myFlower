@@ -4,16 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bocai.zxinglibrary.android.CaptureActivity;
+import com.bocai.zxinglibrary.bean.ZxingConfig;
+import com.bocai.zxinglibrary.common.Constant;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
@@ -37,6 +42,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     private RecyclerAdapter<PlantSeriesModel.PlantSeriesCard> mAdapter;
     private int page = 1;
+    private int REQUEST_CODE_SCAN = 111;
 
     //显示的入口
     public static void show(Context context) {
@@ -76,7 +82,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     protected void initData() {
         super.initData();
         page = 1;
-        mPresenter.getEquipmentSeries("10",page+"");
+        mPresenter.getEquipmentSeries("10", page + "");
     }
 
     @OnClick(R.id.img_back)
@@ -86,8 +92,39 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     @OnClick(R.id.img_scan)
     void onScanClick() {
-        AddEquipmentDisplayActivity.show(this);
+//        AddEquipmentDisplayActivity.show(this);
+
+        Intent intent = new Intent(this, CaptureActivity.class);
+
+                                /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+                                * 也可以不传这个参数
+                                * 不传的话  默认都为默认不震动  其他都为true
+                                * */
+
+        ZxingConfig config = new ZxingConfig();
+        config.setPlayBeep(true);
+        config.setShake(true);
+        intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
+
     }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // 扫描二维码/条码回传
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+            if (data != null) {
+                String content = data.getStringExtra(Constant.CODED_CONTENT);
+                Log.d("shc", "扫描结果为: "+ content);
+                Application.showToast(content);
+            }
+        }
+    }
+
 
     @Override
     public void getEquipmentSeriesSuccess(List<PlantSeriesModel.PlantSeriesCard> cards) {
@@ -109,13 +146,13 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     @Override
     public void onRefresh() {
         page = 1;
-        mPresenter.getEquipmentSeries("10",page+"");
+        mPresenter.getEquipmentSeries("10", page + "");
     }
 
     @Override
     public void onLoadMore() {
         page++;
-        mPresenter.getEquipmentSeries("10",page+"");
+        mPresenter.getEquipmentSeries("10", page + "");
     }
 
 

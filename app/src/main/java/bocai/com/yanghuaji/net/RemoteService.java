@@ -4,6 +4,8 @@ import java.util.Map;
 
 import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.DiaryCardModel;
+import bocai.com.yanghuaji.model.DiaryDetailModel;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentInfoModel;
@@ -221,5 +223,23 @@ public interface RemoteService {
     @FormUrlEncoded
     Observable<BaseRspModel<PlantSeriesModel>> getPlantSeries( @Field("Limit") String limit,
                                                             @Field("Page") String page);
+
+
+    //获取日记资料（卡片数据）
+    @POST("diary/diary_book_data")
+    @FormUrlEncoded
+    Observable<BaseRspModel<DiaryCardModel>> getDiaryData(@Field("Id") String diaryId);
+
+
+    //获取日记详情
+    @POST("diary/diary_info")
+    @FormUrlEncoded
+    Observable<BaseRspModel<DiaryDetailModel>> getDiaryDetail(@Field("Id") String diaryItemId);
+
+
+    //删除某条日记
+    @POST("diary/diary_del")
+    @FormUrlEncoded
+    Observable<BaseRspModel> deleteDiaryItem(@Field("Id") String diaryItemId);
 
 }

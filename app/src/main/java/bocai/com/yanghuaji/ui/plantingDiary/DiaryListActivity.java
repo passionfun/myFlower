@@ -13,15 +13,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.common.Common;
-import bocai.com.yanghuaji.base.presenter.BaseContract;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.DiaryCardModel;
+import bocai.com.yanghuaji.model.MessageEvent;
+import bocai.com.yanghuaji.presenter.plantingDiary.DiaryListContract;
+import bocai.com.yanghuaji.presenter.plantingDiary.DiaryListPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.DateUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class DiaryListActivity extends PresenterActivity {
+public class DiaryListActivity extends PresenterActivity<DiaryListContract.Presenter>
+        implements DiaryListContract.View {
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
@@ -58,15 +67,29 @@ public class DiaryListActivity extends PresenterActivity {
         return super.initArgs(bundle);
 
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDiaryItemDeleteSuccess(MessageEvent messageEvent){
+        if (messageEvent.getMessage().equals(DiaryDetailActivity.DIARY_DELETE_SUCCESS)){
+            mWebview.reload();
+        }
+    }
+
+    @Override
+    protected void initWidget() {
+        EventBus.getDefault().register(this);
+        super.initWidget();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected void initData() {
         super.initData();
         ActivityUtil.initWebSetting(mWebview.getSettings());
-
-//        mWebview.loadUrl("http://www.baidu.com/");
-
-
         mWebview.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -88,10 +111,14 @@ public class DiaryListActivity extends PresenterActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.d("test",url);
-                view.loadUrl(url);
+                if(url.startsWith(Common.Constance.H5_BASE+"diary_info.html?")){
+                    DiaryDetailActivity.show(DiaryListActivity.this,url);
+                }
                 return true;
             }
         });
+
+
 
         mWebview.loadUrl(Common.Constance.H5_BASE+"diary.html?id="+mDiaryId);
     }
@@ -133,14 +160,22 @@ public class DiaryListActivity extends PresenterActivity {
 
     @OnClick(R.id.img_data_card)
     void onDataCardClick() {
-        DiaryContentCardPopupWindow popupWindow = new DiaryContentCardPopupWindow(this);
-        ActivityUtil.setBackgroundAlpha(this, 0.19f);
-        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM,0,0);
+        mPresenter.getDiaryData(mDiaryId);
+
     }
 
 
     @Override
-    protected BaseContract.Presenter initPresenter() {
-        return null;
+    public void getDiaryDataSuccess(DiaryCardModel diaryCardModel) {
+            DiaryContentCardPopupWindow popupWindow = new DiaryContentCardPopupWindow(this);
+            ActivityUtil.setBackgroundAlpha(this, 0.19f);
+            popupWindow.initData(diaryCardModel.getPhoto(),diaryCardModel.getPlantName(),diaryCardModel.getEquipName(),
+                    diaryCardModel.getPlace(), DateUtils.timet(diaryCardModel.getPlantTime()));
+            popupWindow.showAtLocation(mRoot, Gravity.BOTTOM,0,0);
+    }
+
+    @Override
+    protected DiaryListContract.Presenter initPresenter() {
+        return new DiaryListPresenter(this);
     }
 }

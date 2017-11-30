@@ -74,7 +74,7 @@ public class MyGalleryFragment extends BottomSheetDialogFragment
 
     @Override
     public void onSelectedCountChanged(int count) {
-        mGallery.setMaxCount(maxCount);
+//        mGallery.setMaxCount(maxCount);
     }
 
 

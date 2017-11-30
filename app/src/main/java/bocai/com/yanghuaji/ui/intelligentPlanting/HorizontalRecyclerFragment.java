@@ -63,6 +63,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id="+ plantModel.getId());
             }
         });
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,17 +13,23 @@
         android:background="@drawable/ll_diary_content_bg"
         android:orientation="vertical">
 
-        <ImageView
+        <bocai.com.yanghuaji.util.widget.RoundAngleImageView
             android:id="@+id/img_diary_cover"
-            android:layout_width="242dp"
+            android:layout_width="match_parent"
             android:layout_height="170dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/img_diary_cover_empty" />
+            android:src="@mipmap/img_diary_cover_empty"
+            app:roundHeightLeftUp="5dp"
+            app:roundHeightRightUp="5dp" />
 
         <TextView
             android:id="@+id/tv_diary_content"
             android:layout_width="242dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="13dp"
             android:textColor="#333333"
             android:textSize="11sp" />
     </LinearLayout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@mipmap/img_main_vertical_bg"
     android:orientation="vertical"
     android:paddingLeft="20dp"
@@ -11,13 +11,14 @@
 
     <LinearLayout
         android:id="@+id/ll_root"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <bocai.com.yanghuaji.util.widget.RoundAngleImageView
                 android:id="@+id/image"
@@ -112,9 +113,6 @@
         </LinearLayout>
 
 
-
-
-
         <LinearLayout
             android:id="@+id/ll_data"
             android:layout_width="wrap_content"
@@ -168,33 +166,29 @@
     </LinearLayout>
 
 
-
-
-
     <FrameLayout
-        tools:visibility="visible"
-        android:visibility="gone"
         android:id="@+id/frame_more"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/bg_recycler_vertical"
-        android:layout_height="match_parent">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
 
             <FrameLayout
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
 
                     <View
@@ -204,11 +198,11 @@
 
 
                     <View
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@mipmap/img_divide_vertical_card"
                         android:layout_width="0.5dp"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@mipmap/img_divide_vertical_card" />
 
                     <View
                         android:layout_width="0dp"
@@ -216,11 +210,11 @@
                         android:layout_weight="1" />
 
                     <View
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@mipmap/img_divide_vertical_card"
                         android:layout_width="1dp"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@mipmap/img_divide_vertical_card" />
 
                     <View
                         android:layout_width="0dp"
@@ -231,11 +225,11 @@
 
 
                 <View
-                    android:layout_marginStart="25dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@mipmap/img_divide_horizontal_card"
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"/>
+                    android:layout_height="0.5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="25dp"
+                    android:background="@mipmap/img_divide_horizontal_card" />
 
 
                 <LinearLayout
@@ -244,89 +238,88 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_weight="1"
-                        android:gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp">
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <CheckBox
-                        android:checked="true"
-                        android:button="@null"
-                        android:textColor="#FFFFFF"
-                        android:textSize="11sp"
-                        android:drawablePadding="3dp"
-                        android:drawableTop="@drawable/sel_cb_push"
-                        android:layout_width="0dp"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="消息推送"/>
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:checked="true"
+                            android:drawablePadding="3dp"
+                            android:drawableTop="@drawable/sel_cb_push"
+                            android:gravity="center"
+                            android:text="消息推送"
+                            android:textColor="#FFFFFF"
+                            android:textSize="11sp" />
 
 
                         <CheckBox
-                        android:checked="true"
-                        android:button="@null"
-                        android:textColor="#FFFFFF"
-                        android:textSize="11sp"
-                        android:gravity="center"
-                        android:drawablePadding="3dp"
-                        android:drawableTop="@drawable/sel_cb_light"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="光照"/>
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:checked="true"
+                            android:drawablePadding="3dp"
+                            android:drawableTop="@drawable/sel_cb_light"
+                            android:gravity="center"
+                            android:text="光照"
+                            android:textColor="#FFFFFF"
+                            android:textSize="11sp" />
 
 
                         <TextView
-                        android:checked="true"
-                        android:button="@null"
-                        android:textColor="#FFFFFF"
-                        android:textSize="11sp"
-                        android:drawablePadding="3dp"
-                        android:drawableTop="@mipmap/img_refresh_vertical"
-                        android:layout_width="0dp"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="刷新"/>
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:checked="true"
+                            android:drawablePadding="3dp"
+                            android:drawableTop="@mipmap/img_refresh_vertical"
+                            android:gravity="center"
+                            android:text="刷新"
+                            android:textColor="#FFFFFF"
+                            android:textSize="11sp" />
 
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_weight="1"
-                        android:gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp">
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <TextView
-                        android:id="@+id/tv_setting"
-                        android:checked="true"
-                        android:textColor="#FFFFFF"
-                        android:textSize="11sp"
-                        android:drawablePadding="3dp"
-                        android:drawableTop="@mipmap/img_setting_main_vertical"
-                        android:layout_width="0dp"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="种植设置"/>
+                            android:id="@+id/tv_setting"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:drawablePadding="3dp"
+                            android:drawableTop="@mipmap/img_setting_main_vertical"
+                            android:gravity="center"
+                            android:text="种植设置"
+                            android:textColor="#FFFFFF"
+                            android:textSize="11sp" />
 
 
                         <TextView
-                        android:checked="true"
-                        android:textColor="#FFFFFF"
-                        android:textSize="11sp"
-                        android:drawablePadding="3dp"
-                        android:drawableTop="@mipmap/img_update_vertical"
-                        android:layout_width="0dp"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="设备升级"/>
-
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:drawablePadding="3dp"
+                            android:drawableTop="@mipmap/img_update_vertical"
+                            android:gravity="center"
+                            android:text="设备升级"
+                            android:textColor="#FFFFFF"
+                            android:textSize="11sp" />
 
 
                         <ImageView
@@ -334,8 +327,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:src="@mipmap/img_more_vertical" />
-
-
 
 
                     </LinearLayout>
@@ -347,127 +338,18 @@
 
 
             <ImageView
-            android:id="@+id/img_close"
-            android:layout_marginStart="5dp"
-            android:scaleType="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:src="@mipmap/img_close_main_vertical"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            />
+                android:id="@+id/img_close"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="center"
+                android:src="@mipmap/img_close_main_vertical" />
 
         </LinearLayout>
 
-
-
-        <!--<View-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0.5dp"-->
-            <!--android:layout_marginEnd="30dp"-->
-            <!--android:layout_marginStart="25dp"-->
-            <!--android:background="@mipmap/img_dotted_background" />-->
-
-
-        <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
-
-
-            <!--<LinearLayout-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_height="match_parent">-->
-
-
-
-
-
-            <!--</LinearLayout>-->
-
-
-            <!--<View-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_width="0.5dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:background="@mipmap/img_dotted_background" />-->
-
-
-
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:gravity="center"-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_height="match_parent">-->
-
-
-
-
-
-            <!--</LinearLayout>-->
-
-
-            <!--<View-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_width="0.5dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:background="@mipmap/img_dotted_background" />-->
-
-
-            <!--<LinearLayout-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_height="match_parent">-->
-
-
-
-                <!--<TextView-->
-                    <!--android:checked="true"-->
-                    <!--android:textColor="#ffffff"-->
-                    <!--android:textSize="11sp"-->
-                    <!--android:layout_marginTop="20dp"-->
-                    <!--android:layout_marginBottom="5dp"-->
-                    <!--android:drawablePadding="3dp"-->
-                    <!--android:layout_width="44dp"-->
-                    <!--android:layout_height="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:text="更多功能敬请期待"/>-->
-
-            <!--</LinearLayout>-->
-
-
-            <!--<ImageView-->
-                <!--android:id="@+id/img_close"-->
-                <!--android:layout_marginStart="15dp"-->
-                <!--android:scaleType="center"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:layout_marginEnd="10dp"-->
-                <!--android:src="@mipmap/img_close_main_vertical"-->
-                <!--android:layout_width="25dp"-->
-                <!--android:layout_height="25dp"-->
-                <!--/>-->
-
-        <!--</LinearLayout>-->
-
     </FrameLayout>
-
-
-
-
-
-
 
 </FrameLayout>
 

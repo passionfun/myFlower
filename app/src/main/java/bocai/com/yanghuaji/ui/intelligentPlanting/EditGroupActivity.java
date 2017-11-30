@@ -85,7 +85,7 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
 
     @OnClick(R.id.tv_right)
     void onSaveClick() {
-        //TODO 保存
+        // 保存
         String token = Account.getToken();
         mGroupName = mEtName.getText().toString();
         StringBuffer buffer = new StringBuffer();
