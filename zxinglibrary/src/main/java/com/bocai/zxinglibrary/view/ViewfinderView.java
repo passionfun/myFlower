@@ -188,7 +188,7 @@ public final class ViewfinderView extends View {
 //        canvas.drawRect(frame, paint);
 
         /*扫描框的四个角*/
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.GREEN);
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(1);
 
