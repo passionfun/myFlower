@@ -8,7 +8,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
@@ -17,6 +21,7 @@ import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.PlantStatusModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.GalleryLayoutManager;
@@ -24,6 +29,10 @@ import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.ScaleTransforme
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import xpod.longtooth.LongTooth;
+import xpod.longtooth.LongToothAttachment;
+import xpod.longtooth.LongToothServiceResponseHandler;
+import xpod.longtooth.LongToothTunnel;
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -151,6 +160,18 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         .centerCrop()
                         .placeholder(R.mipmap.img_main_empty)
                         .into(mImage);
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        Gson gson = new Gson();
+                        PlantStatusModel model = new PlantStatusModel("1","getStatus","1",plantModel.getPSIGN(),"1",plantModel.getPid());
+                        String request = gson.toJson(model);
+                        LongTooth.request(plantModel.getLTID(),"longtooth", LongToothTunnel.LT_ARGUMENTS,request.getBytes(),
+                                0,request.getBytes().length,null,new LongToothResponse());
+                    }
+                };
+                timer.schedule(task,5000,5000);
             }
 
             @OnClick(R.id.ll_data)
@@ -180,6 +201,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             }
         }
 
+         class LongToothResponse implements LongToothServiceResponseHandler {
+             @Override
+             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+
+             }
+         }
 
     }
 

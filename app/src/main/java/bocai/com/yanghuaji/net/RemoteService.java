@@ -111,7 +111,8 @@ public interface RemoteService {
     @POST("equipment/create_equipment")
     @FormUrlEncoded
     Observable<BaseRspModel<EquipmentCard>> addEquipment(@Field("Token") String token, @Field("EquipName") String equipmentName,
-                                                         @Field("Mac") String macAddress, @Field("SerialNum") String serialNum, @Field("Version") String version);
+                                                         @Field("Mac") String macAddress, @Field("SerialNum") String serialNum,
+                                                         @Field("Version") String version,@Field("LTID") String longToothId,@Field("PSIGN") String timeStamp);
 
 
     //搜索植物

@@ -24,7 +24,6 @@ import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessPresenter;
-import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -51,18 +50,22 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
     TextView mNext;
 
     public static final String KEY_JSON_CONTENT = "KEY_JSON_CONTENT";
+    public static final String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
+    public static final String KEY_EQUIPMENT_NAME = "KEY_EQUIPMENT_NAME";
     private String jsonContent;
     private String mEquipmentName;
     private String mEquipmentId;
 
     //显示的入口
-    public static void show(Context context, String jsonString) {
+    public static void show(Context context, String jsonString,String equipmentId,String equipmentName) {
         if (TextUtils.isEmpty(jsonString)) {
             Application.showToast("参数错误");
             return;
         }
         Intent intent = new Intent(context, ConnectSuccessActivity.class);
         intent.putExtra(KEY_JSON_CONTENT, jsonString);
+        intent.putExtra(KEY_EQUIPMENT_ID, equipmentId);
+        intent.putExtra(KEY_EQUIPMENT_NAME, equipmentName);
         context.startActivity(intent);
     }
 
@@ -74,6 +77,8 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
     @Override
     protected boolean initArgs(Bundle bundle) {
         jsonContent = bundle.getString(KEY_JSON_CONTENT);
+        mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
+        mEquipmentName = bundle.getString(KEY_EQUIPMENT_NAME);
         return super.initArgs(bundle);
     }
 
@@ -110,10 +115,10 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
         String macAddress = equipmentModels.get(0).getMAC();
         mName.setText(mEquipmentName);
         mMac.setText(macAddress);
-        String token = Account.getToken();
-        String serialNum = "11074";
-        String version = "1.0";
-        mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version);
+//        String token = Account.getToken();
+//        String serialNum = "11074";
+//        String version = "1.0";
+//        mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version);
     }
 
     @OnClick(R.id.img_back)

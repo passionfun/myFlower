@@ -25,7 +25,7 @@ public class DateUtils {
      * @param time
      * @return
      */
-    public String data(String time) {
+    public static String data(String time) {
         SimpleDateFormat sdr = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒",
                 Locale.CHINA);
         Date date;
@@ -40,6 +40,19 @@ public class DateUtils {
         }
         return times;
     }
+
+
+    /**
+     * 获取系统当前的时间戳
+     */
+    public static String getCurrentDateTimes(){
+        SimpleDateFormat   formatter   =   new   SimpleDateFormat   ("yyyy年MM月dd日HH时mm分ss秒");
+        Date curDate =  new Date(System.currentTimeMillis());
+        String   str   =   formatter.format(curDate);
+        String result = data(str);
+        return result;
+    }
+
 
     public static String getTodayDateTimes() {
         SimpleDateFormat format = new SimpleDateFormat("MM月dd日",
@@ -143,7 +156,7 @@ public class DateUtils {
     }
 
     /**
-     * @param time斜杠分开
+     * @paramtime斜杠分开
      * @return
      */
     public static String timeslash(String time) {
@@ -157,7 +170,7 @@ public class DateUtils {
     }
 
     /**
-     * @param time斜杠分开
+     * @paramtime斜杠分开
      * @return
      */
     public static String timeslashData(String time) {
@@ -171,7 +184,7 @@ public class DateUtils {
     }
 
     /**
-     * @param time斜杠分开
+     * @paramtime斜杠分开
      * @return
      */
     public static String timeMinute(String time) {

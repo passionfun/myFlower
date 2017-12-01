@@ -95,6 +95,24 @@ public class EquipmentRspModel {
         private String Light;
         private String Estatus;
         private String Photo;
+        private String LTID;
+        private String PSIGN;
+
+        public String getLTID() {
+            return LTID;
+        }
+
+        public void setLTID(String LTID) {
+            this.LTID = LTID;
+        }
+
+        public String getPSIGN() {
+            return PSIGN;
+        }
+
+        public void setPSIGN(String PSIGN) {
+            this.PSIGN = PSIGN;
+        }
 
         public String getId() {
             return Id;
