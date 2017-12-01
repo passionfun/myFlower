@@ -4,6 +4,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.net.Network;
 import io.reactivex.Observable;
@@ -42,6 +43,38 @@ public class AddEquuipmentPresenter extends BasePresenter<AddEquipmentContract.V
                             view.getEquipmentSeriesSuccess(plantSeriesModelBaseRspModel.getData().getList());
                         } else {
                             Application.showToast(plantSeriesModelBaseRspModel.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getEquipmentPhoto(String type,String equipmentType) {
+        Observable<BaseRspModel<EquipmentPhotoModel>> observable = Network.remote().getEquipmentPhoto(type,equipmentType);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<EquipmentPhotoModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<EquipmentPhotoModel> equipmentPhotoModelBaseRspModel) {
+                        if (equipmentPhotoModelBaseRspModel.getReturnCode().equals("200")) {
+                            view.getEquipmentPhotoSuccess(equipmentPhotoModelBaseRspModel.getData());
+                        } else {
+                            Application.showToast(equipmentPhotoModelBaseRspModel.getMsg());
                         }
                     }
 

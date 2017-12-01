@@ -18,9 +18,9 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquuipmentPresenter;
@@ -110,7 +110,6 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -119,8 +118,10 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             if (data != null) {
                 String content = data.getStringExtra(Constant.CODED_CONTENT);
-                Log.d("shc", "扫描结果为: "+ content);
-                Application.showToast(content);
+                Log.d("shc", "扫描结果为: " + content);
+                //WG101&8001F023412332&B0F89310C460
+                String equipmentType = content.substring(0,content.indexOf("&"));
+                mPresenter.getEquipmentPhoto("1",equipmentType);
             }
         }
     }
@@ -136,6 +137,11 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
             mAdapter.add(cards);
         }
 
+    }
+
+    @Override
+    public void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel) {
+        AddEquipmentDisplayActivity.show(this, photoModel.getPhoto());
     }
 
     @Override

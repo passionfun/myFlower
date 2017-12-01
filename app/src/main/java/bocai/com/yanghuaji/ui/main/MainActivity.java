@@ -28,6 +28,7 @@ import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.main.MainActivityContract;
 import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
+import bocai.com.yanghuaji.ui.intelligentPlanting.AddWifiActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
@@ -220,7 +221,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
     @OnClick(R.id.tv_shopping)
     void onShoppingClick() {
-
+        AddWifiActivity.show(this);
     }
 
     public void showLeft() {

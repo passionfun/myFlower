@@ -64,4 +64,5 @@ dependencies {
     //万能adapter
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
     implementation project(':zxinglibrary')
+    implementation files('libs/lt4-a-4.0.e_h_20170310.jar')
 }

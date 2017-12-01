@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,9 +31,17 @@ public class AddEquipmentDisplayActivity extends Activity {
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
+    @BindView(R.id.img_photo)
+    ImageView mEquipmentPhoto;
+
+    public static final String KEY_PHOTO_PATH = "KEY_PHOTO_PATH";
+    private String mPhotoPath;
+
     //显示的入口
-    public static void show(Context context) {
-        context.startActivity(new Intent(context, AddEquipmentDisplayActivity.class));
+    public static void show(Context context,String photoPath) {
+        Intent intent = new Intent(context, AddEquipmentDisplayActivity.class);
+        intent.putExtra(KEY_PHOTO_PATH,photoPath);
+        context.startActivity(intent);
     }
 
     @Override
@@ -40,9 +50,19 @@ public class AddEquipmentDisplayActivity extends Activity {
     }
 
     @Override
+    protected boolean initArgs(Bundle bundle) {
+        mPhotoPath = bundle.getString(KEY_PHOTO_PATH);
+        return super.initArgs(bundle);
+    }
+
+    @Override
     protected void initWidget() {
         super.initWidget();
         mTitle.setText("添加设备");
+        GlideApp.with(this)
+                .load(mPhotoPath)
+                .centerCrop()
+                .into(mEquipmentPhoto);
     }
 
     @OnClick(R.id.img_back)
