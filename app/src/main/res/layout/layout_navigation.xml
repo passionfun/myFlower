@@ -45,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="沉迷工作的网银少女"
-                        android:textColor="#FFFFFF "
+                        android:textColor="#FFFFFF"
                         android:textSize="17sp"
                         tools:ignore="HardcodedText" />
 
