@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.yalantis.ucrop.UCrop;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.media.GalleryFragment;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.personalCenter.EditPersonalDataContract;
 import bocai.com.yanghuaji.presenter.personalCenter.EditPersonalDataPresenter;
@@ -59,6 +62,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
     @BindView(R.id.et_input_name)
     EditText mName;
 
+    public static final String MODIFY_PERSONAL_DATA_SUCCESS = "MODIFY_PERSONAL_DATA_SUCCESS";
     final int DATE_DIALOG = 1;
     private int mYear, mMonth, mDay;
 
@@ -85,6 +89,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
         User user = Account.getUser();
         if (user != null) {
             mName.setText(user.getNickName());
+            if (user.getSex()!=null)
             mSex.setText(user.getSex().equals("1") ? "男" : "女");
             mBirthday.setText(user.getBirthday());
             GlideApp.with(this)
@@ -227,6 +232,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
     @Override
     public void modifyDataSuccess() {
+        EventBus.getDefault().post(new MessageEvent(MODIFY_PERSONAL_DATA_SUCCESS));
         finish();
     }
 

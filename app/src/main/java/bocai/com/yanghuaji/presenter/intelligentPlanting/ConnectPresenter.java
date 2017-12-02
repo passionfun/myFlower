@@ -38,8 +38,6 @@ public class ConnectPresenter extends BasePresenter<ConnectContract.View> implem
                     public void onNext(BaseRspModel<EquipmentCard> equipmentCardBaseRspModel) {
                         if (equipmentCardBaseRspModel.getReturnCode().equals("200")) {
                             view.addEquipmentSuccess(equipmentCardBaseRspModel.getData());
-                        }else {
-                            view.addEquipmentFailed();
                         }
                         Application.showToast(equipmentCardBaseRspModel.getMsg());
                     }

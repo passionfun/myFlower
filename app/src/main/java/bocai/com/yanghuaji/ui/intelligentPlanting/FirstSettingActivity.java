@@ -10,6 +10,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.FirstSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.FirstSettingPresenter;
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -93,7 +94,7 @@ public class FirstSettingActivity extends PresenterActivity<FirstSettingContract
 
     @Override
     public void setupSuccess() {
-
+        MainActivity.show(this);
     }
 
     @Override

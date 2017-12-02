@@ -183,7 +183,7 @@ public interface RemoteService {
 //    @FormUrlEncoded
 //    Observable<BaseRspModel<GroupRspModel>> getAllGroupList(@Field("Token") String token);
 
-    //设备设置
+    //植物设置
     @POST("equipment/setup_plant")
     @FormUrlEncoded
     Observable<BaseRspModel<PlantSettingModel>> setupPlant(@FieldMap Map<String,String> map);

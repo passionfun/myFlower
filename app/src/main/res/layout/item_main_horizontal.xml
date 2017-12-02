@@ -152,6 +152,14 @@
     </LinearLayout>
 
 
+    <FrameLayout
+        android:visibility="invisible"
+        android:id="@+id/frame_offliine"
+        android:layout_width="250dp"
+        android:layout_height="220dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_recycler_horizontal"/>
+
 
 
     <FrameLayout

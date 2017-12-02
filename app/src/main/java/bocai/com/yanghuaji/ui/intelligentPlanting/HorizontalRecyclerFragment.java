@@ -51,6 +51,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     TextView mTotalNum;
 
     private int page = 1;
+    public static final String TAG = HorizontalRecyclerFragment.class.getName();
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
 
     @Override
@@ -190,6 +191,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @OnClick(R.id.img_setting)
             void onSettingClick(){
+                Log.d(TAG, "run: "+mModel.getPSIGN());
                 isShowSetting = !isShowSetting;
                 if (isShowSetting){
                     mSettingView.setVisibility(View.VISIBLE);
@@ -204,7 +206,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
          class LongToothResponse implements LongToothServiceResponseHandler {
              @Override
              public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
-
+                 Log.d("shc", "horizoontalResponse: "+new String(bytes));
+                 Application.showToast("horizontal" + new String(bytes));
              }
          }
 
