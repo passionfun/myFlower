@@ -8,5 +8,6 @@
     <color name="selected">#147809</color>
 
     <color name="normal">#BCBCBC</color>
+    <color name="circle_stroke">#D5F2B7</color>
 
 </resources>

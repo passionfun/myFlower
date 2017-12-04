@@ -10,6 +10,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 import java.io.File;
 
 import bocai.com.yanghuaji.base.common.Factory;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 作者 yuanfei on 2017/11/8.
@@ -23,6 +24,7 @@ public class Application extends android.app.Application {
         super.onCreate();
         instance = this;
         Factory.setup();
+        JPushInterface.init(this);
     }
 
 
