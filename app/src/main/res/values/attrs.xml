@@ -10,15 +10,21 @@
     </declare-styleable>
 
 
-    - <declare-styleable name="DashView">
-    <attr name="dashWidth" format="dimension" />
-    <attr name="lineWidth" format="dimension" />
-    <attr name="lineHeight" format="dimension" />
-    <attr name="lineColor" format="color" />
-    <attr name="dashOrientation" format="integer" />
-</declare-styleable>
+    -
+    <declare-styleable name="DashView">
+        <attr name="dashWidth" format="dimension" />
+        <attr name="lineWidth" format="dimension" />
+        <attr name="lineHeight" format="dimension" />
+        <attr name="lineColor" format="color" />
+        <attr name="dashOrientation" format="integer" />
+    </declare-styleable>
 
-
-
+    <declare-styleable name="WaterRippleView">
+        <attr name="rippleSpacing" format="dimension|reference" />
+        <attr name="rippleCount" format="integer|reference" />
+        <attr name="waterRippleColor" format="color|reference" />
+        <attr name="rippleCenterIcon" format="reference" />
+        <attr name="rippleAutoRunning" format="boolean" />
+    </declare-styleable>
 
 </resources>

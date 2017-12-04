@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -44,15 +45,14 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
     ProgressBar progress;
 
     public static final String KEY_DIARY_ID = "KEY_DIARY_ID";
-    private String mDiaryId;
+    private String mDiaryId, mLoadUrl;
 
     //显示的入口
-    public static void show(Context context,String diaryId) {
+    public static void show(Context context, String diaryId) {
         Intent intent = new Intent(context, DiaryListActivity.class);
         intent.putExtra(KEY_DIARY_ID, diaryId);
         context.startActivity(intent);
     }
-
 
 
     @Override
@@ -67,9 +67,10 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
         return super.initArgs(bundle);
 
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDiaryItemDeleteSuccess(MessageEvent messageEvent){
-        if (messageEvent.getMessage().equals(DiaryDetailActivity.DIARY_DELETE_SUCCESS)){
+    public void onDiaryItemDeleteSuccess(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals(DiaryDetailActivity.DIARY_DELETE_SUCCESS)) {
             mWebview.reload();
         }
     }
@@ -105,22 +106,20 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
             }
         });
 
-
         //设置不用系统浏览器打开,直接显示在当前Webview
         mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.d("test",url);
-                if(url.startsWith(Common.Constance.H5_BASE+"diary_info.html?")){
-                    DiaryDetailActivity.show(DiaryListActivity.this,url);
+                Log.d("test", url);
+                if (url.startsWith(Common.Constance.H5_BASE + "diary_info.html?")) {
+                    DiaryDetailActivity.show(DiaryListActivity.this, url);
                 }
                 return true;
             }
         });
 
-
-
-        mWebview.loadUrl(Common.Constance.H5_BASE+"diary.html?id="+mDiaryId);
+        mLoadUrl = Common.Constance.H5_BASE + "diary.html?id=" + mDiaryId;
+        mWebview.loadUrl(mLoadUrl);
     }
 
     @OnClick(R.id.img_back)
@@ -155,7 +154,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
             }
         });
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
-        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM,0,0);
+        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 0);
     }
 
     @OnClick(R.id.img_data_card)
@@ -167,11 +166,11 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
 
     @Override
     public void getDiaryDataSuccess(DiaryCardModel diaryCardModel) {
-            DiaryContentCardPopupWindow popupWindow = new DiaryContentCardPopupWindow(this);
-            ActivityUtil.setBackgroundAlpha(this, 0.19f);
-            popupWindow.initData(diaryCardModel.getPhoto(),diaryCardModel.getPlantName(),diaryCardModel.getEquipName(),
-                    diaryCardModel.getPlace(), DateUtils.timet(diaryCardModel.getPlantTime()));
-            popupWindow.showAtLocation(mRoot, Gravity.BOTTOM,0,0);
+        DiaryContentCardPopupWindow popupWindow = new DiaryContentCardPopupWindow(this);
+        ActivityUtil.setBackgroundAlpha(this, 0.19f);
+        popupWindow.initData(diaryCardModel.getPhoto(), diaryCardModel.getPlantName(), diaryCardModel.getEquipName(),
+                diaryCardModel.getPlace(), DateUtils.timet(diaryCardModel.getPlantTime()));
+        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 0);
     }
 
     @Override
