@@ -31,7 +31,7 @@ import butterknife.OnClick;
  */
 
 public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlantContract.Presenter>
-        implements IntelligentPlantContract.View  {
+        implements IntelligentPlantContract.View {
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
 
@@ -59,11 +59,17 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<EquipmentRspModel.ListBean>() {
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentRspModel.ListBean plantModel) {
-                Log.d("test", Common.Constance.H5_BASE + "product.html?id="+ plantModel.getId());
-                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id="+ plantModel.getId());
+                Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
+                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
             }
         });
-
+        layoutManager.setOnItemSelectedListener(new GalleryLayoutManager.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(RecyclerView recyclerView, View item, int position) {
+                mCurrentNum.setText((position + 1) + "");
+            }
+        });
+        mCurrentNum.setText("1");
     }
 
     @Override
@@ -92,11 +98,10 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     }
 
 
-     class Adapter extends RecyclerAdapter<EquipmentRspModel.ListBean> {
+    class Adapter extends RecyclerAdapter<EquipmentRspModel.ListBean> {
 
         @Override
         protected int getItemViewType(int position, EquipmentRspModel.ListBean plantModel) {
-            mCurrentNum.setText(String.valueOf(position));
             return R.layout.item_main_horizontal;
         }
 
@@ -130,7 +135,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             ImageView mImage;
 
             private LinearLayout lldata;
-            private EquipmentRspModel.ListBean  mModel;
+            private EquipmentRspModel.ListBean mModel;
             private boolean isShowSetting = false;
 
             public MyViewHolder(View itemView) {
@@ -145,7 +150,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mEquipmentName.setText(plantModel.getEquipName());
                 mPlantName.setText(plantModel.getPlantName());
                 mGroupName.setText(plantModel.getGroupName());
-                mTime.setText(plantModel.getDays()+"");
+                mTime.setText(plantModel.getDays() + "");
                 GlideApp.with(getContext())
                         .load(plantModel.getPhoto())
                         .centerCrop()
@@ -154,26 +159,26 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             }
 
             @OnClick(R.id.ll_data)
-            void onDataClick(){
-                Log.d("test",Common.Constance.H5_BASE + "product_data.html?id="+ mModel.getId());
-                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id="+ mModel.getId());
+            void onDataClick() {
+                Log.d("test", Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
+                PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
             }
 
             @OnClick(R.id.tv_setting_second)
-            void onSecondSettingClick(){
+            void onSecondSettingClick() {
                 String mEquipmentId = mModel.getId();
                 String mPlantId = mModel.getPid();
-                SecondSettingActivity.show(getContext(),mEquipmentId,mPlantId);
+                SecondSettingActivity.show(getContext(), mEquipmentId, mPlantId);
             }
 
 
             @OnClick(R.id.img_setting)
-            void onSettingClick(){
+            void onSettingClick() {
                 isShowSetting = !isShowSetting;
-                if (isShowSetting){
+                if (isShowSetting) {
                     mSettingView.setVisibility(View.VISIBLE);
                     mSetting.setImageResource(R.mipmap.img_close_main_horizontal);
-                }else {
+                } else {
                     mSettingView.setVisibility(View.GONE);
                     mSetting.setImageResource(R.mipmap.img_item_setting);
                 }
