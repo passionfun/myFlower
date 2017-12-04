@@ -113,15 +113,30 @@
         android:textColor="#333333"
         android:textSize="15sp" />
 
-    <ImageView
-        android:id="@+id/img_upgrading"
+    <FrameLayout
+        android:id="@+id/frame_update"
         android:visibility="gone"
         android:layout_gravity="end"
-        android:src="@mipmap/img_upgrading"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_upgrading"
+            android:src="@mipmap/img_update_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:src="@mipmap/img_rect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/img_upgrade"
         android:layout_gravity="end"
         android:src="@mipmap/img_upgrade"

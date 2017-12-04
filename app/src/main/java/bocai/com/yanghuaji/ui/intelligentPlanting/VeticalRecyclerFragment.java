@@ -40,6 +40,10 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     private int page = 1;
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private List<PlantModel> mList = new ArrayList<>();
+    private String mEquipmentId;
+    private String mPlantId;
+    private String uuid;
+    private String longToothId;
 
     @Override
     protected int getContentLayoutId() {
@@ -129,7 +133,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @BindView(R.id.image)
         ImageView mImage;
 
-        private EquipmentRspModel.ListBean  mModel;
+        private EquipmentRspModel.ListBean mModel;
 
 
         public ViewHolder(View itemView) {
@@ -139,10 +143,14 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @Override
         protected void onBind(final EquipmentRspModel.ListBean plantModel) {
             mModel = plantModel;
+            mEquipmentId = mModel.getId();
+            mPlantId = mModel.getPid();
+            uuid = mModel.getPSIGN();
+            longToothId = mModel.getLTID();
             mEquipmentName.setText(plantModel.getEquipName());
             mPlantName.setText(plantModel.getPlantName());
             mGroupName.setText(plantModel.getGroupName());
-            mTime.setText(plantModel.getDays()+"");
+            mTime.setText(plantModel.getDays() + "");
             GlideApp.with(getContext())
                     .load(plantModel.getPhoto())
                     .centerCrop()
@@ -153,7 +161,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @OnClick(R.id.ll_data)
         void onDataClick() {
             Log.d("test", Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
-            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
+            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId(), mEquipmentId, mPlantId, uuid, longToothId);
         }
 
         @OnClick(R.id.img_more)
@@ -169,14 +177,12 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @OnClick(R.id.ll_root)
         void onItemClick() {
             Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + mModel.getId());
-            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + mModel.getId());
+            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + mModel.getId(), mEquipmentId, mPlantId, uuid, longToothId);
         }
 
         @OnClick(R.id.tv_setting)
         void onSettingClick() {
-            String mEquipmentId = mModel.getId();
-             String mPlantId = mModel.getPid();
-            SecondSettingActivity.show(getContext(),mEquipmentId,mPlantId);
+            SecondSettingActivity.show(getContext(), mEquipmentId, mPlantId, uuid, longToothId);
         }
 
     }

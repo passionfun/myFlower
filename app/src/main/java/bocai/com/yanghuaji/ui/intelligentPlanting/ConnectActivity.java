@@ -230,7 +230,9 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 String token = Account.getToken();
                 String serialNum = "11074";
                 String version = mModel.get_$HardwareRev172();
-                mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,longToothId,timeStamp);
+                if (mPresenter != null){
+                    mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,longToothId,timeStamp);
+                }
             }
 
         }

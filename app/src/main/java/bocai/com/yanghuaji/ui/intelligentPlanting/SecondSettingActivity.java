@@ -26,15 +26,21 @@ public class SecondSettingActivity extends Activity {
 
     public static final String KEY_PLANT_ID = "KEY_PLANT_ID";
     public static final String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
+    public static final String KEY_UUID = "KEY_UUID";
+    public static final String KEY_LONGTOOTH_ID = "KEY_LONGTOOTH_ID";
     private String mEquipmentId;
     private String mPlantId;
+    private String mUUID;
+    private String mLongToothId;
 
 
     //显示的入口
-    public static void show(Context context,String equipmentId,String plantId) {
+    public static void show(Context context,String equipmentId,String plantId,String uuid,String longToothId) {
         Intent intent = new Intent(context, SecondSettingActivity.class);
         intent.putExtra(KEY_EQUIPMENT_ID,equipmentId);
         intent.putExtra(KEY_PLANT_ID,plantId);
+        intent.putExtra(KEY_UUID,uuid);
+        intent.putExtra(KEY_LONGTOOTH_ID,longToothId);
         context.startActivity(intent);
     }
 
@@ -47,6 +53,8 @@ public class SecondSettingActivity extends Activity {
     protected boolean initArgs(Bundle bundle) {
         mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
         mPlantId = bundle.getString(KEY_PLANT_ID);
+        mUUID = bundle.getString(KEY_UUID);
+        mLongToothId = bundle.getString(KEY_LONGTOOTH_ID);
         return super.initArgs(bundle);
     }
 
@@ -64,7 +72,7 @@ public class SecondSettingActivity extends Activity {
     @OnClick(R.id.tv_equipment_setting)
     void onEquipmentSettingClick() {
         // 往里面传 设备id
-        EquipmentSettingActivity.show(this,mEquipmentId);
+        EquipmentSettingActivity.show(this,mEquipmentId,mUUID,mLongToothId);
     }
 
     @OnClick(R.id.tv_plant_setting)
@@ -76,7 +84,7 @@ public class SecondSettingActivity extends Activity {
     @OnClick(R.id.tv_equipment_info)
     void onEquipmentInfoClick() {
         // 往里面传 设备id
-        EquipmentInfoActivity.show(this,mEquipmentId);
+        EquipmentInfoActivity.show(this,mEquipmentId,mUUID,mLongToothId);
     }
 
 }

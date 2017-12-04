@@ -45,10 +45,10 @@ public class DateUtils {
     /**
      * 获取系统当前的时间戳
      */
-    public static String getCurrentDateTimes(){
-        SimpleDateFormat   formatter   =   new   SimpleDateFormat   ("yyyy年MM月dd日HH时mm分ss秒");
-        Date curDate =  new Date(System.currentTimeMillis());
-        String   str   =   formatter.format(curDate);
+    public static String getCurrentDateTimes() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+        Date curDate = new Date(System.currentTimeMillis());
+        String str = formatter.format(curDate);
         String result = data(str);
         return result;
     }
@@ -156,8 +156,8 @@ public class DateUtils {
     }
 
     /**
-     * @paramtime斜杠分开
      * @return
+     * @paramtime斜杠分开
      */
     public static String timeslash(String time) {
         SimpleDateFormat sdr = new SimpleDateFormat("yyyy/MM/dd,HH:mm");
@@ -170,8 +170,8 @@ public class DateUtils {
     }
 
     /**
-     * @paramtime斜杠分开
      * @return
+     * @paramtime斜杠分开
      */
     public static String timeslashData(String time) {
         SimpleDateFormat sdr = new SimpleDateFormat("yyyy/MM/dd");
@@ -184,8 +184,8 @@ public class DateUtils {
     }
 
     /**
-     * @paramtime斜杠分开
      * @return
+     * @paramtime斜杠分开
      */
     public static String timeMinute(String time) {
         SimpleDateFormat sdr = new SimpleDateFormat("HH:mm");
@@ -249,6 +249,7 @@ public class DateUtils {
     }
 
     // 并用分割符把时间分成时间数组
+
     /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（"2014-06-14-16-09-00"）
      *
@@ -295,8 +296,7 @@ public class DateUtils {
      * 根据传递的类型格式化时间
      *
      * @param str
-     * @param type
-     *            例如：yy-MM-dd
+     * @param type 例如：yy-MM-dd
      * @return
      */
     public static String getDateTimeByMillisecond(String str, String type) {
@@ -509,4 +509,13 @@ public class DateUtils {
         }
         return week;
     }
+
+
+    public static String formatTime(int time){
+        if (0<=time&&time<=9){
+            return  "0"+time;
+        }
+        return time+"";
+    }
+
 }

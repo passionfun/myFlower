@@ -1,6 +1,7 @@
 package bocai.com.yanghuaji.model;
 
 /**
+ * 获取植物状态的请求model
  * 作者 yuanfei on 2017/12/1.
  * 邮箱 yuanfei221@126.com
  */

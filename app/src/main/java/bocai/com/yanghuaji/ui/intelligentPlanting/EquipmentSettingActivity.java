@@ -2,7 +2,6 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +14,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
+
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,13 +24,14 @@ import java.util.Map;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.EquipmentSetupModel;
+import bocai.com.yanghuaji.model.EquipmentSetupModel_Table;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentSettingPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -40,7 +41,7 @@ import butterknife.OnClick;
 
 public class EquipmentSettingActivity extends PresenterActivity<EquipmentSettingContract.Presenter>
         implements EquipmentSettingContract.View {
-    public static final String EQUIPMENTID="equipmentId";
+    public static final String EQUIPMENTID = "equipmentId";
     @BindView(R.id.scroll_root)
     ScrollView mRoot;
 
@@ -71,13 +72,22 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     @BindView(R.id.tv_BanStop)
     TextView tvBanStop;
 
-    private String mName, groupId,lightStart,banStart,banStop,equipmentId;
+    public static final String KEY_UUID = "KEY_UUID";
+    public static final String KEY_LONG_TOOTH_ID = "KEY_LONG_TOOTH_ID";
+    private String mName, groupId, lightStart, banStart, banStop, equipmentId;
+    //补光开始时间一天中的时间点，以秒为单位 比如下午8点30分 传的值为：20*60*60+30*60 =73800。
+    private String mBengin;
     private Map<String, String> map = new HashMap<>();
+    private String mUUID;
+    private String mLongToothId;
+    private String mNoDistrubStart,mNoDistrubEnd;
 
     //显示的入口
-    public static void show(Context context,String equipmentId) {
-        Intent intent=new Intent(context, EquipmentSettingActivity.class);
-        intent.putExtra(EQUIPMENTID,equipmentId);
+    public static void show(Context context, String equipmentId,String uuid,String longToothId) {
+        Intent intent = new Intent(context, EquipmentSettingActivity.class);
+        intent.putExtra(EQUIPMENTID, equipmentId);
+        intent.putExtra(KEY_UUID, uuid);
+        intent.putExtra(KEY_LONG_TOOTH_ID, longToothId);
         context.startActivity(intent);
     }
 
@@ -92,13 +102,37 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     }
 
     @Override
+    protected boolean initArgs(Bundle bundle) {
+        equipmentId = bundle.getString(EQUIPMENTID);
+        mUUID = bundle.getString(KEY_UUID);
+        mLongToothId = bundle.getString(KEY_LONG_TOOTH_ID);
+        return super.initArgs(bundle);
+    }
+
+    @Override
     protected void initWidget() {
         super.initWidget();
         mTitle.setText("种植机设置");
         tvRight.setVisibility(View.VISIBLE);
-        equipmentId=getIntent().getStringExtra(EQUIPMENTID);
     }
 
+    @Override
+    protected void initData() {
+        super.initData();
+        EquipmentSetupModel equipmentSetupModel = SQLite.select()
+                .from(EquipmentSetupModel.class)
+                .where(EquipmentSetupModel_Table.Id.eq(equipmentId))
+                .querySingle();
+        if (equipmentSetupModel != null) {
+            etEquipName.setText(equipmentSetupModel.getEquipName());
+            // 	节水模式  0关  1开
+            checkbox.setChecked(equipmentSetupModel.getWaterMode().equals("1"));
+            tvLightStart.setText(equipmentSetupModel.getLightStart());
+            tvBanStart.setText(equipmentSetupModel.getBanStart());
+            tvBanStop.setText(equipmentSetupModel.getBanStop());
+            mGroupName.setText(equipmentSetupModel.getGroupName());
+        }
+    }
 
     @OnClick(R.id.tv_group)
     void onGroupClick() {
@@ -106,96 +140,74 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     }
 
     @OnClick(R.id.tv_right)
-    void onSave(){
-        if (checkbox.isChecked()){
+    void onSave() {
+        if (checkbox.isChecked()) {
             // 	节水模式  0关  1开
             map.put("WaterMode", "1");
-        }else {
+        } else {
             map.put("WaterMode", "0");
         }
         map.put("Token", Account.getToken());
-        if (TextUtils.isEmpty(etEquipName.getText().toString().trim())){
-            Toast.makeText(EquipmentSettingActivity.this,"请输入设备名字",Toast.LENGTH_SHORT).show();
-            return;
-        }else {
-            map.put("EquipName", etEquipName.getText().toString().trim());
+        map.put("EquipName", etEquipName.getText().toString().trim());
+        map.put("BanStart", banStart==null?"":banStart);
+        map.put("BanStop", banStop ==null?"":banStop);
+        map.put("GroupId", groupId ==null?"":groupId);//分组id
+        map.put("LightStart", lightStart ==null?"":lightStart);
+        map.put("Id", equipmentId );// 	设备id
+        //设置补光开启时间
+        if (!TextUtils.isEmpty(mBengin)){
+            EquipmentSettingHelper.setLightOn(mBengin,mUUID,mLongToothId);
         }
 
-        if (TextUtils.isEmpty(banStart)){
-            Toast.makeText(EquipmentSettingActivity.this,"请输入禁止光照开始时间",Toast.LENGTH_SHORT).show();
-            return;
-        }else {
-            map.put("BanStart", banStart);
+        if (!TextUtils.isEmpty(mNoDistrubStart)&&!TextUtils.isEmpty(mNoDistrubEnd)){
+            EquipmentSettingHelper.setNoDisturb(mNoDistrubStart,mNoDistrubEnd,mUUID,mLongToothId);
         }
-        if (TextUtils.isEmpty(banStop)){
-            Toast.makeText(EquipmentSettingActivity.this,"请输入禁止光照结束时间",Toast.LENGTH_SHORT).show();
-            return;
-        }else {
-            map.put("BanStop",banStop );
-        }
-        if (TextUtils.isEmpty(groupId)){
-            Toast.makeText(EquipmentSettingActivity.this,"请输入分组",Toast.LENGTH_SHORT).show();
-            return;
-        }else {
-            map.put("GroupId", groupId);//分组id
-        }
-        if (TextUtils.isEmpty(lightStart)){
-            Toast.makeText(EquipmentSettingActivity.this,"请输入光照开始时间",Toast.LENGTH_SHORT).show();
-            return;
-        }else {
-            map.put("LightStart", lightStart);
-        }
-
-        map.put("Id", equipmentId);// 	设备id
-
         mPresenter.setupEquipment(map);
     }
 
     @OnClick(R.id.tv_lightStart)
-    void clickLightStart(){
+    void clickLightStart() {
         TimePickerDialog dialog = new TimePickerDialog(EquipmentSettingActivity.this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        lightStart=hour+":"+minute;
+                        lightStart = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
+                        mBengin = (hour*60*60+minute*60)+"";
                         tvLightStart.setText(lightStart);
                     }
                 }, 6, 0, true);
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("确定");
-        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText("取消");
+//        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("确定");
+//        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText("取消");
     }
 
     @OnClick(R.id.tv_BanStart)
-    void clickBanStart(){
+    void clickBanStart() {
         TimePickerDialog dialog = new TimePickerDialog(EquipmentSettingActivity.this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        banStart=hour+":"+minute;
+                        banStart = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
+                        mNoDistrubStart = (hour*60*60+minute*60)+"";
                         tvBanStart.setText(banStart);
                     }
                 }, 6, 0, true);
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("确定");
-        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText("取消");
     }
 
     @OnClick(R.id.tv_BanStop)
-    void clickBanStop(){
+    void clickBanStop() {
         TimePickerDialog dialog = new TimePickerDialog(EquipmentSettingActivity.this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        banStop=hour+":"+minute;
+                        banStop = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
+                        mNoDistrubEnd = (hour*60*60+minute*60)+"";
                         tvBanStop.setText(banStop);
                     }
                 }, 6, 0, true);
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("确定");
-        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText("取消");
     }
-
 
 
     @Override
@@ -216,6 +228,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
 
     @Override
     public void setupEquipmentSuccess(EquipmentSetupModel model) {
+        model.save();
         finish();
     }
 

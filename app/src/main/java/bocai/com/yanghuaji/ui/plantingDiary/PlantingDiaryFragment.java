@@ -157,6 +157,7 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
                 mFirst.setVisibility(View.VISIBLE);
                 GlideApp.with(getContext())
                         .load(photos.get(0))
+                        .placeholder(R.mipmap.img_content_empty)
                         .centerCrop()
                         .into(mFirst);
             }else if (photos.size()==2){
@@ -164,10 +165,12 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
                 mSecond.setVisibility(View.VISIBLE);
                 GlideApp.with(getContext())
                         .load(photos.get(0))
+                        .placeholder(R.mipmap.img_content_empty)
                         .centerCrop()
                         .into(mFirst);
                 GlideApp.with(getContext())
                         .load(photos.get(1))
+                        .placeholder(R.mipmap.img_content_empty)
                         .centerCrop()
                         .into(mSecond);
             }else if (photos.size()==3){
@@ -176,14 +179,17 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
                 mThird.setVisibility(View.VISIBLE);
                 GlideApp.with(getContext())
                         .load(photos.get(0))
+                        .placeholder(R.mipmap.img_content_empty)
                         .centerCrop()
                         .into(mFirst);
                 GlideApp.with(getContext())
                         .load(photos.get(1))
+                        .placeholder(R.mipmap.img_content_empty)
                         .centerCrop()
                         .into(mSecond);
                 GlideApp.with(getContext())
                         .load(photos.get(2))
+                        .placeholder(R.mipmap.img_content_empty)
                         .centerCrop()
                         .into(mThird);
             }

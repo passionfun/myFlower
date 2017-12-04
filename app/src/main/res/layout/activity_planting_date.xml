@@ -7,7 +7,7 @@
         android:layout_marginTop="36dp"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="21dp"
+        android:layout_height="25dp"
         android:title="">
 
         <ImageView
@@ -16,6 +16,27 @@
             android:src="@mipmap/img_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
+
+        <ImageView
+            android:scaleType="center"
+            android:layout_gravity="end"
+            android:id="@+id/img_setting"
+            android:layout_marginEnd="22dp"
+            android:layout_marginStart="10dp"
+            android:src="@mipmap/img_settings"
+            android:layout_width="40dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:scaleType="center"
+            android:layout_gravity="end"
+            android:id="@+id/img_wifi"
+            android:layout_marginStart="30dp"
+            android:src="@mipmap/img_wifi"
+            android:layout_width="40dp"
+            android:layout_height="match_parent" />
+
+
 
 
     </android.support.v7.widget.Toolbar>
