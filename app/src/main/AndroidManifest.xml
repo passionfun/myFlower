@@ -58,6 +58,7 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.account.RegisterActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.account.ForgetPasswordActivity"

@@ -2,7 +2,6 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -24,7 +23,6 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.PlantSettingPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -82,23 +80,25 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
 
     @OnClick(R.id.tv_plant_method)
     void onMethod() {
+        mPresenter.plantMode();
     }
 
     @OnClick(R.id.tv_plant_cycle)
     void onCycle() {
+        mPresenter.lifeCycle();
     }
 
     @OnClick(R.id.tv_right)
     void onSetupPlant() {
         plantName=etInputPassword.getText().toString().trim();
         map.put("Token", Account.getToken());
-        map.put("PlantMode", plantMode);
-        map.put("PMid", pMid);
+        map.put("PlantMode", plantMode);//种植模式
+        map.put("PMid", pMid);//种植模式id
         map.put("PlantName", plantName);
-        map.put("Pid", pId);
+        map.put("Pid", pId);//植物id
         map.put("LifeCycle", lifeCycle);
-        map.put("Lid", lid);
-        map.put("Id", id);
+        map.put("Lid", lid);//生长周期id
+        map.put("Id", id);//设备id
 
         mPresenter.setupPlant(map);
     }
@@ -128,8 +128,9 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
             popupWindow.setOnSelectListener(new ChoosePop.SelectListener() {
                 @Override
                 public void selected(LifeCycleModel.ListBean listBean) {
-                    plantMode = listBean.getId();
-                    plantName = listBean.getTitle();
+                    plantMode = listBean.getTitle();
+                    pMid = listBean.getId();
+                    tvPlantMethod.setText(listBean.getTitle());
                 }
             });
         } else {
@@ -149,6 +150,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
                 public void selected(LifeCycleModel.ListBean listBean) {
                     lid= listBean.getId();
                     lifeCycle = listBean.getTitle();
+                    tvPlantCycle.setText(listBean.getTitle());
                 }
             });
         } else {

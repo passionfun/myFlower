@@ -23,6 +23,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
         implements PlantSettingContract.Presenter {
 
     PlantSettingContract.View view = getView();
+
     public PlantSettingPresenter(PlantSettingContract.View view) {
         super(view);
     }
@@ -42,9 +43,8 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
                     public void onNext(BaseRspModel<PlantSettingModel> plantSettingModelBaseRspModel) {
                         if (plantSettingModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setupPlantSuccess(plantSettingModelBaseRspModel.getData());
-                        } else {
-                            Application.showToast(plantSettingModelBaseRspModel.getMsg());
                         }
+                        Application.showToast(plantSettingModelBaseRspModel.getMsg());
                     }
 
 

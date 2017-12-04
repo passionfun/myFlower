@@ -111,7 +111,8 @@ public interface RemoteService {
     @POST("equipment/create_equipment")
     @FormUrlEncoded
     Observable<BaseRspModel<EquipmentCard>> addEquipment(@Field("Token") String token, @Field("EquipName") String equipmentName,
-                                                         @Field("Mac") String macAddress, @Field("SerialNum") String serialNum, @Field("Version") String version);
+                                                         @Field("Mac") String macAddress, @Field("SerialNum") String serialNum,
+                                                         @Field("Version") String version,@Field("LTID") String longToothId,@Field("PSIGN") String timeStamp);
 
 
     //搜索植物
@@ -182,7 +183,7 @@ public interface RemoteService {
 //    @FormUrlEncoded
 //    Observable<BaseRspModel<GroupRspModel>> getAllGroupList(@Field("Token") String token);
 
-    //设备设置
+    //植物设置
     @POST("equipment/setup_plant")
     @FormUrlEncoded
     Observable<BaseRspModel<PlantSettingModel>> setupPlant(@FieldMap Map<String,String> map);

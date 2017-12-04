@@ -16,6 +16,10 @@ import android.widget.TextView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
@@ -25,6 +29,7 @@ import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.main.MainActivityContract;
 import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
@@ -93,9 +98,25 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         hideLeft();
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEidtPersonDataSuccess(MessageEvent messageEvent){
+        if (messageEvent.getMessage().equals(EditPersonalDataActivity.MODIFY_PERSONAL_DATA_SUCCESS)){
+            User user = Account.getUser();
+            if (user != null) {
+                mName.setText(user.getNickName());
+                GlideApp.with(this)
+                        .load(user.getRelativePath())
+                        .centerCrop()
+                        .into(mPortrait);
+            }
+        }
+    }
+
     @Override
     protected void initWidget() {
         super.initWidget();
+        EventBus.getDefault().register(this);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             //将侧边栏顶部延伸至status bar
             mDrawerLayout.setFitsSystemWindows(true);
@@ -103,15 +124,12 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             mDrawerLayout.setClipToPadding(false);
         }
 
-        User user = Account.getUser();
-        if (user != null) {
-            mName.setText(user.getNickName());
-            GlideApp.with(this)
-                    .load(user.getRelativePath())
-                    .centerCrop()
-                    .into(mPortrait);
-        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

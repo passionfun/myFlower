@@ -1,5 +1,6 @@
 package bocai.com.yanghuaji.ui.personalCenter;
 
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -47,9 +48,11 @@ public class PersonalCenterFragment extends Fragment {
         super.onResume();
         User user = Account.getUser();
         if (user != null){
+            if (!TextUtils.isEmpty(user.getNickName()))
             mName.setText(user.getNickName());
             GlideApp.with(getActivity())
                     .load(user.getRelativePath())
+                    .placeholder(R.mipmap.img_portrait_empty)
                     .centerCrop()
                     .into(mPortrait);
         }

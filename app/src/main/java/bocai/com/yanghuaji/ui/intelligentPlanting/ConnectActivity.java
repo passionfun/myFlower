@@ -11,12 +11,25 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 
+import java.util.List;
+
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.common.Factory;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.BindEquipmentModel;
+import bocai.com.yanghuaji.model.EquipmentCard;
+import bocai.com.yanghuaji.model.EquipmentModel;
+import bocai.com.yanghuaji.model.LongToothRspModel;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectContract;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectPresenter;
+import bocai.com.yanghuaji.util.DateUtils;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.fog.fog2sdk.MiCODevice;
@@ -26,13 +39,16 @@ import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothEvent;
 import xpod.longtooth.LongToothEventHandler;
+import xpod.longtooth.LongToothServiceResponseHandler;
+import xpod.longtooth.LongToothTunnel;
 
 /**
  * 作者 yuanfei on 2017/11/22.
  * 邮箱 yuanfei221@126.com
  */
 
-public class ConnectActivity extends Activity {
+public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter>
+        implements ConnectContract.View {
     @BindView(R.id.tv_title)
     TextView mTitle;
 
@@ -51,6 +67,7 @@ public class ConnectActivity extends Activity {
     private String ssid;
     private String password;
     private MiCODevice micodev;
+    private CountDownTimer timer;
 
     //显示的入口
     public static void show(Context context, String ssid, String password) {
@@ -90,6 +107,7 @@ public class ConnectActivity extends Activity {
             public void run() {
                 try {
                     //启动长牙
+                    LongTooth.setRegisterHost("114.215.170.184",53180);
                     LongTooth.start(Application.getInstance(),
                             2000110273,
                             1,
@@ -102,7 +120,8 @@ public class ConnectActivity extends Activity {
         });
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.load_animation);
         mAnimBg.startAnimation(animation);
-        new CountDownTimer(61000, 1000) {
+
+        timer =new CountDownTimer(61000, 1000) {
             @Override
             public void onTick(long l) {
                 mTime.setText(l / 1000 + "");
@@ -125,7 +144,7 @@ public class ConnectActivity extends Activity {
         micodev.startEasyLink(ssid, password, true, 60000, 20, "", "", new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
-                Log.d("shc", "onSuccess配网: "+message);
+                Log.d("shc", "onSuccess配网: " + message);
             }
 
             @Override
@@ -152,29 +171,80 @@ public class ConnectActivity extends Activity {
                 String content = deviceStatus.toString();
                 Log.d("shc", "onDevicesFind: " + content);
                 if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
-                    ConnectSuccessActivity.show(ConnectActivity.this, content);
+                    jsonContent = content;
+                    bindEquipment(content);
                     micodev.stopEasyLink(null);
                     micodev.startSearchDevices(serviceName, null);
-                    finish();
                 }
             }
         });
     }
 
+    private Gson gson;
+    private EquipmentModel mModel;
+    private String longToothId;
+    private String timeStamp;
+    private String jsonContent;
+    private void bindEquipment(String jsonContent) {
+        gson = new Gson();
+        List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
+        }.getType());
+        mModel = equipmentModels.get(0);
+        longToothId = equipmentModels.get(0).getLTID();
+        timeStamp = DateUtils.getCurrentDateTimes();
+        BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
+        String request = gson.toJson(model);
+        LongTooth.request(longToothId,"longtooth",LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,null,new LongToothResponse());
+    }
+
+    @Override
+    public void addEquipmentSuccess(EquipmentCard card) {
+        timer.cancel();
+        ConnectSuccessActivity.show(ConnectActivity.this, jsonContent,card.getId(),card.getEquipName());
+        finish();
+    }
+
+    @Override
+    public void addEquipmentFailed() {
+        ConnectFailedActivity.show(this);
+    }
+
+    @Override
+    protected ConnectContract.Presenter initPresenter() {
+        return new ConnectPresenter(this);
+    }
 
 
+    private class LongToothResponse implements LongToothServiceResponseHandler {
+
+        @Override
+        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                          String service_str, int data_type, byte[] args,
+                                          LongToothAttachment attachment) {
+            String result = new String(args);
+            Log.d("shc", "handleServiceResponse: "+new String(args));
+            LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+            if (longToothRspModel.getCODE()==0){
+                String mEquipmentName = mModel.getName();
+                String macAddress = mModel.getMAC();
+                String token = Account.getToken();
+                String serialNum = "11074";
+                String version = mModel.get_$HardwareRev172();
+                mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,longToothId,timeStamp);
+            }
+
+        }
+    }
 
 
     private class LongToothHandler implements LongToothEventHandler {
         @Override
         public void handleEvent(int code, String ltid_str, String srv_str, byte[] msg, LongToothAttachment attachment) {
             if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
-//                LongTooth.addService(ConnectActivity.class.getName(), new LongToothService());
+
             }
         }
     }
-
-
 
 
 }
