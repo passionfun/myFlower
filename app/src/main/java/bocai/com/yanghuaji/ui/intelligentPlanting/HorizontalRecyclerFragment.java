@@ -86,7 +86,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentRspModel.ListBean plantModel) {
                 Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
                 String url = Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId();
-                PlantingDateAct.show(getContext(), url,mModel);
+                PlantingDateAct.show(getContext(), url, mModel);
             }
         });
 
@@ -120,7 +120,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 Log.d("shc", "onDevicesFind: " + content);
                 if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
                     String jsonContent = content;
-                    micodev.stopSearchDevices( null);
+                    micodev.stopSearchDevices(null);
                     List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
                     }.getType());
                     for (EquipmentModel equipmentModel : equipmentModels) {
@@ -222,8 +222,10 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 //                        mFramOffline.setVisibility(longtoothIds.contains(mModel.getLTID())?View.INVISIBLE:View.VISIBLE);
                         PlantStatusModel model = new PlantStatusModel("1", "getStatus", "1", plantModel.getPSIGN(), "1", plantModel.getPid());
                         String request = gson.toJson(model);
-                        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                                0, request.getBytes().length, null, new LongToothResponse());
+                        if (plantModel != null && !TextUtils.isEmpty(plantModel.getLTID())) {
+                            LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                                    0, request.getBytes().length, null, new LongToothResponse());
+                        }
                     }
                 };
                 timer.schedule(task, 5000, 5000);
@@ -280,7 +282,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @OnClick(R.id.tv_setting_second)
             void onSecondSettingClick() {
-                SecondSettingActivity.show(getContext(),mModel);
+                SecondSettingActivity.show(getContext(), mModel);
             }
 
             @OnClick(R.id.img_setting)
