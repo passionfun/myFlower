@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+
 import org.json.JSONArray;
 
 import java.util.List;
@@ -218,8 +221,13 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     @Override
                     public void run() {
                         //设置是否离线img
-//                        mOffLine.setVisibility(longtoothIds.contains(mModel.getLTID())?View.INVISIBLE:View.VISIBLE);
-//                        mFramOffline.setVisibility(longtoothIds.contains(mModel.getLTID())?View.INVISIBLE:View.VISIBLE);
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                mOffLine.setVisibility(isLineOff()?View.VISIBLE:View.INVISIBLE);
+                                mFramOffline.setVisibility(isLineOff()?View.VISIBLE:View.INVISIBLE);
+                            }
+                        });
                         PlantStatusModel model = new PlantStatusModel("1", "getStatus", "1", plantModel.getPSIGN(), "1", plantModel.getPid());
                         String request = gson.toJson(model);
                         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
@@ -228,6 +236,15 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 };
                 timer.schedule(task, 5000, 5000);
                 setLed();
+            }
+
+            private boolean isLineOff(){
+                if (longtoothIds!=null&&longtoothIds.size()>0){
+                    longtoothIds.contains(mModel.getLTID());
+                    return false;
+                }else {
+                    return true;
+                }
             }
 
             private void setLed() {

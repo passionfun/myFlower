@@ -1,32 +1,53 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
-import java.util.ArrayList;
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+
+import org.json.JSONArray;
+
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
+import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
-import bocai.com.yanghuaji.model.PlantModel;
+import bocai.com.yanghuaji.model.LedSetModel;
+import bocai.com.yanghuaji.model.LedSetRspModel;
+import bocai.com.yanghuaji.model.PlantStatusModel;
+import bocai.com.yanghuaji.model.PlantStatusRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresenter;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.fog.fog2sdk.MiCODevice;
+import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
+import xpod.longtooth.LongTooth;
+import xpod.longtooth.LongToothAttachment;
+import xpod.longtooth.LongToothServiceResponseHandler;
+import xpod.longtooth.LongToothTunnel;
 
 /**
  * 作者 yuanfei on 2017/11/25.
@@ -43,11 +64,11 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
     private int page = 1;
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
-    private List<PlantModel> mList = new ArrayList<>();
-    private String mEquipmentId;
-    private String mPlantId;
-    private String uuid;
-    private String longToothId;
+    private Gson gson = new Gson();
+    //搜索设备用
+    private MiCODevice micodev;
+    //所有在线设备的mac集合
+    List<String> longtoothIds;
 
     @Override
     protected int getContentLayoutId() {
@@ -85,6 +106,29 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         super.initData();
         page = 1;
         mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+
+
+        //开始搜索设备
+        final String serviceName = "_easylink._tcp.local.";
+        micodev = new MiCODevice(getContext());
+        micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
+            @Override
+            public void onDevicesFind(int code, JSONArray deviceStatus) {
+                super.onDevicesFind(code, deviceStatus);
+                String content = deviceStatus.toString();
+                Log.d("shc", "onDevicesFind: " + content);
+                if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
+                    String jsonContent = content;
+                    micodev.stopSearchDevices( null);
+                    List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
+                    }.getType());
+                    for (EquipmentModel equipmentModel : equipmentModels) {
+                        String longtoothId = equipmentModel.getLTID();
+                        longtoothIds.add(longtoothId);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -142,6 +186,12 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @BindView(R.id.image)
         ImageView mImage;
 
+        @BindView(R.id.cb_led)
+        CheckBox mLed;
+
+        @BindView(R.id.img_tent)
+        ImageView mImgTent;
+
         private EquipmentRspModel.ListBean mModel;
 
 
@@ -152,10 +202,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @Override
         protected void onBind(final EquipmentRspModel.ListBean plantModel) {
             mModel = plantModel;
-            mEquipmentId = mModel.getId();
-            mPlantId = mModel.getPid();
-            uuid = mModel.getPSIGN();
-            longToothId = mModel.getLTID();
             mEquipmentName.setText(plantModel.getEquipName());
             mPlantName.setText(plantModel.getPlantName());
             mGroupName.setText(plantModel.getGroupName());
@@ -165,6 +211,73 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     .centerCrop()
                     .placeholder(R.mipmap.img_main_empty)
                     .into(mImage);
+
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    Run.onUiAsync(new Action() {
+                        @Override
+                        public void call() {
+                            mImgTent.setVisibility(isLineOff()?View.VISIBLE:View.INVISIBLE);
+                        }
+                    });
+                    PlantStatusModel model = new PlantStatusModel("1", "getStatus", "1", plantModel.getPSIGN(), "1", plantModel.getPid());
+                    String request = gson.toJson(model);
+                    LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                            0, request.getBytes().length, null, new LongToothResponse());
+                }
+            };
+            timer.schedule(task, 5000, 30000);
+            setLed();
+        }
+
+        private boolean isLineOff(){
+            if (longtoothIds!=null&&longtoothIds.size()>0){
+                longtoothIds.contains(mModel.getLTID());
+                return false;
+            }else {
+                return true;
+            }
+        }
+
+        private void setLed() {
+            mLed.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mLed.isChecked()){
+                        LedSetModel model = new LedSetModel("On", mModel.getPSIGN());
+                        String request = gson.toJson(model);
+                        LongTooth.request(mModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                            @Override
+                            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                String jsonContent = new String(bytes);
+                                LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+                                if (plantStatusRspModel.getCODE() == 0) {
+                                    Application.showToast("LED开启成功");
+                                } else {
+                                    Application.showToast("LED开启失败,稍后再试");
+                                }
+                            }
+                        });
+                    }else {
+                        LedSetModel model = new LedSetModel("Off", mModel.getPSIGN());
+                        String request = gson.toJson(model);
+                        LongTooth.request(mModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                            @Override
+                            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                String jsonContent = new String(bytes);
+                                LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+                                if (plantStatusRspModel.getCODE() == 0) {
+                                    Application.showToast("LED关闭成功");
+                                } else {
+                                    Application.showToast("LED关闭失败,稍后再试");
+                                }
+                            }
+                        });
+                    }
+                }
+            });
         }
 
         @OnClick(R.id.ll_data)
@@ -186,12 +299,28 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @OnClick(R.id.ll_root)
         void onItemClick() {
             Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + mModel.getId());
-            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + mModel.getId(),mModel);
+            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + mModel.getId(), mModel);
         }
 
         @OnClick(R.id.tv_setting)
         void onSettingClick() {
-            SecondSettingActivity.show(getContext(),mModel);
+            SecondSettingActivity.show(getContext(), mModel);
+        }
+
+
+        class LongToothResponse implements LongToothServiceResponseHandler {
+            @Override
+            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                String jsonContent = new String(bytes);
+                PlantStatusRspModel plantStatusRspModel = gson.fromJson(jsonContent, PlantStatusRspModel.class);
+                if (plantStatusRspModel.getCODE() == 0) {
+                    //获取数据成功
+                    String temperature = plantStatusRspModel.getTemp();
+                    String wagerState = plantStatusRspModel.getWaterStat();
+                    String Ec = plantStatusRspModel.getEC();//植物的营养值
+
+                }
+            }
         }
 
     }

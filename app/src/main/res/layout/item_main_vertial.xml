@@ -20,13 +20,26 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <bocai.com.yanghuaji.util.widget.RoundAngleImageView
-                android:id="@+id/image"
+            <FrameLayout
                 android:layout_width="66dp"
-                android:layout_height="71dp"
-                android:src="@mipmap/img_main_empty"
-                app:roundHeightLeftBottom="5dp"
-                app:roundHeightLeftUp="5dp" />
+                android:layout_height="71dp">
+                <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+                    android:id="@+id/image"
+                    android:layout_width="66dp"
+                    android:layout_height="71dp"
+                    android:src="@mipmap/img_main_empty"
+                    app:roundHeightLeftBottom="5dp"
+                    app:roundHeightLeftUp="5dp" />
+
+                <ImageView
+                    android:id="@+id/img_tent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_recycler_vertical_tent"/>
+
+
+            </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -259,6 +272,7 @@
 
 
                         <CheckBox
+                            android:id="@+id/cb_led"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
