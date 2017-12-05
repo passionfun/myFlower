@@ -2,7 +2,9 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -10,20 +12,32 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.AutoModel;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
+import bocai.com.yanghuaji.model.PlantSettingModel_Table;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.PlantSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.PlantSettingPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import xpod.longtooth.LongTooth;
+import xpod.longtooth.LongToothAttachment;
+import xpod.longtooth.LongToothServiceResponseHandler;
+import xpod.longtooth.LongToothTunnel;
 
 /**
  * 作者 yuanfei on 2017/11/21.
@@ -32,8 +46,6 @@ import butterknife.OnClick;
 
 public class PlantSettingActivity extends PresenterActivity<PlantSettingContract.Presenter>
         implements PlantSettingContract.View {
-    public static final String PID="pid";
-    public static final String EQUIPMENTID="equipmentId";
     @BindView(R.id.tv_title)
     TextView mTitle;
 
@@ -60,17 +72,54 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     private Map<String, String> map = new HashMap<>();
     private String plantMode, pMid, plantName, pId, lifeCycle, lid, id;
 
+    private String mUUID;
+    private String mLongToothId;
+    private EquipmentRspModel.ListBean mPlantBean;
+    public static final String KEY_PLANT_BEAN = "KEY_PLANT_BEAN";
+
     //显示的入口
-    public static void show(Context context,String pid,String equipmentId) {
+    public static void show(Context context,EquipmentRspModel.ListBean plantBean) {
         Intent intent=new Intent(context, PlantSettingActivity.class);
-        intent.putExtra(PID,pid);
-        intent.putExtra(EQUIPMENTID,equipmentId);
+        intent.putExtra(KEY_PLANT_BEAN,plantBean);
         context.startActivity(intent);
     }
+
+
 
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_plant_setting;
+    }
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+        mPlantBean = (EquipmentRspModel.ListBean) bundle.getSerializable(KEY_PLANT_BEAN);
+        return super.initArgs(bundle);
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        mTitle.setText("植物设置");
+        tvRight.setVisibility(View.VISIBLE);
+        pId=mPlantBean.getPid();
+        id = mPlantBean.getId();
+        mUUID = mPlantBean.getPSIGN();
+        mLongToothId = mPlantBean.getLTID();
+        etInputPassword.setText(mPlantBean.getPlantName());
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        PlantSettingModel model = SQLite.select()
+                .from(PlantSettingModel.class)
+                .where(PlantSettingModel_Table.Id.eq(id))
+                .querySingle();
+        if (model!=null){
+            tvPlantMethod.setText(model.getPlantMode());
+            tvPlantCycle.setText(model.getLifeCycle());
+        }
     }
 
     @OnClick(R.id.img_back)
@@ -99,22 +148,23 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         map.put("LifeCycle", lifeCycle);
         map.put("Lid", lid);//生长周期id
         map.put("Id", id);//设备id
+        if (TextUtils.isEmpty(lid)){
+            Application.showToast("生长周期不能为空");
+            return;
+        }
+        getAutoPara();
+    }
 
-        mPresenter.setupPlant(map);
+    //从后台获取智能控制参数
+    private void getAutoPara(){
+            mPresenter.getAutoPara(pId,lid);
     }
 
 
-    @Override
-    protected void initWidget() {
-        super.initWidget();
-        mTitle.setText("植物设置");
-        tvRight.setVisibility(View.VISIBLE);
-        pId=getIntent().getStringExtra(PID);
-        id=getIntent().getStringExtra(EQUIPMENTID);
-    }
 
     @Override
     public void setupPlantSuccess(PlantSettingModel model) {
+        model.save();
         finish();
     }
 
@@ -156,6 +206,37 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         } else {
             Application.showToast("暂无数据");
         }
+    }
+
+    /**
+     * 获取智能控制参数成功
+     */
+    @Override
+    public void getAutoParaSuccess(List<AutoModel.ParaBean> paraBeans) {
+        mPresenter.setupPlant(map);
+        AutoModel model = new AutoModel("Auto",pId,mUUID,paraBeans);
+        final Gson gson = new Gson();
+        String request = gson.toJson(model);
+        LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+            @Override
+            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                String jsonContent = new String(bytes);
+                LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+                if (plantStatusRspModel.getCODE()==0){
+                    Application.showToast("智能参数设置成功");
+                }else {
+                    Application.showToast("智能参数设置失败");
+                }
+            }
+        });
+    }
+    /**
+     * 获取智能控制参数失败
+     */
+    @Override
+    public void getAutoParaFailed() {
+        Application.showToast("智能参数设置失败");
+        mPresenter.setupPlant(map);
     }
 
     @Override

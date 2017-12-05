@@ -87,7 +87,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:drawableEnd="@mipmap/img_personal_center_arrow"
-            android:text="12:00"
+            android:text="去设置"
             android:textColor="#333333"
             android:textSize="15sp" />
 
@@ -118,7 +118,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:drawableEnd="@mipmap/img_personal_center_arrow"
-            android:text="15:00"
+            android:text="去设置"
             android:textColor="#333333"
             android:textSize="15sp" />
 
@@ -149,7 +149,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:drawableEnd="@mipmap/img_personal_center_arrow"
-            android:text="15:00"
+            android:text="去设置"
             android:textColor="#333333"
             android:textSize="15sp" />
 
@@ -182,7 +182,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="15dp"
             android:drawableEnd="@mipmap/img_personal_center_arrow"
-            android:text="书房"
+            android:text="去设置"
             android:textColor="#333333"
             android:textSize="15sp" />
 

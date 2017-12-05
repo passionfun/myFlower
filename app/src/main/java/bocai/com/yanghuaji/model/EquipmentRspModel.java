@@ -1,5 +1,6 @@
 package bocai.com.yanghuaji.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -63,7 +64,7 @@ public class EquipmentRspModel {
         this.List = List;
     }
 
-    public static class ListBean {
+    public static class ListBean implements Serializable{
         /**
          * Id : 1
          * Type : 0
@@ -79,6 +80,9 @@ public class EquipmentRspModel {
          * Light : 1
          * Estatus : 1
          * Photo : http://121.41.128.239:8082/yhj/web/upload/2017/11/20/151116546875djd66.jpg
+         * LTID
+         * PSIGN
+         *
          */
 
         private String Id;

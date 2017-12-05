@@ -174,7 +174,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                     jsonContent = content;
                     bindEquipment(content);
                     micodev.stopEasyLink(null);
-                    micodev.startSearchDevices(serviceName, null);
+                    micodev.stopSearchDevices( null);
                 }
             }
         });

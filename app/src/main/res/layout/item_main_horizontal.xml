@@ -237,6 +237,7 @@
 
 
                 <CheckBox
+                    android:id="@+id/cb_led"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"

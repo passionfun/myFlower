@@ -1,10 +1,17 @@
 package bocai.com.yanghuaji.model;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import bocai.com.yanghuaji.model.db.AppDatabase;
+
 /**
  * Created by apple on 17-11-27.
  */
-
-public class PlantSettingModel {
+@Table(database = AppDatabase.class)
+public class PlantSettingModel extends BaseModel{
 
     /**
      * Id : 3
@@ -12,10 +19,13 @@ public class PlantSettingModel {
      * PlantName : 含羞草
      * LifeCycle : 种子期
      */
-
+    @PrimaryKey
     private String Id;
+    @Column
     private String PlantMode;
+    @Column
     private String PlantName;
+    @Column
     private String LifeCycle;
 
     public String getId() {

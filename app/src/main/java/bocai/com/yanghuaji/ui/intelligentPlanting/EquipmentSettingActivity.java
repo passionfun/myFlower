@@ -23,6 +23,7 @@ import java.util.Map;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel_Table;
 import bocai.com.yanghuaji.model.GroupRspModel;
@@ -41,7 +42,6 @@ import butterknife.OnClick;
 
 public class EquipmentSettingActivity extends PresenterActivity<EquipmentSettingContract.Presenter>
         implements EquipmentSettingContract.View {
-    public static final String EQUIPMENTID = "equipmentId";
     @BindView(R.id.scroll_root)
     ScrollView mRoot;
 
@@ -72,8 +72,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     @BindView(R.id.tv_BanStop)
     TextView tvBanStop;
 
-    public static final String KEY_UUID = "KEY_UUID";
-    public static final String KEY_LONG_TOOTH_ID = "KEY_LONG_TOOTH_ID";
+    public static final String KEY_PLANT_BEAN = "KEY_PLANT_BEAN";
     private String mName, groupId, lightStart, banStart, banStop, equipmentId;
     //补光开始时间一天中的时间点，以秒为单位 比如下午8点30分 传的值为：20*60*60+30*60 =73800。
     private String mBengin;
@@ -81,13 +80,12 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     private String mUUID;
     private String mLongToothId;
     private String mNoDistrubStart,mNoDistrubEnd;
+    private  EquipmentRspModel.ListBean mPlantBean;
 
     //显示的入口
-    public static void show(Context context, String equipmentId,String uuid,String longToothId) {
+    public static void show(Context context,EquipmentRspModel.ListBean plantBean) {
         Intent intent = new Intent(context, EquipmentSettingActivity.class);
-        intent.putExtra(EQUIPMENTID, equipmentId);
-        intent.putExtra(KEY_UUID, uuid);
-        intent.putExtra(KEY_LONG_TOOTH_ID, longToothId);
+        intent.putExtra(KEY_PLANT_BEAN,plantBean);
         context.startActivity(intent);
     }
 
@@ -103,9 +101,10 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-        equipmentId = bundle.getString(EQUIPMENTID);
-        mUUID = bundle.getString(KEY_UUID);
-        mLongToothId = bundle.getString(KEY_LONG_TOOTH_ID);
+        mPlantBean = (EquipmentRspModel.ListBean) bundle.getSerializable(KEY_PLANT_BEAN);
+        equipmentId = mPlantBean.getId();
+        mUUID = mPlantBean.getPSIGN();
+        mLongToothId = mPlantBean.getLTID();
         return super.initArgs(bundle);
     }
 

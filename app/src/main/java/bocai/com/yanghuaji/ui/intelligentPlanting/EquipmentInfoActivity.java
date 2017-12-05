@@ -24,6 +24,7 @@ import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentInfoModel;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentInfoContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentInfoPresenter;
@@ -43,10 +44,6 @@ import xpod.longtooth.LongToothTunnel;
 public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContract.Presenter>
         implements EquipmentInfoContract.View {
     public static final String TAG = EquipmentInfoActivity.class.getName();
-    public static final String EQUIPMENTID = "equipmentId";
-    public static final String KEY_UUID = "KEY_UUID";
-    public static final String KEY_LONGTOOTH_ID = "KEY_LONGTOOTH_ID";
-
     @BindView(R.id.tv_title)
     TextView mTitle;
 
@@ -76,23 +73,32 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     @BindView(R.id.frame_update)
     FrameLayout mFramUpdate;
 
+    public static final String KEY_PLANT_BEAN = "KEY_PLANT_BEAN";
     private Map<String, String> map = new HashMap<>();
     private String id;
     private String mUUID;
     private String mLongToothId;
+    private  EquipmentRspModel.ListBean mPlantBean;
 
     //显示的入口
-    public static void show(Context context, String equipmentId, String uuid, String longToothId) {
+    public static void show(Context context,EquipmentRspModel.ListBean plantBean) {
         Intent intent = new Intent(context, EquipmentInfoActivity.class);
-        intent.putExtra(EQUIPMENTID, equipmentId);
-        intent.putExtra(KEY_UUID, uuid);
-        intent.putExtra(KEY_LONGTOOTH_ID, longToothId);
+        intent.putExtra(KEY_PLANT_BEAN,plantBean);
         context.startActivity(intent);
     }
 
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_equipment_info;
+    }
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+        mPlantBean = (EquipmentRspModel.ListBean) bundle.getSerializable(KEY_PLANT_BEAN);
+        id = mPlantBean.getId();
+        mUUID = mPlantBean.getPSIGN();
+        mLongToothId = mPlantBean.getLTID();
+        return super.initArgs(bundle);
     }
 
     @OnClick(R.id.img_back)
@@ -186,13 +192,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
         });
     }
 
-    @Override
-    protected boolean initArgs(Bundle bundle) {
-        id = bundle.getString(EQUIPMENTID);
-        mUUID = bundle.getString(KEY_UUID);
-        mLongToothId = bundle.getString(KEY_LONGTOOTH_ID);
-        return super.initArgs(bundle);
-    }
+
 
     @Override
     protected void initWidget() {

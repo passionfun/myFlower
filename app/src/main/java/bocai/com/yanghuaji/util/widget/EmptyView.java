@@ -64,6 +64,14 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
         a.recycle();
     }
 
+    public void setEmptyImg(int res){
+        mDrawableIds[0] = res;
+    }
+
+    public void setEmptyText(int res){
+        mTextIds[0] = res;
+    }
+
     /**
      * 绑定一系列数据显示的布局
      * 当前布局隐藏时（有数据时）自动显示绑定的数据布局

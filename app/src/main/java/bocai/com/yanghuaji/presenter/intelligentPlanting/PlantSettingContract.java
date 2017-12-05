@@ -1,13 +1,15 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
+import java.util.List;
 import java.util.Map;
 
 import bocai.com.yanghuaji.base.presenter.BaseContract;
-import bocai.com.yanghuaji.model.EquipmentInfoModel;
+import bocai.com.yanghuaji.model.AutoModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
 
 /**
+ *
  * Created by apple on 17-11-27.
  */
 
@@ -16,6 +18,8 @@ public interface PlantSettingContract  {
         void setupPlantSuccess(PlantSettingModel model);
         void plantModeSuccess(LifeCycleModel model);
         void lifeCycleSuccess(LifeCycleModel model);
+        void getAutoParaSuccess(List<AutoModel.ParaBean> paraBeans);
+        void getAutoParaFailed();
 //        void equipmentInfoSuccess(EquipmentInfoModel model);
     }
 
@@ -23,6 +27,7 @@ public interface PlantSettingContract  {
         void setupPlant(Map<String,String> map);
         void plantMode();
         void lifeCycle();
+        void getAutoPara(String plantId,String lifeCircleId);
 //        void equipmentInfo(Map<String,String> map);
     }
 }

@@ -73,6 +73,8 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyclerView.setLoadingListener(this);
         mEmptyView.bind(mRecyclerView);
+        mEmptyView.setEmptyImg(R.mipmap.status_diary_empty);
+        mEmptyView.setEmptyText(R.string.diary_empty);
         setPlaceHolderView(mEmptyView);
     }
 

@@ -62,4 +62,6 @@
 
     <string name="reload"><u>重新加载</u></string>
 
+    <string name="diary_empty">暂无日记本，快去添加</string>
+    <string name="equipment_empty">暂无设备，快去添加</string>
 </resources>

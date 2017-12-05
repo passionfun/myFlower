@@ -1,10 +1,12 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
+import java.util.List;
 import java.util.Map;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
+import bocai.com.yanghuaji.model.AutoModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
@@ -16,6 +18,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
+ *
  * Created by apple on 17-11-27.
  */
 
@@ -115,6 +118,38 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
                     @Override
                     public void onError(Throwable e) {
                         view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getAutoPara(String plantId, String lifeCircleId) {
+        Observable<BaseRspModel<List<AutoModel.ParaBean>>> observable = Network.remote().getAutoPara(plantId, lifeCircleId);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<List<AutoModel.ParaBean>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<List<AutoModel.ParaBean>> listBaseRspModel) {
+                        if (listBaseRspModel.getReturnCode().equals("200")) {
+                            view.getAutoParaSuccess(listBaseRspModel.getData());
+                        }else {
+                            view.getAutoParaFailed();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.getAutoParaFailed();
                     }
 
                     @Override

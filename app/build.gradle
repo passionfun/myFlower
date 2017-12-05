@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
         ndk {
             //设置支持的SO库架构
             abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
@@ -26,6 +27,23 @@ android {
         }
     }
 }
+
+
+afterEvaluate {
+    tasks.matching {
+        it.name.startsWith('dex')
+    }.each { dx ->
+        if (dx.additionalParameters == null) {
+            dx.additionalParameters = []
+        }
+        dx.additionalParameters += '--multi-dex' // enable multidex
+
+        // optional
+        // dx.additionalParameters += "--main-dex-list=$projectDir/<filename>".toString() // enable the main-dex-list
+    }
+}
+
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -76,4 +94,7 @@ dependencies {
     implementation files('libs/lt4-a-4.0.e_h_20170310.jar')
     compile 'cn.jiguang.sdk:jpush:3.1.0'
     compile 'cn.jiguang.sdk:jcore:1.1.8'
+
+
+    compile 'com.android.support:multidex:1.0.0'
 }

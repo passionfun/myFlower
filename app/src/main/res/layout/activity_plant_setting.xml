@@ -24,7 +24,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
-        android:text="智能"
+        android:text="去设置"
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -83,7 +83,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
-        android:text="幼苗期"
+        android:text="去设置"
         android:textColor="#333333"
         android:textSize="15sp" />
 

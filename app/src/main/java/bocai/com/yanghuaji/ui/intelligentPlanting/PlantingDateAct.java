@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,19 +32,13 @@ public class PlantingDateAct extends Activity {
     @BindView(R.id.webView)
     WebView webView;
     private String mUrl;
-    private String mEquipmentId;
-    private String mPlantId;
-    private String mUUID;
-    private String mLongToothId;
+    private  EquipmentRspModel.ListBean mPlantBean;
 
     //显示的入口
-    public static void show(Context context, String url,String equipmentId,String plantId,String uuid,String longToothId) {
+    public static void show(Context context, String url,EquipmentRspModel.ListBean plantBean) {
         Intent intent = new Intent(context, PlantingDateAct.class);
         intent.putExtra(MID, url);
-        intent.putExtra(SecondSettingActivity.KEY_EQUIPMENT_ID,equipmentId);
-        intent.putExtra(SecondSettingActivity.KEY_PLANT_ID,plantId);
-        intent.putExtra(SecondSettingActivity.KEY_UUID,uuid);
-        intent.putExtra(SecondSettingActivity.KEY_LONGTOOTH_ID,longToothId);
+        intent.putExtra(SecondSettingActivity.KEY_PLANT_BEAN,plantBean);
         context.startActivity(intent);
     }
 
@@ -54,10 +49,7 @@ public class PlantingDateAct extends Activity {
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-        mEquipmentId = bundle.getString(SecondSettingActivity.KEY_EQUIPMENT_ID);
-        mPlantId = bundle.getString(SecondSettingActivity.KEY_PLANT_ID);
-        mUUID = bundle.getString(SecondSettingActivity.KEY_UUID);
-        mLongToothId = bundle.getString(SecondSettingActivity.KEY_LONGTOOTH_ID);
+        mPlantBean = (EquipmentRspModel.ListBean) bundle.getSerializable(SecondSettingActivity.KEY_PLANT_BEAN);
         return super.initArgs(bundle);
     }
 
@@ -68,7 +60,7 @@ public class PlantingDateAct extends Activity {
 
     @OnClick(R.id.img_setting)
     void onSettingClick() {
-        SecondSettingActivity.show(this,mEquipmentId,mPlantId,mUUID,mLongToothId);
+        SecondSettingActivity.show(this,mPlantBean);
     }
 
     @OnClick(R.id.img_wifi)

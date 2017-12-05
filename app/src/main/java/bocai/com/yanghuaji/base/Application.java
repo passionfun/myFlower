@@ -1,7 +1,9 @@
 package bocai.com.yanghuaji.base;
 
+import android.content.Context;
 import android.os.SystemClock;
 import android.support.annotation.StringRes;
+import android.support.multidex.MultiDex;
 import android.widget.Toast;
 
 import net.qiujuer.genius.kit.handler.Run;
@@ -30,6 +32,13 @@ public class Application extends android.app.Application {
 
     public static Application getInstance() {
         return instance;
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     /**

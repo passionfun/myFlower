@@ -1,13 +1,18 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
 
 import java.util.List;
 import java.util.Timer;
@@ -19,7 +24,10 @@ import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
+import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.LedSetModel;
+import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.PlantStatusModel;
 import bocai.com.yanghuaji.model.PlantStatusRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContract;
@@ -27,8 +35,11 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresent
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.GalleryLayoutManager;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.ScaleTransformer;
 import bocai.com.yanghuaji.util.persistence.Account;
+import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.fog.fog2sdk.MiCODevice;
+import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
 import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
@@ -40,6 +51,8 @@ import xpod.longtooth.LongToothTunnel;
  */
 public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlantContract.Presenter>
         implements IntelligentPlantContract.View {
+    @BindView(R.id.empty)
+    EmptyView mEmptyView;
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
     @BindView(R.id.tv_current)
@@ -50,10 +63,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     public static final String TAG = HorizontalRecyclerFragment.class.getName();
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
-    String mEquipmentId;
-    String mPlantId;
-    String uuid;
-    String longToothId;
+    private EquipmentRspModel.ListBean mModel;
+    //搜索设备用
+    private MiCODevice micodev;
+    //所有在线设备的mac集合
+    List<String> longtoothIds;
 
     @Override
     protected int getContentLayoutId() {
@@ -72,7 +86,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentRspModel.ListBean plantModel) {
                 Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
                 String url = Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId();
-                PlantingDateAct.show(getContext(), url, mEquipmentId, mPlantId, uuid, longToothId );
+                PlantingDateAct.show(getContext(), url,mModel);
             }
         });
 
@@ -83,7 +97,10 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             }
         });
         mCurrentNum.setText("1");
-
+        mEmptyView.bind(mRecyclerView);
+        mEmptyView.setEmptyImg(R.mipmap.img_equipment_empty);
+        mEmptyView.setEmptyText(R.string.equipment_empty);
+        setPlaceHolderView(mEmptyView);
     }
 
     @Override
@@ -91,6 +108,30 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         super.initData();
         page = 1;
         mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+
+        //开始搜索设备
+        final String serviceName = "_easylink._tcp.local.";
+        micodev = new MiCODevice(getContext());
+        micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
+            @Override
+            public void onDevicesFind(int code, JSONArray deviceStatus) {
+                super.onDevicesFind(code, deviceStatus);
+                String content = deviceStatus.toString();
+                Log.d("shc", "onDevicesFind: " + content);
+                if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
+                    String jsonContent = content;
+                    micodev.stopSearchDevices( null);
+                    List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
+                    }.getType());
+                    for (EquipmentModel equipmentModel : equipmentModels) {
+                        String longtoothId = equipmentModel.getLTID();
+                        longtoothIds.add(longtoothId);
+                    }
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -104,6 +145,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             mAdapter.add(listBeans);
         }
         mTotalNum.setText(String.valueOf(listBeans.size()));
+        mPlaceHolderView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
     }
 
     @Override
@@ -126,6 +168,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @BindView(R.id.frame_setting)
             FrameLayout mSettingView;
 
+            @BindView(R.id.frame_offliine)
+            FrameLayout mFramOffline;
+
             @BindView(R.id.img_setting)
             ImageView mSetting;
 
@@ -146,7 +191,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @BindView(R.id.img_lineOff)
             ImageView mOffLine;
-            private EquipmentRspModel.ListBean mModel;
+
+            @BindView(R.id.cb_led)
+            CheckBox mLed;
             private boolean isShowSetting = false;
 
             public MyViewHolder(View itemView) {
@@ -156,10 +203,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             protected void onBind(final EquipmentRspModel.ListBean plantModel) {
                 mModel = plantModel;
-                mEquipmentId = mModel.getId();
-                mPlantId = mModel.getPid();
-                uuid = mModel.getPSIGN();
-                longToothId = mModel.getLTID();
                 mSettingView.setVisibility(View.INVISIBLE);
                 mEquipmentName.setText(plantModel.getEquipName());
                 mPlantName.setText(plantModel.getPlantName());
@@ -174,6 +217,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
+                        //设置是否离线img
+//                        mOffLine.setVisibility(longtoothIds.contains(mModel.getLTID())?View.INVISIBLE:View.VISIBLE);
+//                        mFramOffline.setVisibility(longtoothIds.contains(mModel.getLTID())?View.INVISIBLE:View.VISIBLE);
                         PlantStatusModel model = new PlantStatusModel("1", "getStatus", "1", plantModel.getPSIGN(), "1", plantModel.getPid());
                         String request = gson.toJson(model);
                         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
@@ -181,18 +227,60 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     }
                 };
                 timer.schedule(task, 5000, 5000);
+                setLed();
+            }
+
+            private void setLed() {
+
+                mLed.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mLed.isChecked()) {
+                            LedSetModel model = new LedSetModel("On", mModel.getPSIGN());
+                            String request = gson.toJson(model);
+                            LongTooth.request(mModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                                @Override
+                                public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                    String jsonContent = new String(bytes);
+                                    LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+                                    if (plantStatusRspModel.getCODE() == 0) {
+                                        Application.showToast("LED开启成功");
+                                    } else {
+                                        Application.showToast("LED开启失败,稍后再试");
+                                    }
+                                }
+                            });
+                        } else {
+                            LedSetModel model = new LedSetModel("Off", mModel.getPSIGN());
+                            String request = gson.toJson(model);
+                            LongTooth.request(mModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                                @Override
+                                public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                    String jsonContent = new String(bytes);
+                                    LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+                                    if (plantStatusRspModel.getCODE() == 0) {
+                                        Application.showToast("LED关闭成功");
+                                    } else {
+                                        Application.showToast("LED关闭失败,稍后再试");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+
             }
 
             @OnClick(R.id.ll_data)
             void onDataClick() {
                 Log.d("test", Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
                 String url = Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId();
-                PlantingDateAct.show(getContext(), url, mEquipmentId, mPlantId, uuid, longToothId);
+                PlantingDateAct.show(getContext(), url, mModel);
             }
 
             @OnClick(R.id.tv_setting_second)
             void onSecondSettingClick() {
-                SecondSettingActivity.show(getContext(), mEquipmentId, mPlantId, uuid, longToothId);
+                SecondSettingActivity.show(getContext(),mModel);
             }
 
             @OnClick(R.id.img_setting)

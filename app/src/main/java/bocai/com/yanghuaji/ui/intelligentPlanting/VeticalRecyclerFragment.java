@@ -24,6 +24,7 @@ import bocai.com.yanghuaji.model.PlantModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresenter;
 import bocai.com.yanghuaji.util.persistence.Account;
+import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -34,6 +35,9 @@ import butterknife.OnClick;
 
 public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantContract.Presenter>
         implements XRecyclerView.LoadingListener, IntelligentPlantContract.View {
+    @BindView(R.id.empty)
+    EmptyView mEmptyView;
+
     @BindView(R.id.recycler)
     XRecyclerView mRecycler;
 
@@ -70,6 +74,10 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         mRecycler.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecycler.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecycler.setLoadingListener(this);
+        mEmptyView.bind(mRecycler);
+        mEmptyView.setEmptyImg(R.mipmap.img_equipment_empty);
+        mEmptyView.setEmptyText(R.string.equipment_empty);
+        setPlaceHolderView(mEmptyView);
     }
 
     @Override
@@ -100,6 +108,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mRecycler.loadMoreComplete();
             mAdapter.add(listBeans);
         }
+        mPlaceHolderView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
     }
 
     @Override
@@ -161,7 +170,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @OnClick(R.id.ll_data)
         void onDataClick() {
             Log.d("test", Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
-            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId(), mEquipmentId, mPlantId, uuid, longToothId);
+            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId(), mModel);
         }
 
         @OnClick(R.id.img_more)
@@ -177,12 +186,12 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @OnClick(R.id.ll_root)
         void onItemClick() {
             Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + mModel.getId());
-            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + mModel.getId(), mEquipmentId, mPlantId, uuid, longToothId);
+            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + mModel.getId(),mModel);
         }
 
         @OnClick(R.id.tv_setting)
         void onSettingClick() {
-            SecondSettingActivity.show(getContext(), mEquipmentId, mPlantId, uuid, longToothId);
+            SecondSettingActivity.show(getContext(),mModel);
         }
 
     }

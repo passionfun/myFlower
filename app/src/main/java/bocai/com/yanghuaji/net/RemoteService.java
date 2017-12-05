@@ -1,8 +1,10 @@
 package bocai.com.yanghuaji.net;
 
+import java.util.List;
 import java.util.Map;
 
 import bocai.com.yanghuaji.model.AccountRspModel;
+import bocai.com.yanghuaji.model.AutoModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.DiaryCardModel;
 import bocai.com.yanghuaji.model.DiaryDetailModel;
@@ -249,5 +251,11 @@ public interface RemoteService {
     @POST("equipment/link_banner")
     @FormUrlEncoded
     Observable<BaseRspModel<EquipmentPhotoModel>> getEquipmentPhoto(@Field("Type") String type,@Field("Series") String equipmentType);
+
+
+    //智能控制植物数据
+    @POST("plant/plant_info")
+    @FormUrlEncoded
+    Observable<BaseRspModel<List<AutoModel.ParaBean>>> getAutoPara(@Field("Id") String plantId, @Field("Lid") String lifeCircleId);
 
 }
