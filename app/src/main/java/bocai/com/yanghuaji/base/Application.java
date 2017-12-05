@@ -4,6 +4,9 @@ import android.os.SystemClock;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
+
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
@@ -25,8 +28,14 @@ public class Application extends android.app.Application {
         instance = this;
         Factory.setup();
         JPushInterface.init(this);
+        UMShareAPI.get(this);
     }
 
+    {
+        //todo 修改为正确的微信和QQ的参数
+        PlatformConfig.setWeixin("", "");
+        PlatformConfig.setQQZone("1106313441", "Kml51PAWgQkX8L6N");
+    }
 
     public static Application getInstance() {
         return instance;

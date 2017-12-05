@@ -13,6 +13,13 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,6 +53,8 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
 
     public static final String KEY_DIARY_ID = "KEY_DIARY_ID";
     private String mDiaryId, mLoadUrl;
+    private UMWeb mShareWeb;
+    private UMShareListener mUmShareListener;
 
     //显示的入口
     public static void show(Context context, String diaryId) {
@@ -120,6 +129,34 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
 
         mLoadUrl = Common.Constance.H5_BASE + "diary.html?id=" + mDiaryId;
         mWebview.loadUrl(mLoadUrl);
+
+        mShareWeb = new UMWeb(mLoadUrl);
+        mShareWeb.setTitle("养花机");//标题
+        //todo 修改为正式图标和描述
+        mShareWeb.setThumb(new UMImage(this, R.mipmap.img_connect_bg));  //缩略图
+        mShareWeb.setDescription("养花机");//描述
+        //分享的回调
+        mUmShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onResult(SHARE_MEDIA share_media) {
+                Toast.makeText(DiaryListActivity.this, "分享成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                Toast.makeText(DiaryListActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media) {
+
+            }
+        };
     }
 
     @OnClick(R.id.img_back)
@@ -143,12 +180,27 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
                         break;
                     case R.id.img_share_qq:
                         // TODO 分享到QQ
+                        new ShareAction(DiaryListActivity.this)
+                                .setPlatform(SHARE_MEDIA.QQ)//传入平台
+                                .withMedia(mShareWeb)
+                                .setCallback(mUmShareListener)//回调监听器
+                                .share();
                         break;
                     case R.id.img_share_wechat:
                         // TODO 分享到微信
+                        new ShareAction(DiaryListActivity.this)
+                                .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
+                                .withMedia(mShareWeb)
+                                .setCallback(mUmShareListener)//回调监听器
+                                .share();
                         break;
                     case R.id.img_share_friends:
                         // TODO 分享到朋友圈
+                        new ShareAction(DiaryListActivity.this)
+                                .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
+                                .withMedia(mShareWeb)
+                                .setCallback(mUmShareListener)//回调监听器
+                                .share();
                         break;
                 }
             }
