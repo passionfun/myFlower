@@ -94,6 +94,12 @@ dependencies {
     implementation files('libs/lt4-a-4.0.e_h_20170310.jar')
     compile 'cn.jiguang.sdk:jpush:3.1.0'
     compile 'cn.jiguang.sdk:jcore:1.1.8'
+    implementation files('libs/SocialSDK_QQ_Simplify.jar')
+    implementation files('libs/SocialSDK_WeiXin_Full.jar')
+    implementation files('libs/umeng_social_api.jar')
+    implementation files('libs/umeng_social_net.jar')
+    implementation files('libs/umeng_social_tool.jar')
+    implementation files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
 
 
     compile 'com.android.support:multidex:1.0.0'
