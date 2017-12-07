@@ -126,7 +126,8 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
 
     //检查是否有新版本
     private void checkVersion(){
-        //LongTooth.request(longToothId,"longtooth", LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,null,new LongToothResponse());
+        //LongTooth.request(longToothId,"longtooth", LongToothTunnel.LT_ARGUMENTS,request.getBytes(),
+        // 0,request.getBytes().length,null,new LongToothResponse());
         /**
          * 是否有新版本请求格式
          * {

@@ -17,6 +17,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -69,8 +70,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     private EquipmentRspModel.ListBean mModel;
     //搜索设备用
     private MiCODevice micodev;
-    //所有在线设备的mac集合
-    List<String> longtoothIds;
+    //所有在线设备的longtoothId集合
+    List<String> longtoothIds = new ArrayList<>();
 
     @Override
     protected int getContentLayoutId() {
@@ -89,7 +90,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentRspModel.ListBean plantModel) {
                 Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
                 String url = Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId();
-                PlantingDateAct.show(getContext(), url,mModel);
+                PlantingDateAct.show(getContext(), url, mModel);
             }
         });
 
@@ -123,7 +124,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 Log.d("shc", "onDevicesFind: " + content);
                 if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
                     String jsonContent = content;
-                    micodev.stopSearchDevices( null);
+                    micodev.stopSearchDevices(null);
                     List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
                     }.getType());
                     for (EquipmentModel equipmentModel : equipmentModels) {
@@ -224,12 +225,14 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
-                                mOffLine.setVisibility(isLineOff()?View.VISIBLE:View.INVISIBLE);
-                                mFramOffline.setVisibility(isLineOff()?View.VISIBLE:View.INVISIBLE);
+                                mOffLine.setVisibility(isLineOff() ? View.VISIBLE : View.INVISIBLE);
+                                mFramOffline.setVisibility(isLineOff() ? View.VISIBLE : View.INVISIBLE);
                             }
                         });
-                        PlantStatusModel model = new PlantStatusModel("1", "getStatus", "1", plantModel.getPSIGN(), "1", plantModel.getPid());
+                        PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
+                                1, Integer.parseInt(plantModel.getPid()));
                         String request = gson.toJson(model);
+                        String ltid = plantModel.getLTID();
                         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                                 0, request.getBytes().length, null, new LongToothResponse());
                     }
@@ -238,11 +241,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 setLed();
             }
 
-            private boolean isLineOff(){
-                if (longtoothIds!=null&&longtoothIds.size()>0){
-                    longtoothIds.contains(mModel.getLTID());
+            private boolean isLineOff() {
+                if (longtoothIds != null && longtoothIds.size() > 0
+                        && longtoothIds.contains(mModel.getLTID())) {
                     return false;
-                }else {
+                } else {
                     return true;
                 }
             }
@@ -297,7 +300,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @OnClick(R.id.tv_setting_second)
             void onSecondSettingClick() {
-                SecondSettingActivity.show(getContext(),mModel);
+                SecondSettingActivity.show(getContext(), mModel);
+            }
+
+            @OnClick(R.id.tv_update)
+            void onUpdateClick() {
+                HorizontalRecyclerFragmentHelper.update(getContext(), mModel);
             }
 
             @OnClick(R.id.img_setting)

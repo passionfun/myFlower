@@ -23,6 +23,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.AutoModel;
+import bocai.com.yanghuaji.model.AutoParaModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
@@ -214,12 +215,14 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     public void getAutoParaSuccess(List<AutoModel.ParaBean> paraBeans) {
         mPresenter.setupPlant(map);
-        AutoModel model = new AutoModel("Auto",pId,mUUID,paraBeans);
+        AutoParaModel model = new AutoParaModel("Auto",Integer.parseInt(pId),Integer.parseInt(mUUID),paraBeans);
         final Gson gson = new Gson();
         String request = gson.toJson(model);
-        LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+        LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
             @Override
-            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i,
+                                              byte[] bytes, LongToothAttachment longToothAttachment) {
                 String jsonContent = new String(bytes);
                 LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                 if (plantStatusRspModel.getCODE()==0){

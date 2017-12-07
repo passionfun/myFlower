@@ -37,7 +37,8 @@ public class EquipmentSettingHelper {
         String request = gson.toJson(model);
 
 //        LongTooth.request(longToothId,"longtooth", LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,null,new LongToothResponse());
-        LongTooth.request(longToothId,"longtooth", LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,null,new LongToothResponse());
+        LongTooth.request(longToothId,"longtooth", LongToothTunnel.LT_ARGUMENTS,request.getBytes(),
+                0,request.getBytes().length,null,new LongToothResponse());
     }
 
 

@@ -16,14 +16,15 @@ public class PlantStatusModel {
      * Pid : 1
      */
 
-    private String EC;
+    private int EC;
     private String CMD;
-    private String Temp;
-    private String UUID;
-    private String WaterStat;
-    private String Pid;
+    private int Temp;
+    private int UUID;
+    private int WaterStat;
+    private int Pid;
 
-    public PlantStatusModel(String EC, String CMD, String temp, String UUID, String waterStat, String pid) {
+
+    public PlantStatusModel(int EC, String CMD, int temp, int UUID, int waterStat, int pid) {
         this.EC = EC;
         this.CMD = CMD;
         Temp = temp;
@@ -32,11 +33,12 @@ public class PlantStatusModel {
         Pid = pid;
     }
 
-    public String getEC() {
+
+    public int getEC() {
         return EC;
     }
 
-    public void setEC(String EC) {
+    public void setEC(int EC) {
         this.EC = EC;
     }
 
@@ -48,37 +50,35 @@ public class PlantStatusModel {
         this.CMD = CMD;
     }
 
-    public String getTemp() {
+    public int getTemp() {
         return Temp;
     }
 
-    public void setTemp(String temp) {
+    public void setTemp(int temp) {
         Temp = temp;
     }
 
-    public String getUUID() {
+    public int getUUID() {
         return UUID;
     }
 
-    public void setUUID(String UUID) {
+    public void setUUID(int UUID) {
         this.UUID = UUID;
     }
 
-    public String getWaterStat() {
+    public int getWaterStat() {
         return WaterStat;
     }
 
-    public void setWaterStat(String waterStat) {
+    public void setWaterStat(int waterStat) {
         WaterStat = waterStat;
     }
 
-    public String getPid() {
+    public int getPid() {
         return Pid;
     }
 
-    public void setPid(String pid) {
+    public void setPid(int pid) {
         Pid = pid;
     }
-
-
 }

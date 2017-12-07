@@ -112,6 +112,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     protected void initWidget() {
         super.initWidget();
         mTitle.setText("种植机设置");
+        etEquipName.setText(mPlantBean.getEquipName());
         tvRight.setVisibility(View.VISIBLE);
     }
 
@@ -130,6 +131,9 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             tvBanStart.setText(equipmentSetupModel.getBanStart());
             tvBanStop.setText(equipmentSetupModel.getBanStop());
             mGroupName.setText(equipmentSetupModel.getGroupName());
+            mBengin = equipmentSetupModel.getLightStart();
+            banStart = equipmentSetupModel.getBanStart();
+            banStop = equipmentSetupModel.getBanStop();
         }
     }
 

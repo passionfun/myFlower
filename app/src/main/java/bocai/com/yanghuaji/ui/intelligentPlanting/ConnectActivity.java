@@ -189,12 +189,26 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         gson = new Gson();
         List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
         }.getType());
-        mModel = equipmentModels.get(0);
-        longToothId = equipmentModels.get(0).getLTID();
-        timeStamp = DateUtils.getCurrentDateTimes();
-        BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
-        String request = gson.toJson(model);
-        LongTooth.request(longToothId,"longtooth",LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,null,new LongToothResponse());
+        for (EquipmentModel equipmentModel : equipmentModels) {
+            if (equipmentModel.getMAC().equals("B0:F8:93:10:CF:E6")){
+
+                mModel = equipmentModel;
+                Log.d("shc", "bind: "+mModel.toString());
+                longToothId = equipmentModel.getLTID();
+                timeStamp = DateUtils.getCurrentDateTimes();
+                BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
+                String request = gson.toJson(model);
+                LongTooth.request(longToothId,"longtooth",LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,
+                        null,new LongToothResponse());
+            }
+        }
+//        mModel = equipmentModels.get(0);
+//        longToothId = equipmentModels.get(0).getLTID();
+//        timeStamp = DateUtils.getCurrentDateTimes();
+//        BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
+//        String request = gson.toJson(model);
+//        LongTooth.request(longToothId,"longtooth",LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,
+//                null,new LongToothResponse());
     }
 
     @Override
@@ -225,7 +239,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             Log.d("shc", "handleServiceResponse: "+new String(args));
             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             if (longToothRspModel.getCODE()==0){
-                String mEquipmentName = mModel.getName();
+                String mEquipmentName = mModel.getDEVNAME();
                 String macAddress = mModel.getMAC();
                 String token = Account.getToken();
                 String serialNum = "11074";

@@ -20,6 +20,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,7 +69,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     //搜索设备用
     private MiCODevice micodev;
     //所有在线设备的mac集合
-    List<String> longtoothIds;
+    List<String> longtoothIds = new ArrayList<>();
 
     @Override
     protected int getContentLayoutId() {
@@ -222,7 +223,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                             mImgTent.setVisibility(isLineOff()?View.VISIBLE:View.INVISIBLE);
                         }
                     });
-                    PlantStatusModel model = new PlantStatusModel("1", "getStatus", "1", plantModel.getPSIGN(), "1", plantModel.getPid());
+                    PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1,Integer.parseInt(plantModel.getPSIGN()) ,
+                            1, Integer.parseInt(plantModel.getPid()));
                     String request = gson.toJson(model);
                     LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                             0, request.getBytes().length, null, new LongToothResponse());
@@ -233,8 +235,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         }
 
         private boolean isLineOff(){
-            if (longtoothIds!=null&&longtoothIds.size()>0){
-                longtoothIds.contains(mModel.getLTID());
+            if (longtoothIds!=null&&longtoothIds.size()>0
+                    &&longtoothIds.contains(mModel.getLTID())){
                 return false;
             }else {
                 return true;

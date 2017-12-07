@@ -13,6 +13,7 @@ public class EquipmentModel {
     /**
      * LTID : 1.1.2353.29.152
      * Name : EMW3080B Module#10C460
+     * DEVNAME: "WG_D034",
      * Manufacturer : MXCHIP Inc.
      * Hardware Rev : 3080B
      * Port : 8000
@@ -27,6 +28,7 @@ public class EquipmentModel {
 
     private String LTID;
     private String Name;
+    private String DEVNAME;
     private String Manufacturer;
     @SerializedName("Hardware Rev")
     private String _$HardwareRev172; // FIXME check this code
@@ -55,6 +57,14 @@ public class EquipmentModel {
 
     public void setName(String Name) {
         this.Name = Name;
+    }
+
+    public String getDEVNAME() {
+        return DEVNAME;
+    }
+
+    public void setDEVNAME(String DEVNAME) {
+        this.DEVNAME = DEVNAME;
     }
 
     public String getManufacturer() {
@@ -137,4 +147,23 @@ public class EquipmentModel {
         this.Protocol = Protocol;
     }
 
+
+    @Override
+    public String toString() {
+        return "EquipmentModel{" +
+                "LTID='" + LTID + '\'' +
+                ", Name='" + Name + '\'' +
+                ", DEVNAME='" + DEVNAME + '\'' +
+                ", Manufacturer='" + Manufacturer + '\'' +
+                ", _$HardwareRev172='" + _$HardwareRev172 + '\'' +
+                ", Port=" + Port +
+                ", Model='" + Model + '\'' +
+                ", IP='" + IP + '\'' +
+                ", Seed='" + Seed + '\'' +
+                ", _$FirmwareRev196='" + _$FirmwareRev196 + '\'' +
+                ", MAC='" + MAC + '\'' +
+                ", _$MICOOSRev276='" + _$MICOOSRev276 + '\'' +
+                ", Protocol='" + Protocol + '\'' +
+                '}';
+    }
 }

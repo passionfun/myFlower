@@ -9,7 +9,7 @@ import java.util.List;
  * 邮箱 yuanfei221@126.com
  */
 
-public class AutoModel {
+public class AutoParaModel {
 
 
     /**
@@ -23,26 +23,25 @@ public class AutoModel {
      */
 
     private String CMD;
-    private String Pid;
-    private String UUID;
-    @SerializedName("Data")
-    private List<ParaBean> Para ;
+    private int Pid;
+    private int UUID;
+    private List<AutoModel.ParaBean> Para ;
 
-    public AutoModel() {
+    public AutoParaModel() {
     }
 
-    public AutoModel(String CMD, String pid, String UUID, List<ParaBean> data) {
+    public AutoParaModel(String CMD, int pid, int UUID, List<AutoModel.ParaBean> data) {
         this.CMD = CMD;
         Pid = pid;
         this.UUID = UUID;
         Para = data;
     }
 
-    public List<ParaBean> getPara() {
+    public List<AutoModel.ParaBean> getPara() {
         return Para;
     }
 
-    public void setPara(List<ParaBean> para) {
+    public void setPara(List<AutoModel.ParaBean> para) {
         Para = para;
     }
 
@@ -54,23 +53,21 @@ public class AutoModel {
         this.CMD = CMD;
     }
 
-    public String getPid() {
+    public int getPid() {
         return Pid;
     }
 
-    public void setPid(String pid) {
+    public void setPid(int pid) {
         Pid = pid;
     }
 
-    public String getUUID() {
+    public int getUUID() {
         return UUID;
     }
 
-    public void setUUID(String UUID) {
+    public void setUUID(int UUID) {
         this.UUID = UUID;
     }
-
-
 
     public static class ParaBean {
         /**
