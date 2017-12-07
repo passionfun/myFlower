@@ -1,5 +1,6 @@
 package bocai.com.yanghuaji.ui.plantingDiary;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
 import java.util.HashMap;
@@ -34,6 +41,7 @@ import bocai.com.yanghuaji.util.BitmapUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -66,6 +74,29 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     private String mDiaryId;
     private Uri imageUri;
     private RecyclerAdapter<String> mAdapter;
+
+    //声明AMapLocationClient类对象
+    public AMapLocationClient mLocationClient = null;
+    //声明定位回调监听器
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    //可在其中解析amapLocation获取相应内容。
+                    mLocation.setText(aMapLocation.getAoiName());
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+                    mLocation.setText("定位失败");
+                }
+            }
+        }
+    };
+    //声明AMapLocationClientOption对象
+    public AMapLocationClientOption mLocationOption = null;
 
     //显示的入口
     public static void show(Context context, String diaryId) {
@@ -132,6 +163,39 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                 }
             }
         });
+
+        mLocation.setText("定位中...");
+        //初始化定位
+        mLocationClient = new AMapLocationClient(getApplicationContext());
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //获取一次定位结果：
+        mLocationOption.setOnceLocation(true);
+        //获取最近3s内精度最高的一次定位结果：
+        mLocationOption.setOnceLocationLatest(true);
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //申请定位权限
+        new RxPermissions(this)
+                .request(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            mLocationClient.startLocation();
+                        } else {
+                            mLocation.setText("定位失败");
+//                        getLocationFail();
+                        }
+                    }
+                });
     }
 
     @OnClick(R.id.img_back)
@@ -196,7 +260,6 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
         picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM, 0, 0);
     }
-
 
     private void uploadPhotos(List<String> pathList) {
         Map<String, RequestBody> params = new HashMap<>();
@@ -332,4 +395,10 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
+        mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
+    }
 }
