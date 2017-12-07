@@ -235,6 +235,10 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         String ltid = plantModel.getLTID();
                         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                                 0, request.getBytes().length, null, new LongToothResponse());
+                        if (plantModel != null && !TextUtils.isEmpty(plantModel.getLTID())) {
+                            LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                                    0, request.getBytes().length, null, new LongToothResponse());
+                        }
                     }
                 };
                 timer.schedule(task, 5000, 5000);
