@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
@@ -68,14 +69,15 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     private String password;
     private MiCODevice micodev;
     private CountDownTimer timer;
-
+    private List<String> mScanData;
     //显示的入口
-    public static void show(Context context, String ssid, String password) {
+    public static void show(Context context, String ssid, String password,ArrayList<String> scanData) {
         if (TextUtils.isEmpty(ssid) || TextUtils.isEmpty(password)) {
             Application.showToast("参数错误");
             return;
         }
         Intent intent = new Intent(context, ConnectActivity.class);
+        intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
         intent.putExtra(KEY_SSID, ssid);
         intent.putExtra(KEY_PASSWORD, password);
         context.startActivity(intent);
@@ -90,6 +92,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     protected boolean initArgs(Bundle bundle) {
         ssid = bundle.getString(KEY_SSID);
         password = bundle.getString(KEY_PASSWORD);
+        mScanData = getIntent().getStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA);
         return super.initArgs(bundle);
     }
 
@@ -190,7 +193,8 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
         }.getType());
         for (EquipmentModel equipmentModel : equipmentModels) {
-            if (equipmentModel.getMAC().equals("B0:F8:93:10:CF:E6")){
+            //"B0:F8:93:10:CF:E6"
+            if (equipmentModel.getMAC().equals(mScanData.get(2))){
 
                 mModel = equipmentModel;
                 Log.d("shc", "bind: "+mModel.toString());

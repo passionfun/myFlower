@@ -20,6 +20,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
@@ -239,7 +241,10 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
     @OnClick(R.id.tv_shopping)
     void onShoppingClick() {
-        AddWifiActivity.show(this);
+        String content = "WG101&8001F023412332&B0:F8:93:10:CF:E6";
+       String[] result = content.split("&");
+       List<String> data = new ArrayList<>(Arrays.asList(result));
+        AddWifiActivity.show(this, (ArrayList<String>) data);
     }
 
     public void showLeft() {

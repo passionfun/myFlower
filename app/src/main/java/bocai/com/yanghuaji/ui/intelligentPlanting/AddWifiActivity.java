@@ -2,9 +2,13 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
@@ -31,15 +35,24 @@ public class AddWifiActivity extends Activity {
     EditText mWifiPassword;
 
     private MiCODevice micodev;
+    private List<String> mScanData;
 
     //显示的入口
-    public static void show(Context context) {
-        context.startActivity(new Intent(context, AddWifiActivity.class));
+    public static void show(Context context,ArrayList<String> scanData) {
+        Intent intent = new Intent(context, AddWifiActivity.class);
+        intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
+        context.startActivity(intent);
     }
 
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_add_wifi;
+    }
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+        mScanData = getIntent().getStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA);
+        return super.initArgs(bundle);
     }
 
     @Override
@@ -60,7 +73,7 @@ public class AddWifiActivity extends Activity {
     void onNextClick() {
         String ssid = mWifiName.getText().toString();
         String password = mWifiPassword.getText().toString();
-        ConnectActivity.show(this,ssid,password);
+        ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);
     }
 
 

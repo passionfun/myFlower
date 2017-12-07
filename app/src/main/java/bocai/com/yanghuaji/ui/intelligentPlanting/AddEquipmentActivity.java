@@ -15,6 +15,8 @@ import com.bocai.zxinglibrary.common.Constant;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
@@ -43,6 +45,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     private RecyclerAdapter<PlantSeriesModel.PlantSeriesCard> mAdapter;
     private int page = 1;
     private int REQUEST_CODE_SCAN = 111;
+    private List<String> scanData;
 
     //显示的入口
     public static void show(Context context) {
@@ -119,8 +122,12 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
             if (data != null) {
                 String content = data.getStringExtra(Constant.CODED_CONTENT);
                 Log.d("shc", "扫描结果为: " + content);
+                //型号，序列号，mac地址
                 //WG101&8001F023412332&B0F89310C460
-                String equipmentType = content.substring(0,content.indexOf("&"));
+               String[] result = content.split("&");
+                scanData = new ArrayList<>(Arrays.asList(result));
+                String equipmentType = result[0];
+
                 mPresenter.getEquipmentPhoto("1",equipmentType);
             }
         }
@@ -141,7 +148,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     @Override
     public void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel) {
-        AddEquipmentDisplayActivity.show(this, photoModel.getPhoto());
+        AddEquipmentDisplayActivity.show(this,photoModel.getPhoto(), (ArrayList<String>) scanData);
     }
 
     @Override

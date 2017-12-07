@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.GlideApp;
@@ -34,13 +37,16 @@ public class AddEquipmentDisplayActivity extends Activity {
     @BindView(R.id.img_photo)
     ImageView mEquipmentPhoto;
 
+    public static final String KEY_SCAN_DATA = "KEY_SCAN_DATA";
     public static final String KEY_PHOTO_PATH = "KEY_PHOTO_PATH";
     private String mPhotoPath;
+    private List<String> mScanData;
 
     //显示的入口
-    public static void show(Context context,String photoPath) {
+    public static void show(Context context,String photoPath, ArrayList<String> scanData) {
         Intent intent = new Intent(context, AddEquipmentDisplayActivity.class);
         intent.putExtra(KEY_PHOTO_PATH,photoPath);
+        intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
         context.startActivity(intent);
     }
 
@@ -52,6 +58,7 @@ public class AddEquipmentDisplayActivity extends Activity {
     @Override
     protected boolean initArgs(Bundle bundle) {
         mPhotoPath = bundle.getString(KEY_PHOTO_PATH);
+        mScanData = getIntent().getStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA);
         return super.initArgs(bundle);
     }
 
@@ -72,7 +79,7 @@ public class AddEquipmentDisplayActivity extends Activity {
 
     @OnClick(R.id.img_next)
     void onNextClick() {
-        AddWifiActivity.show(this);
+        AddWifiActivity.show(this, (ArrayList<String>) mScanData);
 
     }
 

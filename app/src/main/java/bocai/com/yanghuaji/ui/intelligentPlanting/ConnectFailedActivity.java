@@ -40,7 +40,7 @@ public class ConnectFailedActivity extends Activity {
 
     @OnClick(R.id.tv_reload)
     void onReloadClick() {
-        AddWifiActivity.show(this);
+        AddEquipmentActivity.show(this);
         finish();
     }
 }

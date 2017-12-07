@@ -134,7 +134,7 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
 
     @Override
     public void addEquipmentFailed() {
-        AddWifiActivity.show(this);
+        AddEquipmentActivity.show(this);
     }
 
     @Override
