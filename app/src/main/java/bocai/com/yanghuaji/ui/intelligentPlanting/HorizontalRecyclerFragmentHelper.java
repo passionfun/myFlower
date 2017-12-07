@@ -1,10 +1,7 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
-import android.view.View;
 
 import com.google.gson.Gson;
 
@@ -18,6 +15,7 @@ import xpod.longtooth.LongToothServiceResponseHandler;
 import xpod.longtooth.LongToothTunnel;
 
 /**
+ *
  * Created by shc on 2017/12/6.
  */
 
@@ -145,9 +143,6 @@ public class HorizontalRecyclerFragmentHelper {
 
 
 
-    private void check(){
-
-    }
 
 
 }
