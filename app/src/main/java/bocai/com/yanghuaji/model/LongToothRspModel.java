@@ -7,6 +7,15 @@ package bocai.com.yanghuaji.model;
 
 public class LongToothRspModel {
     private int CODE;
+    private String softVer;
+
+    public String getSoftVer() {
+        return softVer;
+    }
+
+    public void setSoftVer(String softVer) {
+        this.softVer = softVer;
+    }
 
     public void setCODE(int CODE) {
         this.CODE = CODE;

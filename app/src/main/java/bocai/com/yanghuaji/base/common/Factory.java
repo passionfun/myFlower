@@ -48,6 +48,8 @@ public class Factory {
         FlowManager.init(new FlowConfig.Builder(Application.getInstance())
                 .openDatabasesOnInit(true) // 数据库初始化的时候就开始打开
                 .build());
+
+
     }
 
 

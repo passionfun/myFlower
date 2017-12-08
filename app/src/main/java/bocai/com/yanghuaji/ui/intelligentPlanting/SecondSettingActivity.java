@@ -1,14 +1,26 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.CheckboxStatusModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.SecondSettingContract;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.SecondSettingPresenter;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -17,7 +29,8 @@ import butterknife.OnClick;
  * 邮箱 yuanfei221@126.com
  */
 
-public class SecondSettingActivity extends Activity {
+public class SecondSettingActivity extends PresenterActivity<SecondSettingContract.Presenter>
+        implements SecondSettingContract.View {
 
     @BindView(R.id.tv_title)
     TextView mTitle;
@@ -25,29 +38,17 @@ public class SecondSettingActivity extends Activity {
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
-    public static final String KEY_PLANT_ID = "KEY_PLANT_ID";
-    public static final String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
-    public static final String KEY_UUID = "KEY_UUID";
-    public static final String KEY_LONGTOOTH_ID = "KEY_LONGTOOTH_ID";
-    public static final String KEY_PLANT_NAME = "KEY_PLANT_NAME";
+    @BindView(R.id.cb_push)
+    CheckBox mCbPush;
+
     public static final String KEY_PLANT_BEAN = "KEY_PLANT_BEAN";
-    private String mEquipmentId;
-    private String mPlantId;
-    private String mUUID;
-    private String mLongToothId;
-    private String mPlantName;
-    private  EquipmentRspModel.ListBean mPlantBean;
+    private EquipmentRspModel.ListBean mPlantBean;
 
 
     //显示的入口
-    public static void show(Context context,EquipmentRspModel.ListBean plantBean) {
+    public static void show(Context context, EquipmentRspModel.ListBean plantBean) {
         Intent intent = new Intent(context, SecondSettingActivity.class);
-//        intent.putExtra(KEY_EQUIPMENT_ID,equipmentId);
-//        intent.putExtra(KEY_PLANT_ID,plantId);
-//        intent.putExtra(KEY_UUID,uuid);
-//        intent.putExtra(KEY_LONGTOOTH_ID,longToothId);
-//        intent.putExtra(KEY_PLANT_NAME,plantName);
-        intent.putExtra(KEY_PLANT_BEAN,plantBean);
+        intent.putExtra(KEY_PLANT_BEAN, plantBean);
         context.startActivity(intent);
     }
 
@@ -58,11 +59,6 @@ public class SecondSettingActivity extends Activity {
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-//        mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
-//        mPlantId = bundle.getString(KEY_PLANT_ID);
-//        mUUID = bundle.getString(KEY_UUID);
-//        mLongToothId = bundle.getString(KEY_LONGTOOTH_ID);
-//        mPlantName = bundle.getString(KEY_PLANT_NAME);
         mPlantBean = (EquipmentRspModel.ListBean) bundle.getSerializable(KEY_PLANT_BEAN);
         return super.initArgs(bundle);
     }
@@ -71,6 +67,21 @@ public class SecondSettingActivity extends Activity {
     protected void initWidget() {
         super.initWidget();
         mTitle.setText("设置");
+        EventBus.getDefault().register(this);
+        mCbPush.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mCbPush.isChecked()) {
+                    //推送开
+                    //type:类型区分   1光照状态   2消息推送状态
+                    //status：状态  0关  1开
+                    mPresenter.setCheckBox(Account.getToken(), "2", "1", mPlantBean.getId());
+                } else {
+                    //推送关
+                    mPresenter.setCheckBox(Account.getToken(), "2", "0", mPlantBean.getId());
+                }
+            }
+        });
     }
 
     @OnClick(R.id.img_back)
@@ -80,20 +91,56 @@ public class SecondSettingActivity extends Activity {
 
     @OnClick(R.id.tv_equipment_setting)
     void onEquipmentSettingClick() {
-        // 往里面传 设备id
-        EquipmentSettingActivity.show(this,mPlantBean);
+        EquipmentSettingActivity.show(this, mPlantBean);
     }
 
     @OnClick(R.id.tv_plant_setting)
     void onPlantSettingClick() {
-        // 往里面传 植物id 和设备id
-        PlantSettingActivity.show(this,mPlantBean);
+        PlantSettingActivity.show(this, mPlantBean);
     }
 
     @OnClick(R.id.tv_equipment_info)
     void onEquipmentInfoClick() {
-        // 往里面传 设备id
-        EquipmentInfoActivity.show(this,mPlantBean);
+        EquipmentInfoActivity.show(this, mPlantBean);
     }
 
+    @OnClick(R.id.tv_clear_data)
+    void onClearDataClick() {
+        // 清除数据
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
+        deleteDialog.setTitle("确定清除？");
+        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mPresenter.clearData(Account.getToken(), mPlantBean.getId());
+            }
+        });
+        deleteDialog.setNegativeButton("取消", null);
+        deleteDialog.show();
+
+    }
+
+    @Override
+    public void clearDataSuccess() {
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPushSetSuccess(CheckboxStatusModel model) {
+        if (model!=null&&model.getType().equals("2")){
+            mCbPush.setChecked(model.getStatus().equals("0")?false:true);
+        }
+    }
+
+
+    @Override
+    public void setCheckBoxSuccess(CheckboxStatusModel model) {
+        EventBus.getDefault().post(model);
+    }
+
+    @Override
+    protected SecondSettingContract.Presenter initPresenter() {
+        return new SecondSettingPresenter(this);
+    }
 }

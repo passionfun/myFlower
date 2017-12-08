@@ -28,6 +28,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.base.common.Factory;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
@@ -44,6 +45,10 @@ import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import xpod.longtooth.LongTooth;
+import xpod.longtooth.LongToothAttachment;
+import xpod.longtooth.LongToothEvent;
+import xpod.longtooth.LongToothEventHandler;
 
 public class MainActivity extends PresenterActivity<MainActivityContract.Presenter>
         implements MainActivityContract.View, XRecyclerView.LoadingListener {
@@ -126,6 +131,33 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             mDrawerLayout.setClipToPadding(false);
         }
 
+        //初始化长牙
+        Factory.runOnAsync(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //启动长牙
+                    LongTooth.setRegisterHost("114.215.170.184",53180);
+                    LongTooth.start(Application.getInstance(),
+                            2000110273,
+                            1,
+                            "30820126300D06092A864886F70D010101050003820113003082010E028201023030384645304233423539423931413943414435463341363735463632444645443333343739414132433337423543434333354239323733413330413241354244414539424344373142374334463944423237393430394139463235373245414534424133324141453334433133433036444645333937423531434636413743424143463638434446304432313945334644374442464341383032363645413730353039414239393230374246393735323435314133343943383530394135393232463038413531423344333037353035424646353139363234413835413842443742463634364230444438373944433542453131453230393443363132373944440206303130303031",
+                            new LongToothHandler());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private class LongToothHandler implements LongToothEventHandler {
+        @Override
+        public void handleEvent(int code, String ltid_str, String srv_str, byte[] msg, LongToothAttachment attachment) {
+            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
+
+            }
+        }
     }
 
     @Override

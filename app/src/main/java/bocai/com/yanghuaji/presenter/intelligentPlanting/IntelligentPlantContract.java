@@ -14,10 +14,15 @@ public interface IntelligentPlantContract {
 
     interface View extends BaseContract.View<Presenter>{
         void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans);
+
+
     }
 
 
     interface Presenter extends BaseContract.Presenter{
+
         void getAllEquipments(String token,String limit,String page);
+
+
     }
 }

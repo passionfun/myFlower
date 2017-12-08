@@ -15,6 +15,9 @@ import com.google.gson.reflect.TypeToken;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
+import bocai.com.yanghuaji.model.CheckboxStatusModel;
+import bocai.com.yanghuaji.model.EquipmentDataModel;
 import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LedSetModel;
@@ -36,6 +41,8 @@ import bocai.com.yanghuaji.model.PlantStatusModel;
 import bocai.com.yanghuaji.model.PlantStatusRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresenter;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerContract;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.GalleryLayoutManager;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.ScaleTransformer;
 import bocai.com.yanghuaji.util.persistence.Account;
@@ -72,6 +79,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     private MiCODevice micodev;
     //所有在线设备的longtoothId集合
     List<String> longtoothIds = new ArrayList<>();
+    private boolean isLedOn = false;
 
     @Override
     protected int getContentLayoutId() {
@@ -81,6 +89,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
+
         GalleryLayoutManager layoutManager = new GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL);
         layoutManager.attach(mRecyclerView, 1);
         layoutManager.setItemTransformer(new ScaleTransformer());
@@ -168,7 +177,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             return new MyViewHolder(root);
         }
 
-        class MyViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
+        class MyViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> implements MainRecylerContract.View {
             @BindView(R.id.frame_setting)
             FrameLayout mSettingView;
 
@@ -198,10 +207,29 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @BindView(R.id.cb_led)
             CheckBox mLed;
+
+            @BindView(R.id.cb_push)
+            CheckBox mPush;
+
+            @BindView(R.id.tv_temperature)
+            TextView mTemperature;
+
+            @BindView(R.id.tv_water_status)
+            TextView mWaterStatus;
+
+            @BindView(R.id.tv_led_status)
+            TextView mLedStatus;
+
+            @BindView(R.id.tv_ec_status)
+            TextView mEcStatus;
+
             private boolean isShowSetting = false;
+            private MainRecylerContract.Presenter mPresenter;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
+                EventBus.getDefault().register(this);
+                new MainRecylerPresenter(this);
             }
 
             @Override
@@ -212,6 +240,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mPlantName.setText(plantModel.getPlantName());
                 mGroupName.setText(plantModel.getGroupName());
                 mTime.setText(plantModel.getDays() + "");
+                isLedOn = mLed.isChecked();
                 GlideApp.with(getContext())
                         .load(plantModel.getPhoto())
                         .centerCrop()
@@ -232,18 +261,25 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
                                 1, Integer.parseInt(plantModel.getPid()));
                         String request = gson.toJson(model);
-                        String ltid = plantModel.getLTID();
-                        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                                0, request.getBytes().length, null, new LongToothResponse());
                         if (plantModel != null && !TextUtils.isEmpty(plantModel.getLTID())) {
                             LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                                    0, request.getBytes().length, null, new LongToothResponse());
+                                    0, request.getBytes().length, null, new LongToothResponse(mPresenter));
                         }
                     }
                 };
                 timer.schedule(task, 5000, 5000);
                 setLed();
             }
+
+
+            @Subscribe(threadMode = ThreadMode.MAIN)
+            public void onPushSetSuccess(CheckboxStatusModel model) {
+                if (model!=null&&model.getType().equals("2")){
+                    mPush.setChecked(model.getStatus().equals("0")?false:true);
+                }
+            }
+
+
 
             private boolean isLineOff() {
                 if (longtoothIds != null && longtoothIds.size() > 0
@@ -260,6 +296,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     @Override
                     public void onClick(View view) {
                         if (mLed.isChecked()) {
+                            mPresenter.setCheckBox(Account.getToken(), "1", "1", mModel.getId());
                             LedSetModel model = new LedSetModel("On", mModel.getPSIGN());
                             String request = gson.toJson(model);
                             LongTooth.request(mModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
@@ -275,6 +312,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                 }
                             });
                         } else {
+                            mPresenter.setCheckBox(Account.getToken(), "1", "0", mModel.getId());
                             LedSetModel model = new LedSetModel("Off", mModel.getPSIGN());
                             String request = gson.toJson(model);
                             LongTooth.request(mModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
@@ -312,6 +350,20 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 HorizontalRecyclerFragmentHelper.update(getContext(), mModel);
             }
 
+
+            @OnClick(R.id.cb_push)
+            void onPushClick() {
+                if (mPush.isChecked()) {
+                    //推送开
+                    //type:类型区分   1光照状态   2消息推送状态
+                    //status：状态  0关  1开
+                    mPresenter.setCheckBox(Account.getToken(), "2", "1", mModel.getId());
+                } else {
+                    //推送关
+                    mPresenter.setCheckBox(Account.getToken(), "2", "0", mModel.getId());
+                }
+            }
+
             @OnClick(R.id.img_setting)
             void onSettingClick() {
                 Log.d(TAG, "run: " + mModel.getPSIGN());
@@ -324,13 +376,79 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mSetting.setImageResource(R.mipmap.img_item_setting);
                 }
             }
+
+            @Override
+            public void showError(int str) {
+
+            }
+
+            @Override
+            public void showLoading() {
+
+            }
+
+            @Override
+            public void hideLoading() {
+
+            }
+
+            @Override
+            public void setPresenter(MainRecylerContract.Presenter presenter) {
+                mPresenter = presenter;
+            }
+
+            @Override
+            public void setDataSuccess(EquipmentDataModel model) {
+                mTemperature.setText(model.getDegree());
+                mWaterStatus.setText(getStatus(model.getWstatus()));
+                if (model.getLight()!=null)
+                    mLedStatus.setText(model.getLight().equals("0")?"关":"开");
+                mEcStatus.setText(getStatus(model.getEstatus()));
+                if (model.getWstatus().equals("0")){
+                    //温度过低
+                    mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,0,
+                            R.mipmap.img_trending_down,0);
+                }else if (model.getDstatus().equals("2")){
+                    //温度过高
+                    mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
+                            0,R.mipmap.img_temperature_trending_up,0);
+                }else {
+                    mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
+                            0,0,0);
+                }
+            }
+
+            @Override
+            public void setCheckBoxSuccess(CheckboxStatusModel model) {
+                EventBus.getDefault().post(model);
+            }
+
+            private String getStatus(String code){
+                switch (code){
+                    case "0":
+                        return "过低";
+                    case "1":
+                        return "正常";
+                    case "2":
+                        return "过高";
+                    default:
+                        return "";
+                }
+            }
+
+
         }
 
         class LongToothResponse implements LongToothServiceResponseHandler {
+
+            private MainRecylerContract.Presenter mPresenter;
+
+            public LongToothResponse(MainRecylerContract.Presenter mPresenter) {
+                this.mPresenter = mPresenter;
+            }
+
             @Override
             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
-                Log.d("shc", "horizoontalResponse: " + new String(bytes));
-                Application.showToast("horizontal" + new String(bytes));
                 String jsonContent = new String(bytes);
                 PlantStatusRspModel plantStatusRspModel = gson.fromJson(jsonContent, PlantStatusRspModel.class);
                 if (plantStatusRspModel.getCODE() == 0) {
@@ -338,7 +456,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     String temperature = plantStatusRspModel.getTemp();
                     String wagerState = plantStatusRspModel.getWaterStat();
                     String Ec = plantStatusRspModel.getEC();//植物的营养值
-
+                    String isLihtOn = isLedOn ? "0" : "1";
+                    mPresenter.setData(Account.getToken(),mModel.getMac(),temperature,wagerState,isLihtOn,Ec);
                 }
 
             }

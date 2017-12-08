@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import bocai.com.yanghuaji.model.AutoParaModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
+import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
 import bocai.com.yanghuaji.model.PlantSettingModel_Table;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.PlantSettingContract;
@@ -63,8 +63,8 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
 
     @BindView(R.id.tv_plant_method)
     TextView tvPlantMethod;
-    @BindView(R.id.et_input_password)
-    EditText etInputPassword;
+    @BindView(R.id.tv_plant_name)
+    TextView mTvPlantName;
     @BindView(R.id.tv_plant_cycle)
     TextView tvPlantCycle;
     @BindView(R.id.ll_root)
@@ -76,7 +76,9 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     private String mUUID;
     private String mLongToothId;
     private EquipmentRspModel.ListBean mPlantBean;
+    private PlantRspModel.PlantCard mPlantcard;
     public static final String KEY_PLANT_BEAN = "KEY_PLANT_BEAN";
+    public static String KEY_CLASS_NAME = "KEY_CLASS_NAME";
 
     //显示的入口
     public static void show(Context context,EquipmentRspModel.ListBean plantBean) {
@@ -84,6 +86,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         intent.putExtra(KEY_PLANT_BEAN,plantBean);
         context.startActivity(intent);
     }
+
 
 
 
@@ -107,7 +110,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         id = mPlantBean.getId();
         mUUID = mPlantBean.getPSIGN();
         mLongToothId = mPlantBean.getLTID();
-        etInputPassword.setText(mPlantBean.getPlantName());
+        mTvPlantName.setText(mPlantBean.getPlantName());
     }
 
     @Override
@@ -138,9 +141,30 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         mPresenter.lifeCycle();
     }
 
+    @OnClick(R.id.tv_plant_name)
+    void onPlantNameClick() {
+        if (TextUtils.isEmpty(mTvPlantName.getText())){
+            Intent intent = new Intent(this, AddPlantActivity.class);
+            intent.putExtra(KEY_CLASS_NAME, PlantSettingActivity.class.getName());
+            startActivityForResult(intent,1);
+        }else {
+            Application.showToast("已添加过植物");
+        }
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mPlantcard = (PlantRspModel.PlantCard) data.getSerializableExtra(AddPlantActivity.KEY_PLANT_CARD);
+        mTvPlantName.setText(mPlantcard.getPlantName());
+        pId = mPlantcard.getId();
+    }
+
     @OnClick(R.id.tv_right)
     void onSetupPlant() {
-        plantName=etInputPassword.getText().toString().trim();
+        plantName=mTvPlantName.getText().toString().trim();
         map.put("Token", Account.getToken());
         map.put("PlantMode", plantMode);//种植模式
         map.put("PMid", pMid);//种植模式id
@@ -215,7 +239,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     public void getAutoParaSuccess(List<AutoModel.ParaBean> paraBeans) {
         mPresenter.setupPlant(map);
-        AutoParaModel model = new AutoParaModel("Auto",Integer.parseInt(pId),Integer.parseInt(mUUID),paraBeans);
+        AutoParaModel model = new AutoParaModel("auto",Integer.parseInt(pId),Integer.parseInt(mUUID),paraBeans);
         final Gson gson = new Gson();
         String request = gson.toJson(model);
         LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),

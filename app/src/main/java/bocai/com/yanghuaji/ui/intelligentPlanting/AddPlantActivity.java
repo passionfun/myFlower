@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -63,10 +64,13 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
     private RecyclerAdapter<PlantRspModel.PlantCard> mAdapter;
     public static String KEY_EQUIPMENT_NAME = "KEY_EQUIPMENT_NAME";
     public static String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
+    public static String KEY_PLANT_CARD = "KEY_PLANT_CARD";
+
     private String mEquipmentName;
     private String mEquipmentId;
     private String mPlantName;
     private String mPlantId;
+    private String className;
 
 
     //显示的入口
@@ -86,6 +90,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
     protected boolean initArgs(Bundle bundle) {
         mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
         mEquipmentName = bundle.getString(KEY_EQUIPMENT_NAME);
+        className = bundle.getString(PlantSettingActivity.KEY_CLASS_NAME);
         return super.initArgs(bundle);
     }
 
@@ -194,21 +199,27 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
 
     @Override
     public void searchCommonPlantSuccess(List<PlantRspModel.PlantCard> cards) {
-        if (cards !=null&&cards.size()>0){
+        if (cards != null && cards.size() > 0) {
             CommonPlantListPopupWindow popupWindow = new CommonPlantListPopupWindow(this);
             ActivityUtil.setBackgroundAlpha(this, 0.19f);
             popupWindow.addData(cards);
-            popupWindow.showAtLocation(mRoot, Gravity.CENTER,0,0);
+            popupWindow.showAtLocation(mRoot, Gravity.CENTER, 0, 0);
             popupWindow.setOnSelectListener(new CommonPlantListPopupWindow.SelectListener() {
                 @Override
                 public void selected(PlantRspModel.PlantCard card) {
                     mPlantName = card.getPlantName();
                     mPlantId = card.getId();
-                    FirstSettingActivity.show(AddPlantActivity.this,mEquipmentName,mEquipmentId,mPlantName,mPlantId);
+                    if (TextUtils.isEmpty(className)){
+                        FirstSettingActivity.show(AddPlantActivity.this, mEquipmentName, mEquipmentId, mPlantName, mPlantId);
+                    }else {
+                        Intent intent = new Intent();
+                        intent.putExtra(KEY_PLANT_CARD,card);
+                        setResult(2,intent);
+                    }
                     AddPlantActivity.this.finish();
                 }
             });
-        }else {
+        } else {
             Application.showToast("暂无数据");
         }
     }
@@ -243,11 +254,17 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
         }
 
         @OnClick(R.id.frame_root)
-        void onItemClick(){
+        void onItemClick() {
             PlantRspModel.PlantCard plantCard = mAdapter.getItems().get(getAdapterPosition() - 1);
             String plantName = plantCard.getPlantName();
             String plantId = plantCard.getId();
-            FirstSettingActivity.show(AddPlantActivity.this,mEquipmentName,mEquipmentId,plantName,plantId);
+            if (TextUtils.isEmpty(className)){
+                FirstSettingActivity.show(AddPlantActivity.this, mEquipmentName, mEquipmentId, mPlantName, mPlantId);
+            }else {
+                Intent intent = new Intent();
+                intent.putExtra(KEY_PLANT_CARD,plantCard);
+                setResult(2,intent);
+            }
             AddPlantActivity.this.finish();
         }
 

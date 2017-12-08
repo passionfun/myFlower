@@ -99,6 +99,7 @@ public class EquipmentRspModel {
         private String Light;
         private String Estatus;
         private String Photo;
+        private String Mac;
         private String LTID;
         private String PSIGN;
 
@@ -212,6 +213,14 @@ public class EquipmentRspModel {
 
         public void setLight(String Light) {
             this.Light = Light;
+        }
+
+        public String getMac() {
+            return Mac;
+        }
+
+        public void setMac(String mac) {
+            Mac = mac;
         }
 
         public String getEstatus() {

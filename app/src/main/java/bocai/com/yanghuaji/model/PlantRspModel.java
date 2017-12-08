@@ -1,5 +1,6 @@
 package bocai.com.yanghuaji.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class PlantRspModel {
         this.List = List;
     }
 
-    public static class PlantCard {
+    public static class PlantCard implements Serializable{
         /**
          * Id : 2
          * PlantName : 满天星

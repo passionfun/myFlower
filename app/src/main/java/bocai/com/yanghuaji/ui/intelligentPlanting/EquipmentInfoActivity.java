@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +29,7 @@ import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentInfoModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
+import bocai.com.yanghuaji.model.UpdateVersionRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentInfoContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentInfoPresenter;
 import bocai.com.yanghuaji.util.persistence.Account;
@@ -78,12 +82,13 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     private String id;
     private String mUUID;
     private String mLongToothId;
-    private  EquipmentRspModel.ListBean mPlantBean;
+    private EquipmentRspModel.ListBean mPlantBean;
+    private String version;
 
     //显示的入口
-    public static void show(Context context,EquipmentRspModel.ListBean plantBean) {
+    public static void show(Context context, EquipmentRspModel.ListBean plantBean) {
         Intent intent = new Intent(context, EquipmentInfoActivity.class);
-        intent.putExtra(KEY_PLANT_BEAN,plantBean);
+        intent.putExtra(KEY_PLANT_BEAN, plantBean);
         context.startActivity(intent);
     }
 
@@ -125,7 +130,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     }
 
     //检查是否有新版本
-    private void checkVersion(){
+    private void checkVersion() {
         //LongTooth.request(longToothId,"longtooth", LongToothTunnel.LT_ARGUMENTS,request.getBytes(),
         // 0,request.getBytes().length,null,new LongToothResponse());
         /**
@@ -151,10 +156,20 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                         switch (code) {
                             case 501:
                                 //  501:有升级的新版本
-                                imgUpgrade.setVisibility(View.VISIBLE);
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        imgUpgrade.setVisibility(View.VISIBLE);
+                                    }
+                                });
                                 break;
                             default:
-                                imgUpgrade.setVisibility(View.GONE);
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        imgUpgrade.setVisibility(View.GONE);
+                                    }
+                                });
                                 break;
                         }
                     }
@@ -162,7 +177,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     }
 
     //升级版本
-    private void doUpdate(){
+    private void doUpdate() {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.load_animation);
         mFramUpdate.setVisibility(View.VISIBLE);
         imgUpgrade.setVisibility(View.GONE);
@@ -173,26 +188,72 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
         //请求接口进行升级
         LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
-            @Override
-            public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                                              String service_str, int data_type, byte[] args,
-                                              LongToothAttachment attachment) {
-                String result = new String(args);
-                LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                Log.d(TAG, "update: " + result);
-                int code = longToothRspModel.getCODE();
-                imgUpgrading.clearAnimation();
-                mFramUpdate.setVisibility(View.GONE);
-                if (code == 0){
-                    Application.showToast("升级成功");
-                }else {
-                    imgUpgrade.setVisibility(View.VISIBLE);
-                    Application.showToast("升级失败，稍后再试");
-                }
-            }
-        });
+                    @Override
+                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                      String service_str, int data_type, byte[] args,
+                                                      LongToothAttachment attachment) {
+                        String result = new String(args);
+                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                        Log.d(TAG, "update: " + result);
+                        int code = longToothRspModel.getCODE();
+                        if (code == 0) {
+                            checkUpdateState();
+                        } else {
+                            Run.onUiAsync(new Action() {
+                                @Override
+                                public void call() {
+                                    imgUpgrade.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            Application.showToast("升级失败，稍后再试");
+                        }
+                    }
+                });
     }
 
+
+    private void checkUpdateState() {
+        final BindEquipmentModel model = new BindEquipmentModel("softVer", mUUID);
+        String request = gson.toJson(model);
+        LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                    @Override
+                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                      String service_str, int data_type, byte[] args,
+                                                      LongToothAttachment attachment) {
+                        String result = new String(args);
+                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                        Log.d(TAG, "update: " + result);
+                        int code = longToothRspModel.getCODE();
+                        if (code == 0) {
+                            String newVersion = longToothRspModel.getSoftVer();
+                            mPresenter.updateVersion(Account.getToken(),newVersion,id);
+                            if (!newVersion.equals(version)) {
+
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        imgUpgrading.clearAnimation();
+                                        mFramUpdate.setVisibility(View.GONE);
+                                    }
+                                });
+                                Application.showToast("升级成功");
+                            } else {
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        imgUpgrade.setVisibility(View.VISIBLE);
+                                        imgUpgrading.clearAnimation();
+                                        mFramUpdate.setVisibility(View.GONE);
+                                    }
+                                });
+                                Application.showToast("升级失败");
+                            }
+                        }
+                    }
+                });
+
+    }
 
 
     @Override
@@ -211,7 +272,13 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
         tvSerialNumber.setText(model.getSerialNum());
         tvEquipmentType.setText(model.getEquipName());
         tvVersion.setText(model.getVersion());
+        version = model.getVersion();
         checkVersion();
+    }
+
+    @Override
+    public void updateVersionSuccess(UpdateVersionRspModel model) {
+        tvVersion.setText(model.getVersion());
     }
 
     @Override

@@ -135,10 +135,10 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
-                android:drawableEnd="@mipmap/img_temperature_trending_up"
                 android:drawablePadding="4dp"
                 android:drawableStart="@mipmap/img_temperature"
                 android:text="45°C"
@@ -146,16 +146,18 @@
                 android:textSize="13dp" />
 
             <TextView
+                android:id="@+id/tv_water_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
                 android:drawablePadding="4dp"
-                android:drawableStart="@mipmap/img_temperature"
+                android:drawableStart="@mipmap/img_water_lever"
                 android:text="正常"
                 android:textColor="#FBB179"
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tv_led_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
@@ -166,6 +168,7 @@
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tv_ec_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
@@ -180,12 +183,11 @@
 
 
     <FrameLayout
+        android:visibility="invisible"
         android:id="@+id/frame_more"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_recycler_vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:background="@drawable/bg_recycler_vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -258,6 +260,7 @@
                         android:orientation="horizontal">
 
                         <CheckBox
+                            android:id="@+id/cb_push"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -277,7 +280,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:button="@null"
-                            android:checked="true"
+                            android:checked="false"
                             android:drawablePadding="3dp"
                             android:drawableTop="@drawable/sel_cb_light"
                             android:gravity="center"
@@ -324,6 +327,7 @@
 
 
                         <TextView
+                            android:id="@+id/tv_update"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

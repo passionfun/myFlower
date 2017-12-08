@@ -6,10 +6,12 @@ import java.util.Map;
 import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.AutoModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.CheckboxStatusModel;
 import bocai.com.yanghuaji.model.DiaryCardModel;
 import bocai.com.yanghuaji.model.DiaryDetailModel;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
+import bocai.com.yanghuaji.model.EquipmentDataModel;
 import bocai.com.yanghuaji.model.EquipmentInfoModel;
 import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
@@ -21,6 +23,7 @@ import bocai.com.yanghuaji.model.LifeCycleModel;
 import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
+import bocai.com.yanghuaji.model.UpdateVersionRspModel;
 import bocai.com.yanghuaji.model.db.EquipmentListModel;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -257,5 +260,34 @@ public interface RemoteService {
     @POST("plant/plant_info")
     @FormUrlEncoded
     Observable<BaseRspModel<List<AutoModel.ParaBean>>> getAutoPara(@Field("Id") String plantId, @Field("Lid") String lifeCircleId);
+
+
+    //设备数据输入
+    @POST("equipment/equipment_data")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentDataModel>> setData(@Field("Token") String token, @Field("Mac") String mac, @Field("Degree") String temperature,
+                                                         @Field("Water") String waterLevel, @Field("Light") String isLightOn, @Field("Ec") String Ec);
+
+
+
+    //设备版本升级后修改版本
+    @POST("equipment/edit_version")
+    @FormUrlEncoded
+    Observable<BaseRspModel<UpdateVersionRspModel>> updateVersion(@Field("Token") String token, @Field("Version") String version, @Field("Id") String id);
+
+
+
+    //清除设备当前数据
+    @POST("equipment/clean_data")
+    @FormUrlEncoded
+    Observable<BaseRspModel> clearData(@Field("Token") String token, @Field("Id") String equipmentId);
+
+
+
+    //设备状态设置
+    @POST("equipment/equipment_status")
+    @FormUrlEncoded
+    Observable<BaseRspModel<CheckboxStatusModel>> setCheckboxStatus(@Field("Token") String token, @Field("Type") String type, @Field("Status") String status, @Field("Id") String equipmentId);
+
 
 }
