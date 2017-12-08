@@ -1,6 +1,9 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
+import java.util.List;
+
 import bocai.com.yanghuaji.base.presenter.BaseContract;
+import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 
 /**
@@ -8,16 +11,19 @@ import bocai.com.yanghuaji.model.EquipmentPhotoModel;
  * 邮箱 yuanfei221@126.com
  */
 
-public interface ConnectSuccessContract {
+public interface AddEquipmentsRecylerContract {
 
     interface View extends BaseContract.View<Presenter>{
 
         void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel);
-    }
 
+        void addEquipmentsSuccess(List<EquipmentCard> equipmentCards);
+    }
     interface Presenter extends BaseContract.Presenter{
 
         // type:1添加设备产品演示区图      2连接设备成功-设备图
         void getEquipmentPhoto(String type,String equipmentType);
+
+        void addEquipments(String token,String equipments);
     }
 }

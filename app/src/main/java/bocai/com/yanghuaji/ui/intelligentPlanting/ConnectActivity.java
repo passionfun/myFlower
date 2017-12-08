@@ -190,19 +190,12 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                         null,new LongToothResponse());
             }
         }
-//        mModel = equipmentModels.get(0);
-//        longToothId = equipmentModels.get(0).getLTID();
-//        timeStamp = DateUtils.getCurrentDateTimes();
-//        BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
-//        String request = gson.toJson(model);
-//        LongTooth.request(longToothId,"longtooth",LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,
-//                null,new LongToothResponse());
     }
 
     @Override
     public void addEquipmentSuccess(EquipmentCard card) {
         timer.cancel();
-        ConnectSuccessActivity.show(ConnectActivity.this, jsonContent,card.getId(),card.getEquipName());
+        ConnectSuccessActivity.show(ConnectActivity.this, jsonContent,card.getId(),card.getEquipName(), (ArrayList<String>) mScanData);
         finish();
     }
 

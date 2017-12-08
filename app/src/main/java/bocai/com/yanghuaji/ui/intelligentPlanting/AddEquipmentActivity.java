@@ -79,6 +79,16 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
         mRecyler.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyler.setLoadingListener(this);
 
+
+        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<PlantSeriesModel.PlantSeriesCard>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
+                super.onItemClick(holder, plantSeriesCard);
+                // todo 跳转多设备添加
+
+            }
+        });
+
     }
 
     @Override

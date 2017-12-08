@@ -290,4 +290,11 @@ public interface RemoteService {
     Observable<BaseRspModel<CheckboxStatusModel>> setCheckboxStatus(@Field("Token") String token, @Field("Type") String type, @Field("Status") String status, @Field("Id") String equipmentId);
 
 
+
+    //多设备添加
+    @POST("equipment/create_equipment_more")
+    @FormUrlEncoded
+    Observable<BaseRspModel<List<EquipmentCard>>> addEquipments(@Field("Token") String token, @Field("Equipments") String equipments);
+
+
 }

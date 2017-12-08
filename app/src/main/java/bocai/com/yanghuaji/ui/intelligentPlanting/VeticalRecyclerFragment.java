@@ -18,9 +18,6 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -222,7 +219,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            EventBus.getDefault().register(this);
             new MainRecylerPresenter(this);
         }
 
@@ -234,6 +230,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mGroupName.setText(plantModel.getGroupName());
             mTime.setText(plantModel.getDays() + "");
             isLedOn = mLed.isChecked();
+            mPush.setChecked(plantModel.getPushStatus().equals("0")?false:true);
             GlideApp.with(getContext())
                     .load(plantModel.getPhoto())
                     .centerCrop()
@@ -259,13 +256,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             };
             timer.schedule(task, 5000, 30000);
             setLed();
-        }
-
-        @Subscribe(threadMode = ThreadMode.MAIN)
-        public void onPushSetSuccess(CheckboxStatusModel model) {
-            if (model!=null&&model.getType().equals("2")){
-                mPush.setChecked(model.getStatus().equals("0")?false:true);
-            }
         }
 
 
@@ -407,7 +397,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         @Override
         public void setCheckBoxSuccess(CheckboxStatusModel model) {
-            EventBus.getDefault().post(model);
+
         }
 
         private String getStatus(String code){

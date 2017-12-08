@@ -22,7 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentInfoModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel_Table;
@@ -79,13 +81,17 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     private Map<String, String> map = new HashMap<>();
     private String mUUID;
     private String mLongToothId;
-    private String mNoDistrubStart,mNoDistrubEnd;
-    private  EquipmentRspModel.ListBean mPlantBean;
+    private String mNoDistrubStart, mNoDistrubEnd;
+    private EquipmentRspModel.ListBean mPlantBean;
+    //禁止光照最长时间
+    private int leastNoLedTime;
+    //禁止光照开始和结束时间
+    private int noLedStrart, noLedStop;
 
     //显示的入口
-    public static void show(Context context,EquipmentRspModel.ListBean plantBean) {
+    public static void show(Context context, EquipmentRspModel.ListBean plantBean) {
         Intent intent = new Intent(context, EquipmentSettingActivity.class);
-        intent.putExtra(KEY_PLANT_BEAN,plantBean);
+        intent.putExtra(KEY_PLANT_BEAN, plantBean);
         context.startActivity(intent);
     }
 
@@ -114,6 +120,9 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         mTitle.setText("种植机设置");
         etEquipName.setText(mPlantBean.getEquipName());
         tvRight.setVisibility(View.VISIBLE);
+        map.put("Token", Account.getToken());
+        map.put("Id", mPlantBean.getId());
+        mPresenter.equipmentInfo(map);
     }
 
     @Override
@@ -152,18 +161,23 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         }
         map.put("Token", Account.getToken());
         map.put("EquipName", etEquipName.getText().toString().trim());
-        map.put("BanStart", banStart==null?"":banStart);
-        map.put("BanStop", banStop ==null?"":banStop);
-        map.put("GroupId", groupId ==null?"":groupId);//分组id
-        map.put("LightStart", lightStart ==null?"":lightStart);
-        map.put("Id", equipmentId );// 	设备id
+        map.put("BanStart", banStart == null ? "" : banStart);
+        map.put("BanStop", banStop == null ? "" : banStop);
+        map.put("GroupId", groupId == null ? "" : groupId);//分组id
+        map.put("LightStart", lightStart == null ? "" : lightStart);
+        map.put("Id", equipmentId);// 	设备id
         //设置补光开启时间
-        if (!TextUtils.isEmpty(mBengin)){
-            EquipmentSettingHelper.setLightOn(mBengin,mUUID,mLongToothId);
+        if (!TextUtils.isEmpty(mBengin)) {
+            EquipmentSettingHelper.setLightOn(mBengin, mUUID, mLongToothId);
         }
-
-        if (!TextUtils.isEmpty(mNoDistrubStart)&&!TextUtils.isEmpty(mNoDistrubEnd)){
-            EquipmentSettingHelper.setNoDisturb(mNoDistrubStart,mNoDistrubEnd,mUUID,mLongToothId);
+        //设置免打扰时间
+        if (!TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd)) {
+            if ((noLedStop-noLedStrart)>leastNoLedTime){
+                Application.showToast("禁止光照时间不能超过"+leastNoLedTime+"小时");
+                return;
+            }else {
+                EquipmentSettingHelper.setNoDisturb(mNoDistrubStart, mNoDistrubEnd, mUUID, mLongToothId);
+            }
         }
         mPresenter.setupEquipment(map);
     }
@@ -175,13 +189,13 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         lightStart = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
-                        mBengin = (hour*60*60+minute*60)+"";
+                        //转换为格林尼治时间
+                        int needHour = (hour - 8) < 0 ? (hour - 8 + 24) : (hour - 8);
+                        mBengin = (needHour * 60 * 60 + minute * 60) + "";
                         tvLightStart.setText(lightStart);
                     }
                 }, 6, 0, true);
         dialog.show();
-//        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("确定");
-//        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText("取消");
     }
 
     @OnClick(R.id.tv_BanStart)
@@ -190,8 +204,10 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        noLedStrart = hour;
                         banStart = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
-                        mNoDistrubStart = (hour*60*60+minute*60)+"";
+                        int needHour = (hour - 8) < 0 ? (hour - 8 + 24) : (hour - 8);
+                        mNoDistrubStart = (needHour * 60 * 60 + minute * 60) + "";
                         tvBanStart.setText(banStart);
                     }
                 }, 6, 0, true);
@@ -204,8 +220,10 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        noLedStop = hour;
                         banStop = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
-                        mNoDistrubEnd = (hour*60*60+minute*60)+"";
+                        int needHour = (hour - 8) < 0 ? (hour - 8 + 24) : (hour - 8);
+                        mNoDistrubEnd = (needHour * 60 * 60 + minute * 60) + "";
                         tvBanStop.setText(banStop);
                     }
                 }, 6, 0, true);
@@ -233,6 +251,12 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     public void setupEquipmentSuccess(EquipmentSetupModel model) {
         model.save();
         finish();
+    }
+
+
+    @Override
+    public void equipmentInfoSuccess(EquipmentInfoModel model) {
+        leastNoLedTime = Integer.valueOf(model.getBanTime());
     }
 
     @Override

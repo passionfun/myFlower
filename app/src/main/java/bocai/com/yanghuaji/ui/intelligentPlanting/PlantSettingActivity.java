@@ -239,7 +239,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     public void getAutoParaSuccess(List<AutoModel.ParaBean> paraBeans) {
         mPresenter.setupPlant(map);
-        AutoParaModel model = new AutoParaModel("auto",Integer.parseInt(pId),Integer.parseInt(mUUID),paraBeans);
+        AutoParaModel model = new AutoParaModel("Auto",Integer.parseInt(pId),Integer.parseInt(mUUID),paraBeans);
         final Gson gson = new Gson();
         String request = gson.toJson(model);
         LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),

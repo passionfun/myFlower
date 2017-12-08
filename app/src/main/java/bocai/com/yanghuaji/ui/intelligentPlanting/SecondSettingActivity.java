@@ -10,10 +10,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.CheckboxStatusModel;
@@ -67,7 +63,7 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     protected void initWidget() {
         super.initWidget();
         mTitle.setText("设置");
-        EventBus.getDefault().register(this);
+        mCbPush.setChecked(mPlantBean.getPushStatus().equals("0")?false:true);
         mCbPush.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,17 +122,10 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPushSetSuccess(CheckboxStatusModel model) {
-        if (model!=null&&model.getType().equals("2")){
-            mCbPush.setChecked(model.getStatus().equals("0")?false:true);
-        }
-    }
-
 
     @Override
     public void setCheckBoxSuccess(CheckboxStatusModel model) {
-        EventBus.getDefault().post(model);
+
     }
 
     @Override

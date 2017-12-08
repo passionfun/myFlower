@@ -259,7 +259,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
             String plantName = plantCard.getPlantName();
             String plantId = plantCard.getId();
             if (TextUtils.isEmpty(className)){
-                FirstSettingActivity.show(AddPlantActivity.this, mEquipmentName, mEquipmentId, mPlantName, mPlantId);
+                FirstSettingActivity.show(AddPlantActivity.this, mEquipmentName, mEquipmentId, plantName, plantId);
             }else {
                 Intent intent = new Intent();
                 intent.putExtra(KEY_PLANT_CARD,plantCard);

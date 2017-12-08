@@ -15,9 +15,6 @@ import com.google.gson.reflect.TypeToken;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -149,6 +146,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
     @Override
     public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
+        Account.setListBeans(listBeans);
         if (page == 1) {
             mAdapter.replace(listBeans);
         } else {
@@ -228,7 +226,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                EventBus.getDefault().register(this);
+
                 new MainRecylerPresenter(this);
             }
 
@@ -241,6 +239,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mGroupName.setText(plantModel.getGroupName());
                 mTime.setText(plantModel.getDays() + "");
                 isLedOn = mLed.isChecked();
+                mPush.setChecked(plantModel.getPushStatus().equals("0")?false:true);
                 GlideApp.with(getContext())
                         .load(plantModel.getPhoto())
                         .centerCrop()
@@ -269,14 +268,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 };
                 timer.schedule(task, 5000, 5000);
                 setLed();
-            }
-
-
-            @Subscribe(threadMode = ThreadMode.MAIN)
-            public void onPushSetSuccess(CheckboxStatusModel model) {
-                if (model!=null&&model.getType().equals("2")){
-                    mPush.setChecked(model.getStatus().equals("0")?false:true);
-                }
             }
 
 
@@ -400,10 +391,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             public void setDataSuccess(EquipmentDataModel model) {
                 mTemperature.setText(model.getDegree());
-                mWaterStatus.setText(getStatus(model.getWstatus()));
                 if (model.getLight()!=null)
                     mLedStatus.setText(model.getLight().equals("0")?"关":"开");
                 mEcStatus.setText(getStatus(model.getEstatus()));
+                mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
+                        0,0,0);
                 if (model.getWstatus().equals("0")){
                     //温度过低
                     mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,0,
@@ -416,11 +408,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
                             0,0,0);
                 }
+                mWaterStatus.setText(getStatus(model.getWstatus()));
             }
 
             @Override
             public void setCheckBoxSuccess(CheckboxStatusModel model) {
-                EventBus.getDefault().post(model);
+
             }
 
             private String getStatus(String code){
