@@ -52,6 +52,7 @@ public class PlantSeriesModel {
 
         private String Id;
         private String Title;
+        private String Series;
 
         public String getId() {
             return Id;
@@ -67,6 +68,14 @@ public class PlantSeriesModel {
 
         public void setTitle(String Title) {
             this.Title = Title;
+        }
+
+        public String getSeries() {
+            return Series;
+        }
+
+        public void setSeries(String series) {
+            Series = series;
         }
     }
 }

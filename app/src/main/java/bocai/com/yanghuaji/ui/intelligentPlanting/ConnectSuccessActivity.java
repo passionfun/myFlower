@@ -15,13 +15,15 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
-import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentModel;
+import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessPresenter;
 import butterknife.BindView;
@@ -49,23 +51,29 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
     @BindView(R.id.tv_next)
     TextView mNext;
 
+    @BindView(R.id.img_photo)
+    ImageView mPhoto;
+
     public static final String KEY_JSON_CONTENT = "KEY_JSON_CONTENT";
     public static final String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
     public static final String KEY_EQUIPMENT_NAME = "KEY_EQUIPMENT_NAME";
     private String jsonContent;
     private String mEquipmentName;
     private String mEquipmentId;
+    private List<String> mScanData;
 
     //显示的入口
-    public static void show(Context context, String jsonString,String equipmentId,String equipmentName) {
+    public static void show(Context context, String jsonString,String equipmentId,String equipmentName,ArrayList<String> scanData) {
         if (TextUtils.isEmpty(jsonString)) {
             Application.showToast("参数错误");
             return;
         }
         Intent intent = new Intent(context, ConnectSuccessActivity.class);
+        intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
         intent.putExtra(KEY_JSON_CONTENT, jsonString);
         intent.putExtra(KEY_EQUIPMENT_ID, equipmentId);
         intent.putExtra(KEY_EQUIPMENT_NAME, equipmentName);
+
         context.startActivity(intent);
     }
 
@@ -76,6 +84,7 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
 
     @Override
     protected boolean initArgs(Bundle bundle) {
+        mScanData = getIntent().getStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA);
         jsonContent = bundle.getString(KEY_JSON_CONTENT);
         mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
         mEquipmentName = bundle.getString(KEY_EQUIPMENT_NAME);
@@ -111,14 +120,10 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
         Gson gson = new Gson();
         List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
         }.getType());
-        mEquipmentName = equipmentModels.get(0).getName();
         String macAddress = equipmentModels.get(0).getMAC();
         mName.setText(mEquipmentName);
         mMac.setText(macAddress);
-//        String token = Account.getToken();
-//        String serialNum = "11074";
-//        String version = "1.0";
-//        mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version);
+        mPresenter.getEquipmentPhoto("2",mScanData.get(0));
     }
 
     @OnClick(R.id.img_back)
@@ -127,14 +132,12 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
     }
 
     @Override
-    public void addEquipmentSuccess(EquipmentCard card) {
-        mEquipmentId = card.getId();
-        mEquipmentName = card.getEquipName();
-    }
-
-    @Override
-    public void addEquipmentFailed() {
-        AddEquipmentActivity.show(this);
+    public void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel) {
+        GlideApp.with(this)
+                .load(photoModel.getPhoto())
+                .placeholder(R.mipmap.img_content_empty)
+                .centerCrop()
+                .into(mPhoto);
     }
 
     @Override

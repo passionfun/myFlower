@@ -102,6 +102,7 @@ public class EquipmentRspModel {
         private String Mac;
         private String LTID;
         private String PSIGN;
+        private String PushStatus;
 
         public String getLTID() {
             return LTID;
@@ -237,6 +238,14 @@ public class EquipmentRspModel {
 
         public void setPhoto(String Photo) {
             this.Photo = Photo;
+        }
+
+        public String getPushStatus() {
+            return PushStatus;
+        }
+
+        public void setPushStatus(String pushStatus) {
+            PushStatus = pushStatus;
         }
     }
 }

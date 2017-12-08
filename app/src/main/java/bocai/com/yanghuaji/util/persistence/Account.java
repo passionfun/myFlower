@@ -5,8 +5,11 @@ import android.content.SharedPreferences;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.util.List;
+
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.AccountRspModel;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.model.db.User_Table;
 
@@ -26,6 +29,8 @@ public class Account {
     private static String token;
     private static String phone;
     private static String userId;
+    //所有已经添加过的设备
+    private static List<EquipmentRspModel.ListBean> listBeans;
     /**
      * 存储数据到XML文件，持久化
      */
@@ -84,6 +89,13 @@ public class Account {
         return token;
     }
 
+    public static List<EquipmentRspModel.ListBean> getListBeans() {
+        return listBeans;
+    }
+
+    public static void setListBeans(List<EquipmentRspModel.ListBean> listBeans) {
+        Account.listBeans = listBeans;
+    }
 
     /**
      * 获取当前登录的用户信息

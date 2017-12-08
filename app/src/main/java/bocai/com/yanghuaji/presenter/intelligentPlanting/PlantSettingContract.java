@@ -20,7 +20,7 @@ public interface PlantSettingContract  {
         void lifeCycleSuccess(LifeCycleModel model);
         void getAutoParaSuccess(List<AutoModel.ParaBean> paraBeans);
         void getAutoParaFailed();
-//        void equipmentInfoSuccess(EquipmentInfoModel model);
+
     }
 
     interface Presenter extends BaseContract.Presenter{
@@ -28,6 +28,6 @@ public interface PlantSettingContract  {
         void plantMode();
         void lifeCycle();
         void getAutoPara(String plantId,String lifeCircleId);
-//        void equipmentInfo(Map<String,String> map);
+
     }
 }
