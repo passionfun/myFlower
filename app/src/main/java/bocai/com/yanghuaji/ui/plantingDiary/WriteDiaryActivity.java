@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -231,12 +232,23 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                     case R.id.tv_take_photo:
                         picPopupWindow.dismiss();
                         //  拍摄照片
-                        imageUri = BitmapUtils.createImageUri(WriteDiaryActivity.this);
-                        Intent intent = new Intent();
-                        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                        //如果不设置EXTRA_OUTPUT getData()  获取的是bitmap数据  是压缩后的
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                        startActivityForResult(intent, TAKE_PHOTO_REQUEST_ONE);
+                        new RxPermissions(WriteDiaryActivity.this)
+                                .request(Manifest.permission.CAMERA)
+                                .subscribe(new Consumer<Boolean>() {
+                                    @Override
+                                    public void accept(Boolean aBoolean) throws Exception {
+                                        if (aBoolean) {
+                                            imageUri = BitmapUtils.createImageUri(WriteDiaryActivity.this);
+                                            Intent intent = new Intent();
+                                            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                                            //如果不设置EXTRA_OUTPUT getData()  获取的是bitmap数据  是压缩后的
+                                            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                                            startActivityForResult(intent, TAKE_PHOTO_REQUEST_ONE);
+                                        } else {
+                                            Toast.makeText(WriteDiaryActivity.this, "请打开拍照权限", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                         break;
                     case R.id.tv_from_gallery:
                         picPopupWindow.dismiss();

@@ -258,6 +258,10 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                 mFramOffline.setVisibility(isLineOff() ? View.VISIBLE : View.INVISIBLE);
                             }
                         });
+                        if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
+                                TextUtils.isEmpty(plantModel.getPid())) {
+                            return;
+                        }
                         PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
                                 1, Integer.parseInt(plantModel.getPid()));
                         String request = gson.toJson(model);
