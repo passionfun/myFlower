@@ -10,10 +10,12 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Fragment;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.model.db.User;
+import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -47,9 +49,9 @@ public class PersonalCenterFragment extends Fragment {
     public void onResume() {
         super.onResume();
         User user = Account.getUser();
-        if (user != null){
+        if (user != null) {
             if (!TextUtils.isEmpty(user.getNickName()))
-            mName.setText(user.getNickName());
+                mName.setText(user.getNickName());
             GlideApp.with(getActivity())
                     .load(user.getRelativePath())
                     .placeholder(R.mipmap.img_portrait_empty)
@@ -95,6 +97,14 @@ public class PersonalCenterFragment extends Fragment {
                 switch (view.getId()) {
                     case R.id.tv_take_photo:
                         //确定
+                        JPushInterface.clearAllNotifications(getActivity());
+                        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                        tagAliasBean.setAction(TagAliasOperatorHelper.ACTION_CLEAN);
+                        tagAliasBean.setAlias(Account.getPhone());
+                        tagAliasBean.setAliasAction(true);
+                        TagAliasOperatorHelper.getInstance().handleAction(getActivity().getApplicationContext(),
+                                0, tagAliasBean);
+                        JPushInterface.stopPush(getActivity());
                         popupWindow.dismiss();
                         ActivityUtil.finishActivity();
                         break;
