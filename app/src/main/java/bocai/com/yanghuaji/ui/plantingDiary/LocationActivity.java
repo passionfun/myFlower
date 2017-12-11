@@ -3,10 +3,11 @@ package bocai.com.yanghuaji.ui.plantingDiary;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -17,8 +18,11 @@ import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 
+import org.greenrobot.eventbus.EventBus;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.RecyclerAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,13 +43,20 @@ public class LocationActivity extends Activity {
     EditText etSearch;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.tv_not_show_addr)
+    TextView tvNotShowAddr;
 
     private PoiSearch.Query query;
     private PoiSearch poiSearch;
+    private String mCityName;
+    private static final String CITY_NAME = "cityName";
+    private RecyclerAdapter<PoiItem> mAdapter;
 
     //显示的入口
-    public static void show(Context context) {
-        context.startActivity(new Intent(context, LocationActivity.class));
+    public static void show(Context context, String cityName) {
+        Intent intent = new Intent(context, LocationActivity.class);
+        intent.putExtra(CITY_NAME, cityName);
+        context.startActivity(intent);
     }
 
     @Override
@@ -59,8 +70,45 @@ public class LocationActivity extends Activity {
     }
 
     @Override
+    protected boolean initArgs(Bundle bundle) {
+        mCityName = getIntent().getStringExtra(CITY_NAME);
+        return super.initArgs(bundle);
+    }
+
+    @Override
     protected void initWidget() {
         super.initWidget();
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setAdapter(mAdapter = new RecyclerAdapter<PoiItem>() {
+            @Override
+            protected int getItemViewType(int position, PoiItem poiItem) {
+                return R.layout.item_addr_result;
+            }
+
+            @Override
+            protected ViewHolder<PoiItem> onCreateViewHolder(View root, int viewType) {
+                return new LocationActivity.ViewHolder(root);
+            }
+        });
+        tvNotShowAddr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSelectPosition = -1;
+                mAdapter.notifyDataSetChanged();
+                tvNotShowAddr.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.mipmap.img_check, 0);
+            }
+        });
+        tvRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                String poiName = "";
+                if (mSelectPosition != -1) {
+                    poiName = mAdapter.getItems().get(mSelectPosition).getTitle();
+                }
+                EventBus.getDefault().post(poiName);
+            }
+        });
 
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -73,7 +121,7 @@ public class LocationActivity extends Activity {
                     }
                     String mKeyWork = etSearch.getText().toString();
 
-                    query = new PoiSearch.Query(mKeyWork, "", "");
+                    query = new PoiSearch.Query(mKeyWork, "", mCityName);
                     //keyWord表示搜索字符串，
                     //第二个参数表示POI搜索类型，二者选填其一，选用POI搜索类型时建议填写类型代码，码表可以参考下方（而非文字）
                     // cityCode表示POI搜索区域，可以是城市编码也可以是城市名称，也可以传空字符串，空字符串代表全国在全国范围内进行搜索
@@ -83,12 +131,17 @@ public class LocationActivity extends Activity {
                     poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
                         @Override
                         public void onPoiSearched(PoiResult poiResult, int i) {
-                            Log.i("gao", poiResult.toString());
+                            mAdapter.clear();
+                            if (poiResult != null && poiResult.getPois().size() != 0) {
+                                mAdapter.add(poiResult.getPois());
+                            } else {
+                                tvNotShowAddr.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.mipmap.img_check, 0);
+                                mSelectPosition = -1;
+                            }
                         }
 
                         @Override
                         public void onPoiItemSearched(PoiItem poiItem, int i) {
-                            Log.i("gao", poiItem.toString());
                         }
                     });
                     poiSearch.searchPOIAsyn();
@@ -96,5 +149,40 @@ public class LocationActivity extends Activity {
                 return false;
             }
         });
+    }
+
+    private int mSelectPosition = -1;
+
+    class ViewHolder extends RecyclerAdapter.ViewHolder<PoiItem> {
+        @BindView(R.id.item_tv_poi)
+        TextView itemTvPoi;
+        @BindView(R.id.item_tv_addr)
+        TextView itemTvAddr;
+        @BindView(R.id.item_iv_check)
+        ImageView itemIvCheck;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        protected void onBind(PoiItem poiItem) {
+            itemTvPoi.setText(poiItem.getTitle());
+            itemTvAddr.setText(poiItem.getProvinceName() + poiItem.getCityName() +
+                    poiItem.getAdName() + poiItem.getSnippet());
+            if (mSelectPosition == getAdapterPosition()) {
+                itemIvCheck.setVisibility(View.VISIBLE);
+            } else {
+                itemIvCheck.setVisibility(View.GONE);
+            }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    tvNotShowAddr.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                    mSelectPosition = getAdapterPosition();
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 }

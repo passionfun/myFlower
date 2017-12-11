@@ -56,26 +56,32 @@
         android:background="#C6C6C6" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_not_show_addr"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="16dp"
+        android:drawableRight="@mipmap/img_check"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
         android:text="不显示位置"
         android:textColor="#333333"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginEnd="28dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
         android:background="@mipmap/img_dotted_background" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" />
 
 
 </LinearLayout>

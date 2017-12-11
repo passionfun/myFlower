@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -24,6 +25,9 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.HashMap;
@@ -75,6 +79,8 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     private String mDiaryId;
     private Uri imageUri;
     private RecyclerAdapter<String> mAdapter;
+    private String mCityName = "";
+    private String mLocationStr = "";
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -86,12 +92,16 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                 if (aMapLocation.getErrorCode() == 0) {
                     //可在其中解析amapLocation获取相应内容。
                     mLocation.setText(aMapLocation.getAoiName());
+                    mLocationStr = aMapLocation.getAoiName();
+                    mCityName = aMapLocation.getCity();
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"
                             + aMapLocation.getErrorCode() + ", errInfo:"
                             + aMapLocation.getErrorInfo());
                     mLocation.setText("定位失败");
+                    mLocationStr = "";
+                    mCityName = "";
                 }
             }
         }
@@ -121,6 +131,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     @Override
     protected void initWidget() {
         super.initWidget();
+        EventBus.getDefault().register(this);
         mRecycler.setLayoutManager(new GridLayoutManager(this, 3));
         mRecycler.setAdapter(mAdapter = new RecyclerAdapter<String>() {
 
@@ -206,7 +217,11 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
 
     @OnClick(R.id.tv_location)
     void onLocationClick() {
-        LocationActivity.show(this);
+        if (TextUtils.isEmpty(mCityName)) {
+            Toast.makeText(this, "无法获取当前定位城市", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LocationActivity.show(this, mCityName);
     }
 
 
@@ -339,7 +354,6 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     public void addPhotosSuccess(List<ImageModel.AvatarBean> avatar) {
         String token = Account.getToken();
         String content = mContent.getText().toString();
-        String location = mLocation.getText().toString();
         StringBuffer buffer = new StringBuffer();
         if (avatar != null && avatar.size() > 0) {
             for (ImageModel.AvatarBean avatarBean : avatar) {
@@ -349,7 +363,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
         }
         String photosId = buffer.toString();
         String diaryId = mDiaryId;
-        mPresenter.writeDiary(token, content, location, photosId, diaryId);
+        mPresenter.writeDiary(token, content, mLocationStr, photosId, diaryId);
     }
 
     @Override
@@ -410,7 +424,18 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
         mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
+    }
+
+    @Subscribe
+    public void getLocation(String name) {
+        mLocationStr = name;
+        if (TextUtils.isEmpty(name)) {
+            mLocation.setText("不显示");
+        } else {
+            mLocation.setText(name);
+        }
     }
 }
