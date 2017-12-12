@@ -7,6 +7,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
@@ -104,7 +107,7 @@ public class HorizontalRecyclerFragmentHelper {
                         switch (code) {
                             case 501:
                                 //  501:有升级的新版本
-                                AlertDialog.Builder deleteDialog = new AlertDialog.Builder(context);
+                                final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(context);
                                 deleteDialog.setTitle("有新版本，确定升级？");
                                 deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
@@ -154,7 +157,13 @@ public class HorizontalRecyclerFragmentHelper {
                                     }
                                 });
                                 deleteDialog.setNegativeButton("取消", null);
-                                deleteDialog.show();
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        deleteDialog.show();
+                                    }
+                                });
+
                                 break;
                             default:
                                 Application.showToast("已是最新版本");

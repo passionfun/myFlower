@@ -274,6 +274,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
         tvVersion.setText(model.getVersion());
         version = model.getVersion();
         checkVersion();
+        checkUpdateState();
     }
 
     @Override

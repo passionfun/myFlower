@@ -1,7 +1,5 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
-import java.util.List;
-
 import bocai.com.yanghuaji.base.presenter.BaseContract;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentPhotoModel;
@@ -17,13 +15,14 @@ public interface AddEquipmentsRecylerContract {
 
         void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel);
 
-        void addEquipmentsSuccess(List<EquipmentCard> equipmentCards);
+        void addEquipmentSuccess(EquipmentCard card);
+        void addEquipmentFailed();
     }
     interface Presenter extends BaseContract.Presenter{
 
         // type:1添加设备产品演示区图      2连接设备成功-设备图
         void getEquipmentPhoto(String type,String equipmentType);
 
-        void addEquipments(String token,String equipments);
+        void addEquipment(String token,String equipmentName,String macAddress,String serialNum,String version,String longToothId,String timeStamp);
     }
 }

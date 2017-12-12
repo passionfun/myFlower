@@ -110,7 +110,11 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         id = mPlantBean.getId();
         mUUID = mPlantBean.getPSIGN();
         mLongToothId = mPlantBean.getLTID();
-        mTvPlantName.setText(mPlantBean.getPlantName());
+        if (TextUtils.isEmpty(mPlantBean.getPlantName())){
+            mTvPlantName.setText("去添加");
+        }else {
+            mTvPlantName.setText(mPlantBean.getPlantName());
+        }
     }
 
     @Override
@@ -121,8 +125,28 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
                 .where(PlantSettingModel_Table.Id.eq(id))
                 .querySingle();
         if (model!=null){
-            tvPlantMethod.setText(model.getPlantMode());
-            tvPlantCycle.setText(model.getLifeCycle());
+            plantMode = model.getPlantMode();
+            lifeCycle = model.getLifeCycle();
+            tvPlantMethod.setText(plantMode);
+            tvPlantCycle.setText(lifeCycle);
+            lid = model.getLid();
+            pMid = model.getPMid();
+        }
+    }
+
+    private String getLifeCircleId(String lifeCycle){
+        switch (lifeCycle){
+            case "种子期":
+                return "1";
+            case "幼苗期":
+                return "2";
+            case "茎叶期":
+                return "3";
+            case "花果期":
+                return "4";
+                default:
+                    return "";
+
         }
     }
 
@@ -143,7 +167,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
 
     @OnClick(R.id.tv_plant_name)
     void onPlantNameClick() {
-        if (TextUtils.isEmpty(mTvPlantName.getText())){
+        if (mTvPlantName.getText().equals("去添加")){
             Intent intent = new Intent(this, AddPlantActivity.class);
             intent.putExtra(KEY_CLASS_NAME, PlantSettingActivity.class.getName());
             startActivityForResult(intent,1);
@@ -170,11 +194,11 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         map.put("PMid", pMid);//种植模式id
         map.put("PlantName", plantName);
         map.put("Pid", pId);//植物id
-        map.put("LifeCycle", lifeCycle);
+        map.put("LifeCycle", lifeCycle);//生长周期
         map.put("Lid", lid);//生长周期id
         map.put("Id", id);//设备id
         if (TextUtils.isEmpty(lid)){
-            Application.showToast("生长周期不能为空");
+            Application.showToast("生长周期不能id为空");
             return;
         }
         getAutoPara();

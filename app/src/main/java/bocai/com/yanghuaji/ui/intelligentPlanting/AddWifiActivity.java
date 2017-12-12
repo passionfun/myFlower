@@ -12,6 +12,8 @@ import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.model.PlantSeriesModel;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.fog.fog2sdk.MiCODevice;
@@ -36,11 +38,26 @@ public class AddWifiActivity extends Activity {
 
     private MiCODevice micodev;
     private List<String> mScanData;
+    PlantSeriesModel.PlantSeriesCard plantSeriesCard;
+    private static boolean isAddEquipments = false;
 
-    //显示的入口
+    //显示的入口(单设备)
     public static void show(Context context,ArrayList<String> scanData) {
         Intent intent = new Intent(context, AddWifiActivity.class);
         intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
+        isAddEquipments = false;
+        context.startActivity(intent);
+    }
+
+    //显示的入口(多设备添加)
+    public static void show(Context context, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
+        Intent intent = new Intent(context, AddWifiActivity.class);
+        if (plantSeriesCard==null){
+            Application.showToast("参数异常");
+            return;
+        }
+        intent.putExtra(AddEquipmentsActivity.KEY_PLANT_CARD,plantSeriesCard);
+        isAddEquipments = true;
         context.startActivity(intent);
     }
 
@@ -52,6 +69,7 @@ public class AddWifiActivity extends Activity {
     @Override
     protected boolean initArgs(Bundle bundle) {
         mScanData = getIntent().getStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA);
+        plantSeriesCard = (PlantSeriesModel.PlantSeriesCard) bundle.getSerializable(AddEquipmentsActivity.KEY_PLANT_CARD);
         return super.initArgs(bundle);
     }
 
@@ -73,7 +91,10 @@ public class AddWifiActivity extends Activity {
     void onNextClick() {
         String ssid = mWifiName.getText().toString();
         String password = mWifiPassword.getText().toString();
-        ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);
+        if (isAddEquipments){
+            AddEquipmentsActivity.show(this,ssid,password,plantSeriesCard);
+        }else {
+            ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);}
     }
 
 

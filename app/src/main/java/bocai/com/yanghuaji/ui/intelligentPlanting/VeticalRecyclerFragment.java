@@ -247,6 +247,9 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                             mImgTent.setVisibility(isLineOff()?View.VISIBLE:View.INVISIBLE);
                         }
                     });
+                    if (plantModel.getPid()==null){
+                        return;
+                    }
                     PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1,Integer.parseInt(plantModel.getPSIGN()) ,
                             1, Integer.parseInt(plantModel.getPid()));
                     String request = gson.toJson(model);

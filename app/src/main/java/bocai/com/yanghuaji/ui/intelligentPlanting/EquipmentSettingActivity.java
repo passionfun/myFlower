@@ -141,8 +141,8 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             tvBanStop.setText(equipmentSetupModel.getBanStop());
             mGroupName.setText(equipmentSetupModel.getGroupName());
             mBengin = equipmentSetupModel.getLightStart();
-            banStart = equipmentSetupModel.getBanStart();
-            banStop = equipmentSetupModel.getBanStop();
+            mNoDistrubStart = banStart = equipmentSetupModel.getBanStart();
+            mNoDistrubEnd = banStop = equipmentSetupModel.getBanStop();
         }
     }
 

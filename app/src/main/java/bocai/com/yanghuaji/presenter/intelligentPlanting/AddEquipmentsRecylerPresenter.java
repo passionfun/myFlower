@@ -1,7 +1,5 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
-import java.util.List;
-
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
@@ -61,29 +59,28 @@ public class AddEquipmentsRecylerPresenter extends BasePresenter<AddEquipmentsRe
     }
 
     @Override
-    public void addEquipments(String token, String equipments) {
-        view.showLoading();
-        Observable<BaseRspModel<List<EquipmentCard>>> observable = Network.remote().addEquipments(token, equipments);
+    public void addEquipment(String token, String equipmentName, String macAddress, String serialNum, String version, String longToothId, String timeStamp) {
+        Observable<BaseRspModel<EquipmentCard>> observable = Network.remote().addEquipment(token, equipmentName, macAddress, serialNum, version,longToothId,timeStamp);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseRspModel<List<EquipmentCard>>>() {
+                .subscribe(new Observer<BaseRspModel<EquipmentCard>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(BaseRspModel<List<EquipmentCard>> listBaseRspModel) {
-                        if (listBaseRspModel.getReturnCode().equals("200")) {
-                            view.addEquipmentsSuccess(listBaseRspModel.getData());
+                    public void onNext(BaseRspModel<EquipmentCard> equipmentCardBaseRspModel) {
+                        if (equipmentCardBaseRspModel.getReturnCode().equals("200")) {
+                            view.addEquipmentSuccess(equipmentCardBaseRspModel.getData());
                         }
-                        Application.showToast(listBaseRspModel.getMsg());
-                        view.hideLoading();
+                        Application.showToast(equipmentCardBaseRspModel.getMsg());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showError(R.string.net_error);
+                        Application.showToast(R.string.net_error);
+                        view.addEquipmentFailed();
                     }
 
                     @Override
@@ -91,7 +88,7 @@ public class AddEquipmentsRecylerPresenter extends BasePresenter<AddEquipmentsRe
 
                     }
                 });
-
-
     }
+
+
 }

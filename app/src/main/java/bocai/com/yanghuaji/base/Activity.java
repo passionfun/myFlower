@@ -10,11 +10,14 @@ import android.view.WindowManager;
 import java.util.List;
 
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.widget.PlaceHolderView;
 import butterknife.ButterKnife;
 
 
 
 public abstract class Activity extends AppCompatActivity {
+
+    protected PlaceHolderView mPlaceHolderView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +114,13 @@ public abstract class Activity extends AppCompatActivity {
 
         super.onBackPressed();
         finish();
+    }
+
+    /**
+     * 设置占位布局
+     */
+    public void setPlaceHolderView(PlaceHolderView placeHolderView) {
+        this.mPlaceHolderView = placeHolderView;
     }
 
 }

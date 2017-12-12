@@ -2,17 +2,21 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+import net.qiujuer.genius.ui.widget.Loading;
 
 import org.json.JSONArray;
 
@@ -21,16 +25,31 @@ import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.LongToothRspModel;
+import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerContract;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerPresenter;
+import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
+import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.fog.fog2sdk.MiCODevice;
+import io.fogcloud.easylink.helper.EasyLinkCallBack;
 import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
+import xpod.longtooth.LongTooth;
+import xpod.longtooth.LongToothAttachment;
+import xpod.longtooth.LongToothServiceResponseHandler;
+import xpod.longtooth.LongToothTunnel;
 
 /**
  * 作者 yuanfei on 2017/12/8.
@@ -38,12 +57,21 @@ import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
  */
 
 public class AddEquipmentsActivity extends Activity {
+    @BindView(R.id.empty)
+    EmptyView mEmptyView;
+
     @BindView(R.id.tv_title)
     TextView mTitle;
 
     @BindView(R.id.recycler)
     RecyclerView mRecyler;
 
+    @BindView(R.id.tv_right)
+    TextView mSave;
+
+    public static String KEY_PLANT_CARD= "KEY_PLANT_CARD";
+    private String ssid;
+    private String password;
     private RecyclerAdapter<EquipmentModel> mAdapter;
     private Gson gson = new Gson();
     //搜索设备用
@@ -52,10 +80,15 @@ public class AddEquipmentsActivity extends Activity {
     List<String> series = new ArrayList<>();
     //所有已经添加过的设备
     private List<EquipmentRspModel.ListBean> listBeans = Account.getListBeans();
+    private PlantSeriesModel.PlantSeriesCard plantSeriesCard;
 
     //显示的入口
-    public static void show(Context context) {
-        context.startActivity(new Intent(context, AddEquipmentsActivity.class));
+    public static void show(Context context,String ssid, String password, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
+        Intent intent = new Intent(context, AddEquipmentsActivity.class);
+        intent.putExtra(KEY_PLANT_CARD,plantSeriesCard);
+        intent.putExtra(ConnectActivity.KEY_SSID, ssid);
+        intent.putExtra(ConnectActivity.KEY_PASSWORD, password);
+        context.startActivity(intent);
     }
 
     @Override
@@ -63,11 +96,32 @@ public class AddEquipmentsActivity extends Activity {
         return R.layout.activity_add_equipments;
     }
 
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+        ssid = bundle.getString(ConnectActivity.KEY_SSID);
+        password = bundle.getString(ConnectActivity.KEY_PASSWORD);
+        plantSeriesCard = (PlantSeriesModel.PlantSeriesCard) bundle.getSerializable(KEY_PLANT_CARD);
+        return super.initArgs(bundle);
+    }
+
+    @OnClick(R.id.img_back)
+    void onBackClick() {
+        finish();
+    }
+
+
+    @OnClick(R.id.tv_right)
+    void onConfirmClick() {
+        // 添加完成，跳转主页面
+        MainActivity.show(this);
+    }
 
     @Override
     protected void initWidget() {
         super.initWidget();
         mTitle.setText("连接设备");
+        mSave.setVisibility(View.VISIBLE);
+        mSave.setText("完成");
         mRecyler.setLayoutManager(new LinearLayoutManager(this));
         mRecyler.setAdapter(mAdapter = new RecyclerAdapter<EquipmentModel>() {
             @Override
@@ -80,15 +134,34 @@ public class AddEquipmentsActivity extends Activity {
                 return new MyViewHolder(root);
             }
         });
+        mEmptyView.bind(mRecyler);
+        mEmptyView.setEmptyImg(R.mipmap.img_equipment_empty);
+        mEmptyView.setEmptyText(R.string.equipment_empty);
+        setPlaceHolderView(mEmptyView);
     }
+
 
 
     @Override
     protected void initData() {
         super.initData();
+        micodev = new MiCODevice(this);
+        //开始配网
+        micodev.startEasyLink(ssid, password, true, 60000, 20, "", "", new EasyLinkCallBack() {
+            @Override
+            public void onSuccess(int code, String message) {
+                Log.d("shc", "onSuccess配网: " + message);
+            }
+
+            @Override
+            public void onFailure(int code, String message) {
+                Application.showToast(message);
+                finish();
+            }
+        });
+        mEmptyView.triggerLoading();
         //开始搜索设备
         final String serviceName = "_easylink._tcp.local.";
-        micodev = new MiCODevice(this);
         micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
             @Override
             public void onDevicesFind(int code, JSONArray deviceStatus) {
@@ -100,14 +173,26 @@ public class AddEquipmentsActivity extends Activity {
                     micodev.stopSearchDevices(null);
                     List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
                     }.getType());
-                    for (EquipmentModel equipmentModel : equipmentModels) {
+                    for (final EquipmentModel equipmentModel : equipmentModels) {
                         String seriesName = equipmentModel.getDEVNAME();
-                        //搜索所有搜索到的设备，如果还没有添加过，则显示
-                        if (!series.contains(seriesName)&&!isAdded(equipmentModel.getLTID())) {
+                        //搜索所有搜索到该系列的设备，如果还没有添加过，则显示
+                        if (!series.contains(seriesName)&&!isAdded(equipmentModel.getLTID())
+                                &&seriesName.startsWith(plantSeriesCard.getSeries())) {
                             series.add(seriesName);
-                            mAdapter.add(equipmentModel);
+                            Run.onUiAsync(new Action() {
+                                @Override
+                                public void call() {
+                                    mAdapter.add(equipmentModel);
+                                }
+                            });
                         }
                     }
+                    Run.onUiAsync(new Action() {
+                        @Override
+                        public void call() {
+                            mEmptyView.triggerOkOrEmpty(mAdapter.getItemCount()>0);
+                        }
+                    });
                 }
             }
         });
@@ -142,23 +227,73 @@ public class AddEquipmentsActivity extends Activity {
         @BindView(R.id.tv_mac)
         TextView mMac;
 
-        @BindView(R.id.cb_add)
-        CheckBox mCbAdd;
+        @BindView(R.id.img_add)
+        ImageView mAdd;
+
+        @BindView(R.id.img_add_success)
+        ImageView mAddSuccess;
+
+        @BindView(R.id.loading)
+        Loading mLoading;
 
 
+        private AddEquipmentsRecylerContract.Presenter mPresenter;
+        private Gson gson;
+        private EquipmentModel mEquipmentModel;
 
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            new AddEquipmentsRecylerPresenter(this);
         }
 
         @Override
         protected void onBind(EquipmentModel equipmentModel) {
+            mEquipmentModel = equipmentModel;
             mName.setText(equipmentModel.getDEVNAME());
             mMac.setText(equipmentModel.getMAC());
+            String type = equipmentModel.getDEVNAME().substring(0,4);
+            mPresenter.getEquipmentPhoto("2",type);
         }
 
+        @OnClick(R.id.img_add)
+        void onAddClick(){
+            mAdd.setVisibility(View.GONE);
+            mAddSuccess.setVisibility(View.GONE);
+            mLoading.setVisibility(View.VISIBLE);
+            mLoading.start();
+            startBind();
+        }
+
+        private void startBind(){
+            final String timeStamp = DateUtils.getCurrentDateTimes();
+            BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
+            gson = new Gson();
+            String request = gson.toJson(model);
+            LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
+                    null, new LongToothServiceResponseHandler() {
+                        @Override
+                        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                          String service_str, int data_type, byte[] args,
+                                                          LongToothAttachment attachment) {
+                            String result = new String(args);
+                            Log.d("shc", "handleServiceResponse: "+new String(args));
+                            LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                            if (longToothRspModel.getCODE()==0){
+                                String mEquipmentName = mEquipmentModel.getDEVNAME();
+                                String macAddress = mEquipmentModel.getMAC();
+                                String token = Account.getToken();
+                                String serialNum = "";
+                                String version = mEquipmentModel.get_$FirmwareRev196();
+                                if (mPresenter != null){
+                                    mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,mEquipmentModel.getLTID(),timeStamp);
+                                }
+                            }
+                        }
+                    });
+
+        }
 
 
         @Override
@@ -178,18 +313,35 @@ public class AddEquipmentsActivity extends Activity {
 
         @Override
         public void setPresenter(AddEquipmentsRecylerContract.Presenter presenter) {
-
+            mPresenter = presenter;
         }
 
         @Override
         public void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel) {
-
+            GlideApp.with(AddEquipmentsActivity.this)
+                    .load(photoModel.getPhoto())
+                    .centerCrop()
+                    .placeholder(R.mipmap.img_content_empty)
+                    .into(mPhoto);
         }
 
         @Override
-        public void addEquipmentsSuccess(List<EquipmentCard> equipmentCards) {
-
+        public void addEquipmentSuccess(EquipmentCard card) {
+            mLoading.stop();
+            mAdd.setVisibility(View.GONE);
+            mAddSuccess.setVisibility(View.VISIBLE);
+            mLoading.setVisibility(View.GONE);
         }
+
+        @Override
+        public void addEquipmentFailed() {
+            mLoading.stop();
+            mAdd.setVisibility(View.VISIBLE);
+            mAddSuccess.setVisibility(View.GONE);
+            mLoading.setVisibility(View.GONE);
+        }
+
+
     }
 
 

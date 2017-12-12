@@ -257,6 +257,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                 mFramOffline.setVisibility(isLineOff() ? View.VISIBLE : View.INVISIBLE);
                             }
                         });
+                        if (plantModel.getPid()==null){
+                            return;
+                        }
                         PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
                                 1, Integer.parseInt(plantModel.getPid()));
                         String request = gson.toJson(model);
@@ -442,6 +445,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                if (bytes==null){
+                    return;
+                }
                 String jsonContent = new String(bytes);
                 PlantStatusRspModel plantStatusRspModel = gson.fromJson(jsonContent, PlantStatusRspModel.class);
                 if (plantStatusRspModel.getCODE() == 0) {
