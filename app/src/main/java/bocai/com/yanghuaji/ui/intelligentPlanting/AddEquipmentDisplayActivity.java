@@ -15,6 +15,7 @@ import java.util.List;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.GlideApp;
+import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,12 +42,24 @@ public class AddEquipmentDisplayActivity extends Activity {
     public static final String KEY_PHOTO_PATH = "KEY_PHOTO_PATH";
     private String mPhotoPath;
     private List<String> mScanData;
+    private PlantSeriesModel.PlantSeriesCard plantSeriesCard;
+    private static boolean isAddEquipments = false;
 
-    //显示的入口
+    //显示的入口(单设备添加)
     public static void show(Context context,String photoPath, ArrayList<String> scanData) {
         Intent intent = new Intent(context, AddEquipmentDisplayActivity.class);
         intent.putExtra(KEY_PHOTO_PATH,photoPath);
         intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
+        isAddEquipments = false;
+        context.startActivity(intent);
+    }
+
+    //显示的入口（多设备添加）
+    public static void show(Context context,String photoPath, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
+        Intent intent = new Intent(context, AddEquipmentDisplayActivity.class);
+        intent.putExtra(KEY_PHOTO_PATH,photoPath);
+        intent.putExtra(AddEquipmentsActivity.KEY_PLANT_CARD,plantSeriesCard);
+        isAddEquipments = true;
         context.startActivity(intent);
     }
 
@@ -59,6 +72,7 @@ public class AddEquipmentDisplayActivity extends Activity {
     protected boolean initArgs(Bundle bundle) {
         mPhotoPath = bundle.getString(KEY_PHOTO_PATH);
         mScanData = getIntent().getStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA);
+        plantSeriesCard = (PlantSeriesModel.PlantSeriesCard) bundle.getSerializable(AddEquipmentsActivity.KEY_PLANT_CARD);
         return super.initArgs(bundle);
     }
 
@@ -79,7 +93,11 @@ public class AddEquipmentDisplayActivity extends Activity {
 
     @OnClick(R.id.img_next)
     void onNextClick() {
-        AddWifiActivity.show(this, (ArrayList<String>) mScanData);
+        if (isAddEquipments){
+            AddWifiActivity.show(this,plantSeriesCard);
+        }else {
+            AddWifiActivity.show(this, (ArrayList<String>) mScanData);
+        }
 
     }
 

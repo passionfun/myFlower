@@ -1,5 +1,6 @@
 package bocai.com.yanghuaji.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -44,10 +45,11 @@ public class PlantSeriesModel {
         this.List = List;
     }
 
-    public static class PlantSeriesCard {
+    public static class PlantSeriesCard implements Serializable{
         /**
          * Id : 5
          * Title : 植记系列
+         * Series: WG101
          */
 
         private String Id;

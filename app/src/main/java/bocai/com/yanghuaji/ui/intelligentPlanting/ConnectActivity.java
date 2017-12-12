@@ -161,7 +161,6 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                     jsonContent = content;
                     bindEquipment(content);
                     micodev.stopEasyLink(null);
-                    micodev.stopSearchDevices( null);
                 }
             }
         });
@@ -178,8 +177,11 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         }.getType());
         for (EquipmentModel equipmentModel : equipmentModels) {
             //"B0:F8:93:10:CF:E6"
-            if (equipmentModel.getMAC().equals(mScanData.get(2))){
-
+            String mac = equipmentModel.getMAC();
+            String content = mac.replaceAll(":","");
+            if (content.equals(mScanData.get(2))){
+                //停止搜索设备
+                micodev.stopSearchDevices( null);
                 mModel = equipmentModel;
                 Log.d("shc", "bind: "+mModel.toString());
                 longToothId = equipmentModel.getLTID();
@@ -225,7 +227,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 String macAddress = mModel.getMAC();
                 String token = Account.getToken();
                 String serialNum = mScanData.get(1);
-                String version = mModel.get_$HardwareRev172();
+                String version = mModel.get_$FirmwareRev196();
                 if (mPresenter != null){
                     mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,longToothId,timeStamp);
                 }

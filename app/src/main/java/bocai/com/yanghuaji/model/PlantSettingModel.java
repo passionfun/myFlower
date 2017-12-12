@@ -18,6 +18,9 @@ public class PlantSettingModel extends BaseModel{
      * PlantMode : 智能
      * PlantName : 含羞草
      * LifeCycle : 种子期
+     * PMid : 种植模式id
+     * Lid : 生长周期id
+     * Pid : 植物id
      */
     @PrimaryKey
     private String Id;
@@ -27,6 +30,12 @@ public class PlantSettingModel extends BaseModel{
     private String PlantName;
     @Column
     private String LifeCycle;
+    @Column
+    private String Pid;
+    @Column
+    private String Lid;
+    @Column
+    private String PMid;
 
     public String getId() {
         return Id;
@@ -58,5 +67,29 @@ public class PlantSettingModel extends BaseModel{
 
     public void setLifeCycle(String LifeCycle) {
         this.LifeCycle = LifeCycle;
+    }
+
+    public String getPid() {
+        return Pid;
+    }
+
+    public void setPid(String pid) {
+        Pid = pid;
+    }
+
+    public String getLid() {
+        return Lid;
+    }
+
+    public void setLid(String lid) {
+        Lid = lid;
+    }
+
+    public String getPMid() {
+        return PMid;
+    }
+
+    public void setPMid(String PMid) {
+        this.PMid = PMid;
     }
 }

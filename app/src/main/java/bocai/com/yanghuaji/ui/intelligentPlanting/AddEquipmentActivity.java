@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bocai.zxinglibrary.android.CaptureActivity;
@@ -46,6 +47,8 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     private int page = 1;
     private int REQUEST_CODE_SCAN = 111;
     private List<String> scanData;
+    private boolean isAddEquipments = false;
+    private PlantSeriesModel.PlantSeriesCard mPlantSeriesCard;
 
     //显示的入口
     public static void show(Context context) {
@@ -71,6 +74,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
             protected ViewHolder<PlantSeriesModel.PlantSeriesCard> onCreateViewHolder(View root, int viewType) {
                 return new AddEquipmentActivity.ViewHolder(root);
             }
+
         });
 
         mRecyler.setPullRefreshEnabled(true);
@@ -78,16 +82,6 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
         mRecyler.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyler.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyler.setLoadingListener(this);
-
-
-        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<PlantSeriesModel.PlantSeriesCard>() {
-            @Override
-            public void onItemClick(RecyclerAdapter.ViewHolder holder, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
-                super.onItemClick(holder, plantSeriesCard);
-                // todo 跳转多设备添加
-
-            }
-        });
 
     }
 
@@ -105,15 +99,11 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     @OnClick(R.id.img_scan)
     void onScanClick() {
-//        AddEquipmentDisplayActivity.show(this);
-
         Intent intent = new Intent(this, CaptureActivity.class);
-
-                                /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
-                                * 也可以不传这个参数
-                                * 不传的话  默认都为默认不震动  其他都为true
-                                * */
-
+        /**ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+         * 也可以不传这个参数
+         * 不传的话  默认都为默认不震动  其他都为true
+         * */
         ZxingConfig config = new ZxingConfig();
         config.setPlayBeep(true);
         config.setShake(true);
@@ -133,12 +123,12 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                 String content = data.getStringExtra(Constant.CODED_CONTENT);
                 Log.d("shc", "扫描结果为: " + content);
                 //型号，序列号，mac地址
-                //WG101&8001F023412332&B0F89310C460
-               String[] result = content.split("&");
+                //WG101&8001F023412332&B0F89310CFE6
+                String[] result = content.split("&");
                 scanData = new ArrayList<>(Arrays.asList(result));
                 String equipmentType = result[0];
-
-                mPresenter.getEquipmentPhoto("1",equipmentType);
+                isAddEquipments = false;
+                mPresenter.getEquipmentPhoto("1", equipmentType);
             }
         }
     }
@@ -158,7 +148,13 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     @Override
     public void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel) {
-        AddEquipmentDisplayActivity.show(this,photoModel.getPhoto(), (ArrayList<String>) scanData);
+        if (isAddEquipments) {
+            //多设备添加
+            AddEquipmentDisplayActivity.show(this, photoModel.getPhoto(), mPlantSeriesCard);
+        } else {
+            //单设备添加
+            AddEquipmentDisplayActivity.show(this, photoModel.getPhoto(), (ArrayList<String>) scanData);
+        }
     }
 
     @Override
@@ -180,6 +176,9 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<PlantSeriesModel.PlantSeriesCard> {
+        @BindView(R.id.ll_root)
+        LinearLayout mRoot;
+
         @BindView(R.id.img_left)
         ImageView mImgLeft;
 
@@ -192,13 +191,21 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
         }
 
         @Override
-        protected void onBind(PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
+        protected void onBind(final PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
             if (getAdapterPosition() % 2 == 0) {
                 mImgLeft.setBackgroundColor(Color.parseColor("#67B91A"));
             } else {
                 mImgLeft.setBackgroundColor(Color.parseColor("#4F9818"));
             }
             mName.setText(plantSeriesCard.getTitle());
+            mRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isAddEquipments = true;
+                    mPlantSeriesCard = plantSeriesCard;
+                    mPresenter.getEquipmentPhoto("1", plantSeriesCard.getSeries());
+                }
+            });
         }
     }
 
