@@ -36,6 +36,7 @@ import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.main.MainActivityContract;
 import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
+import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
 import bocai.com.yanghuaji.ui.intelligentPlanting.AddWifiActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
@@ -44,6 +45,7 @@ import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import de.hdodenhof.circleimageview.CircleImageView;
 import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
@@ -107,8 +109,8 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEidtPersonDataSuccess(MessageEvent messageEvent){
-        if (messageEvent.getMessage().equals(EditPersonalDataActivity.MODIFY_PERSONAL_DATA_SUCCESS)){
+    public void onEidtPersonDataSuccess(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals(EditPersonalDataActivity.MODIFY_PERSONAL_DATA_SUCCESS)) {
             User user = Account.getUser();
             if (user != null) {
                 mName.setText(user.getNickName());
@@ -137,7 +139,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             public void run() {
                 try {
                     //启动长牙
-                    LongTooth.setRegisterHost("114.215.170.184",53180);
+                    LongTooth.setRegisterHost("114.215.170.184", 53180);
                     LongTooth.start(Application.getInstance(),
                             2000110273,
                             1,
@@ -181,6 +183,13 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         });
         initAllEquipments();
         initAllGroups();
+
+        JPushInterface.resumePush(this);
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.setAction(TagAliasOperatorHelper.ACTION_SET);
+        tagAliasBean.setAlias(Account.getPhone());
+        tagAliasBean.setAliasAction(true);
+        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), 0, tagAliasBean);
     }
 
     private void initAllGroups() {
@@ -274,8 +283,8 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @OnClick(R.id.tv_shopping)
     void onShoppingClick() {
         String content = "WG101&8001F023412332&B0:F8:93:10:CF:E6";
-       String[] result = content.split("&");
-       List<String> data = new ArrayList<>(Arrays.asList(result));
+        String[] result = content.split("&");
+        List<String> data = new ArrayList<>(Arrays.asList(result));
         AddWifiActivity.show(this, (ArrayList<String>) data);
     }
 
@@ -283,7 +292,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         mDrawerLayout.openDrawer(GravityCompat.START);
     }
 
-    public void hideLeft(){
+    public void hideLeft() {
         mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 

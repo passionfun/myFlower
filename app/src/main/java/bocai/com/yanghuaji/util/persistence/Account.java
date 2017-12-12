@@ -31,6 +31,7 @@ public class Account {
     private static String userId;
     //所有已经添加过的设备
     private static List<EquipmentRspModel.ListBean> listBeans;
+
     /**
      * 存储数据到XML文件，持久化
      */
@@ -106,10 +107,17 @@ public class Account {
 //                .from(User.class)
 //                .where(User_Table.Id.eq(userId))
 //                .querySingle();
-        return  SQLite.select()
+        return SQLite.select()
                 .from(User.class)
                 .where(User_Table.Id.eq(userId))
                 .querySingle();
     }
 
+    public static String getPhone() {
+        return phone;
+    }
+
+    public static void setPhone(String phone) {
+        Account.phone = phone;
+    }
 }
