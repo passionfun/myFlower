@@ -33,6 +33,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
 
     @Override
     public void setupPlant(Map<String, String> map) {
+        view.showLoading();
         Observable<BaseRspModel<PlantSettingModel>> observable = Network.remote().setupPlant(map);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -47,6 +48,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
                         if (plantSettingModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setupPlantSuccess(plantSettingModelBaseRspModel.getData());
                         }
+                        view.hideLoading();
                         Application.showToast(plantSettingModelBaseRspModel.getMsg());
                     }
 
@@ -65,6 +67,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
 
     @Override
     public void plantMode() {
+        view.showLoading();
         Observable<BaseRspModel<LifeCycleModel>> observable = Network.remote().plantMode();
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,6 +84,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
                         } else {
                             Application.showToast(lifeCycleModelBaseRspModel.getMsg());
                         }
+                        view.hideLoading();
                     }
 
                     @Override
@@ -97,6 +101,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
 
     @Override
     public void lifeCycle() {
+        view.showLoading();
         Observable<BaseRspModel<LifeCycleModel>> observable = Network.remote().lifeCycle();
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -113,6 +118,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
                         } else {
                             Application.showToast(lifeCycleModelBaseRspModel.getMsg());
                         }
+                        view.hideLoading();
                     }
 
                     @Override

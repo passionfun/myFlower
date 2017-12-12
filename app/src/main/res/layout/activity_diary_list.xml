@@ -8,17 +8,18 @@
     tools:context="bocai.com.yanghuaji.ui.plantingDiary.DiaryListActivity">
 
     <android.support.v7.widget.Toolbar
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="26dp"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="21dp"
+        android:layout_height="40dp"
         android:title="">
 
         <ImageView
             android:id="@+id/img_back"
             android:layout_marginStart="30dp"
             android:src="@mipmap/img_back"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
+            android:scaleType="center"
             android:layout_height="match_parent" />
 
 
@@ -28,7 +29,8 @@
             android:id="@+id/img_share"
             android:layout_gravity="end"
             android:src="@mipmap/img_share"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
+            android:scaleType="center"
             android:layout_height="match_parent" />
 
 
@@ -36,8 +38,9 @@
             android:layout_marginEnd="20dp"
             android:id="@+id/img_data_card"
             android:layout_gravity="end"
+            android:scaleType="center"
             android:src="@mipmap/img_data_card"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="match_parent" />
     </android.support.v7.widget.Toolbar>
     <ProgressBar

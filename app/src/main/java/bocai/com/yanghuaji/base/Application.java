@@ -15,6 +15,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 import java.io.File;
 
 import bocai.com.yanghuaji.base.common.Factory;
+import bocai.com.yanghuaji.util.persistence.Account;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -28,6 +29,7 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        Account.load(this);
         Factory.setup();
         JPushInterface.init(this);
         UMShareAPI.get(this);

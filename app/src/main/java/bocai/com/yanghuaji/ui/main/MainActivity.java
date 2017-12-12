@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
@@ -113,12 +114,36 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         if (messageEvent.getMessage().equals(EditPersonalDataActivity.MODIFY_PERSONAL_DATA_SUCCESS)) {
             User user = Account.getUser();
             if (user != null) {
-                mName.setText(user.getNickName());
+                if (TextUtils.isEmpty(user.getNickName())){
+                    mName.setText(user.getNickName());
+                }
                 GlideApp.with(this)
                         .load(user.getRelativePath())
                         .centerCrop()
                         .into(mPortrait);
             }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        User user = Account.getUser();
+        String phone = Account.getPhone();
+        String account = phone.substring(0,3)+"****"+phone.substring(7);
+        if (user != null) {
+            if (!TextUtils.isEmpty(user.getNickName())){
+                mName.setText(user.getNickName());
+            }else {
+                mName.setText(account);
+            }
+            GlideApp.with(this)
+                    .load(user.getRelativePath())
+                    .placeholder(R.mipmap.img_portrait_empty)
+                    .centerCrop()
+                    .into(mPortrait);
+        }else {
+            mName.setText(account);
         }
     }
 

@@ -23,6 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
@@ -36,6 +37,7 @@ import bocai.com.yanghuaji.model.LedSetModel;
 import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.PlantStatusModel;
 import bocai.com.yanghuaji.model.PlantStatusRspModel;
+import bocai.com.yanghuaji.model.PushModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresenter;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerContract;
@@ -221,6 +223,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @BindView(R.id.tv_ec_status)
             TextView mEcStatus;
 
+            @BindView(R.id.img_tem_arrow)
+            ImageView mImgTemArrow;
+
             private boolean isShowSetting = false;
             private MainRecylerContract.Presenter mPresenter;
 
@@ -342,7 +347,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @OnClick(R.id.tv_update)
             void onUpdateClick() {
-                HorizontalRecyclerFragmentHelper.update(getContext(), mModel);
+                HorizontalRecyclerFragmentHelper.update((Activity) getActivity(), mModel);
             }
 
 
@@ -398,21 +403,38 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 if (model.getLight()!=null)
                     mLedStatus.setText(model.getLight().equals("0")?"关":"开");
                 mEcStatus.setText(getStatus(model.getEstatus()));
-                mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
-                        0,0,0);
+                mWaterStatus.setText(getStatus(model.getWstatus()));
                 if (model.getWstatus().equals("0")){
                     //温度过低
-                    mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,0,
-                            R.mipmap.img_trending_down,0);
+                    mImgTemArrow.setImageResource(R.mipmap.img_trending_down);
+                    PushModel pushModel = new PushModel("push","sys101");
+                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
                 }else if (model.getDstatus().equals("2")){
                     //温度过高
-                    mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
-                            0,R.mipmap.img_temperature_trending_up,0);
+                    mImgTemArrow.setImageResource(R.mipmap.img_temperature_trending_up);
+                    PushModel pushModel = new PushModel("push","sys102");
+                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
                 }else {
-                    mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
-                            0,0,0);
+                    mImgTemArrow.setImageResource(0);
                 }
-                mWaterStatus.setText(getStatus(model.getWstatus()));
+                if (model.getEstatus().equals("0")){
+                    //营养过低
+                    PushModel pushModel = new PushModel("push","sys202");
+                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
+                }else if (model.getDstatus().equals("2")){
+                    //营养过高
+                    PushModel pushModel = new PushModel("push","sys201");
+                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
+                }
+                if (model.getWstatus().equals("0")){
+                    //水位过低
+                    PushModel pushModel = new PushModel("push","sys301");
+                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
+                }else if (model.getDstatus().equals("2")){
+                    //水位过高
+                    PushModel pushModel = new PushModel("push","sys302");
+                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
+                }
             }
 
             @Override
@@ -429,7 +451,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     case "2":
                         return "过高";
                     default:
-                        return "";
+                        return "未知";
                 }
             }
 

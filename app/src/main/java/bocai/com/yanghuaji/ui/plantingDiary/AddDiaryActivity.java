@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
@@ -30,10 +29,10 @@ import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryPresenter;
 import bocai.com.yanghuaji.ui.personalCenter.EquipmentListPopupWindow;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.RoundAngleImageView;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -172,7 +171,7 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
                 @Override
                 public void selected(EquipmentCard card) {
                     mName = card.getEquipName();
-                    plantTime=card.getPlantTime();
+                    plantTime= DateUtils.timet(card.getPlantTime());
                     mEquipmentId = card.getId();
                     mEquipmentName.setText(mName);
                     tvPlantingTime.setText(plantTime);

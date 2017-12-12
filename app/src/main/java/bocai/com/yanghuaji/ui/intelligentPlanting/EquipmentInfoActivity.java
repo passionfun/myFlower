@@ -131,8 +131,6 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
 
     //检查是否有新版本
     private void checkVersion() {
-        //LongTooth.request(longToothId,"longtooth", LongToothTunnel.LT_ARGUMENTS,request.getBytes(),
-        // 0,request.getBytes().length,null,new LongToothResponse());
         /**
          * 是否有新版本请求格式
          * {
@@ -213,6 +211,72 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
 
 
     private void checkUpdateState() {
+        final BindEquipmentModel model = new BindEquipmentModel("checkUpdateStat", mUUID);
+        String request = gson.toJson(model);
+        LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                    @Override
+                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                      String service_str, int data_type, byte[] args,
+                                                      LongToothAttachment attachment) {
+                        if (args == null) {
+                            return;
+                        }
+                        String result = new String(args);
+                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                        Log.d(TAG, "update: " + result);
+                        int code = longToothRspModel.getUpdateStat();
+                        if (code == 1) {//code=1:正在升级
+                            // 循环等待
+                            getWindow().getDecorView()
+                                    .postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            checkUpdateState();
+                                        }
+                                    }, 1000);
+                        } else if (code == 2) {//code=2:升级成功
+                            // 更新版本号
+                            updateVersion();
+                            Run.onUiAsync(new Action() {
+                                @Override
+                                public void call() {
+                                    imgUpgrading.clearAnimation();
+                                    mFramUpdate.setVisibility(View.GONE);
+                                }
+                            });
+                            Application.showToast("升级成功");
+                        } else if (code == 3) {//code=3:升级失败
+                            int times = 0;
+                            times++;
+                            if (times <= 2) {
+                                // 循环等待
+                                getWindow().getDecorView()
+                                        .postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                checkUpdateState();
+                                            }
+                                        }, 1000);
+                            } else {
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        imgUpgrading.clearAnimation();
+                                        mFramUpdate.setVisibility(View.GONE);
+                                        imgUpgrade.setVisibility(View.VISIBLE);
+                                    }
+                                });
+
+                                Application.showToast("升级失败");
+                            }
+                        }
+                    }
+                });
+    }
+
+
+    private void updateVersion() {
         final BindEquipmentModel model = new BindEquipmentModel("softVer", mUUID);
         String request = gson.toJson(model);
         LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
@@ -227,34 +291,20 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                         int code = longToothRspModel.getCODE();
                         if (code == 0) {
                             String newVersion = longToothRspModel.getSoftVer();
-                            mPresenter.updateVersion(Account.getToken(),newVersion,id);
-                            if (!newVersion.equals(version)) {
-
-                                Run.onUiAsync(new Action() {
-                                    @Override
-                                    public void call() {
-                                        imgUpgrading.clearAnimation();
-                                        mFramUpdate.setVisibility(View.GONE);
-                                    }
-                                });
-                                Application.showToast("升级成功");
-                            } else {
-                                Run.onUiAsync(new Action() {
-                                    @Override
-                                    public void call() {
-                                        imgUpgrade.setVisibility(View.VISIBLE);
-                                        imgUpgrading.clearAnimation();
-                                        mFramUpdate.setVisibility(View.GONE);
-                                    }
-                                });
-                                Application.showToast("升级失败");
-                            }
+                            mPresenter.updateVersion(Account.getToken(), newVersion, id);
                         }
                     }
-                });
-
+                }
+        );
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (imgUpgrading!=null){
+            imgUpgrading.clearAnimation();
+        }
+    }
 
     @Override
     protected void initWidget() {
@@ -273,8 +323,8 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
         tvEquipmentType.setText(model.getEquipName());
         tvVersion.setText(model.getVersion());
         version = model.getVersion();
+        updateVersion();
         checkVersion();
-        checkUpdateState();
     }
 
     @Override

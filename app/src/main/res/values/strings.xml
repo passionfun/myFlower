@@ -64,4 +64,6 @@
 
     <string name="diary_empty">暂无日记本，快去添加</string>
     <string name="equipment_empty">暂无设备，快去添加</string>
+
+    <string name="add_failed">添加失败</string>
 </resources>

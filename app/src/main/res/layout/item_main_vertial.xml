@@ -128,62 +128,80 @@
 
         <LinearLayout
             android:id="@+id/ll_data"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="17dp"
             android:layout_marginTop="9dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_temperature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_marginStart="22dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@mipmap/img_temperature"
-                android:text="45°C"
-                android:textColor="#FBB179"
-                android:textSize="13dp" />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@mipmap/img_temperature"
+                    android:text="45°C"
+                    android:textColor="#FBB179"
+                    android:textSize="13dp" />
 
-            <TextView
-                android:id="@+id/tv_water_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@mipmap/img_water_lever"
-                android:text="正常"
-                android:textColor="#FBB179"
-                android:textSize="12dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_water_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@mipmap/img_water_lever"
+                    android:text="正常"
+                    android:textColor="#FBB179"
+                    android:textSize="12dp" />
 
-            <TextView
-                android:id="@+id/tv_led_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@mipmap/img_light"
-                android:text="台灯"
-                android:textColor="#90BDFF"
-                android:textSize="12dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_led_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@mipmap/img_light"
+                    android:text="台灯"
+                    android:textColor="#90BDFF"
+                    android:textSize="12dp" />
 
-            <TextView
-                android:id="@+id/tv_ec_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@mipmap/img_ec"
-                android:text="正常"
-                android:textColor="#9FD166"
-                android:textSize="12dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_ec_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@mipmap/img_ec"
+                    android:text="正常"
+                    android:textColor="#9FD166"
+                    android:textSize="12dp" />
+
+            </FrameLayout>
         </LinearLayout>
 
     </LinearLayout>
 
 
     <FrameLayout
-        android:visibility="invisible"
+        android:visibility="gone"
         android:id="@+id/frame_more"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

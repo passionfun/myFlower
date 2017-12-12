@@ -19,6 +19,7 @@ import bocai.com.yanghuaji.presenter.account.LoginContract;
 import bocai.com.yanghuaji.presenter.account.LoginPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.adapter.account.CountDownTimerUtils;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -71,6 +72,14 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
         return R.layout.activity_login;
     }
 
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        if (Account.isLogin()){
+            MainActivity.show(this);
+            finish();
+        }
+    }
 
     @OnClick(R.id.verification_code_login)
     void onVerificationLogin() {

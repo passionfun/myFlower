@@ -20,6 +20,7 @@ import bocai.com.yanghuaji.model.EquipmentsByGroupModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.ImageModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
+import bocai.com.yanghuaji.model.NoticeStatusRspModel;
 import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
@@ -295,6 +296,13 @@ public interface RemoteService {
     @POST("equipment/create_equipment_more")
     @FormUrlEncoded
     Observable<BaseRspModel<List<EquipmentCard>>> addEquipments(@Field("Token") String token, @Field("Equipments") String equipments);
+
+
+
+    //新消息通知状态
+    @POST("member/notice_status")
+    @FormUrlEncoded
+    Observable<BaseRspModel<NoticeStatusRspModel>> getNoticeStatus(@Field("Token") String token);
 
 
 }

@@ -1,6 +1,7 @@
 package bocai.com.yanghuaji.util;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -93,5 +94,21 @@ public class UiTool {
         return (int) (pxValue / scale + 0.5f);
     }
 
+    private static ProgressDialog dialog;
 
+    public static void showLoading(Context context) {
+
+        dialog  = new ProgressDialog(context);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+
+
+
+    public static void hideLoading() {
+        if (dialog!=null&&dialog.isShowing()){
+            dialog.dismiss();
+        }
+    }
 }

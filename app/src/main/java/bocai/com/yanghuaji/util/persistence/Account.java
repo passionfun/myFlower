@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.util.persistence;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
@@ -58,6 +59,7 @@ public class Account {
         pushId = sp.getString(KEY_PUSH_ID, "");
         token = sp.getString(KEY_TOKEN, "");
         userId = sp.getString(KEY_USER_ID, "");
+        phone = sp.getString(KEY_PHONE,"");
     }
 
 
@@ -67,6 +69,24 @@ public class Account {
         Account.phone = model.getPhone();
         Account.userId = model.getId();
         save(Application.getInstance());
+    }
+
+    public static void logOff(Context context) {
+        // 存储当前登录的账户, token, 用户Id
+        SharedPreferences sp = context.getSharedPreferences(Account.class.getName(),
+                Context.MODE_PRIVATE);
+        sp.edit().clear().apply();
+    }
+
+
+
+    /**
+     * 判断是否已经登录
+     */
+    public static boolean isLogin(){
+        SharedPreferences sp = Application.getInstance().getSharedPreferences(Account.class.getName(),
+            Context.MODE_PRIVATE);
+        return !TextUtils.isEmpty(sp.getString(KEY_TOKEN,""))&&!TextUtils.isEmpty(sp.getString(KEY_PHONE, ""));
     }
 
 

@@ -7,10 +7,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Fragment;
 import bocai.com.yanghuaji.base.GlideApp;
+import bocai.com.yanghuaji.base.presenter.PrensterFragment;
+import bocai.com.yanghuaji.model.NoticeStatusRspModel;
+import bocai.com.yanghuaji.model.PersonalCenterPresenter;
 import bocai.com.yanghuaji.model.db.User;
+import bocai.com.yanghuaji.presenter.personalCenter.PersonalCenterContract;
 import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
+import bocai.com.yanghuaji.ui.account.LoginActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
@@ -24,7 +28,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 邮箱 yuanfei221@126.com
  */
 
-public class PersonalCenterFragment extends Fragment {
+public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContract.Presenter>
+        implements PersonalCenterContract.View {
     @BindView(R.id.ll_root)
     LinearLayout mRootLayout;
 
@@ -33,6 +38,9 @@ public class PersonalCenterFragment extends Fragment {
 
     @BindView(R.id.img_portrait)
     CircleImageView mPortrait;
+
+    @BindView(R.id.tv_system_notification)
+    TextView mNoticeStatus;
 
 
     public static PersonalCenterFragment newInstance() {
@@ -46,17 +54,30 @@ public class PersonalCenterFragment extends Fragment {
 
 
     @Override
+    protected void initData() {
+        super.initData();
+        mPresenter.getNoticeStatus(Account.getToken());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         User user = Account.getUser();
+        String phone = Account.getPhone();
+        String account = phone.substring(0,3)+"****"+phone.substring(7);
         if (user != null) {
-            if (!TextUtils.isEmpty(user.getNickName()))
+            if (!TextUtils.isEmpty(user.getNickName())){
                 mName.setText(user.getNickName());
+            }else {
+                mName.setText(account);
+            }
             GlideApp.with(getActivity())
                     .load(user.getRelativePath())
                     .placeholder(R.mipmap.img_portrait_empty)
                     .centerCrop()
                     .into(mPortrait);
+        }else {
+            mName.setText(account);
         }
     }
 
@@ -106,7 +127,9 @@ public class PersonalCenterFragment extends Fragment {
                                 0, tagAliasBean);
                         JPushInterface.stopPush(getActivity());
                         popupWindow.dismiss();
-                        ActivityUtil.finishActivity();
+
+                        Account.logOff(getContext());
+                        LoginActivity.show(getContext());
                         break;
                     case R.id.tv_from_gallery:
                         // 取消
@@ -122,4 +145,18 @@ public class PersonalCenterFragment extends Fragment {
     }
 
 
+    @Override
+    public void getNoticeStatusSuccess(NoticeStatusRspModel noticeStatusRspModel) {
+        //0无新消息   1有新消息
+        if (noticeStatusRspModel.getStatus().equals("0")){
+            mNoticeStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_no_message,0,0,0);
+        }else {
+            mNoticeStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_system_notification_new,0,0,0);
+        }
+    }
+
+    @Override
+    protected PersonalCenterContract.Presenter initPresenter() {
+        return new PersonalCenterPresenter(this);
+    }
 }

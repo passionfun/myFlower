@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -134,22 +135,6 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         }
     }
 
-    private String getLifeCircleId(String lifeCycle){
-        switch (lifeCycle){
-            case "种子期":
-                return "1";
-            case "幼苗期":
-                return "2";
-            case "茎叶期":
-                return "3";
-            case "花果期":
-                return "4";
-                default:
-                    return "";
-
-        }
-    }
-
     @OnClick(R.id.img_back)
     void onBackClick() {
         finish();
@@ -271,12 +256,16 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
             @Override
             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i,
                                               byte[] bytes, LongToothAttachment longToothAttachment) {
+                if(bytes==null){
+                    return;
+                }
                 String jsonContent = new String(bytes);
+                Log.d("shc", "handleServiceResponse: "+jsonContent);
                 LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                 if (plantStatusRspModel.getCODE()==0){
-                    Application.showToast("智能参数设置成功");
+//                    Application.showToast("智能参数设置成功");
                 }else {
-                    Application.showToast("智能参数设置失败");
+//                    Application.showToast("智能参数设置失败");
                 }
             }
         });

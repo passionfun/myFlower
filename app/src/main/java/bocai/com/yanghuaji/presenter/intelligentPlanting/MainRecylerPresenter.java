@@ -72,8 +72,9 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
                     public void onNext(BaseRspModel<CheckboxStatusModel> checkboxStatusModelBaseRspModel) {
                         if (checkboxStatusModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setCheckBoxSuccess(checkboxStatusModelBaseRspModel.getData());
+                        }else {
+                            Application.showToast(checkboxStatusModelBaseRspModel.getMsg());
                         }
-                        Application.showToast(checkboxStatusModelBaseRspModel.getMsg());
                         view.hideLoading();
                     }
 

@@ -289,6 +289,17 @@ public class AddEquipmentsActivity extends Activity {
                                 if (mPresenter != null){
                                     mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,mEquipmentModel.getLTID(),timeStamp);
                                 }
+                            }else {
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        Application.showToast(R.string.add_failed);
+                                        mLoading.stop();
+                                        mAdd.setVisibility(View.VISIBLE);
+                                        mAddSuccess.setVisibility(View.GONE);
+                                        mLoading.setVisibility(View.GONE);
+                                    }
+                                });
                             }
                         }
                     });

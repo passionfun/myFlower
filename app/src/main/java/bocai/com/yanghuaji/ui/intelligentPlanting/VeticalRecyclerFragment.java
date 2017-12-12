@@ -26,6 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
@@ -336,7 +337,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         @OnClick(R.id.tv_update)
         void onUpdateClick() {
-            HorizontalRecyclerFragmentHelper.update(getContext(), mModel);
+            HorizontalRecyclerFragmentHelper.update((Activity) getActivity(), mModel);
         }
 
         @OnClick(R.id.tv_setting)
@@ -412,7 +413,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 case "2":
                     return "过高";
                 default:
-                    return "";
+                    return "未知";
             }
         }
 

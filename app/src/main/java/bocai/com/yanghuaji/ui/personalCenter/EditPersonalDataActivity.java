@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -85,13 +86,17 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
     @Override
     protected void initData() {
         super.initData();
-        mSex.setText("女");
+        mSex.setText("去设置");
         User user = Account.getUser();
         if (user != null) {
             mName.setText(user.getNickName());
             if (user.getSex()!=null)
             mSex.setText(user.getSex().equals("1") ? "男" : "女");
-            mBirthday.setText(user.getBirthday());
+            if (!TextUtils.isEmpty(user.getBirthday())){
+                mBirthday.setText(user.getBirthday());
+            }else {
+                mBirthday.setText("去设置");
+            }
             GlideApp.with(this)
                     .load(user.getRelativePath())
                     .centerCrop()

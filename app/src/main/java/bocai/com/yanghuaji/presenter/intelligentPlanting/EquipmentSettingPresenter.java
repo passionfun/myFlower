@@ -79,9 +79,8 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
                     public void onNext(BaseRspModel<EquipmentSetupModel> equipmentSetupModelBaseRspModel) {
                         if (equipmentSetupModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setupEquipmentSuccess(equipmentSetupModelBaseRspModel.getData());
-                        } else {
-                            Application.showToast(equipmentSetupModelBaseRspModel.getMsg());
                         }
+                        Application.showToast(equipmentSetupModelBaseRspModel.getMsg());
                         view.hideLoading();
                     }
 

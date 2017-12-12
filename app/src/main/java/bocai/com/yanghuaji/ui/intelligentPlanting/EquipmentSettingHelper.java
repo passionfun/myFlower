@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.LightOnModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.model.NoDisturbModel;
@@ -59,9 +58,9 @@ public class EquipmentSettingHelper {
                 LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                 Log.d(TAG, "noDisturb: "+result);
                 if (longToothRspModel.getCODE()==0){
-                    Application.showToast("设置免打扰成功");
+//                    Application.showToast("设置免打扰成功");
                 }else {
-                    Application.showToast("设置免打扰失败");
+//                    Application.showToast("设置免打扰失败");
                 }
             }
         });
@@ -81,9 +80,9 @@ public class EquipmentSettingHelper {
             Log.d(TAG, "lightOn: "+result);
             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             if (longToothRspModel.getCODE()==0){
-                Application.showToast("设置补光开启时间成功");
+//                Application.showToast("设置补光开启时间成功");
             }else {
-                Application.showToast("设置补光开启时间失败");
+//                Application.showToast("设置补光开启时间失败");
             }
 
         }
