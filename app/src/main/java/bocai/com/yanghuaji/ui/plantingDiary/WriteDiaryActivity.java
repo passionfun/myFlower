@@ -4,10 +4,13 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -43,6 +46,7 @@ import bocai.com.yanghuaji.presenter.plantingDiary.WriteDiaryContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.WriteDiaryPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.BitmapUtils;
+import bocai.com.yanghuaji.util.PermissionUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -73,7 +77,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
 
     @BindView(R.id.img_add_picture)
     ImageView mAdd;
-
+    private static final int MY_PERMISSION_REQUEST_CODE = 10001;
     public static final int TAKE_PHOTO_REQUEST_ONE = 0x001;
     public static final String KEY_DIARY_ID = "KEY_DIARY_ID";
     private String mDiaryId;
@@ -81,6 +85,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     private RecyclerAdapter<String> mAdapter;
     private String mCityName = "";
     private String mLocationStr = "";
+    private String[] storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -268,14 +273,13 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                     case R.id.tv_from_gallery:
                         picPopupWindow.dismiss();
                         // 从相册选择照片
-                        MyGalleryFragment fragment = new MyGalleryFragment().setListener(new MyGalleryFragment.OnSelectedListener() {
-                            @Override
-                            public void onSelectedImage(String[] paths) {
-                                mAdapter.add(paths);
-                                switchVisibility(true);
-                            }
-                        });
-                        fragment.show(getSupportFragmentManager(), MyGalleryFragment.class.getName());
+                        boolean isHavePermission = PermissionUtils.checkPermissionAllGranted(WriteDiaryActivity.this, storagePermissions);
+                        if (!isHavePermission){
+                            //申请权限
+                            ActivityCompat.requestPermissions(WriteDiaryActivity.this,storagePermissions,MY_PERMISSION_REQUEST_CODE);
+                            return;
+                        }
+                        soSelectPhonts();
                         //fragment.setMaxCount(10 - mAdapter.getItemCount());
                         break;
                     case R.id.tv_cancel:
@@ -286,6 +290,39 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
         });
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
         picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM, 0, 0);
+    }
+
+    private void soSelectPhonts(){
+        MyGalleryFragment fragment = new MyGalleryFragment().setListener(new MyGalleryFragment.OnSelectedListener() {
+            @Override
+            public void onSelectedImage(String[] paths) {
+                mAdapter.add(paths);
+                switchVisibility(true);
+            }
+        });
+        fragment.show(getSupportFragmentManager(), MyGalleryFragment.class.getName());
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==MY_PERMISSION_REQUEST_CODE){
+            boolean permission = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    permission = false;
+                    break;
+                }
+            }
+            if (permission) {
+                //  授权成功
+                soSelectPhonts();
+            } else {
+                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
+                PermissionUtils.openAppDetails(this);
+            }
+        }
     }
 
     private void uploadPhotos(List<String> pathList) {

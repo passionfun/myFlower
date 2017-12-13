@@ -15,6 +15,9 @@ import com.google.gson.reflect.TypeToken;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LedSetModel;
 import bocai.com.yanghuaji.model.LedSetRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.PlantStatusModel;
 import bocai.com.yanghuaji.model.PlantStatusRspModel;
 import bocai.com.yanghuaji.model.PushModel;
@@ -69,7 +73,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     TextView mCurrentNum;
     @BindView(R.id.tv_total)
     TextView mTotalNum;
-    private int page = 1;
     public static final String TAG = HorizontalRecyclerFragment.class.getName();
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
@@ -88,7 +91,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
-
+        EventBus.getDefault().register(this);
         GalleryLayoutManager layoutManager = new GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL);
         layoutManager.attach(mRecyclerView, 1);
         layoutManager.setItemTransformer(new ScaleTransformer());
@@ -115,12 +118,25 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         setPlaceHolderView(mEmptyView);
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDataDeleteSuccess(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals(SecondSettingActivity.DATA_DELETE_SUCCESS)) {
+            mPresenter.getAllEquipments(Account.getToken(), "0",  "0");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Override
     protected void initData() {
         super.initData();
-        page = 1;
-        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
-
+        mPresenter.getAllEquipments(Account.getToken(), "0",  "0");
+        mEmptyView.triggerLoading();
         //开始搜索设备
         final String serviceName = "_easylink._tcp.local.";
         micodev = new MiCODevice(getContext());
@@ -149,14 +165,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     @Override
     public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
         Account.setListBeans(listBeans);
-        if (page == 1) {
-            mAdapter.replace(listBeans);
-        } else {
-            if (listBeans != null && listBeans.size() == 0) {
-                Application.showToast("没有更多");
-            }
-            mAdapter.add(listBeans);
-        }
+        mAdapter.replace(listBeans);
         mTotalNum.setText(String.valueOf(listBeans.size()));
         mPlaceHolderView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
     }
@@ -238,13 +247,14 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             protected void onBind(final EquipmentRspModel.ListBean plantModel) {
                 mModel = plantModel;
-                mSettingView.setVisibility(View.INVISIBLE);
+//                mSettingView.setVisibility(View.INVISIBLE);
+//                mSetting.setImageResource(R.mipmap.img_item_setting);
                 mEquipmentName.setText(plantModel.getEquipName());
                 mPlantName.setText(plantModel.getPlantName());
                 mGroupName.setText(plantModel.getGroupName());
                 mTime.setText(plantModel.getDays() + "");
                 isLedOn = mLed.isChecked();
-                mPush.setChecked(plantModel.getPushStatus().equals("0")?false:true);
+                mPush.setChecked(plantModel.getPushStatus().equals("0") ? false : true);
                 GlideApp.with(getContext())
                         .load(plantModel.getPhoto())
                         .centerCrop()
@@ -275,10 +285,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         }
                     }
                 };
-                timer.schedule(task, 5000, 5000);
+                timer.schedule(task, 5000, 30000);
                 setLed();
             }
-
 
 
             private boolean isLineOff() {
@@ -400,40 +409,41 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             public void setDataSuccess(EquipmentDataModel model) {
                 mTemperature.setText(model.getDegree());
-                if (model.getLight()!=null)
-                    mLedStatus.setText(model.getLight().equals("0")?"关":"开");
+                if (model.getLight() != null){
+                    mLedStatus.setText(model.getLight().equals("0") ? "关" : "开");
+                }
                 mEcStatus.setText(getStatus(model.getEstatus()));
                 mWaterStatus.setText(getStatus(model.getWstatus()));
-                if (model.getWstatus().equals("0")){
+                if (model.getWstatus().equals("0")) {
                     //温度过低
                     mImgTemArrow.setImageResource(R.mipmap.img_trending_down);
-                    PushModel pushModel = new PushModel("push","sys101");
-                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
-                }else if (model.getDstatus().equals("2")){
+                    PushModel pushModel = new PushModel("push", "sys101");
+                    HorizontalRecyclerFragmentHelper.push(mModel, pushModel);
+                } else if (model.getDstatus().equals("2")) {
                     //温度过高
                     mImgTemArrow.setImageResource(R.mipmap.img_temperature_trending_up);
-                    PushModel pushModel = new PushModel("push","sys102");
-                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
-                }else {
+                    PushModel pushModel = new PushModel("push", "sys102");
+                    HorizontalRecyclerFragmentHelper.push(mModel, pushModel);
+                } else {
                     mImgTemArrow.setImageResource(0);
                 }
-                if (model.getEstatus().equals("0")){
+                if (model.getEstatus().equals("0")) {
                     //营养过低
-                    PushModel pushModel = new PushModel("push","sys202");
-                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
-                }else if (model.getDstatus().equals("2")){
+                    PushModel pushModel = new PushModel("push", "sys202");
+                    HorizontalRecyclerFragmentHelper.push(mModel, pushModel);
+                } else if (model.getDstatus().equals("2")) {
                     //营养过高
-                    PushModel pushModel = new PushModel("push","sys201");
-                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
+                    PushModel pushModel = new PushModel("push", "sys201");
+                    HorizontalRecyclerFragmentHelper.push(mModel, pushModel);
                 }
-                if (model.getWstatus().equals("0")){
+                if (model.getWstatus().equals("0")) {
                     //水位过低
-                    PushModel pushModel = new PushModel("push","sys301");
-                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
-                }else if (model.getDstatus().equals("2")){
+                    PushModel pushModel = new PushModel("push", "sys301");
+                    HorizontalRecyclerFragmentHelper.push(mModel, pushModel);
+                } else if (model.getDstatus().equals("2")) {
                     //水位过高
-                    PushModel pushModel = new PushModel("push","sys302");
-                    HorizontalRecyclerFragmentHelper.push(mModel,pushModel);
+                    PushModel pushModel = new PushModel("push", "sys302");
+                    HorizontalRecyclerFragmentHelper.push(mModel, pushModel);
                 }
             }
 
@@ -442,8 +452,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             }
 
-            private String getStatus(String code){
-                switch (code){
+            private String getStatus(String code) {
+                switch (code) {
                     case "0":
                         return "过低";
                     case "1":
@@ -468,10 +478,14 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
-                if (bytes==null){
+                if (bytes == null) {
                     return;
                 }
                 String jsonContent = new String(bytes);
+                if (jsonContent.equals("{}")){
+                    return;
+                }
+                Log.d(TAG, "handleServiceResponse: "+jsonContent);
                 PlantStatusRspModel plantStatusRspModel = gson.fromJson(jsonContent, PlantStatusRspModel.class);
                 if (plantStatusRspModel.getCODE() == 0) {
                     //获取数据成功
@@ -479,7 +493,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     String wagerState = plantStatusRspModel.getWaterStat();
                     String Ec = plantStatusRspModel.getEC();//植物的营养值
                     String isLihtOn = isLedOn ? "0" : "1";
-                    mPresenter.setData(Account.getToken(),mModel.getMac(),temperature,wagerState,isLihtOn,Ec);
+                    mPresenter.setData(Account.getToken(), mModel.getMac(), temperature, wagerState, isLihtOn, Ec);
                 }
 
             }

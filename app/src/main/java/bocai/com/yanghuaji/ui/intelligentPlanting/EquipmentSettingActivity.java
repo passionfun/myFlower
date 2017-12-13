@@ -84,9 +84,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     private String mNoDistrubStart, mNoDistrubEnd;
     private EquipmentRspModel.ListBean mPlantBean;
     //禁止光照最长时间
-    private int leastNoLedTime;
-    //禁止光照开始和结束时间
-    private int noLedStrart, noLedStop;
+    private int leastNoLedTime=8;
 
     //显示的入口
     public static void show(Context context, EquipmentRspModel.ListBean plantBean) {
@@ -140,9 +138,13 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             tvBanStart.setText(equipmentSetupModel.getBanStart());
             tvBanStop.setText(equipmentSetupModel.getBanStop());
             mGroupName.setText(equipmentSetupModel.getGroupName());
-            mBengin = equipmentSetupModel.getLightStart();
-            mNoDistrubStart = banStart = equipmentSetupModel.getBanStart();
-            mNoDistrubEnd = banStop = equipmentSetupModel.getBanStop();
+            lightStart = equipmentSetupModel.getLightStart();
+            banStart = equipmentSetupModel.getBanStart();
+            banStop = equipmentSetupModel.getBanStop();
+            if (!TextUtils.isEmpty(banStart)&&!TextUtils.isEmpty(banStop)){
+                mNoDistrubStart = DateUtils.getTimeSecond(banStart)+"";
+                mNoDistrubEnd = DateUtils.getTimeSecond(banStop)+"";
+            }
         }
     }
 
@@ -168,65 +170,116 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         map.put("Id", equipmentId);// 	设备id
         //设置补光开启时间
         if (!TextUtils.isEmpty(mBengin)) {
+            if (!TextUtils.isEmpty(banStop) && !TextUtils.isEmpty(banStart)&& !TextUtils.isEmpty(lightStart)){
+                int noDisStrart = DateUtils.getTimeSecondNoZone(banStart);
+                int noDisStop = DateUtils.getTimeSecondNoZone(banStop);
+                int begin = DateUtils.getTimeSecondNoZone(lightStart);
+                if (begin>=noDisStrart&&begin<=noDisStop){
+                    Application.showToast("开启时间不能再禁止时间之间");
+                    return;
+                }
+            }
             EquipmentSettingHelper.setLightOn(mBengin, mUUID, mLongToothId);
         }
         //设置免打扰时间
         if (!TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd)) {
-            if ((noLedStop-noLedStrart)>leastNoLedTime){
+            if ((DateUtils.getTimeSecondNoZone(banStop) -DateUtils.getTimeSecondNoZone(banStart) )<=0){
+                Application.showToast("请选择正确的时间");
+                return;
+            }
+            if ((DateUtils.getTimeSecondNoZone(banStop) -DateUtils.getTimeSecondNoZone(banStart) )>leastNoLedTime*3600){
                 Application.showToast("禁止光照时间不能超过"+leastNoLedTime+"小时");
                 return;
             }else {
                 EquipmentSettingHelper.setNoDisturb(mNoDistrubStart, mNoDistrubEnd, mUUID, mLongToothId);
             }
+        }else if ((TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd))||(!TextUtils.isEmpty(mNoDistrubStart) && TextUtils.isEmpty(mNoDistrubEnd))){
+            Application.showToast("请选择正确的时间");
+            return;
         }
         mPresenter.setupEquipment(map);
     }
 
     @OnClick(R.id.tv_lightStart)
     void clickLightStart() {
+        int lastHour =6;
+        int lastMinute = 0;
+        if (!TextUtils.isEmpty(lightStart)){
+            int[] hourAndMinute = DateUtils.getHourAndMinute(lightStart);
+            lastHour = hourAndMinute[0];
+            lastMinute = hourAndMinute[1];
+        }
         TimePickerDialog dialog = new TimePickerDialog(EquipmentSettingActivity.this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         lightStart = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
                         //转换为格林尼治时间
-                        int needHour = (hour - 8) < 0 ? (hour - 8 + 24) : (hour - 8);
+                        int needHour;
+                        if ((hour-8)<0||((hour-8)==0&&minute==0)){
+                            needHour = hour-8+24;
+                        }else {
+                            needHour = hour-8;
+                        }
                         mBengin = (needHour * 60 * 60 + minute * 60) + "";
                         tvLightStart.setText(lightStart);
                     }
-                }, 6, 0, true);
+                }, lastHour, lastMinute, true);
         dialog.show();
     }
 
     @OnClick(R.id.tv_BanStart)
     void clickBanStart() {
+        int lastHour =6;
+        int lastMinute = 0;
+        if (!TextUtils.isEmpty(banStart)){
+            int[] hourAndMinute = DateUtils.getHourAndMinute(banStart);
+            lastHour = hourAndMinute[0];
+            lastMinute = hourAndMinute[1];
+        }
         TimePickerDialog dialog = new TimePickerDialog(EquipmentSettingActivity.this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        noLedStrart = hour;
                         banStart = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
-                        int needHour = (hour - 8) < 0 ? (hour - 8 + 24) : (hour - 8);
+                        int needHour;
+                        if ((hour-8)<0||((hour-8)==0&&minute==0)){
+                            needHour = hour-8+24;
+                        }else {
+                            needHour = hour-8;
+                        }
+
                         mNoDistrubStart = (needHour * 60 * 60 + minute * 60) + "";
                         tvBanStart.setText(banStart);
                     }
-                }, 6, 0, true);
+                }, lastHour, lastMinute, true);
         dialog.show();
     }
 
     @OnClick(R.id.tv_BanStop)
     void clickBanStop() {
+        int lastHour =6;
+        int lastMinute = 0;
+        if (!TextUtils.isEmpty(banStop)){
+            int[] hourAndMinute = DateUtils.getHourAndMinute(banStop);
+            lastHour = hourAndMinute[0];
+            lastMinute = hourAndMinute[1];
+        }
         TimePickerDialog dialog = new TimePickerDialog(EquipmentSettingActivity.this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        noLedStop = hour;
                         banStop = DateUtils.formatTime(hour) + ":" + DateUtils.formatTime(minute);
-                        int needHour = (hour - 8) < 0 ? (hour - 8 + 24) : (hour - 8);
+                        int needHour;
+                        if ((hour-8)<0||((hour-8)==0&&minute==0)){
+                            needHour = hour-8+24;
+                        }else {
+                            needHour = hour-8;
+                        }
                         mNoDistrubEnd = (needHour * 60 * 60 + minute * 60) + "";
                         tvBanStop.setText(banStop);
                     }
-                }, 6, 0, true);
+                }, lastHour, lastMinute, true);
         dialog.show();
     }
 

@@ -15,7 +15,7 @@ import bocai.com.yanghuaji.model.db.AppDatabase;
 public class EquipmentSetupModel extends BaseModel{
 
     /**
-     * Id : 3
+     * Id : 3  设备id
      * EquipName : WG222+2222
      * WaterMode : 1
      * BanStart : 12:00

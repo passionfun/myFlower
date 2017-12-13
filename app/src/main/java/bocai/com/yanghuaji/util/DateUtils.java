@@ -518,4 +518,73 @@ public class DateUtils {
         return time+"";
     }
 
+    /**
+     * 把时间转化为妙
+     * @param time //08:09
+     * @return 4564949
+     */
+    public static int getTimeSecond(String time){
+        String[] times = time.split(":");
+        String hour1 = times[0];
+        String minute = times[1];
+        if (hour1.startsWith("0")){
+            hour1 = hour1.substring(1, 2);
+        }
+//        int needHour = Integer.valueOf(hour)<=8?(Integer.valueOf(hour)-8+24):Integer.valueOf(hour);
+        int hour = Integer.valueOf(hour1);
+        int needHour;
+        if ((hour-8)<0||((hour-8)==0&&Integer.valueOf(minute)==0)){
+            needHour = hour-8+24;
+        }else {
+            needHour = hour-8;
+        }
+
+        if (minute.startsWith("0")){
+            minute = minute.substring(1,2);
+        }
+        return needHour*3600+Integer.valueOf(minute)*60;
+    }
+
+    /**
+     * 把时间转化为妙,不考虑时区
+     * @param time //08:09
+     * @return 4564949
+     */
+    public static int getTimeSecondNoZone(String time){
+        String[] times = time.split(":");
+        String hour = times[0];
+        if (hour.startsWith("0")){
+            hour = hour.substring(1, 2);
+        }
+        int needHour = Integer.valueOf(hour);
+        String minute = times[1];
+        if (minute.startsWith("0")){
+            minute = minute.substring(1,2);
+        }
+        return needHour*3600+Integer.valueOf(minute)*60;
+    }
+
+    /**
+     * 把时间转化为妙,不考虑时区
+     * @param time //08:09
+     * @return 4564949
+     */
+    public static int[] getHourAndMinute(String time){
+        int[] timeArray = new int[2];
+        String[] times = time.split(":");
+        String hour = times[0];
+        if (hour.startsWith("0")){
+            hour = hour.substring(1, 2);
+        }
+        int needHour = Integer.valueOf(hour);
+        String minute = times[1];
+        if (minute.startsWith("0")){
+            minute = minute.substring(1,2);
+        }
+        int needMinute = Integer.valueOf(minute);
+        timeArray[0] = needHour;
+        timeArray[1] = needMinute;
+        return timeArray;
+    }
+
 }

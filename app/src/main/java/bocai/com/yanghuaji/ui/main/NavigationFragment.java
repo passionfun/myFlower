@@ -91,7 +91,8 @@ public class NavigationFragment extends Fragment {
     private void switchFrgment(int position) {
         FragmentTransaction beginTransaction = getFragmentManager().beginTransaction();
         if (currentFragment != null) {
-            beginTransaction.detach(currentFragment);
+//            beginTransaction.detach(currentFragment);
+            beginTransaction.hide(currentFragment);
         }
         switch (position) {
             case 0:
@@ -99,7 +100,8 @@ public class NavigationFragment extends Fragment {
                     mIntelligentPlantingFragment = IntelligentPlantingFragment.newInstance();
                     beginTransaction.add(R.id.sub_content, mIntelligentPlantingFragment);
                 } else {
-                    beginTransaction.attach(mIntelligentPlantingFragment);
+//                    beginTransaction.attach(mIntelligentPlantingFragment);
+                    beginTransaction.show(mIntelligentPlantingFragment);
                 }
                 currentFragment = mIntelligentPlantingFragment;
                 break;
@@ -108,7 +110,8 @@ public class NavigationFragment extends Fragment {
                     mPlantingDiaryFragment = PlantingDiaryFragment.newInstance();
                     beginTransaction.add(R.id.sub_content, mPlantingDiaryFragment);
                 } else {
-                    beginTransaction.attach(mPlantingDiaryFragment);
+//                    beginTransaction.attach(mPlantingDiaryFragment);
+                    beginTransaction.show(mPlantingDiaryFragment);
                 }
                 currentFragment = mPlantingDiaryFragment;
                 break;
@@ -117,7 +120,8 @@ public class NavigationFragment extends Fragment {
                     mPersonalCenterFragment = PersonalCenterFragment.newInstance();
                     beginTransaction.add(R.id.sub_content, mPersonalCenterFragment);
                 } else {
-                    beginTransaction.attach(mPersonalCenterFragment);
+//                    beginTransaction.attach(mPersonalCenterFragment);
+                    beginTransaction.show(mPersonalCenterFragment);
                 }
                 currentFragment = mPersonalCenterFragment;
                 break;

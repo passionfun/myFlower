@@ -12,6 +12,12 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
@@ -51,6 +57,24 @@ public class PlantingDateAct extends Activity {
     protected boolean initArgs(Bundle bundle) {
         mPlantBean = (EquipmentRspModel.ListBean) bundle.getSerializable(SecondSettingActivity.KEY_PLANT_BEAN);
         return super.initArgs(bundle);
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        webView.loadUrl("javascript:updata()");
+                    }
+                });
+            }
+        };
+        timer.schedule(task, 5000, 5000);
     }
 
     @OnClick(R.id.img_back)

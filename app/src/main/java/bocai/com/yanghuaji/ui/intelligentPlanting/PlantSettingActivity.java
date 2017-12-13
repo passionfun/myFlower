@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ import bocai.com.yanghuaji.model.AutoParaModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
 import bocai.com.yanghuaji.model.PlantSettingModel_Table;
@@ -70,7 +73,6 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     TextView tvPlantCycle;
     @BindView(R.id.ll_root)
     LinearLayout llRoot;
-
     private Map<String, String> map = new HashMap<>();
     private String plantMode, pMid, plantName, pId, lifeCycle, lid, id;
 
@@ -111,11 +113,11 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         id = mPlantBean.getId();
         mUUID = mPlantBean.getPSIGN();
         mLongToothId = mPlantBean.getLTID();
-        if (TextUtils.isEmpty(mPlantBean.getPlantName())){
-            mTvPlantName.setText("去添加");
-        }else {
-            mTvPlantName.setText(mPlantBean.getPlantName());
-        }
+//        if (TextUtils.isEmpty(mPlantBean.getPlantName())){
+//            mTvPlantName.setText("去添加");
+//        }else {
+//            mTvPlantName.setText(mPlantBean.getPlantName());
+//        }
     }
 
     @Override
@@ -132,6 +134,11 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
             tvPlantCycle.setText(lifeCycle);
             lid = model.getLid();
             pMid = model.getPMid();
+        }
+        if (model==null||TextUtils.isEmpty(model.getPlantName())){
+            mTvPlantName.setText("去添加");
+        }else {
+            mTvPlantName.setText(model.getPlantName());
         }
     }
 
@@ -166,9 +173,11 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mPlantcard = (PlantRspModel.PlantCard) data.getSerializableExtra(AddPlantActivity.KEY_PLANT_CARD);
-        mTvPlantName.setText(mPlantcard.getPlantName());
-        pId = mPlantcard.getId();
+        if (data!=null){
+            mPlantcard = (PlantRspModel.PlantCard) data.getSerializableExtra(AddPlantActivity.KEY_PLANT_CARD);
+            mTvPlantName.setText(mPlantcard.getPlantName());
+            pId = mPlantcard.getId();
+        }
     }
 
     @OnClick(R.id.tv_right)
@@ -186,6 +195,10 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
             Application.showToast("生长周期不能id为空");
             return;
         }
+        if (plantName.equals("去添加")||TextUtils.isEmpty(plantName)){
+            Application.showToast("植物不能为空");
+            return;
+        }
         getAutoPara();
     }
 
@@ -199,6 +212,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     public void setupPlantSuccess(PlantSettingModel model) {
         model.save();
+        EventBus.getDefault().post(new MessageEvent(SecondSettingActivity.DATA_DELETE_SUCCESS));
         finish();
     }
 

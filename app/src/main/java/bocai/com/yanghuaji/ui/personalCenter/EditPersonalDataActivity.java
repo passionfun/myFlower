@@ -1,11 +1,15 @@
 package bocai.com.yanghuaji.ui.personalCenter;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +38,7 @@ import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.personalCenter.EditPersonalDataContract;
 import bocai.com.yanghuaji.presenter.personalCenter.EditPersonalDataPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.PermissionUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -63,6 +68,8 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
     @BindView(R.id.et_input_name)
     EditText mName;
 
+    private static final int MY_PERMISSION_REQUEST_CODE = 10002;
+    private String[] storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
     public static final String MODIFY_PERSONAL_DATA_SUCCESS = "MODIFY_PERSONAL_DATA_SUCCESS";
     final int DATE_DIALOG = 1;
     private int mYear, mMonth, mDay;
@@ -157,6 +164,16 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
     @OnClick(R.id.img_add_portrait)
     void onPortraitClick() {
+        boolean isHavePermission = PermissionUtils.checkPermissionAllGranted(EditPersonalDataActivity.this, storagePermissions);
+        if (!isHavePermission){
+            //申请权限
+            ActivityCompat.requestPermissions(EditPersonalDataActivity.this,storagePermissions,MY_PERMISSION_REQUEST_CODE);
+            return;
+        }
+      doSelectPhoto();
+    }
+
+    private void doSelectPhoto(){
         new GalleryFragment()
                 .setListener(new GalleryFragment.OnSelectedListener() {
                     @Override
@@ -178,6 +195,26 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
                 }).show(getSupportFragmentManager(), GalleryFragment.class.getName());
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==MY_PERMISSION_REQUEST_CODE){
+            boolean permission = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    permission = false;
+                    break;
+                }
+            }
+            if (permission) {
+                //  授权成功
+                doSelectPhoto();
+            } else {
+                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
+                PermissionUtils.openAppDetails(this);
+            }
+        }
+    }
 
     @Override
     protected Dialog onCreateDialog(int id) {

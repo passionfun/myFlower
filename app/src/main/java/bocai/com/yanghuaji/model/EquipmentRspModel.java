@@ -66,7 +66,7 @@ public class EquipmentRspModel {
 
     public static class ListBean implements Serializable{
         /**
-         * Id : 1
+         * Id : 1 //设备id
          * Type : 0
          * Pstatus : 2
          * EquipName : WG222+333

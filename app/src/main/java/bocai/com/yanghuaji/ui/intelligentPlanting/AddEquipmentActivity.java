@@ -1,8 +1,12 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +31,7 @@ import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquuipmentPresenter;
+import bocai.com.yanghuaji.util.PermissionUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -43,12 +48,14 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     @BindView(R.id.recycler)
     XRecyclerView mRecyler;
 
+    private static final int MY_PERMISSION_REQUEST_CODE = 10000;
     private RecyclerAdapter<PlantSeriesModel.PlantSeriesCard> mAdapter;
     private int page = 1;
     private int REQUEST_CODE_SCAN = 111;
     private List<String> scanData;
     private boolean isAddEquipments = false;
     private PlantSeriesModel.PlantSeriesCard mPlantSeriesCard;
+    private String[] camera = new String[]{Manifest.permission.CAMERA};
 
     //显示的入口
     public static void show(Context context) {
@@ -99,19 +106,51 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     @OnClick(R.id.img_scan)
     void onScanClick() {
+        boolean isHavePermission = PermissionUtils.checkPermissionAllGranted(this, camera);
+        if (!isHavePermission) {
+            //申请权限
+            ActivityCompat.requestPermissions(this, camera, MY_PERMISSION_REQUEST_CODE);
+            return;
+        }
+
+        doScan();
+
+    }
+
+    private void doScan() {
         Intent intent = new Intent(this, CaptureActivity.class);
-        /**ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+        /**
+         * ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
          * 也可以不传这个参数
          * 不传的话  默认都为默认不震动  其他都为true
-         * */
+         */
         ZxingConfig config = new ZxingConfig();
         config.setPlayBeep(true);
         config.setShake(true);
         intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
         startActivityForResult(intent, REQUEST_CODE_SCAN);
-
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_PERMISSION_REQUEST_CODE) {
+            boolean permission = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    permission = false;
+                    break;
+                }
+            }
+            if (permission) {
+                //  授权成功
+                doScan();
+            } else {
+                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
+                PermissionUtils.openAppDetails(this);
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

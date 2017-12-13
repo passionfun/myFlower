@@ -8,13 +8,14 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import bocai.com.yanghuaji.model.db.AppDatabase;
 
 /**
+ *
  * Created by apple on 17-11-27.
  */
 @Table(database = AppDatabase.class)
 public class PlantSettingModel extends BaseModel{
 
     /**
-     * Id : 3
+     * Id : 3 设备id
      * PlantMode : 智能
      * PlantName : 含羞草
      * LifeCycle : 种子期

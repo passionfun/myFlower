@@ -10,10 +10,19 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import org.greenrobot.eventbus.EventBus;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.CheckboxStatusModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.EquipmentSetupModel;
+import bocai.com.yanghuaji.model.EquipmentSetupModel_Table;
+import bocai.com.yanghuaji.model.MessageEvent;
+import bocai.com.yanghuaji.model.PlantSettingModel;
+import bocai.com.yanghuaji.model.PlantSettingModel_Table;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.SecondSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.SecondSettingPresenter;
 import bocai.com.yanghuaji.util.persistence.Account;
@@ -37,6 +46,7 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     @BindView(R.id.cb_push)
     CheckBox mCbPush;
 
+    public static final String DATA_DELETE_SUCCESS = "DATA_DELETE_SUCCESS";
     public static final String KEY_PLANT_BEAN = "KEY_PLANT_BEAN";
     private EquipmentRspModel.ListBean mPlantBean;
 
@@ -88,16 +98,19 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     @OnClick(R.id.tv_equipment_setting)
     void onEquipmentSettingClick() {
         EquipmentSettingActivity.show(this, mPlantBean);
+        finish();
     }
 
     @OnClick(R.id.tv_plant_setting)
     void onPlantSettingClick() {
         PlantSettingActivity.show(this, mPlantBean);
+        finish();
     }
 
     @OnClick(R.id.tv_equipment_info)
     void onEquipmentInfoClick() {
         EquipmentInfoActivity.show(this, mPlantBean);
+        finish();
     }
 
     @OnClick(R.id.tv_clear_data)
@@ -118,7 +131,20 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
 
     @Override
     public void clearDataSuccess() {
+        EquipmentSetupModel model = SQLite.select()
+                .from(EquipmentSetupModel.class)
+                .where(EquipmentSetupModel_Table.Id.eq(mPlantBean.getId()))
+                .querySingle();
+        if (model!=null)
+        model.delete();
 
+        PlantSettingModel plantModel = SQLite.select()
+                .from(PlantSettingModel.class)
+                .where(PlantSettingModel_Table.Id.eq(mPlantBean.getId()))
+                .querySingle();
+        plantModel.delete();
+        EventBus.getDefault().post(new MessageEvent(DATA_DELETE_SUCCESS));
+        finish();
     }
 
 

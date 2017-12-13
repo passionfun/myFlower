@@ -87,6 +87,7 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     protected void initData() {
         super.initData();
         onRefresh();
+        mEmptyView.triggerLoading();
     }
 
     @OnClick(R.id.bt_add_diary)

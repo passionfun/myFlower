@@ -114,7 +114,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         super.initData();
         page = 1;
         mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
-
+        mEmptyView.triggerLoading();
 
         //开始搜索设备
         final String serviceName = "_easylink._tcp.local.";
@@ -127,7 +127,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 Log.d("shc", "onDevicesFind: " + content);
                 if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
                     String jsonContent = content;
-                    micodev.stopSearchDevices( null);
+                    micodev.stopSearchDevices(null);
                     List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
                     }.getType());
                     for (EquipmentModel equipmentModel : equipmentModels) {
@@ -169,7 +169,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     }
 
 
-    class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> implements MainRecylerContract.View{
+    class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> implements MainRecylerContract.View {
         @BindView(R.id.ll_root)
         LinearLayout mRoot;
 
@@ -231,7 +231,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mGroupName.setText(plantModel.getGroupName());
             mTime.setText(plantModel.getDays() + "");
             isLedOn = mLed.isChecked();
-            mPush.setChecked(plantModel.getPushStatus().equals("0")?false:true);
+            mPush.setChecked(plantModel.getPushStatus().equals("0") ? false : true);
             GlideApp.with(getContext())
                     .load(plantModel.getPhoto())
                     .centerCrop()
@@ -245,13 +245,13 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     Run.onUiAsync(new Action() {
                         @Override
                         public void call() {
-                            mImgTent.setVisibility(isLineOff()?View.VISIBLE:View.INVISIBLE);
+                            mImgTent.setVisibility(isLineOff() ? View.VISIBLE : View.INVISIBLE);
                         }
                     });
-                    if (plantModel.getPid()==null){
+                    if (plantModel.getPid() == null) {
                         return;
                     }
-                    PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1,Integer.parseInt(plantModel.getPSIGN()) ,
+                    PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
                             1, Integer.parseInt(plantModel.getPid()));
                     String request = gson.toJson(model);
                     LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
@@ -263,11 +263,11 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         }
 
 
-        private boolean isLineOff(){
-            if (longtoothIds!=null&&longtoothIds.size()>0
-                    &&longtoothIds.contains(mModel.getLTID())){
+        private boolean isLineOff() {
+            if (longtoothIds != null && longtoothIds.size() > 0
+                    && longtoothIds.contains(mModel.getLTID())) {
                 return false;
-            }else {
+            } else {
                 return true;
             }
         }
@@ -276,7 +276,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mLed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mLed.isChecked()){
+                    if (mLed.isChecked()) {
                         mPresenter.setCheckBox(Account.getToken(), "1", "1", mModel.getId());
                         LedSetModel model = new LedSetModel("On", mModel.getPSIGN());
                         String request = gson.toJson(model);
@@ -292,7 +292,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                 }
                             }
                         });
-                    }else {
+                    } else {
                         mPresenter.setCheckBox(Account.getToken(), "1", "0", mModel.getId());
                         LedSetModel model = new LedSetModel("Off", mModel.getPSIGN());
                         String request = gson.toJson(model);
@@ -382,20 +382,20 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         public void setDataSuccess(EquipmentDataModel model) {
             mTemperature.setText(model.getDegree());
             mWaterStatus.setText(getStatus(model.getWstatus()));
-            if (model.getLight()!=null)
-            mLedStatus.setText(model.getLight().equals("0")?"关":"开");
+            if (model.getLight() != null)
+                mLedStatus.setText(model.getLight().equals("0") ? "关" : "开");
             mEcStatus.setText(getStatus(model.getEstatus()));
-            if (model.getWstatus().equals("0")){
+            if (model.getWstatus().equals("0")) {
                 //温度过低
-                mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,0,
-                        R.mipmap.img_trending_down,0);
-            }else if (model.getDstatus().equals("2")){
+                mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature, 0,
+                        R.mipmap.img_trending_down, 0);
+            } else if (model.getDstatus().equals("2")) {
                 //温度过高
                 mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
-                        0,R.mipmap.img_temperature_trending_up,0);
-            }else {
+                        0, R.mipmap.img_temperature_trending_up, 0);
+            } else {
                 mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
-                        0,0,0);
+                        0, 0, 0);
             }
         }
 
@@ -404,8 +404,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         }
 
-        private String getStatus(String code){
-            switch (code){
+        private String getStatus(String code) {
+            switch (code) {
                 case "0":
                     return "过低";
                 case "1":
@@ -429,7 +429,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     String wagerState = plantStatusRspModel.getWaterStat();
                     String Ec = plantStatusRspModel.getEC();//植物的营养值
                     String isLihtOn = isLedOn ? "0" : "1";
-                    mPresenter.setData(Account.getToken(),mModel.getMac(),temperature,wagerState,isLihtOn,Ec);
+                    mPresenter.setData(Account.getToken(), mModel.getMac(), temperature, wagerState, isLihtOn, Ec);
                 }
             }
         }

@@ -128,11 +128,20 @@
                 />
         </LinearLayout>
 
-        <com.jcodecraeer.xrecyclerview.XRecyclerView
-            android:id="@+id/recycler"
-            android:layout_marginStart="27dp"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent">
+            <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/recycler"
+                android:layout_marginStart="27dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <bocai.com.yanghuaji.util.widget.EmptyView
+                android:id="@+id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </FrameLayout>
+
     </FrameLayout>
 
 </LinearLayout>

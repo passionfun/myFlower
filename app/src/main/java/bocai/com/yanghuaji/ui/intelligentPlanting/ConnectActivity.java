@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -21,11 +22,13 @@ import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.common.Factory;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectPresenter;
 import bocai.com.yanghuaji.util.DateUtils;
@@ -98,6 +101,30 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         timer.cancel();
         finish();
     }
+
+
+    @Override
+    protected void initBefore() {
+        super.initBefore();
+        //初始化长牙
+        Factory.runOnAsync(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //启动长牙
+                    LongTooth.setRegisterHost("114.215.170.184", 53180);
+                    LongTooth.start(Application.getInstance(),
+                            2000110273,
+                            1,
+                            "30820126300D06092A864886F70D010101050003820113003082010E028201023030384645304233423539423931413943414435463341363735463632444645443333343739414132433337423543434333354239323733413330413241354244414539424344373142374334463944423237393430394139463235373245414534424133324141453334433133433036444645333937423531434636413743424143463638434446304432313945334644374442464341383032363645413730353039414239393230374246393735323435314133343943383530394135393232463038413531423344333037353035424646353139363234413835413842443742463634364230444438373944433542453131453230393443363132373944440206303130303031",
+                            null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void initWidget() {
@@ -197,6 +224,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     @Override
     public void addEquipmentSuccess(EquipmentCard card) {
         timer.cancel();
+        EventBus.getDefault().post(new MessageEvent(SecondSettingActivity.DATA_DELETE_SUCCESS));
         ConnectSuccessActivity.show(ConnectActivity.this, jsonContent,card.getId(),card.getEquipName(), (ArrayList<String>) mScanData);
         finish();
     }

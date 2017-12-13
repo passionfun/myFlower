@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.PlantSettingModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.FirstSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.FirstSettingPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
@@ -94,6 +95,10 @@ public class FirstSettingActivity extends PresenterActivity<FirstSettingContract
 
     @Override
     public void setupSuccess() {
+        PlantSettingModel model = new PlantSettingModel();
+        model.setPlantName(mEtPlantName.getText().toString());
+        model.setId(mEquipmentId);
+        model.save();
         MainActivity.show(this);
     }
 

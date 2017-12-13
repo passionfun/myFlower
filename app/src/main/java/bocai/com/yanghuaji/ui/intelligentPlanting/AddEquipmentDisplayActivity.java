@@ -95,8 +95,10 @@ public class AddEquipmentDisplayActivity extends Activity {
     void onNextClick() {
         if (isAddEquipments){
             AddWifiActivity.show(this,plantSeriesCard);
+            finish();
         }else {
             AddWifiActivity.show(this, (ArrayList<String>) mScanData);
+            finish();
         }
 
     }

@@ -29,6 +29,7 @@ import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -39,6 +40,9 @@ import butterknife.OnClick;
 
 public class AddPlantActivity extends PresenterActivity<AddPlantContract.Presenter>
         implements XRecyclerView.LoadingListener, AddPlantContract.View {
+    @BindView(R.id.empty)
+    EmptyView mEmptyView;
+
     @BindView(R.id.ll_root)
     LinearLayout mRoot;
 
@@ -116,12 +120,18 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyclerView.setLoadingListener(this);
+
+        mEmptyView.bind(mRecyclerView);
+//        mEmptyView.setEmptyImg(R.mipmap.img_equipment_empty);
+//        mEmptyView.setEmptyText(R.string.equipment_empty);
+        setPlaceHolderView(mEmptyView);
     }
 
     @Override
     protected void initData() {
         super.initData();
         //默认开始一次搜索
+        mEmptyView.triggerLoading();
         mPresenter.search("", "10", page + "");
         mSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -177,6 +187,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
 
     @Override
     public void searchSuccess(List<PlantRspModel.PlantCard> cards) {
+        mEmptyView.triggerOk();
         if (page == 1) {
             mRecyclerView.refreshComplete();
             mAdapter.replace(cards);
