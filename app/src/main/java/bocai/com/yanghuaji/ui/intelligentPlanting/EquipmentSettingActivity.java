@@ -121,6 +121,10 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         map.put("Token", Account.getToken());
         map.put("Id", mPlantBean.getId());
         mPresenter.equipmentInfo(map);
+        if (mPlantBean.getSeries().equals("WG101")){
+            checkbox.setChecked(false);
+            checkbox.setEnabled(false);
+        }
     }
 
     @Override

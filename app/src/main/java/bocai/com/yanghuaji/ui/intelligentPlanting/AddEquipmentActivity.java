@@ -92,6 +92,10 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     }
 
+
+
+
+
     @Override
     protected void initData() {
         super.initData();

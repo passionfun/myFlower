@@ -17,7 +17,7 @@ public class LedSetModel {
      */
 
     private String CMD;
-    private String SWTICH;
+    private String SWITCH;
     private String BRIGHTNESS;
     private String UUID;
 
@@ -29,7 +29,7 @@ public class LedSetModel {
     public LedSetModel(String SWTICH, String UUID) {
         this.CMD="LedSet";
         this.BRIGHTNESS="100";
-        this.SWTICH = SWTICH;
+        this.SWITCH = SWTICH;
         this.UUID = UUID;
     }
 
@@ -42,11 +42,11 @@ public class LedSetModel {
     }
 
     public String getSWTICH() {
-        return SWTICH;
+        return SWITCH;
     }
 
     public void setSWTICH(String SWTICH) {
-        this.SWTICH = SWTICH;
+        this.SWITCH = SWTICH;
     }
 
     public String getBRIGHTNESS() {

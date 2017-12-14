@@ -12,6 +12,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
+import bocai.com.yanghuaji.model.EquipmentDataModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.model.PushModel;
@@ -180,10 +181,10 @@ public class HorizontalRecyclerFragmentHelper {
                 });
     }
 
-    public static void push( final EquipmentRspModel.ListBean plantModel, PushModel pushModel) {
+    public static void push(EquipmentDataModel modell, PushModel pushModel) {
         String request = gson.toJson(pushModel);
         //请求接口，判断是否需要更新
-        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+        LongTooth.request(modell.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
                     @Override
                     public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,

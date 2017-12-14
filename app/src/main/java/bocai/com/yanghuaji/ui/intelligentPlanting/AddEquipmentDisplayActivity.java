@@ -1,8 +1,12 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +21,7 @@ import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.PermissionUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -40,10 +45,13 @@ public class AddEquipmentDisplayActivity extends Activity {
 
     public static final String KEY_SCAN_DATA = "KEY_SCAN_DATA";
     public static final String KEY_PHOTO_PATH = "KEY_PHOTO_PATH";
+    private static final int MY_PERMISSION_REQUEST_CODE = 10008;
     private String mPhotoPath;
     private List<String> mScanData;
     private PlantSeriesModel.PlantSeriesCard plantSeriesCard;
     private static boolean isAddEquipments = false;
+    private String[] phoneState = new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.CHANGE_WIFI_STATE
+    ,Manifest.permission.CHANGE_WIFI_MULTICAST_STATE};
 
     //显示的入口(单设备添加)
     public static void show(Context context,String photoPath, ArrayList<String> scanData) {
@@ -93,6 +101,17 @@ public class AddEquipmentDisplayActivity extends Activity {
 
     @OnClick(R.id.img_next)
     void onNextClick() {
+        boolean isHavePhoneStatePermission = PermissionUtils.checkPermissionAllGranted(this, phoneState);
+        if (!isHavePhoneStatePermission) {
+            //申请权限
+            ActivityCompat.requestPermissions(this, phoneState, MY_PERMISSION_REQUEST_CODE);
+            return;
+        }
+     doNext();
+
+    }
+
+    private void doNext(){
         if (isAddEquipments){
             AddWifiActivity.show(this,plantSeriesCard);
             finish();
@@ -100,7 +119,26 @@ public class AddEquipmentDisplayActivity extends Activity {
             AddWifiActivity.show(this, (ArrayList<String>) mScanData);
             finish();
         }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_PERMISSION_REQUEST_CODE) {
+            boolean permission = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    permission = false;
+                    break;
+                }
+            }
+            if (!permission) {
+                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
+                PermissionUtils.openAppDetails(this);
+            }else {
+                doNext();
+            }
+        }
     }
 
 

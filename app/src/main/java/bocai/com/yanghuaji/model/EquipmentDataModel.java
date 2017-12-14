@@ -25,6 +25,8 @@ public class EquipmentDataModel {
     private String Dstatus;
     private String Wstatus;
     private String Estatus;
+    private String LTID;
+
 
     public String getDegree() {
         return Degree;
@@ -80,5 +82,13 @@ public class EquipmentDataModel {
 
     public void setEstatus(String estatus) {
         Estatus = estatus;
+    }
+
+    public String getLTID() {
+        return LTID;
+    }
+
+    public void setLTID(String LTID) {
+        this.LTID = LTID;
     }
 }

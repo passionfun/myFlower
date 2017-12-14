@@ -59,8 +59,8 @@ public class AddEquipmentsRecylerPresenter extends BasePresenter<AddEquipmentsRe
     }
 
     @Override
-    public void addEquipment(String token, String equipmentName, String macAddress, String serialNum, String version, String longToothId, String timeStamp) {
-        Observable<BaseRspModel<EquipmentCard>> observable = Network.remote().addEquipment(token, equipmentName, macAddress, serialNum, version,longToothId,timeStamp);
+    public void addEquipment(String token, String equipmentName, String macAddress, String serialNum, String version, String longToothId, String timeStamp,String series) {
+        Observable<BaseRspModel<EquipmentCard>> observable = Network.remote().addEquipment(token, equipmentName, macAddress, serialNum, version,longToothId,timeStamp,series);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel<EquipmentCard>>() {

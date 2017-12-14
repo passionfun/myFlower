@@ -103,6 +103,7 @@ public class EquipmentRspModel {
         private String LTID;
         private String PSIGN;
         private String PushStatus;
+        private String Series;
 
         public String getLTID() {
             return LTID;
@@ -246,6 +247,14 @@ public class EquipmentRspModel {
 
         public void setPushStatus(String pushStatus) {
             PushStatus = pushStatus;
+        }
+
+        public String getSeries() {
+            return Series;
+        }
+
+        public void setSeries(String series) {
+            Series = series;
         }
     }
 }

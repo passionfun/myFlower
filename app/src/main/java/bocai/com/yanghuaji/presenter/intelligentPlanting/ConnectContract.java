@@ -15,6 +15,6 @@ public interface ConnectContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void addEquipment(String token,String equipmentName,String macAddress,String serialNum,String version,String longToothId,String timeStamp);
+        void addEquipment(String token,String equipmentName,String macAddress,String serialNum,String version,String longToothId,String timeStamp,String series);
     }
 }

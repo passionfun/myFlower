@@ -176,9 +176,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @BindView(R.id.frame_more)
         FrameLayout mMoreRoot;
 
-        @BindView(R.id.ll_data)
-        LinearLayout lldata;
-
         @BindView(R.id.tv_equipment_name)
         TextView mEquipmentName;
 
@@ -215,7 +212,15 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @BindView(R.id.tv_ec_status)
         TextView mEcStatus;
 
-        private EquipmentRspModel.ListBean mModel;
+        @BindView(R.id.ll_data)
+        LinearLayout mPlantData;
+
+        @BindView(R.id.tv_update)
+        TextView mUpdate;
+
+        @BindView(R.id.tv_setting)
+        TextView mSecondSetting;
+
         private MainRecylerContract.Presenter mPresenter;
 
         public ViewHolder(View itemView) {
@@ -225,7 +230,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         @Override
         protected void onBind(final EquipmentRspModel.ListBean plantModel) {
-            mModel = plantModel;
             mEquipmentName.setText(plantModel.getEquipName());
             mPlantName.setText(plantModel.getPlantName());
             mGroupName.setText(plantModel.getGroupName());
@@ -245,7 +249,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     Run.onUiAsync(new Action() {
                         @Override
                         public void call() {
-                            mImgTent.setVisibility(isLineOff() ? View.VISIBLE : View.INVISIBLE);
+                            mImgTent.setVisibility(isLineOff(plantModel) ? View.VISIBLE : View.INVISIBLE);
                         }
                     });
                     if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
@@ -256,32 +260,81 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                             1, Integer.parseInt(plantModel.getPid()));
                     String request = gson.toJson(model);
                     LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                            0, request.getBytes().length, null, new LongToothResponse());
+                            0, request.getBytes().length, null, new LongToothResponse(plantModel));
                 }
             };
             timer.schedule(task, 5000, 30000);
-            setLed();
+            setLed(plantModel);
+
+
+            mPlantData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Log.d("test", Common.Constance.H5_BASE + "product_data.html?id=" + plantModel.getId());
+                    PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + plantModel.getId(), plantModel);
+                }
+            });
+
+            mRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
+                    PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId(), plantModel);
+                }
+            });
+
+            mUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    HorizontalRecyclerFragmentHelper.update((Activity) getActivity(), plantModel);
+                }
+            });
+
+            mSecondSetting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SecondSettingActivity.show(getContext(), plantModel);
+                }
+            });
+
+
+            mPush.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mPush.isChecked()) {
+                        //推送开
+                        //type:类型区分   1光照状态   2消息推送状态
+                        //status：状态  0关  1开
+                        mPresenter.setCheckBox(Account.getToken(), "2", "1", plantModel.getId());
+                    } else {
+                        //推送关
+                        mPresenter.setCheckBox(Account.getToken(), "2", "0", plantModel.getId());
+                    }
+                }
+            });
+
         }
 
 
-        private boolean isLineOff() {
+        private boolean isLineOff(EquipmentRspModel.ListBean plantModel) {
             if (longtoothIds != null && longtoothIds.size() > 0
-                    && longtoothIds.contains(mModel.getLTID())) {
+                    && longtoothIds.contains(plantModel.getLTID())) {
                 return false;
             } else {
                 return true;
             }
         }
 
-        private void setLed() {
+        private void setLed(final EquipmentRspModel.ListBean plantModel) {
             mLed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mLed.isChecked()) {
-                        mPresenter.setCheckBox(Account.getToken(), "1", "1", mModel.getId());
-                        LedSetModel model = new LedSetModel("On", mModel.getPSIGN());
+                        mPresenter.setCheckBox(Account.getToken(), "1", "1", plantModel.getId());
+                        LedSetModel model = new LedSetModel("On", plantModel.getPSIGN());
                         String request = gson.toJson(model);
-                        LongTooth.request(mModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
                             @Override
                             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                                 String jsonContent = new String(bytes);
@@ -294,10 +347,11 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                             }
                         });
                     } else {
-                        mPresenter.setCheckBox(Account.getToken(), "1", "0", mModel.getId());
-                        LedSetModel model = new LedSetModel("Off", mModel.getPSIGN());
+                        mPresenter.setCheckBox(Account.getToken(), "1", "0", plantModel.getId());
+                        LedSetModel model = new LedSetModel("Off", plantModel.getPSIGN());
                         String request = gson.toJson(model);
-                        LongTooth.request(mModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
+                                null, new LongToothServiceResponseHandler() {
                             @Override
                             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                                 String jsonContent = new String(bytes);
@@ -314,11 +368,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             });
         }
 
-        @OnClick(R.id.ll_data)
-        void onDataClick() {
-            Log.d("test", Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId());
-            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + mModel.getId(), mModel);
-        }
+
 
         @OnClick(R.id.img_more)
         void onMoreClick() {
@@ -330,34 +380,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mMoreRoot.setVisibility(View.GONE);
         }
 
-        @OnClick(R.id.ll_root)
-        void onItemClick() {
-            Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + mModel.getId());
-            PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + mModel.getId(), mModel);
-        }
 
-        @OnClick(R.id.tv_update)
-        void onUpdateClick() {
-            HorizontalRecyclerFragmentHelper.update((Activity) getActivity(), mModel);
-        }
-
-        @OnClick(R.id.tv_setting)
-        void onSettingClick() {
-            SecondSettingActivity.show(getContext(), mModel);
-        }
-
-        @OnClick(R.id.cb_push)
-        void onPushClick() {
-            if (mPush.isChecked()) {
-                //推送开
-                //type:类型区分   1光照状态   2消息推送状态
-                //status：状态  0关  1开
-                mPresenter.setCheckBox(Account.getToken(), "2", "1", mModel.getId());
-            } else {
-                //推送关
-                mPresenter.setCheckBox(Account.getToken(), "2", "0", mModel.getId());
-            }
-        }
 
         @Override
         public void showError(int str) {
@@ -420,6 +443,12 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
 
         class LongToothResponse implements LongToothServiceResponseHandler {
+            private EquipmentRspModel.ListBean mPlantModel;
+
+            public LongToothResponse(EquipmentRspModel.ListBean mPlantModel) {
+                this.mPlantModel = mPlantModel;
+            }
+
             @Override
             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                 String jsonContent = new String(bytes);
@@ -430,7 +459,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     String wagerState = plantStatusRspModel.getWaterStat();
                     String Ec = plantStatusRspModel.getEC();//植物的营养值
                     String isLihtOn = isLedOn ? "0" : "1";
-                    mPresenter.setData(Account.getToken(), mModel.getMac(), temperature, wagerState, isLihtOn, Ec);
+                    mPresenter.setData(Account.getToken(), mPlantModel.getMac(), temperature, wagerState, isLihtOn, Ec);
                 }
             }
         }
