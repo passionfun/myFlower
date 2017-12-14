@@ -39,7 +39,7 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
 
                     @Override
                     public void onNext(BaseRspModel<EquipmentDataModel> equipmentDataModelBaseRspModel) {
-                        if (equipmentDataModelBaseRspModel.getReturnCode().equals("200")){
+                        if (equipmentDataModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setDataSuccess(equipmentDataModelBaseRspModel.getData());
                         }
                     }
@@ -72,10 +72,38 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
                     public void onNext(BaseRspModel<CheckboxStatusModel> checkboxStatusModelBaseRspModel) {
                         if (checkboxStatusModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setCheckBoxSuccess(checkboxStatusModelBaseRspModel.getData());
-                        }else {
+                        } else {
                             Application.showToast(checkboxStatusModelBaseRspModel.getMsg());
                         }
                         view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void setUpdateStatus(String mac, String status) {
+        Observable<BaseRspModel> observable = Network.remote().setUpdateStatus(mac, status);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel baseRspModel) {
+
                     }
 
                     @Override

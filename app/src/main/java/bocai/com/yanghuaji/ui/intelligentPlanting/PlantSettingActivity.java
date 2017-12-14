@@ -274,6 +274,9 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
                     return;
                 }
                 String jsonContent = new String(bytes);
+                if (!jsonContent.contains("CODE")){
+                    return;
+                }
                 Log.d("shc", "handleServiceResponse: "+jsonContent);
                 LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                 if (plantStatusRspModel.getCODE()==0){

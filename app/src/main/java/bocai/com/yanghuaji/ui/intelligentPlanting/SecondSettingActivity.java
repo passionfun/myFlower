@@ -135,14 +135,16 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
                 .from(EquipmentSetupModel.class)
                 .where(EquipmentSetupModel_Table.Id.eq(mPlantBean.getId()))
                 .querySingle();
-        if (model!=null)
-        model.delete();
-
+        if (model!=null){
+            model.delete();
+        }
         PlantSettingModel plantModel = SQLite.select()
                 .from(PlantSettingModel.class)
                 .where(PlantSettingModel_Table.Id.eq(mPlantBean.getId()))
                 .querySingle();
-        plantModel.delete();
+        if (plantModel!= null){
+            plantModel.delete();
+        }
         EventBus.getDefault().post(new MessageEvent(DATA_DELETE_SUCCESS));
         finish();
     }

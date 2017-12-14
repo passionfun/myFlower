@@ -130,6 +130,7 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
 
                         Account.logOff(getContext());
                         LoginActivity.show(getContext());
+                        getActivity().finish();
                         break;
                     case R.id.tv_from_gallery:
                         // 取消

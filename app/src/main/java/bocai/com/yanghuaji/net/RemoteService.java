@@ -305,4 +305,11 @@ public interface RemoteService {
     Observable<BaseRspModel<NoticeStatusRspModel>> getNoticeStatus(@Field("Token") String token);
 
 
+
+    //设备升级状态设置
+    @POST("equipment/up_status")
+    @FormUrlEncoded
+    Observable<BaseRspModel> setUpdateStatus(@Field("Mac") String mac,@Field("Status") String status);
+
+
 }

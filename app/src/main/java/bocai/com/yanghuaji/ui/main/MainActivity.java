@@ -8,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
@@ -40,6 +41,7 @@ import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
 import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
 import bocai.com.yanghuaji.ui.intelligentPlanting.AddWifiActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
+import bocai.com.yanghuaji.ui.intelligentPlanting.SampleAttachment;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
@@ -52,6 +54,8 @@ import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothEvent;
 import xpod.longtooth.LongToothEventHandler;
+import xpod.longtooth.LongToothServiceRequestHandler;
+import xpod.longtooth.LongToothTunnel;
 
 public class MainActivity extends PresenterActivity<MainActivityContract.Presenter>
         implements MainActivityContract.View, XRecyclerView.LoadingListener {
@@ -181,11 +185,85 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     private class LongToothHandler implements LongToothEventHandler {
         @Override
         public void handleEvent(int code, String ltid_str, String srv_str, byte[] msg, LongToothAttachment attachment) {
+//            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
+//
+//            }
+            Log.d("shcbind", "handleEvent: "+code);
+
             if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_ACTIVATED) {
+                LongTooth.addService("n22s", new LongToothNSServer());
+                LongTooth.addService("longtooth", new LongToothServer());
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_OFFLINE) {
+
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_TIMEOUT) {
+
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_UNREACHABLE) {
+
+            } else if (code == LongToothEvent.EVENT_SERVICE_NOT_EXIST) {
 
             }
         }
     }
+
+
+    /**
+     * Handler the n22s request
+     * */
+    private class LongToothNSServer implements LongToothServiceRequestHandler {
+
+        @Override
+        public void handleServiceRequest(LongToothTunnel arg0, String arg1,
+                                         String arg2, int arg3, byte[] arg4) {
+            try {
+
+                if (arg4 != null) {
+                    byte[] b = "n22s response---".getBytes();
+                    SampleAttachment a = new SampleAttachment();
+                    LongTooth.respond(arg0, LongToothTunnel.LT_ARGUMENTS, b, 0,
+                            b.length, a);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private int  isResponse = 0;
+    /**
+     * Handler the longtooth service request
+     * */
+    private class LongToothServer implements LongToothServiceRequestHandler {
+
+        @Override
+        public void handleServiceRequest(LongToothTunnel arg0, String arg1,
+                                         String arg2, int arg3, byte[] arg4) {
+            try {
+                if (arg4 != null) {
+
+                    byte[] b = "longtooth response:".getBytes();
+                    SampleAttachment a = new SampleAttachment();
+                    LongTooth.respond(arg0, LongToothTunnel.LT_ARGUMENTS, b, 0,
+                            b.length, a);
+                    if(isResponse<307){
+                        Log.d("shcbind", "handleServiceRequest: "+307);
+//                        LongTooth.request(serverLongToothId, servername,
+//                                LongToothTunnel.LT_ARGUMENTS, sb.toString().getBytes(), 0,
+//                                sb.toString().getBytes().length, new SampleAttachment(),
+//                                new LongToothResponse());
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
 
     @Override
     protected void onDestroy() {

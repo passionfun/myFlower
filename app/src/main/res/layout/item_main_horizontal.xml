@@ -124,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="4dp"
                         android:drawableStart="@mipmap/img_temperature"
-                        android:text="45°C"
+                        android:text="45"
                         android:textColor="#FBB179"
                         android:textSize="13dp" />
 

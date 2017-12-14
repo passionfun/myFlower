@@ -37,13 +37,29 @@ public class IntelligentPlantingFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         isHorizontal = !isHorizontal;
         if (isHorizontal){
-            transaction.replace(R.id.container,mHorizontalFragment).commit();
+            if (mVerticalFragment!=null){
+                transaction.hide(mVerticalFragment);
+            }
+            if (mHorizontalFragment==null){
+                mHorizontalFragment = new HorizontalRecyclerFragment();
+                transaction.add(R.id.container,mHorizontalFragment);
+            }else {
+                transaction.show(mHorizontalFragment);
+            }
+//            transaction.replace(R.id.container,mHorizontalFragment).commit();
         }else {
+            if (mHorizontalFragment!=null){
+                transaction.hide(mHorizontalFragment);
+            }
             if (mVerticalFragment ==null){
                 mVerticalFragment = new VeticalRecyclerFragment();
+                transaction.add(R.id.container,mVerticalFragment);
+            }else {
+                transaction.show(mVerticalFragment);
             }
-            transaction.replace(R.id.container,mVerticalFragment).commit();
+//            transaction.replace(R.id.container,mVerticalFragment).commit();
         }
+        transaction.commit();
     }
 
     @Override
@@ -56,7 +72,7 @@ public class IntelligentPlantingFragment extends Fragment {
         super.initData();
         mHorizontalFragment = new HorizontalRecyclerFragment();
         FragmentTransaction mTransaction = getChildFragmentManager().beginTransaction();
-        mTransaction.replace(R.id.container,mHorizontalFragment).commit();
+        mTransaction.add(R.id.container,mHorizontalFragment).commit();
     }
 
     @Override

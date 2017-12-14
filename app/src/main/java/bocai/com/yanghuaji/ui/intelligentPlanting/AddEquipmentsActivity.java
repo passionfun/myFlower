@@ -51,6 +51,9 @@ import io.fogcloud.easylink.helper.EasyLinkCallBack;
 import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
 import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
+import xpod.longtooth.LongToothEvent;
+import xpod.longtooth.LongToothEventHandler;
+import xpod.longtooth.LongToothServiceRequestHandler;
 import xpod.longtooth.LongToothServiceResponseHandler;
 import xpod.longtooth.LongToothTunnel;
 
@@ -133,13 +136,111 @@ public class AddEquipmentsActivity extends Activity {
                             2000110273,
                             1,
                             "30820126300D06092A864886F70D010101050003820113003082010E028201023030384645304233423539423931413943414435463341363735463632444645443333343739414132433337423543434333354239323733413330413241354244414539424344373142374334463944423237393430394139463235373245414534424133324141453334433133433036444645333937423531434636413743424143463638434446304432313945334644374442464341383032363645413730353039414239393230374246393735323435314133343943383530394135393232463038413531423344333037353035424646353139363234413835413842443742463634364230444438373944433542453131453230393443363132373944440206303130303031",
-                            null);
+                            new LongToothHandler());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
+
+
+    private class LongToothHandler implements LongToothEventHandler {
+        @Override
+        public void handleEvent(int code, String ltid_str, String srv_str, byte[] msg, LongToothAttachment attachment) {
+//            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
+//
+//            }
+            Log.d("shcbind", "handleEvent: "+code);
+
+            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_ACTIVATED) {
+                Log.d("shcbind", "handleEvent: ");
+                LongTooth.addService("n22s", new LongToothNSServer());
+                LongTooth.addService("longtooth", new LongToothServer());
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_OFFLINE) {
+
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_TIMEOUT) {
+
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_UNREACHABLE) {
+
+            } else if (code == LongToothEvent.EVENT_SERVICE_NOT_EXIST) {
+
+            }
+        }
+    }
+
+
+
+
+
+    /**
+     * Handler the n22s request
+     * */
+    private class LongToothNSServer implements LongToothServiceRequestHandler {
+
+        @Override
+        public void handleServiceRequest(LongToothTunnel arg0, String arg1,
+                                         String arg2, int arg3, byte[] arg4) {
+            try {
+
+                if (arg4 != null) {
+                    byte[] b = "n22s response---".getBytes();
+                    SampleAttachment a = new SampleAttachment();
+                    LongTooth.respond(arg0, LongToothTunnel.LT_ARGUMENTS, b, 0,
+                            b.length, a);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private int  isResponse = 0;
+    /**
+     * Handler the longtooth service request
+     * */
+    private class LongToothServer implements LongToothServiceRequestHandler {
+
+        @Override
+        public void handleServiceRequest(LongToothTunnel arg0, String arg1,
+                                         String arg2, int arg3, byte[] arg4) {
+            try {
+                if (arg4 != null) {
+
+                    byte[] b = "longtooth response:".getBytes();
+                    SampleAttachment a = new SampleAttachment();
+                    LongTooth.respond(arg0, LongToothTunnel.LT_ARGUMENTS, b, 0,
+                            b.length, a);
+                    if(isResponse<307){
+                        Log.d("shcbind", "handleServiceRequest: "+307);
+//                        LongTooth.request(serverLongToothId, servername,
+//                                LongToothTunnel.LT_ARGUMENTS, sb.toString().getBytes(), 0,
+//                                sb.toString().getBytes().length, new SampleAttachment(),
+//                                new LongToothResponse());
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     protected void initWidget() {
@@ -297,8 +398,9 @@ public class AddEquipmentsActivity extends Activity {
             gson = new Gson();
             String request = gson.toJson(model);
             Log.d("shc", "startbind: "+request);
-            LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
-                    null, new LongToothServiceResponseHandler() {
+            //mEquipmentModel.getLTID()   "1.1.2353.24.219"
+            LongTooth.request("1.1.2353.24.219", "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
+                    new SampleAttachment(), new LongToothServiceResponseHandler() {
                         @Override
                         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                                           String service_str, int data_type, byte[] args,

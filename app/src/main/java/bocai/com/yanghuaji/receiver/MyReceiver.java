@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
 
+import bocai.com.yanghuaji.ui.personalCenter.SystemNotificationActivity;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -48,6 +48,7 @@ public class MyReceiver extends BroadcastReceiver {
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
                 //打开自定义的Activity
+                SystemNotificationActivity.show(context);
 //                Intent i = new Intent(context, TestActivity.class);
 //                i.putExtras(bundle);
 //                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

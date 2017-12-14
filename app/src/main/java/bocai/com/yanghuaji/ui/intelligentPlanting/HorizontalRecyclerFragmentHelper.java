@@ -200,4 +200,46 @@ public class HorizontalRecyclerFragmentHelper {
                 });
     }
 
+
+
+    private static  boolean isHaveNew = false;
+    public static boolean isHaveNewVersion(final EquipmentRspModel.ListBean plantModel){
+        /**
+         * 是否有新版本请求格式
+         * {
+         * "CMD": "isUpdate",
+         * "UUID": 1504608600
+         * }
+         */
+
+        BindEquipmentModel model = new BindEquipmentModel("isUpdate", plantModel.getPSIGN());
+        String request = gson.toJson(model);
+
+        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null, new MyLongToothServiceResponseHandler());
+
+        return isHaveNew;
+    }
+
+   static class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+        @Override
+        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                          String service_str, int data_type, byte[] args,
+                                          LongToothAttachment attachment) {
+            String result = new String(args);
+            LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+            Log.d(TAG, "update:" + result);
+            int code = longToothRspModel.getCODE();
+            switch (code) {
+                case 501:
+                    //  501:有升级的新版本
+                   isHaveNew = true;
+                    break;
+                default:
+                   isHaveNew= false;
+                    break;
+            }
+        }
+    }
+
 }

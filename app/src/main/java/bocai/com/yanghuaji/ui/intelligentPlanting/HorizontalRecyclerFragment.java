@@ -247,8 +247,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             protected void onBind(final EquipmentRspModel.ListBean plantModel) {
                 mModel = plantModel;
-//                mSettingView.setVisibility(View.INVISIBLE);
-//                mSetting.setImageResource(R.mipmap.img_item_setting);
                 mEquipmentName.setText(plantModel.getEquipName());
                 mPlantName.setText(plantModel.getPlantName());
                 mGroupName.setText(plantModel.getGroupName());
@@ -265,6 +263,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     @Override
                     public void run() {
                         //设置是否离线img
+                        if (HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel)){
+                            //设置有新版本
+                        }
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
@@ -482,7 +483,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     return;
                 }
                 String jsonContent = new String(bytes);
-                if (jsonContent.equals("{}")){
+                if (!jsonContent.contains("CODE")){
                     return;
                 }
                 Log.d(TAG, "handleServiceResponse: "+jsonContent);

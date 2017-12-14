@@ -216,7 +216,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
                 String request = gson.toJson(model);
                 LongTooth.request(longToothId,"longtooth",LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,
-                        null,new LongToothResponse());
+                        new SampleAttachment(),new LongToothResponse());
             }
         }
     }
