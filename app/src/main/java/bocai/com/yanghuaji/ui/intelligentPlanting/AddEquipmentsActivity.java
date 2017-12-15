@@ -370,7 +370,7 @@ public class AddEquipmentsActivity extends Activity {
             mAdd.setVisibility(View.GONE);
             mAddSuccess.setVisibility(View.VISIBLE);
             mLoading.setVisibility(View.GONE);
-            EventBus.getDefault().post(new MessageEvent(SecondSettingActivity.DATA_DELETE_SUCCESS));
+            EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
         }
 
         @Override

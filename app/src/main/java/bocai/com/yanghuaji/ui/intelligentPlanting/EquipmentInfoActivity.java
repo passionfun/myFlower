@@ -83,7 +83,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     private String mUUID;
     private String mLongToothId;
     private EquipmentRspModel.ListBean mPlantBean;
-    private String version;
+
 
     //显示的入口
     public static void show(Context context, EquipmentRspModel.ListBean plantBean) {
@@ -322,7 +322,6 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
         tvSerialNumber.setText(model.getSerialNum());
         tvEquipmentType.setText(model.getEquipName());
         tvVersion.setText(model.getVersion());
-        version = model.getVersion();
         updateVersion();
         checkVersion();
     }

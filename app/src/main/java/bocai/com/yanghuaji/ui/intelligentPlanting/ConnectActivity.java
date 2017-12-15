@@ -224,7 +224,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     @Override
     public void addEquipmentSuccess(EquipmentCard card) {
         timer.cancel();
-        EventBus.getDefault().post(new MessageEvent(SecondSettingActivity.DATA_DELETE_SUCCESS));
+        EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
         ConnectSuccessActivity.show(ConnectActivity.this, jsonContent,card.getId(),card.getEquipName(), (ArrayList<String>) mScanData);
         finish();
     }

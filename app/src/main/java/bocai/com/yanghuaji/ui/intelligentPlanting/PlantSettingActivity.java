@@ -212,7 +212,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     public void setupPlantSuccess(PlantSettingModel model) {
         model.save();
-        EventBus.getDefault().post(new MessageEvent(SecondSettingActivity.DATA_DELETE_SUCCESS));
+        EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
         finish();
     }
 

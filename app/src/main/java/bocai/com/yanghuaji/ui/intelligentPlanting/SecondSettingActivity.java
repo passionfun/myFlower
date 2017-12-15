@@ -73,7 +73,7 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     protected void initWidget() {
         super.initWidget();
         mTitle.setText("设置");
-        mCbPush.setChecked(mPlantBean.getPushStatus().equals("0")?false:true);
+        mCbPush.setChecked(mPlantBean.getPushStatus().equals("1"));
         mCbPush.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,15 +145,16 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
         if (plantModel!= null){
             plantModel.delete();
         }
-        EventBus.getDefault().post(new MessageEvent(DATA_DELETE_SUCCESS));
+        EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
         finish();
     }
 
 
-
     @Override
     public void setCheckBoxSuccess(CheckboxStatusModel model) {
-
+        EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
     }
 
     @Override
