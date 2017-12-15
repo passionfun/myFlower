@@ -312,4 +312,11 @@ public interface RemoteService {
     Observable<BaseRspModel> setUpdateStatus(@Field("Mac") String mac,@Field("Status") String status);
 
 
+
+    //删除设备
+    @POST("equipment/del_equipment")
+    @FormUrlEncoded
+    Observable<BaseRspModel> deleteEquipment(@Field("Id") String equipmentId);
+
+
 }

@@ -470,6 +470,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             }
 
+            @Override
+            public void deleteEquipmentSuccess() {
+
+            }
+
             private String getStatus(String code) {
                 switch (code) {
                     case "0":

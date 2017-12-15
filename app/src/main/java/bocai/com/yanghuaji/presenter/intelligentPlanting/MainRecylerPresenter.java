@@ -117,4 +117,39 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
                     }
                 });
     }
+
+
+    @Override
+    public void deleteEquipment(String equipmentId) {
+        view.showLoading();
+        Observable<BaseRspModel> observable = Network.remote().deleteEquipment(equipmentId);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel baseRspModel) {
+                        if (baseRspModel.getReturnCode().equals("200")) {
+                            view.deleteEquipmentSuccess();
+                        }
+                        Application.showToast(baseRspModel.getMsg());
+                        view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 }

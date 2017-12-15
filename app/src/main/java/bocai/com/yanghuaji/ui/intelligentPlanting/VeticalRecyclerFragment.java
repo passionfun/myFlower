@@ -1,9 +1,12 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LedSetModel;
 import bocai.com.yanghuaji.model.LedSetRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.PlantStatusModel;
 import bocai.com.yanghuaji.model.PlantStatusRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContract;
@@ -221,6 +226,9 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @BindView(R.id.tv_setting)
         TextView mSecondSetting;
 
+        @BindView(R.id.btn_delete)
+        Button mDelete;
+
         private MainRecylerContract.Presenter mPresenter;
 
         public ViewHolder(View itemView) {
@@ -311,6 +319,22 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                         //推送关
                         mPresenter.setCheckBox(Account.getToken(), "2", "0", plantModel.getId());
                     }
+                }
+            });
+
+            mDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext());
+                    deleteDialog.setTitle("确定删除？");
+                    deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            mPresenter.deleteEquipment(plantModel.getId());
+                        }
+                    });
+                    deleteDialog.setNegativeButton("取消",null);
+                    deleteDialog.show();
                 }
             });
 
@@ -426,6 +450,12 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @Override
         public void setCheckBoxSuccess(CheckboxStatusModel model) {
 
+        }
+
+        @Override
+        public void deleteEquipmentSuccess() {
+            VeticalRecyclerFragment.this.mPresenter.getAllEquipments(Account.getToken(),"0","0");
+            EventBus.getDefault().post(new MessageEvent(SecondSettingActivity.DATA_DELETE_SUCCESS));
         }
 
         private String getStatus(String code) {

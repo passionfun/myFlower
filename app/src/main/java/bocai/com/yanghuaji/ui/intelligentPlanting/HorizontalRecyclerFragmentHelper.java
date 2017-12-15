@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -202,9 +203,9 @@ public class HorizontalRecyclerFragmentHelper {
     }
 
 
+    private static boolean isHaveNew = false;
 
-    private static  boolean isHaveNew = false;
-    public static boolean isHaveNewVersion(final EquipmentRspModel.ListBean plantModel){
+    public static boolean isHaveNewVersion(final EquipmentRspModel.ListBean plantModel) {
         /**
          * 是否有新版本请求格式
          * {
@@ -212,17 +213,18 @@ public class HorizontalRecyclerFragmentHelper {
          * "UUID": 1504608600
          * }
          */
-
+        if (TextUtils.isEmpty(plantModel.getLTID())||TextUtils.isEmpty(plantModel.getPSIGN())) {
+            return false;
+        }
         BindEquipmentModel model = new BindEquipmentModel("isUpdate", plantModel.getPSIGN());
         String request = gson.toJson(model);
-
         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                 0, request.getBytes().length, null, new MyLongToothServiceResponseHandler());
 
         return isHaveNew;
     }
 
-   static class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+    static class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
         @Override
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
@@ -234,10 +236,10 @@ public class HorizontalRecyclerFragmentHelper {
             switch (code) {
                 case 501:
                     //  501:有升级的新版本
-                   isHaveNew = true;
+                    isHaveNew = true;
                     break;
                 default:
-                   isHaveNew= false;
+                    isHaveNew = false;
                     break;
             }
         }

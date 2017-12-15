@@ -15,6 +15,8 @@ public interface MainRecylerContract {
         void setDataSuccess(EquipmentDataModel model);
 
         void setCheckBoxSuccess(CheckboxStatusModel model);
+
+        void deleteEquipmentSuccess();
     }
 
 
@@ -23,6 +25,9 @@ public interface MainRecylerContract {
 
         //type:类型区分   1光照状态   2消息推送状态
         void setCheckBox(String token,String type,String status,String equipmentId);
+
+
+        void deleteEquipment(String equipmentId);
 
         //升级状态  0否  1是
         void setUpdateStatus(String mac,String status);
