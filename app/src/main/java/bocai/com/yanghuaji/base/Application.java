@@ -36,8 +36,8 @@ public class Application extends android.app.Application {
     }
 
     {
-        //todo 修改为正确的微信和QQ的参数
-        PlatformConfig.setWeixin("", "");
+        // 修改为正确的微信和QQ的参数
+        PlatformConfig.setWeixin("wx8bb8dc2f4ebd73a5", "2c81167a27f12783d2cd014c4f0c60b8");
         PlatformConfig.setQQZone("1106313441", "Kml51PAWgQkX8L6N");
     }
 

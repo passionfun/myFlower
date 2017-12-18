@@ -26,8 +26,8 @@ public class PlantDiaryListPresenter extends BasePresenter<PlantDiaryListContrac
     }
 
     @Override
-    public void getDiaryList(String token, String limit, String page) {
-        Observable<BaseRspModel<DiaryListModel>> observable = Network.remote().getDiaryList(token, limit, page);
+    public void getDiaryList(String token, String limit, String page,String equipmentId) {
+        Observable<BaseRspModel<DiaryListModel>> observable = Network.remote().getDiaryList(token, limit, page,equipmentId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel<DiaryListModel>>() {

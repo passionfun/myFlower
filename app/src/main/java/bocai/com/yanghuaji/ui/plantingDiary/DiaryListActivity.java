@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -50,7 +49,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
 
     @BindView(R.id.progress)
     ProgressBar progress;
-
+    public static final String DIARY_LIST_REFRESH = "DIARY_LIST_REFRESH";
     public static final String KEY_DIARY_ID = "KEY_DIARY_ID";
     private String mDiaryId, mLoadUrl;
     private UMWeb mShareWeb;
@@ -79,7 +78,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDiaryItemDeleteSuccess(MessageEvent messageEvent) {
-        if (messageEvent.getMessage().equals(DiaryDetailActivity.DIARY_DELETE_SUCCESS)) {
+        if (messageEvent.getMessage().equals(DIARY_LIST_REFRESH)) {
             mWebview.reload();
         }
     }
@@ -185,6 +184,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
                                 .withMedia(mShareWeb)
                                 .setCallback(mUmShareListener)//回调监听器
                                 .share();
+                        popupWindow.dismiss();
                         break;
                     case R.id.img_share_wechat:
                         // TODO 分享到微信
@@ -193,6 +193,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
                                 .withMedia(mShareWeb)
                                 .setCallback(mUmShareListener)//回调监听器
                                 .share();
+                        popupWindow.dismiss();
                         break;
                     case R.id.img_share_friends:
                         // TODO 分享到朋友圈
@@ -201,6 +202,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
                                 .withMedia(mShareWeb)
                                 .setCallback(mUmShareListener)//回调监听器
                                 .share();
+                        popupWindow.dismiss();
                         break;
                 }
             }

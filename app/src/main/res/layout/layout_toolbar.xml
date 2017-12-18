@@ -5,10 +5,10 @@
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools">
     <android.support.v7.widget.Toolbar
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="26dp"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="56dp"
         android:title="">
 
         <ImageView
@@ -16,12 +16,12 @@
             android:layout_marginStart="30dp"
             android:src="@mipmap/img_back"
             android:layout_width="30dp"
-            android:scaleType="center"
             android:layout_height="match_parent" />
 
 
 
         <ImageView
+            android:scaleType="center"
             android:visibility="gone"
             android:layout_marginEnd="25dp"
             android:id="@+id/img_right"
@@ -32,6 +32,7 @@
 
 
         <ImageView
+            android:scaleType="center"
             android:visibility="gone"
             android:layout_marginEnd="20dp"
             android:id="@+id/img_right_second"
@@ -45,6 +46,7 @@
 
         <TextView
             android:visibility="gone"
+            android:gravity="center"
             android:id="@+id/tv_right"
             android:textSize="15sp"
             android:textColor="#87BC52"

@@ -45,7 +45,6 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
     ProgressBar progress;
 
     public static final String KEY_URL = "KEY_URL";
-    public static final String DIARY_DELETE_SUCCESS = "DIARY_DELETE_SUCCESS";
     private String mUrl;
     private String mDiaryItemId;
 
@@ -144,7 +143,7 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
 
     @Override
     public void deleteDiaryItemSuccess() {
-        EventBus.getDefault().post(new MessageEvent(DIARY_DELETE_SUCCESS));
+        EventBus.getDefault().post(new MessageEvent(DiaryListActivity.DIARY_LIST_REFRESH));
         finish();
     }
 

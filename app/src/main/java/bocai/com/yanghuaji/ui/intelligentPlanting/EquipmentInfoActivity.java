@@ -226,6 +226,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                         Log.d(TAG, "update: " + result);
                         int code = longToothRspModel.getUpdateStat();
+                        Log.d(TAG, "handleServiceResponse: "+code);
                         if (code == 1) {//code=1:正在升级
                             // 循环等待
                             getWindow().getDecorView()

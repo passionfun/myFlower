@@ -106,34 +106,70 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void getMsmCode(String phone) {
-            //请求类型， 0：注册， 1：找回密码， 2：修改手机， 3：验证码登陆， 4：绑定手机 开发阶段默认为1234
-            Observable<BaseRspModel> observable = Network.remote().getSmsCode(phone, "3");
-            observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<BaseRspModel>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        //请求类型， 0：注册， 1：找回密码， 2：修改手机， 3：验证码登陆， 4：绑定手机 开发阶段默认为1234
+        Observable<BaseRspModel> observable = Network.remote().getSmsCode(phone, "3");
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(BaseRspModel baseRspModel) {
-                            Application.showToast(baseRspModel.getMsg());
-                        }
+                    @Override
+                    public void onNext(BaseRspModel baseRspModel) {
+                        Application.showToast(baseRspModel.getMsg());
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            view.showError(R.string.net_error);
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
 
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 
     @Override
-    public void weChatLogin() {
+    public void weChatLogin(String photoUrl, String name, String openId) {
+        view.showLoading();
+        Observable<BaseRspModel<AccountRspModel>> observable = Network.remote().weChatLogin(photoUrl, name, openId);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<AccountRspModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<AccountRspModel> accountRspModelBaseRspModel) {
+                        if (accountRspModelBaseRspModel.getReturnCode().equals("200")) {
+                            AccountRspModel model = accountRspModelBaseRspModel.getData();
+                            User user = model.build();
+                            user.save();
+                            Account.login(model);
+                            view.weChatLoginSuccess();
+                        } else if (accountRspModelBaseRspModel.getReturnCode().equals("402")){
+                            //未绑定手机
+                            view.weChatLoginNoBind();
+                        }else {
+                            Application.showToast(accountRspModelBaseRspModel.getMsg());
+                        }
+                        view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

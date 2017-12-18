@@ -20,7 +20,9 @@ import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.ui.plantingDiary.PlantingDiaryActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -104,7 +106,11 @@ public class PlantingDateAct extends Activity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.d("test", url);
-                view.loadUrl(url);
+                if (url.startsWith(Common.Constance.H5_BASE+"write")){
+                    PlantingDiaryActivity.show(PlantingDateAct.this,mPlantBean);
+                }else {
+                    view.loadUrl(url);
+                }
                 return true;
             }
         });

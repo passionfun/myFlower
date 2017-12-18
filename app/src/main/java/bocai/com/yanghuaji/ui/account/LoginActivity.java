@@ -3,12 +3,19 @@ package bocai.com.yanghuaji.ui.account;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import bocai.com.yanghuaji.R;
@@ -30,7 +37,11 @@ import butterknife.OnClick;
 
 public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
         implements LoginContract.View {
+    public static final String TAG = LoginActivity.class.getName();
     private boolean isPasswordLogin = false;
+    private String openId;
+    private String name;
+    private String photoUrl;
     @BindView(R.id.tv_verification_code_login)
     TextView mTvVerificationCodeLogin;
 
@@ -75,7 +86,7 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     @Override
     protected void initWidget() {
         super.initWidget();
-        if (Account.isLogin()){
+        if (Account.isLogin()) {
             MainActivity.show(this);
             finish();
         }
@@ -126,10 +137,18 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
         RegisterActivity.show(this);
     }
 
-    // todo 微信登录
+    //  微信登录
     @OnClick(R.id.tv_wechat_login)
     void onWechatLogin() {
-        MainActivity.show(this);
+//        MainActivity.show(this);
+        UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     //  获取验证码或者忘记密码
@@ -175,7 +194,62 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     }
 
     @Override
+    public void weChatLoginSuccess() {
+        //微信登录成功
+        MainActivity.show(this);
+    }
+
+    @Override
+    public void weChatLoginNoBind() {
+        //微信登录成功，但未绑定手机
+        if (!TextUtils.isEmpty(openId)&&!TextUtils.isEmpty(name)&&!TextUtils.isEmpty(photoUrl)){
+            BindPhoneActivity.show(this,photoUrl,name,openId);
+            finish();
+        }else {
+            Application.showToast("参数有误");
+        }
+    }
+
+    @Override
     protected LoginContract.Presenter initPresenter() {
         return new LoginPresenter(this);
     }
+
+
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            //授权开始回调
+            Log.d(TAG, "onStart: ");
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+            Log.d(TAG, "onComplete: ");
+            if (map != null) {
+                //openid
+                openId = map.get("openid");
+                //昵称
+                name = map.get("name");
+                //用户头像
+                photoUrl = map.get("iconurl");
+                mPresenter.weChatLogin(photoUrl, name, openId);
+            } else {
+                Application.showToast("未知错误");
+            }
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+            Log.d(TAG, "onError: " + throwable.getMessage());
+            Application.showToast(throwable.getMessage());
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media, int i) {
+            Log.d(TAG, "onCancel: ");
+        }
+    };
+
 }

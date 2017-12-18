@@ -97,7 +97,7 @@ public interface RemoteService {
     @POST("diary/index")
     @FormUrlEncoded
     Observable<BaseRspModel<DiaryListModel>> getDiaryList(@Field("Token") String token, @Field("Limit")String limit,
-                                                          @Field("Page")String page);
+                                                          @Field("Page")String page,@Field("Eid")String equipmentId);
 
 
     //获取设备
@@ -317,6 +317,20 @@ public interface RemoteService {
     @POST("equipment/del_equipment")
     @FormUrlEncoded
     Observable<BaseRspModel> deleteEquipment(@Field("Id") String equipmentId);
+
+
+    //微信登录
+    @POST("member/wechat_login")
+    @FormUrlEncoded
+    Observable<BaseRspModel<AccountRspModel>> weChatLogin(@Field("Avatar") String photoUrl,
+                                                            @Field("NickName")String name,@Field("Openid")String openId);
+
+
+    //微信登录 - 绑定手机
+    @POST("member/phone_number")
+    @FormUrlEncoded
+    Observable<BaseRspModel<AccountRspModel>> bindPhone(@Field("Phone") String phone,@Field("SmsCode") String smsCode,@Field("Openid")String openId,@Field("Avatar") String photoUrl,
+                                                          @Field("NickName")String name);
 
 
 }

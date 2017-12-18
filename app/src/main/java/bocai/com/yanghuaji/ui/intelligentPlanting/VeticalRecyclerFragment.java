@@ -276,6 +276,14 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 //                    });
                     if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
                             TextUtils.isEmpty(plantModel.getPid())) {
+                        //如果UUID或者植物id为空，则说明设备离线
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                mImgTent.setVisibility(View.VISIBLE);
+                            }
+                        });
+
                         return;
                     }
                     PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),

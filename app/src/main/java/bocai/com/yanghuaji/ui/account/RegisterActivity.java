@@ -111,7 +111,7 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
     }
 
 
-    // todo 注册账户
+    //  注册账户
     @OnClick(R.id.bt_register)
     void onRegisterSubmit() {
         String phone = mEditInputPhoneNumber.getText().toString();

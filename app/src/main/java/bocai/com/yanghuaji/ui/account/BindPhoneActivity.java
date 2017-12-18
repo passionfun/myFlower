@@ -2,12 +2,21 @@ package bocai.com.yanghuaji.ui.account;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.regex.Pattern;
+
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.common.Common;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.presenter.account.BindPhoneContract;
+import bocai.com.yanghuaji.presenter.account.BindPhonePresenter;
+import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.util.adapter.account.CountDownTimerUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -16,7 +25,8 @@ import butterknife.OnClick;
  * 邮箱 yuanfei221@126.com
  */
 
-public class BindPhoneActivity extends Activity {
+public class BindPhoneActivity extends PresenterActivity<BindPhoneContract.Presenter>
+        implements BindPhoneContract.View {
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
@@ -32,11 +42,31 @@ public class BindPhoneActivity extends Activity {
     @BindView(R.id.tv_get_verification_code)
     TextView mTvGetVerification;
 
+    public static final String KEY_OPEN_ID = "KEY_OPEN_ID";
+    public static final String KEY_NAME = "KEY_NAME";
+    public static final String KEY_PHOTO_URL = "KEY_PHOTO_URL";
+    private String openId;
+    private String name;
+    private String photoUrl;
+    private String msgCode;
+    private String phone;
 
 
     //显示的入口
-    public static void show(Context context) {
-        context.startActivity(new Intent(context, BindPhoneActivity.class));
+    public static void show(Context context, String photoUrl, String name, String openId) {
+        Intent intent = new Intent(context, BindPhoneActivity.class);
+        intent.putExtra(KEY_OPEN_ID, openId);
+        intent.putExtra(KEY_NAME, name);
+        intent.putExtra(KEY_PHOTO_URL, photoUrl);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+        openId = bundle.getString(KEY_OPEN_ID);
+        name = bundle.getString(KEY_NAME);
+        photoUrl = bundle.getString(KEY_PHOTO_URL);
+        return super.initArgs(bundle);
     }
 
     @Override
@@ -45,19 +75,44 @@ public class BindPhoneActivity extends Activity {
     }
 
     @OnClick(R.id.img_back)
-    void onBackClick(){
+    void onBackClick() {
         finish();
     }
 
-    // todo 获取验证码
+    //  获取验证码
     @OnClick(R.id.tv_get_verification_code)
-    void onGetVerificationCodeClick(){
-
+    void onGetVerificationCodeClick() {
+        phone  = mEditInputPhoneNumber.getText().toString();
+        if (!Pattern.matches(Common.Constance.REGEX_MOBILE, phone)) {
+            Application.showToast("请输入正确的手机号");
+        } else {
+            CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(mTvGetVerification, 60000, 1000);
+            mCountDownTimerUtils.start();
+            mPresenter.getSmsCode(phone);
+        }
     }
 
-    // todo 绑定手机
+    //  绑定手机
     @OnClick(R.id.bt_bind)
-    void onBindSubmit(){
+    void onBindSubmit() {
+        phone  = mEditInputPhoneNumber.getText().toString();
+        msgCode = mEditInputVerificationCode.getText().toString();
+        mPresenter.bindPhone(phone,msgCode,openId,photoUrl,name);
+    }
 
+    @Override
+    public void getSmsCodeSuccess(String msg) {
+//        msgCode = msg;
+    }
+
+    @Override
+    public void bindPhoneSuccess() {
+        MainActivity.show(this);
+        finish();
+    }
+
+    @Override
+    protected BindPhoneContract.Presenter initPresenter() {
+        return new BindPhonePresenter(this);
     }
 }

@@ -10,6 +10,10 @@ import bocai.com.yanghuaji.base.presenter.BaseContract;
 public interface LoginContract {
     interface View extends BaseContract.View<Presenter>{
         void loginSuccess();
+
+        void weChatLoginSuccess();
+
+        void weChatLoginNoBind();
     }
     interface Presenter extends BaseContract.Presenter{
 
@@ -19,6 +23,6 @@ public interface LoginContract {
 
         void getMsmCode(String phone);
 
-        void weChatLogin();
+        void weChatLogin(String photoUrl,String name,String openId);
     }
 }

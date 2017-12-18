@@ -14,6 +14,6 @@ public interface PlantDiaryListContract {
     }
 
     interface Presenter extends BaseContract.Presenter {
-        void getDiaryList(String token,String limit,String page);
+        void getDiaryList(String token,String limit,String page,String equipmentId);
     }
 }

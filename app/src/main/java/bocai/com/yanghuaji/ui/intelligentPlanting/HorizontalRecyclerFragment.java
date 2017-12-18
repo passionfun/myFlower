@@ -285,6 +285,14 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
                         if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
                                 TextUtils.isEmpty(plantModel.getPid())) {
+                            Run.onUiAsync(new Action() {
+                                @Override
+                                public void call() {
+                                    mOffLine.setVisibility(View.VISIBLE);
+                                    mFramOffline.setVisibility(View.VISIBLE);
+                                }
+                            });
+
                             return;
                         }
                         PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),

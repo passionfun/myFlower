@@ -92,7 +92,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".wxapi.WXEntryActivity" />
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <meta-data
             android:name="UMENG_APPKEY"
@@ -182,6 +186,7 @@
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".ui.intelligentPlanting.AddEquipmentsActivity" />
+        <activity android:name=".ui.plantingDiary.PlantingDiaryActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
