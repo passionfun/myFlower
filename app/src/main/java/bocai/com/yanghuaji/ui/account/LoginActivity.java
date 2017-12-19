@@ -335,15 +335,15 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
             if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
             } else if (code == LongToothEvent.EVENT_LONGTOOTH_ACTIVATED) {
                 LongTooth.addService("n22s", new LongToothNSServer());
-                LongTooth.addService("longtooth", new LongToothServer());
+                LongTooth.addService(Account.getServiceName(), new LongToothServer());
             } else if (code == LongToothEvent.EVENT_LONGTOOTH_OFFLINE) {
-
+                Log.d("shcbind", "handleEvent:1 "+code);
             } else if (code == LongToothEvent.EVENT_LONGTOOTH_TIMEOUT) {
-
+                Log.d("shcbind", "handleEvent:2 "+code);
             } else if (code == LongToothEvent.EVENT_LONGTOOTH_UNREACHABLE) {
-
+                Log.d("shcbind", "handleEvent:3 "+code);
             } else if (code == LongToothEvent.EVENT_SERVICE_NOT_EXIST) {
-
+                Log.d("shcbind", "handleEvent:4 "+code);
             }
         }
     }

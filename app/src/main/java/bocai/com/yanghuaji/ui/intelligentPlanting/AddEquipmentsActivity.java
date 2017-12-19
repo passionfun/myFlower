@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -277,9 +278,15 @@ public class AddEquipmentsActivity extends Activity {
             final String timeStamp = DateUtils.getCurrentDateTimes();
             BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
             gson = new Gson();
-            String request = gson.toJson(model);
+            final String request = gson.toJson(model);
             Log.d("sunhengchao", "startbind: "+request);
             //mEquipmentModel.getLTID()   "2000110256.1.2353.24.219"
+            Run.onUiAsync(new Action() {
+                @Override
+                public void call() {
+                    Toast.makeText(AddEquipmentsActivity.this,"request:"+request+"\n"+"LTID:"+mEquipmentModel.getLTID(),Toast.LENGTH_LONG).show();
+                }
+            });
             LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
                     new SampleAttachment(), new LongToothServiceResponseHandler() {
                         @Override

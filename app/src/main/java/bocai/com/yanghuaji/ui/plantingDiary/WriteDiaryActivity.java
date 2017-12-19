@@ -336,6 +336,11 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                 params.put("pic_head" + (i + 1) + "\";" + "filename=\"" + file, body);
             }
             mPresenter.addPhotos(params);
+        }else {
+            String token = Account.getToken();
+            String content = mContent.getText().toString();
+            String diaryId = mDiaryId;
+            mPresenter.writeDiary(token, content, mLocationStr, "", diaryId);
         }
     }
 

@@ -32,6 +32,7 @@ public class Account {
     private static final String KEY_APP_KEY = "KEY_APP_KEY";
     private static final String KEY_PORT = "KEY_PORT";
     private static final String KEY_REGISTER_HOST = "KEY_REGISTER_HOST";
+    private static final String KEY_SERVICE_NAME = "KEY_SERVICE_NAME";
 
 
     private static String token;
@@ -45,6 +46,7 @@ public class Account {
     private static String appKey;
     private static String port;
     private static String registerHost;
+    private static String serviceName;
 
 
     //所有已经添加过的设备
@@ -81,18 +83,20 @@ public class Account {
                 .putString(KEY_APP_KEY, appKey)
                 .putString(KEY_PORT, port)
                 .putString(KEY_REGISTER_HOST, registerHost)
+                .putString(KEY_SERVICE_NAME, serviceName)
                 .apply();
     }
 
     /**
      * 持久化设备信息
      */
-    public static void saveConfig(EquipmentConfigModel model){
+    public static void saveConfig(EquipmentConfigModel model) {
         developId = model.getDeveloperID();
         appId = model.getAppID();
         appKey = model.getAppKey();
         port = model.getPort();
         registerHost = model.getRegisterHost();
+        serviceName = model.getServiceName();
         saveEquipmentConfig(Application.getInstance());
     }
 
@@ -102,11 +106,12 @@ public class Account {
     public static void loadEquipmentConfig(Context context) {
         SharedPreferences sp = context.getSharedPreferences("equipmentConfig",
                 Context.MODE_PRIVATE);
-        developId = sp.getString(KEY_DEVELEOP_ID,"");
-        appId = sp.getString(KEY_APP_ID,"");
-        appKey = sp.getString(KEY_APP_KEY,"");
-        port = sp.getString(KEY_PORT,"");
-        registerHost = sp.getString(KEY_REGISTER_HOST,"");
+        developId = sp.getString(KEY_DEVELEOP_ID, "");
+        appId = sp.getString(KEY_APP_ID, "");
+        appKey = sp.getString(KEY_APP_KEY, "");
+        port = sp.getString(KEY_PORT, "");
+        registerHost = sp.getString(KEY_REGISTER_HOST, "");
+        serviceName = sp.getString(KEY_SERVICE_NAME, "");
     }
 
     /**
@@ -117,7 +122,7 @@ public class Account {
                 Context.MODE_PRIVATE);
         token = sp.getString(KEY_TOKEN, "");
         userId = sp.getString(KEY_USER_ID, "");
-        phone = sp.getString(KEY_PHONE,"");
+        phone = sp.getString(KEY_PHONE, "");
     }
 
 
@@ -137,14 +142,13 @@ public class Account {
     }
 
 
-
     /**
      * 判断是否已经登录
      */
-    public static boolean isLogin(){
+    public static boolean isLogin() {
         SharedPreferences sp = Application.getInstance().getSharedPreferences(Account.class.getName(),
-            Context.MODE_PRIVATE);
-        return !TextUtils.isEmpty(sp.getString(KEY_TOKEN,""))&&!TextUtils.isEmpty(sp.getString(KEY_PHONE, ""));
+                Context.MODE_PRIVATE);
+        return !TextUtils.isEmpty(sp.getString(KEY_TOKEN, "")) && !TextUtils.isEmpty(sp.getString(KEY_PHONE, ""));
     }
 
 
@@ -226,5 +230,13 @@ public class Account {
 
     public static void setRegisterHost(String registerHost) {
         Account.registerHost = registerHost;
+    }
+
+    public static String getServiceName() {
+        return serviceName;
+    }
+
+    public static void setServiceName(String serviceName) {
+        Account.serviceName = serviceName;
     }
 }

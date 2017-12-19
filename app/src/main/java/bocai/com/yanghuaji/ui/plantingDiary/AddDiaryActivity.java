@@ -145,11 +145,11 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
     void onSaveClick() {
         //非空判断自己写
         map.put("Token", Account.getToken());
-        map.put("Photo", mCoverId);
+        map.put("Photo", mCoverId==null?"":mCoverId);
         map.put("BookName", mEditInputDiaryName.getText().toString());
-        map.put("EquipName", mName);
-        map.put("Eid", mEquipmentId);
-        map.put("PlantTime", plantTime);
+        map.put("EquipName", mName==null?"":mName);
+        map.put("Eid", mEquipmentId==null?"":mEquipmentId);
+        map.put("PlantTime", plantTime==null?"":plantTime);
         mPresenter.addDiary(map);
     }
 
