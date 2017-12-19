@@ -30,6 +30,8 @@ public class Application extends android.app.Application {
         super.onCreate();
         instance = this;
         Account.load(this);
+        //加载长牙配置信息
+        Account.loadEquipmentConfig(this);
         Factory.setup();
         JPushInterface.init(this);
         UMShareAPI.get(this);

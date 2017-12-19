@@ -1,6 +1,7 @@
 package bocai.com.yanghuaji.presenter.account;
 
 import bocai.com.yanghuaji.base.presenter.BaseContract;
+import bocai.com.yanghuaji.model.EquipmentConfigModel;
 
 /**
  * 作者 yuanfei on 2017/11/16.
@@ -14,6 +15,10 @@ public interface LoginContract {
         void weChatLoginSuccess();
 
         void weChatLoginNoBind();
+
+        void getEquipmentConfigSuccess(EquipmentConfigModel equipmentConfigModel);
+
+        void getEquipmentConfigFailed();
     }
     interface Presenter extends BaseContract.Presenter{
 
@@ -24,5 +29,7 @@ public interface LoginContract {
         void getMsmCode(String phone);
 
         void weChatLogin(String photoUrl,String name,String openId);
+
+        void getEquipmentConfig();
     }
 }

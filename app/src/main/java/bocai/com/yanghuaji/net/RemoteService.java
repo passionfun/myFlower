@@ -11,6 +11,7 @@ import bocai.com.yanghuaji.model.DiaryCardModel;
 import bocai.com.yanghuaji.model.DiaryDetailModel;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
+import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentDataModel;
 import bocai.com.yanghuaji.model.EquipmentInfoModel;
 import bocai.com.yanghuaji.model.EquipmentPhotoModel;
@@ -338,6 +339,12 @@ public interface RemoteService {
     @POST("diary/diarybook_del")
     @FormUrlEncoded
     Observable<BaseRspModel> deleteDiary(@Field("Id") String diaryId);
+
+
+
+    //设备配置数据获取
+    @POST("equipment/config_data")
+    Observable<BaseRspModel<EquipmentConfigModel>> getEquipmentConfig();
 
 
 }

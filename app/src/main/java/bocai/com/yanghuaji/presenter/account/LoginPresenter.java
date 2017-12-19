@@ -5,6 +5,7 @@ import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.AccountRspModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.net.Network;
 import bocai.com.yanghuaji.util.persistence.Account;
@@ -152,10 +153,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                             user.save();
                             Account.login(model);
                             view.weChatLoginSuccess();
-                        } else if (accountRspModelBaseRspModel.getReturnCode().equals("402")){
+                        } else if (accountRspModelBaseRspModel.getReturnCode().equals("402")) {
                             //未绑定手机
                             view.weChatLoginNoBind();
-                        }else {
+                        } else {
                             Application.showToast(accountRspModelBaseRspModel.getMsg());
                         }
                         view.hideLoading();
@@ -164,6 +165,42 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     @Override
                     public void onError(Throwable e) {
                         view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getEquipmentConfig() {
+        Observable<BaseRspModel<EquipmentConfigModel>> observable = Network.remote().getEquipmentConfig();
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<EquipmentConfigModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<EquipmentConfigModel> equipmentConfigModelBaseRspModel) {
+                        if (equipmentConfigModelBaseRspModel.getReturnCode().equals("200")) {
+                            EquipmentConfigModel model = equipmentConfigModelBaseRspModel.getData();
+                            if (model != null) {
+                                Account.saveConfig(model);
+                            }
+                            view.getEquipmentConfigSuccess(model);
+                        } else {
+                            view.getEquipmentConfigFailed();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.getEquipmentConfigFailed();
                     }
 
                     @Override
