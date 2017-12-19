@@ -11,7 +11,7 @@
         android:layout_marginTop="26dp"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="56dp"
         android:title="">
 
         <ImageView
@@ -42,6 +42,17 @@
             android:src="@mipmap/img_data_card"
             android:layout_width="30dp"
             android:layout_height="match_parent" />
+
+
+        <ImageView
+            android:layout_marginEnd="20dp"
+            android:id="@+id/img_delete"
+            android:layout_gravity="end"
+            android:src="@mipmap/img_delete"
+            android:layout_width="30dp"
+            android:scaleType="center"
+            android:layout_height="match_parent" />
+
     </android.support.v7.widget.Toolbar>
     <ProgressBar
         android:layout_marginTop="10dp"

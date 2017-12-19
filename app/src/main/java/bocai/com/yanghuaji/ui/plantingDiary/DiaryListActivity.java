@@ -1,6 +1,8 @@
 package bocai.com.yanghuaji.ui.plantingDiary;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -163,6 +165,23 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
         finish();
     }
 
+
+    @OnClick(R.id.img_delete)
+    void onDeleteClick() {
+        //删除操作
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
+        deleteDialog.setTitle("确认删除该日记？");
+        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mPresenter.deleteDiary(mDiaryId);
+            }
+        });
+        deleteDialog.setNegativeButton("取消", null);
+        deleteDialog.show();
+    }
+
+
     @OnClick(R.id.img_share)
     void onShareClick() {
         final ShareDiaryListPopupWindow popupWindow = new ShareDiaryListPopupWindow(this);
@@ -225,6 +244,12 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
         popupWindow.initData(diaryCardModel.getPhoto(), diaryCardModel.getPlantName(), diaryCardModel.getEquipName(),
                 diaryCardModel.getPlace(), DateUtils.timet(diaryCardModel.getPlantTime()));
         popupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 0);
+    }
+
+    @Override
+    public void deleteDiarySuccess() {
+        EventBus.getDefault().post(new MessageEvent(PlantingDiaryFragment.PLANTING_DIARY_REFRESH));
+        finish();
     }
 
     @Override

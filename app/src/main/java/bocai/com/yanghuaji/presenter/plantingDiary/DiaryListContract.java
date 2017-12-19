@@ -12,9 +12,13 @@ public interface DiaryListContract {
 
     interface View extends BaseContract.View<Presenter>{
         void getDiaryDataSuccess(DiaryCardModel diaryCardModel);
+
+        void deleteDiarySuccess();
     }
 
     interface Presenter extends BaseContract.Presenter{
         void getDiaryData(String diaryId);
+
+        void deleteDiary(String diaryId);
     }
 }

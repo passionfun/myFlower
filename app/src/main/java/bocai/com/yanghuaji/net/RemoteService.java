@@ -292,10 +292,10 @@ public interface RemoteService {
 
 
 
-    //多设备添加
-    @POST("equipment/create_equipment_more")
-    @FormUrlEncoded
-    Observable<BaseRspModel<List<EquipmentCard>>> addEquipments(@Field("Token") String token, @Field("Equipments") String equipments);
+//    //多设备添加
+//    @POST("equipment/create_equipment_more")
+//    @FormUrlEncoded
+//    Observable<BaseRspModel<List<EquipmentCard>>> addEquipments(@Field("Token") String token, @Field("Equipments") String equipments);
 
 
 
@@ -331,6 +331,13 @@ public interface RemoteService {
     @FormUrlEncoded
     Observable<BaseRspModel<AccountRspModel>> bindPhone(@Field("Phone") String phone,@Field("SmsCode") String smsCode,@Field("Openid")String openId,@Field("Avatar") String photoUrl,
                                                           @Field("NickName")String name);
+
+
+
+    //删除日记本
+    @POST("diary/diarybook_del")
+    @FormUrlEncoded
+    Observable<BaseRspModel> deleteDiary(@Field("Id") String diaryId);
 
 
 }

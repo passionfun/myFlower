@@ -9,6 +9,10 @@ import android.widget.TextView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
@@ -16,6 +20,7 @@ import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
 import bocai.com.yanghuaji.model.DiaryListModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.plantingDiary.PlantDiaryListContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.PlantDiaryListPresenter;
 import bocai.com.yanghuaji.util.DateUtils;
@@ -40,6 +45,7 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
 
     private int page = 1;
     private RecyclerAdapter<DiaryListModel.DiaryModl> mAdapter;
+    public static final String PLANTING_DIARY_REFRESH = "PLANTING_DIARY_REFRESH";
 
     public static PlantingDiaryFragment newInstance() {
         return new PlantingDiaryFragment();
@@ -54,6 +60,7 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
+        EventBus.getDefault().register(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter = new RecyclerAdapter<DiaryListModel.DiaryModl>() {
 
@@ -76,6 +83,19 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
         mEmptyView.setEmptyImg(R.mipmap.status_diary_empty);
         mEmptyView.setEmptyText(R.string.diary_empty);
         setPlaceHolderView(mEmptyView);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(MessageEvent messageEvent){
+        if (messageEvent.getMessage().equals(PLANTING_DIARY_REFRESH)){
+            onRefresh();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -115,13 +135,13 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     @Override
     public void onRefresh() {
         page = 1;
-        mPresenter.getDiaryList(Account.getToken(), "3", page + "","");
+        mPresenter.getDiaryList(Account.getToken(), "10", page + "","");
     }
 
     @Override
     public void onLoadMore() {
         page++;
-        mPresenter.getDiaryList(Account.getToken(), "3", page + "","");
+        mPresenter.getDiaryList(Account.getToken(), "10", page + "","");
     }
 
 

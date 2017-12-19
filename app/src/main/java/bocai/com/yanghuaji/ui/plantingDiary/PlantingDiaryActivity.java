@@ -36,6 +36,9 @@ import butterknife.OnClick;
 
 public class PlantingDiaryActivity extends PresenterActivity<PlantDiaryListContract.Presenter> implements
         XRecyclerView.LoadingListener, PlantDiaryListContract.View {
+    @BindView(R.id.img_back)
+    ImageView mImgBack;
+
     @BindView(R.id.empty)
     EmptyView mEmptyView;
 
@@ -56,13 +59,18 @@ public class PlantingDiaryActivity extends PresenterActivity<PlantDiaryListContr
 
     @Override
     protected int getContentLayoutId() {
-        return R.layout.fragment_planting_diary;
+        return R.layout.activity_planting_diary;
     }
 
     @Override
     protected boolean initArgs(Bundle bundle) {
         mPlantBean = (EquipmentRspModel.ListBean) bundle.getSerializable(SecondSettingActivity.KEY_PLANT_BEAN);
         return super.initArgs(bundle);
+    }
+
+    @OnClick(R.id.img_back)
+    void onBackClick() {
+        finish();
     }
 
     @Override

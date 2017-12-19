@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,7 @@ import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.media.GalleryFragment;
 import bocai.com.yanghuaji.model.EquipmentCard;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryPresenter;
 import bocai.com.yanghuaji.ui.personalCenter.EquipmentListPopupWindow;
@@ -152,6 +155,7 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
 
     @Override
     public void addDiarySuccess() {
+        EventBus.getDefault().post(new MessageEvent(PlantingDiaryFragment.PLANTING_DIARY_REFRESH));
         finish();
     }
 

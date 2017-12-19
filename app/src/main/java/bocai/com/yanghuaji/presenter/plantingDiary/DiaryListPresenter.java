@@ -60,4 +60,38 @@ public class DiaryListPresenter extends BasePresenter<DiaryListContract.View>
 
 
     }
+
+    @Override
+    public void deleteDiary(String diaryId) {
+        view.showLoading();
+        Observable<BaseRspModel> observable = Network.remote().deleteDiary(diaryId);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel baseRspModel) {
+                        if (baseRspModel.getReturnCode().equals("200")) {
+                            view.deleteDiarySuccess();
+                        } else {
+                            Application.showToast(baseRspModel.getMsg());
+                        }
+                        view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 }
