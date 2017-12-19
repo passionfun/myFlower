@@ -101,37 +101,6 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         finish();
     }
 
-
-    @Override
-    protected void initBefore() {
-        super.initBefore();
-        //初始化长牙
-//        Factory.runOnAsync(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    //启动长牙
-//                    LongTooth.setRegisterHost("114.215.170.184", 53180);
-//                    LongTooth.start(Application.getInstance(),
-//                            2000110273,
-//                            1,
-//                            "30820126300D06092A864886F70D010101050003820113003082010E028201023030384645304233423539423931413943414435463341363735463632444645443333343739414132433337423543434333354239323733413330413241354244414539424344373142374334463944423237393430394139463235373245414534424133324141453334433133433036444645333937423531434636413743424143463638434446304432313945334644374442464341383032363645413730353039414239393230374246393735323435314133343943383530394135393232463038413531423344333037353035424646353139363234413835413842443742463634364230444438373944433542453131453230393443363132373944440206303130303031",
-//                            null);
-//
-////                    LongTooth.start(Application.getInstance(),
-////                            2000110256,
-////                            1,
-////                            "30820126300D06092A864886F70D010101050003820113003082010E028201023030384139413344343732314442414231413230353836364343433436423939413737383337413934373936434541423141324143443644354333323137433737323537374134353532313642304232454433323642354342423235384630383433423042363346393335423830344642434530453531343043454234323437413233354336334145454643343933393837424231324143303546444235453445334639414141443531364338433133444646434343413845343837444241333035383435363738463745303635373433303233314233353337343231423545344544453136323842313231303645443938313732463036424339304545363136420206303130303031",
-////                            null);
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-    }
-
-
     @Override
     protected void initWidget() {
         super.initWidget();
@@ -162,7 +131,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         micodev.startEasyLink(ssid, password, true, 60000, 20, "", "", new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
-                Log.d("shc", "onSuccess配网: " + message);
+                Log.d("sunhengchao", "onSuccess配网: " + message);
             }
 
             @Override
@@ -189,7 +158,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             public void onDevicesFind(int code, JSONArray deviceStatus) {
                 super.onDevicesFind(code, deviceStatus);
                 String content = deviceStatus.toString();
-                Log.d("shc", "onDevicesFind: " + content);
+                Log.d("sunhengchao", "onDevicesFind: " + content);
                 if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
                     jsonContent = content;
                     bindEquipment(content);
@@ -216,7 +185,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 //停止搜索设备
                 micodev.stopSearchDevices( null);
                 mModel = equipmentModel;
-                Log.d("shc", "bind: "+mModel.toString());
+                Log.d("sunhengchao", "bind: "+mModel.toString());
                 longToothId = equipmentModel.getLTID();
                 timeStamp = DateUtils.getCurrentDateTimes();
                 BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
@@ -254,7 +223,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
             String result = new String(args);
-            Log.d("shc", "handleServiceResponse: "+new String(args));
+            Log.d("sunhengchao", "handleServiceResponse: "+new String(args));
             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             if (longToothRspModel.getCODE()==0){
                 String mEquipmentName = mModel.getDEVNAME();

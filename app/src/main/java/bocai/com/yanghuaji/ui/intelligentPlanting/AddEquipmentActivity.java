@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +33,7 @@ import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquuipmentPresenter;
 import bocai.com.yanghuaji.util.PermissionUtils;
+import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -47,6 +49,9 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     @BindView(R.id.recycler)
     XRecyclerView mRecyler;
+
+    @BindView(R.id.empty)
+    EmptyView mEmptyView;
 
     private static final int MY_PERMISSION_REQUEST_CODE = 10000;
     private RecyclerAdapter<PlantSeriesModel.PlantSeriesCard> mAdapter;
@@ -89,7 +94,9 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
         mRecyler.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyler.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyler.setLoadingListener(this);
-
+        mEmptyView.bind(mRecyler);
+        setPlaceHolderView(mEmptyView);
+        mPlaceHolderView.triggerLoading();
     }
 
 
@@ -179,6 +186,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
 
     @Override
     public void getEquipmentSeriesSuccess(List<PlantSeriesModel.PlantSeriesCard> cards) {
+        mPlaceHolderView.triggerOkOrEmpty(cards.size()>0);
         if (page == 1) {
             mRecyler.refreshComplete();
             mAdapter.replace(cards);
@@ -246,7 +254,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                 public void onClick(View view) {
                     isAddEquipments = true;
                     mPlantSeriesCard = plantSeriesCard;
-                    mPresenter.getEquipmentPhoto("1", plantSeriesCard.getSeries());
+                    mPresenter.getEquipmentPhoto("1", TextUtils.isEmpty(plantSeriesCard.getSeries())?"":plantSeriesCard.getSeries());
                 }
             });
         }

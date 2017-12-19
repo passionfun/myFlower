@@ -62,21 +62,20 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         implements IntelligentPlantContract.View {
     @BindView(R.id.empty)
     EmptyView mEmptyView;
+
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
+
     @BindView(R.id.tv_current)
     TextView mCurrentNum;
+
     @BindView(R.id.tv_total)
     TextView mTotalNum;
+
     public static final String TAG = HorizontalRecyclerFragment.class.getName();
     public static final String HORIZONTALRECYLER_REFRESH = "HORIZONTALRECYLER_REFRESH";
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
-    //搜索设备用
-//    private MiCODevice micodev;
-//    //所有在线设备的longtoothId集合
-//    List<String> longtoothIds = new ArrayList<>();
-////    private boolean isLedOn = false;
 
     @Override
     protected int getContentLayoutId() {
@@ -132,29 +131,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         super.initData();
         mPresenter.getAllEquipments(Account.getToken(), "0", "0");
         mEmptyView.triggerLoading();
-        //开始搜索设备
-//        final String serviceName = "_easylink._tcp.local.";
-//        micodev = new MiCODevice(getContext());
-//        micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
-//            @Override
-//            public void onDevicesFind(int code, JSONArray deviceStatus) {
-//                super.onDevicesFind(code, deviceStatus);
-//                String content = deviceStatus.toString();
-//                Log.d("shc", "onDevicesFind: " + content);
-//                if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
-//                    String jsonContent = content;
-//                    micodev.stopSearchDevices(null);
-//                    List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
-//                    }.getType());
-//                    for (EquipmentModel equipmentModel : equipmentModels) {
-//                        String longtoothId = equipmentModel.getLTID();
-//                        longtoothIds.add(longtoothId);
-//                    }
-//                }
-//            }
-//        });
-
-
     }
 
     @Override
@@ -273,16 +249,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                             //设置有新版本
                         }
 
-//                        Run.onUiAsync(new Action() {
-//                            @Override
-//                            public void call() {
-////                                mOffLine.setVisibility(isLineOff(plantModel) ? View.VISIBLE : View.INVISIBLE);
-////                                mFramOffline.setVisibility(isLineOff(plantModel) ? View.VISIBLE : View.INVISIBLE);
-//                                mOffLine.setVisibility(View.INVISIBLE);
-//                                mFramOffline.setVisibility(View.INVISIBLE);
-//                            }
-//                        });
-
                         if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
                                 TextUtils.isEmpty(plantModel.getPid())) {
                             Run.onUiAsync(new Action() {
@@ -348,12 +314,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 });
 
             }
-
-
-//            private boolean isLineOff(EquipmentRspModel.ListBean plantModel) {
-//                return !(longtoothIds != null && longtoothIds.size() > 0
-//                        && longtoothIds.contains(plantModel.getLTID()));
-//            }
 
             private void setLed(final EquipmentRspModel.ListBean plantModel) {
 

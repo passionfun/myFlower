@@ -157,7 +157,7 @@ public class AddEquipmentsActivity extends Activity {
         micodev.startEasyLink(ssid, password, true, 60000, 20, "", "", new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
-                Log.d("shc", "onSuccess配网: " + message);
+                Log.d("sunhengchao", "onSuccess配网: " + message);
             }
 
             @Override
@@ -174,7 +174,7 @@ public class AddEquipmentsActivity extends Activity {
             public void onDevicesFind(int code, JSONArray deviceStatus) {
                 super.onDevicesFind(code, deviceStatus);
                 String content = deviceStatus.toString();
-                Log.d("shc", "onDevicesFind: " + content);
+                Log.d("sunhengchao", "onDevicesFind: " + content);
                 if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
                     String jsonContent = content;
                     micodev.stopSearchDevices(null);
@@ -278,7 +278,7 @@ public class AddEquipmentsActivity extends Activity {
             BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
             gson = new Gson();
             String request = gson.toJson(model);
-            Log.d("shc", "startbind: "+request);
+            Log.d("sunhengchao", "startbind: "+request);
             //mEquipmentModel.getLTID()   "2000110256.1.2353.24.219"
             LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
                     new SampleAttachment(), new LongToothServiceResponseHandler() {
@@ -287,7 +287,7 @@ public class AddEquipmentsActivity extends Activity {
                                                           String service_str, int data_type, byte[] args,
                                                           LongToothAttachment attachment) {
                             String result = new String(args);
-                            Log.d("shc", "handleServiceResponse: "+new String(args));
+                            Log.d("sunhengchao", "handleServiceResponse: "+new String(args));
                             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                             if (longToothRspModel.getCODE()==0){
                                 String mEquipmentName = mEquipmentModel.getDEVNAME();
