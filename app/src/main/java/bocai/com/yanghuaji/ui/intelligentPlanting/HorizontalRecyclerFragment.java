@@ -523,6 +523,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     String wagerState = plantStatusRspModel.getWaterStat();
                     String Ec = plantStatusRspModel.getEC();//植物的营养值
                     String isLihtOn = isLedOn ? "0" : "1";
+                    if (mPresenter==null||temperature==null||wagerState==null||Ec==null){
+                        return;
+                    }
                     mPresenter.setData(Account.getToken(), mPlantModel.getMac(), temperature, wagerState, isLihtOn, Ec);
                 } else {
                     offLine();
