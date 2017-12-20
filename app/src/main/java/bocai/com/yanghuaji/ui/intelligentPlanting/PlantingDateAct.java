@@ -87,7 +87,11 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
         super.initWidget();
 
         if (HorizontalRecyclerFragmentHelper.isHaveNewVersion(mPlantBean)){
-            // todo 有新版本
+            //  有新版本
+            mPresenter.setUpdateStatus(mPlantBean.getMac(),"1");
+        }else {
+            // 没有新版本
+            mPresenter.setUpdateStatus(mPlantBean.getMac(),"0");
         }
     }
 
@@ -121,7 +125,9 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
                 Log.d("testshc", url);
                 if (url.startsWith(Common.Constance.H5_BASE+"write")){
                     PlantingDiaryActivity.show(PlantingDateAct.this,mPlantBean);
-                }else {
+                }else if (url.startsWith(Common.Constance.H5_BASE+"upgrade")){
+                    HorizontalRecyclerFragmentHelper.update(PlantingDateAct.this, mPlantBean);
+                } else {
                     view.loadUrl(url);
                 }
                 return true;

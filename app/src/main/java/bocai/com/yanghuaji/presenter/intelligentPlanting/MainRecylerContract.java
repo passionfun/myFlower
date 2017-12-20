@@ -29,8 +29,6 @@ public interface MainRecylerContract {
 
         void deleteEquipment(String equipmentId);
 
-        //升级状态  0否  1是
-        void setUpdateStatus(String mac,String status);
     }
 
 

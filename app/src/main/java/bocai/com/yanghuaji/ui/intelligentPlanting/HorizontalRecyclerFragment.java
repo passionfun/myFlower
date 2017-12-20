@@ -232,7 +232,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mTime.setText(plantModel.getDays() + "");
                 //台灯开关 0：关   1：开
                 mLed.setChecked(plantModel.getLight().equals("1"));
-                final boolean isLedOn = mLed.isChecked();
                 //消息推送状态   0关   1开
                 mPush.setChecked(plantModel.getPushStatus().equals("1"));
                 GlideApp.with(getContext())
@@ -244,25 +243,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
-                        if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
-                                TextUtils.isEmpty(plantModel.getPid())) {
-                            Run.onUiAsync(new Action() {
-                                @Override
-                                public void call() {
-                                    mOffLine.setVisibility(View.VISIBLE);
-                                    mFramOffline.setVisibility(View.VISIBLE);
-                                }
-                            });
-
-                            return;
-                        }
-                        PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
-                                1, Integer.parseInt(plantModel.getPid()));
-                        String request = gson.toJson(model);
-                        if (!TextUtils.isEmpty(plantModel.getLTID())) {
-                            LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                                    0, request.getBytes().length, null, new LongToothResponse(mPresenter, plantModel, isLedOn, mOffLine, mFramOffline));
-                        }
+                        getEquipmentData(plantModel);
                     }
                 };
                 timer.schedule(task, 5000, 30000);
@@ -281,7 +262,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mSecondSetting.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        plantModel.setPushStatus(mPush.isChecked()?"1":"0");
+                        plantModel.setPushStatus(mPush.isChecked() ? "1" : "0");
                         SecondSettingActivity.show(getContext(), plantModel);
                     }
                 });
@@ -308,6 +289,30 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     }
                 });
 
+            }
+
+
+            private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
+                if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
+                        TextUtils.isEmpty(plantModel.getPid())) {
+                    Run.onUiAsync(new Action() {
+                        @Override
+                        public void call() {
+                            mOffLine.setVisibility(View.VISIBLE);
+                            mFramOffline.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                    return;
+                }
+                final boolean isLedOn = mLed.isChecked();
+                PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
+                        1, Integer.parseInt(plantModel.getPid()));
+                String request = gson.toJson(model);
+                if (!TextUtils.isEmpty(plantModel.getLTID())) {
+                    LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                            0, request.getBytes().length, null, new LongToothResponse(mPresenter, plantModel, isLedOn, mOffLine, mFramOffline));
+                }
             }
 
             private void setLed(final EquipmentRspModel.ListBean plantModel) {
@@ -366,6 +371,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mSettingView.setVisibility(View.GONE);
                     mSetting.setImageResource(R.mipmap.img_item_setting);
                 }
+            }
+
+            @OnClick(R.id.tv_refresh)
+            void onRefreshClick() {
+                getEquipmentData(mData);
             }
 
             @Override
@@ -431,7 +441,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             public void setCheckBoxSuccess(CheckboxStatusModel model) {
-                EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
+
             }
 
             @Override
@@ -473,7 +483,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
-                        if (!isResp){
+                        if (!isResp) {
                             offLine();
                         }
                     }
@@ -523,7 +533,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     String wagerState = plantStatusRspModel.getWaterStat();
                     String Ec = plantStatusRspModel.getEC();//植物的营养值
                     String isLihtOn = isLedOn ? "0" : "1";
-                    if (mPresenter==null||temperature==null||wagerState==null||Ec==null){
+                    if (mPresenter == null || temperature == null || wagerState == null || Ec == null) {
                         return;
                     }
                     mPresenter.setData(Account.getToken(), mPlantModel.getMac(), temperature, wagerState, isLihtOn, Ec);

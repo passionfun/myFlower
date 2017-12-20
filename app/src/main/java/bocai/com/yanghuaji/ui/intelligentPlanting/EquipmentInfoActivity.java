@@ -292,6 +292,9 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                         int code = longToothRspModel.getCODE();
                         if (code == 0) {
                             String newVersion = longToothRspModel.getSoftVer();
+                            if (mPresenter==null||newVersion==null||id==null){
+                                return;
+                            }
                             mPresenter.updateVersion(Account.getToken(), newVersion, id);
                         }
                     }

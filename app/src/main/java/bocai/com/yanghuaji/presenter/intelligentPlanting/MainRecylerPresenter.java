@@ -91,35 +91,6 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
     }
 
     @Override
-    public void setUpdateStatus(String mac, String status) {
-        Observable<BaseRspModel> observable = Network.remote().setUpdateStatus(mac, status);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseRspModel>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BaseRspModel baseRspModel) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        view.showError(R.string.net_error);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-
-    @Override
     public void deleteEquipment(String equipmentId) {
         view.showLoading();
         Observable<BaseRspModel> observable = Network.remote().deleteEquipment(equipmentId);

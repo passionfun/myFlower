@@ -115,7 +115,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void fresh(MessageEvent messageEvent) {
         if (messageEvent.getMessage().equals(VERTICAL_RECYLER_REFRESH)) {
-//            mPresenter.getAllEquipments(Account.getToken(), "0", "0");
             onRefresh();
 
         }
@@ -133,28 +132,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         page = 1;
         mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
         mEmptyView.triggerLoading();
-
-//        //开始搜索设备
-//        final String serviceName = "_easylink._tcp.local.";
-//        micodev = new MiCODevice(getContext());
-//        micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
-//            @Override
-//            public void onDevicesFind(int code, JSONArray deviceStatus) {
-//                super.onDevicesFind(code, deviceStatus);
-//                String content = deviceStatus.toString();
-//                Log.d("shc", "onDevicesFind: " + content);
-//                if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
-//                    String jsonContent = content;
-//                    micodev.stopSearchDevices(null);
-//                    List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
-//                    }.getType());
-//                    for (EquipmentModel equipmentModel : equipmentModels) {
-//                        String longtoothId = equipmentModel.getLTID();
-//                        longtoothIds.add(longtoothId);
-//                    }
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -256,7 +233,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mGroupName.setText(plantModel.getGroupName());
             mTime.setText(plantModel.getDays() + "");
             mLed.setChecked(plantModel.getLight().equals("1"));
-            final boolean isLedOn = mLed.isChecked();
             mPush.setChecked(plantModel.getPushStatus().equals("1"));
             GlideApp.with(getContext())
                     .load(plantModel.getPhoto())
@@ -268,29 +244,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-//                    Run.onUiAsync(new Action() {
-//                        @Override
-//                        public void call() {
-//                            mImgTent.setVisibility(isLineOff(plantModel) ? View.VISIBLE : View.INVISIBLE);
-//                        }
-//                    });
-                    if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
-                            TextUtils.isEmpty(plantModel.getPid())) {
-                        //如果UUID或者植物id为空，则说明设备离线
-                        Run.onUiAsync(new Action() {
-                            @Override
-                            public void call() {
-                                mImgTent.setVisibility(View.VISIBLE);
-                            }
-                        });
-
-                        return;
-                    }
-                    PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
-                            1, Integer.parseInt(plantModel.getPid()));
-                    String request = gson.toJson(model);
-                    LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                            0, request.getBytes().length, null, new LongToothResponse(plantModel,isLedOn,mImgTent));
+                   getEquipmentData(plantModel);
                 }
             };
             timer.schedule(task, 5000, 30000);
@@ -363,11 +317,29 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         }
 
+        private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
+            if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
+                    TextUtils.isEmpty(plantModel.getPid())) {
+                //如果UUID或者植物id为空，则说明设备离线
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        mImgTent.setVisibility(View.VISIBLE);
+                    }
+                });
 
-//        private boolean isLineOff(EquipmentRspModel.ListBean plantModel) {
-//            return !(longtoothIds != null && longtoothIds.size() > 0
-//                    && longtoothIds.contains(plantModel.getLTID()));
-//        }
+                return;
+            }
+
+            final boolean isLedOn = mLed.isChecked();
+            PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
+                    1, Integer.parseInt(plantModel.getPid()));
+            String request = gson.toJson(model);
+            LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                    0, request.getBytes().length, null, new LongToothResponse(plantModel,isLedOn,mImgTent));
+        }
+
+
 
         private void setLed(final EquipmentRspModel.ListBean plantModel) {
             mLed.setOnClickListener(new View.OnClickListener() {
@@ -425,6 +397,11 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         }
 
 
+
+        @OnClick(R.id.tv_refresh)
+        void onRefreshClick() {
+            getEquipmentData(mData);
+        }
 
         @Override
         public void showError(int str) {
