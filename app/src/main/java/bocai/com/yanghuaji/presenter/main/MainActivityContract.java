@@ -3,6 +3,7 @@ package bocai.com.yanghuaji.presenter.main;
 import java.util.List;
 
 import bocai.com.yanghuaji.base.presenter.BaseContract;
+import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 
@@ -17,11 +18,17 @@ public interface MainActivityContract {
         void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans );
 
         void getAllGroupsSuccess(List<GroupRspModel.ListBean> listBeans);
+
+        void getEquipmentConfigSuccess(EquipmentConfigModel equipmentConfigModel);
+
+        void getEquipmentConfigFailed();
     }
 
     interface Presenter extends BaseContract.Presenter{
         void getAllEquipments(String token,String limit,String page);
 
         void getAllGroups(String token,String limit,String page);
+
+        void getEquipmentConfig();
     }
 }

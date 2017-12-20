@@ -174,39 +174,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 });
     }
 
-    @Override
-    public void getEquipmentConfig() {
-        Observable<BaseRspModel<EquipmentConfigModel>> observable = Network.remote().getEquipmentConfig();
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseRspModel<EquipmentConfigModel>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
-                    }
 
-                    @Override
-                    public void onNext(BaseRspModel<EquipmentConfigModel> equipmentConfigModelBaseRspModel) {
-                        if (equipmentConfigModelBaseRspModel.getReturnCode().equals("200")) {
-                            EquipmentConfigModel model = equipmentConfigModelBaseRspModel.getData();
-                            if (model != null) {
-                                Account.saveConfig(model);
-                            }
-                            view.getEquipmentConfigSuccess(model);
-                        } else {
-                            view.getEquipmentConfigFailed();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        view.getEquipmentConfigFailed();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
 }

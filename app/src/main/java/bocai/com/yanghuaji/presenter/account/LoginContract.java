@@ -16,9 +16,6 @@ public interface LoginContract {
 
         void weChatLoginNoBind();
 
-        void getEquipmentConfigSuccess(EquipmentConfigModel equipmentConfigModel);
-
-        void getEquipmentConfigFailed();
     }
     interface Presenter extends BaseContract.Presenter{
 
@@ -30,6 +27,7 @@ public interface LoginContract {
 
         void weChatLogin(String photoUrl,String name,String openId);
 
-        void getEquipmentConfig();
+
+
     }
 }

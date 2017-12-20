@@ -50,8 +50,7 @@ public class AddEquipmentDisplayActivity extends Activity {
     private List<String> mScanData;
     private PlantSeriesModel.PlantSeriesCard plantSeriesCard;
     private static boolean isAddEquipments = false;
-    private String[] phoneState = new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.CHANGE_WIFI_STATE
-    ,Manifest.permission.CHANGE_WIFI_MULTICAST_STATE};
+    private String[] phoneState = new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     //显示的入口(单设备添加)
     public static void show(Context context,String photoPath, ArrayList<String> scanData) {

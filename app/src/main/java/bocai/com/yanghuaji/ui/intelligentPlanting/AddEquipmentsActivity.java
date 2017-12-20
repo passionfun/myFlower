@@ -24,6 +24,8 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
@@ -42,6 +44,7 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerCon
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.DateUtils;
+import bocai.com.yanghuaji.util.LongToothUtil;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
@@ -72,7 +75,7 @@ public class AddEquipmentsActivity extends Activity {
     @BindView(R.id.tv_right)
     TextView mSave;
 
-    public static String KEY_PLANT_CARD= "KEY_PLANT_CARD";
+    public static String KEY_PLANT_CARD = "KEY_PLANT_CARD";
     private String ssid;
     private String password;
     private RecyclerAdapter<EquipmentModel> mAdapter;
@@ -86,9 +89,9 @@ public class AddEquipmentsActivity extends Activity {
     private PlantSeriesModel.PlantSeriesCard plantSeriesCard;
 
     //显示的入口
-    public static void show(Context context,String ssid, String password, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
+    public static void show(Context context, String ssid, String password, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
         Intent intent = new Intent(context, AddEquipmentsActivity.class);
-        intent.putExtra(KEY_PLANT_CARD,plantSeriesCard);
+        intent.putExtra(KEY_PLANT_CARD, plantSeriesCard);
         intent.putExtra(ConnectActivity.KEY_SSID, ssid);
         intent.putExtra(ConnectActivity.KEY_PASSWORD, password);
         context.startActivity(intent);
@@ -146,13 +149,19 @@ public class AddEquipmentsActivity extends Activity {
         mEmptyView.setEmptyImg(R.mipmap.img_equipment_empty);
         mEmptyView.setEmptyText(R.string.equipment_empty);
         setPlaceHolderView(mEmptyView);
-    }
 
+        if (!LongToothUtil.isInitSuccess) {
+            LongToothUtil.longToothInit();
+        }
+
+
+    }
 
 
     @Override
     protected void initData() {
         super.initData();
+        mEmptyView.triggerLoading();
         micodev = new MiCODevice(this);
         //开始配网
         micodev.startEasyLink(ssid, password, true, 60000, 20, "", "", new EasyLinkCallBack() {
@@ -167,7 +176,7 @@ public class AddEquipmentsActivity extends Activity {
                 finish();
             }
         });
-        mEmptyView.triggerLoading();
+
         //开始搜索设备
         final String serviceName = "_easylink._tcp.local.";
         micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
@@ -178,54 +187,66 @@ public class AddEquipmentsActivity extends Activity {
                 Log.d("sunhengchao", "onDevicesFind: " + content);
                 if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
                     String jsonContent = content;
-                    micodev.stopSearchDevices(null);
                     List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
                     }.getType());
                     for (final EquipmentModel equipmentModel : equipmentModels) {
                         String seriesName = equipmentModel.getDEVNAME();
                         //搜索所有搜索到该系列的设备，如果还没有添加过，则显示
-                        if (!series.contains(seriesName)&&!isAdded(equipmentModel.getLTID())
-                                &&seriesName.startsWith(plantSeriesCard.getSeries())) {
+                        if (!series.contains(seriesName) && !isAdded(equipmentModel.getLTID())
+                                && seriesName.startsWith(plantSeriesCard.getSeries())) {
                             series.add(seriesName);
                             Run.onUiAsync(new Action() {
                                 @Override
                                 public void call() {
                                     mAdapter.add(equipmentModel);
+                                    mEmptyView.triggerOk();
                                 }
                             });
                         }
                     }
-                    Run.onUiAsync(new Action() {
-                        @Override
-                        public void call() {
-                            mEmptyView.triggerOkOrEmpty(mAdapter.getItemCount()>0);
-                        }
-                    });
                 }
             }
         });
+
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        micodev.stopEasyLink(null);
+                        micodev.stopSearchDevices(null);
+                        mEmptyView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
+                    }
+                });
+            }
+        };
+        timer.schedule(task, 60000);
+
     }
 
 
-    private boolean isAdded(String longtoothId){
+    private boolean isAdded(String longtoothId) {
         List<String> longtoothS = new ArrayList<>();
-        if (listBeans!=null&&listBeans.size()>0){
+        if (listBeans != null && listBeans.size() > 0) {
             for (EquipmentRspModel.ListBean listBean : listBeans) {
                 longtoothS.add(listBean.getLTID());
             }
-            if (longtoothS.contains(longtoothId)){
+            if (longtoothS.contains(longtoothId)) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
-        }else {
+        } else {
             return false;
         }
 
     }
 
 
-    class MyViewHolder extends RecyclerAdapter.ViewHolder<EquipmentModel> implements AddEquipmentsRecylerContract.View{
+    class MyViewHolder extends RecyclerAdapter.ViewHolder<EquipmentModel> implements AddEquipmentsRecylerContract.View {
         @BindView(R.id.equipment_photo)
         ImageView mPhoto;
 
@@ -250,7 +271,6 @@ public class AddEquipmentsActivity extends Activity {
         private EquipmentModel mEquipmentModel;
 
 
-
         public MyViewHolder(View itemView) {
             super(itemView);
             new AddEquipmentsRecylerPresenter(this);
@@ -261,12 +281,12 @@ public class AddEquipmentsActivity extends Activity {
             mEquipmentModel = equipmentModel;
             mName.setText(equipmentModel.getDEVNAME());
             mMac.setText(equipmentModel.getMAC());
-            String type = equipmentModel.getDEVNAME().substring(0,4);
-            mPresenter.getEquipmentPhoto("2",type);
+            String type = equipmentModel.getDEVNAME().substring(0, 4);
+            mPresenter.getEquipmentPhoto("2", type);
         }
 
         @OnClick(R.id.img_add)
-        void onAddClick(){
+        void onAddClick() {
             mAdd.setVisibility(View.GONE);
             mAddSuccess.setVisibility(View.GONE);
             mLoading.setVisibility(View.VISIBLE);
@@ -274,17 +294,17 @@ public class AddEquipmentsActivity extends Activity {
             startBind();
         }
 
-        private void startBind(){
+        private void startBind() {
             final String timeStamp = DateUtils.getCurrentDateTimes();
             BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
             gson = new Gson();
             final String request = gson.toJson(model);
-            Log.d("sunhengchao", "startbind: "+request);
+            Log.d("sunhengchao", "startbind: " + request);
             //mEquipmentModel.getLTID()   "2000110256.1.2353.24.219"
             Run.onUiAsync(new Action() {
                 @Override
                 public void call() {
-                    Toast.makeText(AddEquipmentsActivity.this,"request:"+request+"\n"+"LTID:"+mEquipmentModel.getLTID(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddEquipmentsActivity.this, "request:" + request + "\n" + "LTID:" + mEquipmentModel.getLTID(), Toast.LENGTH_LONG).show();
                 }
             });
             LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
@@ -294,19 +314,19 @@ public class AddEquipmentsActivity extends Activity {
                                                           String service_str, int data_type, byte[] args,
                                                           LongToothAttachment attachment) {
                             String result = new String(args);
-                            Log.d("sunhengchao", "handleServiceResponse: "+new String(args));
+                            Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
                             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                            if (longToothRspModel.getCODE()==0){
+                            if (longToothRspModel.getCODE() == 0) {
                                 String mEquipmentName = mEquipmentModel.getDEVNAME();
                                 String macAddress = mEquipmentModel.getMAC();
                                 String token = Account.getToken();
                                 String serialNum = "";
                                 String version = mEquipmentModel.get_$FirmwareRev196();
-                                String series = mEquipmentName.substring(0,5);
-                                if (mPresenter != null){
-                                    mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,mEquipmentModel.getLTID(),timeStamp,series);
+                                String series = mEquipmentName.substring(0, 5);
+                                if (mPresenter != null) {
+                                    mPresenter.addEquipment(token, mEquipmentName, macAddress, serialNum, version, mEquipmentModel.getLTID(), timeStamp, series);
                                 }
-                            }else {
+                            } else {
                                 Run.onUiAsync(new Action() {
                                     @Override
                                     public void call() {
@@ -370,10 +390,7 @@ public class AddEquipmentsActivity extends Activity {
             mLoading.setVisibility(View.GONE);
         }
 
-
     }
-
-
 
 
 }

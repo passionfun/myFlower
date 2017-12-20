@@ -30,7 +30,9 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.base.common.Factory;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.MessageEvent;
@@ -38,16 +40,25 @@ import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.main.MainActivityContract;
 import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
 import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
+import bocai.com.yanghuaji.ui.account.LoginActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.AddWifiActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
+import bocai.com.yanghuaji.ui.intelligentPlanting.SampleAttachment;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.LongToothUtil;
 import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import de.hdodenhof.circleimageview.CircleImageView;
+import xpod.longtooth.LongTooth;
+import xpod.longtooth.LongToothAttachment;
+import xpod.longtooth.LongToothEvent;
+import xpod.longtooth.LongToothEventHandler;
+import xpod.longtooth.LongToothServiceRequestHandler;
+import xpod.longtooth.LongToothTunnel;
 
 public class MainActivity extends PresenterActivity<MainActivityContract.Presenter>
         implements MainActivityContract.View, XRecyclerView.LoadingListener {
@@ -111,7 +122,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         if (messageEvent.getMessage().equals(EditPersonalDataActivity.MODIFY_PERSONAL_DATA_SUCCESS)) {
             User user = Account.getUser();
             if (user != null) {
-                if (TextUtils.isEmpty(user.getNickName())){
+                if (TextUtils.isEmpty(user.getNickName())) {
                     mName.setText(user.getNickName());
                 }
                 GlideApp.with(this)
@@ -127,12 +138,12 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         super.onResume();
         User user = Account.getUser();
         String phone = Account.getPhone();
-        Log.d(TAG, "onResume: "+phone);
-        String account = phone.substring(0,3)+"****"+phone.substring(7);
+        Log.d(TAG, "onResume: " + phone);
+        String account = phone.substring(0, 3) + "****" + phone.substring(7);
         if (user != null) {
-            if (!TextUtils.isEmpty(user.getNickName())){
+            if (!TextUtils.isEmpty(user.getNickName())) {
                 mName.setText(user.getNickName());
-            }else {
+            } else {
                 mName.setText(account);
             }
             GlideApp.with(this)
@@ -140,7 +151,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                     .placeholder(R.mipmap.img_portrait_empty)
                     .centerCrop()
                     .into(mPortrait);
-        }else {
+        } else {
             mName.setText(account);
         }
     }
@@ -148,6 +159,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @Override
     protected void initWidget() {
         super.initWidget();
+        mPresenter.getEquipmentConfig();
         EventBus.getDefault().register(this);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             //将侧边栏顶部延伸至status bar
@@ -352,6 +364,24 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     }
 
     @Override
+    public void getEquipmentConfigSuccess(final EquipmentConfigModel equipmentConfigModel) {
+        if (!LongToothUtil.isInitSuccess) {
+            LongToothUtil.longToothInit();
+        }
+
+    }
+
+    @Override
+    public void getEquipmentConfigFailed() {
+
+        if (!LongToothUtil.isInitSuccess) {
+            LongToothUtil.longToothInit();
+        }
+    }
+
+
+
+    @Override
     protected MainActivityContract.Presenter initPresenter() {
         return new MainActivityPresenter(this);
     }
@@ -369,18 +399,19 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     }
 
 
-    class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
-        @BindView(R.id.tv_equipment_name)
-        TextView mName;
+class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
+    @BindView(R.id.tv_equipment_name)
+    TextView mName;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-        }
-
-
-        @Override
-        protected void onBind(EquipmentRspModel.ListBean listBean) {
-            mName.setText(listBean.getEquipName());
-        }
+    public ViewHolder(View itemView) {
+        super(itemView);
     }
+
+
+    @Override
+    protected void onBind(EquipmentRspModel.ListBean listBean) {
+        mName.setText(listBean.getEquipName());
+    }
+}
+
 }

@@ -28,8 +28,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class PlantingDateAct extends Activity {
-
-
     private static String MID = "mid";
     @BindView(R.id.img_back)
     ImageView imgBack;
@@ -110,6 +108,10 @@ public class PlantingDateAct extends Activity {
                     PlantingDiaryActivity.show(PlantingDateAct.this,mPlantBean);
                 }else {
                     view.loadUrl(url);
+                }
+
+                if (url.contains("product.html")){
+                    // todo 5秒刷新
                 }
                 return true;
             }

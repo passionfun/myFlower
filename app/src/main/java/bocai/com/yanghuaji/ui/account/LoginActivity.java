@@ -1,8 +1,13 @@
 package bocai.com.yanghuaji.ui.account;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -10,12 +15,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import bocai.com.yanghuaji.R;
@@ -28,6 +36,7 @@ import bocai.com.yanghuaji.presenter.account.LoginContract;
 import bocai.com.yanghuaji.presenter.account.LoginPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.SampleAttachment;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.util.PermissionUtils;
 import bocai.com.yanghuaji.util.adapter.account.CountDownTimerUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
@@ -46,11 +55,6 @@ import xpod.longtooth.LongToothTunnel;
 
 public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
         implements LoginContract.View {
-    public static final String TAG = LoginActivity.class.getName();
-    private boolean isPasswordLogin = false;
-    private String openId;
-    private String name;
-    private String photoUrl;
     @BindView(R.id.tv_verification_code_login)
     TextView mTvVerificationCodeLogin;
 
@@ -81,6 +85,14 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     @BindView(R.id.tv_wechat_login)
     TextView mWechatLogin;
 
+    public static final String TAG = LoginActivity.class.getName();
+    private boolean isPasswordLogin = false;
+    private String openId;
+    private String name;
+    private String photoUrl;
+    private String[] phoneState = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final int MY_PERMISSION_REQUEST_CODE = 10009;
+
 
     //显示的入口
     public static void show(Context context) {
@@ -93,9 +105,52 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     }
 
     @Override
+    protected boolean initArgs(Bundle bundle) {
+        boolean isHavePhoneStatePermission = PermissionUtils.checkPermissionAllGranted(this, phoneState);
+        if (!isHavePhoneStatePermission) {
+            //申请权限
+            ActivityCompat.requestPermissions(this, phoneState, MY_PERMISSION_REQUEST_CODE);
+
+        }
+        return super.initArgs(bundle);
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_PERMISSION_REQUEST_CODE) {
+            boolean permission = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    permission = false;
+                    break;
+                }
+            }
+            if (!permission) {
+                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
+                Application.showToast("没有授权，程序无法使用");
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                },2000);
+
+            }
+        }
+    }
+
+    @Override
     protected void initWidget() {
         super.initWidget();
-        mPresenter.getEquipmentConfig();
+
+        if (Account.isLogin()) {
+            MainActivity.show(this);
+            finish();
+        }
     }
 
     @OnClick(R.id.verification_code_login)
@@ -207,75 +262,14 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     @Override
     public void weChatLoginNoBind() {
         //微信登录成功，但未绑定手机
-        if (!TextUtils.isEmpty(openId)&&!TextUtils.isEmpty(name)&&!TextUtils.isEmpty(photoUrl)){
-            BindPhoneActivity.show(this,photoUrl,name,openId);
+        if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(name) && !TextUtils.isEmpty(photoUrl)) {
+            BindPhoneActivity.show(this, photoUrl, name, openId);
             finish();
-        }else {
+        } else {
             Application.showToast("参数有误");
         }
     }
 
-    @Override
-    public void getEquipmentConfigSuccess(final EquipmentConfigModel equipmentConfigModel) {
-        Factory.runOnAsync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-//                    //启动长牙
-//                    LongTooth.setRegisterHost("114.215.170.184", 53180);
-//                    LongTooth.start(Application.getInstance(),
-//                            2000110273,
-//                            1,
-//                            "30820126300D06092A864886F70D010101050003820113003082010E028201023030384645304233423539423931413943414435463341363735463632444645443333343739414132433337423543434333354239323733413330413241354244414539424344373142374334463944423237393430394139463235373245414534424133324141453334433133433036444645333937423531434636413743424143463638434446304432313945334644374442464341383032363645413730353039414239393230374246393735323435314133343943383530394135393232463038413531423344333037353035424646353139363234413835413842443742463634364230444438373944433542453131453230393443363132373944440206303130303031",
-//                            new LongToothHandler());
-
-                    //启动长牙
-                    LongTooth.setRegisterHost(equipmentConfigModel.getRegisterHost(), Integer.valueOf(equipmentConfigModel.getPort()));
-                    LongTooth.start(Application.getInstance(),
-                            Integer.valueOf(equipmentConfigModel.getDeveloperID()),
-                            Integer.valueOf(equipmentConfigModel.getAppID()),
-                            equipmentConfigModel.getAppKey(),
-                            new LongToothHandler());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        if (Account.isLogin()) {
-            MainActivity.show(this);
-            finish();
-        }
-
-    }
-
-    @Override
-    public void getEquipmentConfigFailed() {
-        Factory.runOnAsync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //启动长牙
-                    LongTooth.setRegisterHost(Account.getRegisterHost(), Integer.valueOf(Account.getPort()));
-                    LongTooth.start(Application.getInstance(),
-                            Integer.valueOf(Account.getDevelopId()),
-                            Integer.valueOf(Account.getAppId()),
-                            Account.getAppKey(),
-                            new LongToothHandler());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        if (Account.isLogin()) {
-            MainActivity.show(this);
-            finish();
-        }
-
-    }
 
     @Override
     protected LoginContract.Presenter initPresenter() {
@@ -318,101 +312,6 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
             Log.d(TAG, "onCancel: ");
         }
     };
-
-
-
-
-
-
-    private class LongToothHandler implements LongToothEventHandler {
-        @Override
-        public void handleEvent(int code, String ltid_str, String srv_str, byte[] msg, LongToothAttachment attachment) {
-//            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
-//
-//            }
-            Log.d("shcbind", "handleEvent: "+code);
-
-            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
-            } else if (code == LongToothEvent.EVENT_LONGTOOTH_ACTIVATED) {
-                LongTooth.addService("n22s", new LongToothNSServer());
-                LongTooth.addService(Account.getServiceName(), new LongToothServer());
-            } else if (code == LongToothEvent.EVENT_LONGTOOTH_OFFLINE) {
-                Log.d("shcbind", "handleEvent:1 "+code);
-            } else if (code == LongToothEvent.EVENT_LONGTOOTH_TIMEOUT) {
-                Log.d("shcbind", "handleEvent:2 "+code);
-            } else if (code == LongToothEvent.EVENT_LONGTOOTH_UNREACHABLE) {
-                Log.d("shcbind", "handleEvent:3 "+code);
-            } else if (code == LongToothEvent.EVENT_SERVICE_NOT_EXIST) {
-                Log.d("shcbind", "handleEvent:4 "+code);
-            }
-        }
-    }
-
-
-    /**
-     * Handler the n22s request
-     * */
-    private class LongToothNSServer implements LongToothServiceRequestHandler {
-
-        @Override
-        public void handleServiceRequest(LongToothTunnel arg0, String arg1,
-                                         String arg2, int arg3, byte[] arg4) {
-            try {
-
-                if (arg4 != null) {
-                    byte[] b = "n22s response---".getBytes();
-                    SampleAttachment a = new SampleAttachment();
-                    LongTooth.respond(arg0, LongToothTunnel.LT_ARGUMENTS, b, 0,
-                            b.length, a);
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    private int  isResponse = 0;
-    /**
-     * Handler the longtooth service request
-     * */
-    private class LongToothServer implements LongToothServiceRequestHandler {
-
-        @Override
-        public void handleServiceRequest(LongToothTunnel arg0, String arg1,
-                                         String arg2, int arg3, byte[] arg4) {
-            try {
-                if (arg4 != null) {
-
-                    byte[] b = "longtooth response:".getBytes();
-                    SampleAttachment a = new SampleAttachment();
-                    LongTooth.respond(arg0, LongToothTunnel.LT_ARGUMENTS, b, 0,
-                            b.length, a);
-                    if(isResponse<307){
-                        Log.d("shcbind", "handleServiceRequest: "+307);
-//                        LongTooth.request(serverLongToothId, servername,
-//                                LongToothTunnel.LT_ARGUMENTS, sb.toString().getBytes(), 0,
-//                                sb.toString().getBytes().length, new SampleAttachment(),
-//                                new LongToothResponse());
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

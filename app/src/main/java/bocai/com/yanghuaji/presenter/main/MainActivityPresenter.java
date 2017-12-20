@@ -4,9 +4,11 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.net.Network;
+import bocai.com.yanghuaji.util.persistence.Account;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -92,5 +94,41 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
 
 
 
+    }
+
+    @Override
+    public void getEquipmentConfig() {
+        Observable<BaseRspModel<EquipmentConfigModel>> observable = Network.remote().getEquipmentConfig();
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<EquipmentConfigModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<EquipmentConfigModel> equipmentConfigModelBaseRspModel) {
+                        if (equipmentConfigModelBaseRspModel.getReturnCode().equals("200")) {
+                            EquipmentConfigModel model = equipmentConfigModelBaseRspModel.getData();
+                            if (model != null) {
+                                Account.saveConfig(model);
+                            }
+                            view.getEquipmentConfigSuccess(model);
+                        } else {
+                            view.getEquipmentConfigFailed();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.getEquipmentConfigFailed();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

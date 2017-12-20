@@ -244,11 +244,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
-                        //设置是否离线img
-                        if (HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel)) {
-                            //设置有新版本
-                        }
-
                         if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
                                 TextUtils.isEmpty(plantModel.getPid())) {
                             Run.onUiAsync(new Action() {

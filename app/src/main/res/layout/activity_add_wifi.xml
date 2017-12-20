@@ -29,8 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="沉迷工作的网瘾美少女"
-            android:inputType="phone"
+            android:hint="请输入WiFi名称"
             android:textColor="#333333"
             android:textSize="17sp" />
 

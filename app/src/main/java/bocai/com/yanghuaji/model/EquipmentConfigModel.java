@@ -70,4 +70,16 @@ public class EquipmentConfigModel {
     public void setRegisterHost(String RegisterHost) {
         this.RegisterHost = RegisterHost;
     }
+
+    @Override
+    public String toString() {
+        return "EquipmentConfigModel{" +
+                "DeveloperID='" + DeveloperID + '\'' +
+                ", AppID='" + AppID + '\'' +
+                ", AppKey='" + AppKey + '\'' +
+                ", ServiceName='" + ServiceName + '\'' +
+                ", Port='" + Port + '\'' +
+                ", RegisterHost='" + RegisterHost + '\'' +
+                '}';
+    }
 }
