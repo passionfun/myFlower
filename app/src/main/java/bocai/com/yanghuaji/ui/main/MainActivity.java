@@ -97,6 +97,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     private int pageGroup = 1;
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private RecyclerAdapter<GroupRspModel.ListBean> mGroupAdapter;
+    public static final String MAIN_ACTIVITY_REFRESH = "MAIN_ACTIVITY_REFRESH";
 
 
     //显示的入口
@@ -130,6 +131,9 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                         .centerCrop()
                         .into(mPortrait);
             }
+        }else if (messageEvent.getMessage().equals(MAIN_ACTIVITY_REFRESH)){
+            initAllEquipments();
+            initAllGroups();
         }
     }
 

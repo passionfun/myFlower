@@ -47,6 +47,7 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantContrac
 import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresenter;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerPresenter;
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
@@ -454,6 +455,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         public void deleteEquipmentSuccess() {
             VeticalRecyclerFragment.this.mPresenter.getAllEquipments(Account.getToken(),"0","0");
             EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
+            EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
         }
 
         private String getStatus(String code) {

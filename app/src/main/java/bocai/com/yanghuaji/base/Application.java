@@ -33,6 +33,8 @@ public class Application extends android.app.Application {
         //加载长牙配置信息
         Account.loadEquipmentConfig(this);
         Factory.setup();
+        //该接口需在init接口之前调用，避免出现部分日志没打印的情况
+        JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         UMShareAPI.get(this);
     }

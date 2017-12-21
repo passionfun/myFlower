@@ -303,14 +303,6 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (imgUpgrading!=null){
-            imgUpgrading.clearAnimation();
-        }
-    }
-
-    @Override
     protected void initWidget() {
         super.initWidget();
         mTitle.setText("设备信息");

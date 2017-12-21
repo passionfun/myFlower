@@ -217,11 +217,25 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             private boolean isShowSetting = false;
             private MainRecylerContract.Presenter mPresenter;
+            private TimerTask task;
+            private Timer timer = new Timer();
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-
+                EventBus.getDefault().register(this);
                 new MainRecylerPresenter(this);
+            }
+
+
+
+
+            @Subscribe(threadMode = ThreadMode.MAIN)
+            public void fresh(MessageEvent messageEvent) {
+                if (messageEvent.getMessage().equals(HORIZONTALRECYLER_REFRESH)) {
+                    Log.d(TAG, "fresh: timer");
+//                    timer.cancel();
+                    task.cancel();
+                }
             }
 
             @Override
@@ -239,8 +253,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         .centerCrop()
                         .placeholder(R.mipmap.img_main_empty)
                         .into(mImage);
-                Timer timer = new Timer();
-                TimerTask task = new TimerTask() {
+                task = new TimerTask() {
                     @Override
                     public void run() {
                         getEquipmentData(plantModel);

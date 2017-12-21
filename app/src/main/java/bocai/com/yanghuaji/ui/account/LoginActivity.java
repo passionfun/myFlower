@@ -104,18 +104,6 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
         return R.layout.activity_login;
     }
 
-    @Override
-    protected boolean initArgs(Bundle bundle) {
-        boolean isHavePhoneStatePermission = PermissionUtils.checkPermissionAllGranted(this, phoneState);
-        if (!isHavePhoneStatePermission) {
-            //申请权限
-            ActivityCompat.requestPermissions(this, phoneState, MY_PERMISSION_REQUEST_CODE);
-
-        }
-        return super.initArgs(bundle);
-
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -137,8 +125,14 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
                     public void run() {
                         finish();
                     }
-                },2000);
+                },1000);
 
+            }else {
+                mWechatLogin.setEnabled(true);
+                if (Account.isLogin()) {
+                    MainActivity.show(this);
+                    finish();
+                }
             }
         }
     }
@@ -146,10 +140,17 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     @Override
     protected void initWidget() {
         super.initWidget();
+        boolean isHavePhoneStatePermission = PermissionUtils.checkPermissionAllGranted(this, phoneState);
+        if (!isHavePhoneStatePermission) {
+            //申请权限
+            mWechatLogin.setEnabled(false);
+            ActivityCompat.requestPermissions(this, phoneState, MY_PERMISSION_REQUEST_CODE);
 
-        if (Account.isLogin()) {
-            MainActivity.show(this);
-            finish();
+        }else {
+            if (Account.isLogin()) {
+                MainActivity.show(this);
+                finish();
+            }
         }
     }
 
