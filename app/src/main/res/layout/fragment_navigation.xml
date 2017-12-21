@@ -11,12 +11,12 @@
         android:layout_marginBottom="49dp"/>
 
     <LinearLayout
-        android:paddingTop="6dp"
         android:gravity="center_vertical"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="49dp">
         <TextView
+            android:paddingTop="6dp"
             android:foreground="@drawable/ic_touch_fg"
             android:id="@+id/tv_intelligent_planting"
             android:textSize="10sp"
@@ -31,6 +31,7 @@
 
 
         <TextView
+            android:paddingTop="6dp"
             android:foreground="@drawable/ic_touch_fg"
             android:id="@+id/tv_planting_diary"
             android:textSize="10sp"
@@ -45,6 +46,7 @@
 
 
         <TextView
+            android:paddingTop="6dp"
             android:foreground="@drawable/ic_touch_fg"
             android:id="@+id/tv_personal_center"
             android:textSize="10sp"

@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -132,7 +133,7 @@ public class AddEquipmentsActivity extends Activity {
         super.initWidget();
         mTitle.setText("连接设备");
         mSave.setVisibility(View.VISIBLE);
-        mSave.setText("完成");
+        mSave.setText("保存");
         mRecyler.setLayoutManager(new LinearLayoutManager(this));
         mRecyler.setAdapter(mAdapter = new RecyclerAdapter<EquipmentModel>() {
             @Override
@@ -290,6 +291,7 @@ public class AddEquipmentsActivity extends Activity {
             mAdd.setVisibility(View.GONE);
             mAddSuccess.setVisibility(View.GONE);
             mLoading.setVisibility(View.VISIBLE);
+            mLoading.setForegroundColor(Color.parseColor("#75B62B"));
             mLoading.start();
             startBind();
         }

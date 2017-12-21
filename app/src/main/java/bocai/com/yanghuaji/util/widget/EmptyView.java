@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.util.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.View;
@@ -60,7 +61,7 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
         mTextIds[0] = a.getInt(R.styleable.EmptyView_comEmptyText, R.string.prompt_empty);
         mTextIds[1] = a.getInt(R.styleable.EmptyView_comErrorText, R.string.prompt_error);
         mTextIds[2] = a.getInt(R.styleable.EmptyView_comLoadingText, R.string.prompt_loading);
-
+        mLoading.setForegroundColor(Color.parseColor("#75B62B"));
         a.recycle();
     }
 

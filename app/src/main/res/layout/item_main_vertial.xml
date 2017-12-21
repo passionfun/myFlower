@@ -398,8 +398,12 @@
 
     </FrameLayout>
 
-
+<FrameLayout
+    android:layout_width="60dp"
+    android:layout_height="match_parent">
     <Button
+        android:layout_marginBottom="14dp"
+        android:layout_marginTop="11dp"
         android:id="@+id/btn_delete"
         android:textColor="#ffffff"
         android:background="#ff7b46"
@@ -407,6 +411,8 @@
         android:layout_height="match_parent"
         android:textSize="14sp"
         android:text="删除"/>
+</FrameLayout>
+
 
 </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 

@@ -43,6 +43,11 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     @BindView(R.id.recycler_planting_diary)
     XRecyclerView mRecyclerView;
 
+    @BindView(R.id.img_shadow)
+    ImageView mShadow;
+
+
+
     private int page = 1;
     private RecyclerAdapter<DiaryListModel.DiaryModl> mAdapter;
     public static final String PLANTING_DIARY_REFRESH = "PLANTING_DIARY_REFRESH";
@@ -79,7 +84,7 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyclerView.setLoadingListener(this);
-        mEmptyView.bind(mRecyclerView);
+        mEmptyView.bind(mRecyclerView,mShadow);
         mEmptyView.setEmptyImg(R.mipmap.status_diary_empty);
         mEmptyView.setEmptyText(R.string.diary_empty);
         setPlaceHolderView(mEmptyView);

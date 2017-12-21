@@ -29,9 +29,11 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
+                android:layout_marginTop="5dp"
                 android:id="@+id/tv_edit_personal_data"
                 android:textColor="#666666"
                 android:textSize="12sp"
+                android:gravity="center"
                 android:drawablePadding="6dp"
                 android:drawableEnd="@mipmap/img_edit"
                 android:text="@string/check_and_edit_personal_data"
