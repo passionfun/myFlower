@@ -29,6 +29,7 @@ import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -101,6 +102,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("添加植物");
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter = new RecyclerAdapter<PlantRspModel.PlantCard>() {

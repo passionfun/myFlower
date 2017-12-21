@@ -38,19 +38,28 @@
 
     android:layout_marginEnd="15dp"
     android:layout_marginTop="62dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="92dp"
+    android:layout_height="92dp">
+
+    <ImageView
+        android:layout_gravity="center"
+        android:src="@mipmap/img_portrait_shadow"
+        android:layout_width="92dp"
+        android:layout_height="92dp" />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_add_portrait"
         android:src="@mipmap/img_edit_portrait"
         android:layout_width="65dp"
+        android:layout_gravity="center"
         android:layout_height="65dp" />
 
     <bocai.com.yanghuaji.util.widget.RoundAngleImageView
         android:layout_width="65dp"
         app:roundHeightLeftBottom="32.5dp"
         app:roundHeightLeftUp="32.5dp"
+        android:layout_gravity="center"
         android:background="#64000000"
         app:roundHeightRightBottom="32.5dp"
         app:roundHeightRightUp="32.5dp"

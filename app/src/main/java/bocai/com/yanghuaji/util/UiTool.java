@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Build;
+import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.view.Window;
+import android.widget.TextView;
 
 public class UiTool {
     private static int STATUS_BAR_HEIGHT = -1;
@@ -110,5 +112,14 @@ public class UiTool {
         if (dialog!=null&&dialog.isShowing()){
             dialog.dismiss();
         }
+    }
+
+
+    /**
+     * 加粗字体
+     */
+    public static void setBlod(TextView textView){
+        TextPaint tp = textView.getPaint();
+        tp.setFakeBoldText(true);
     }
 }

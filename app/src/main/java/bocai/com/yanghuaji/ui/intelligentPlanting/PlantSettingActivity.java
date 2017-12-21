@@ -36,6 +36,7 @@ import bocai.com.yanghuaji.model.PlantSettingModel_Table;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.PlantSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.PlantSettingPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -107,6 +108,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("植物设置");
         tvRight.setVisibility(View.VISIBLE);
         pId=mPlantBean.getPid();

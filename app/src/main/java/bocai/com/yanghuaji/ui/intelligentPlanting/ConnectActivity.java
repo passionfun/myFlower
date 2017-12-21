@@ -31,6 +31,7 @@ import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectPresenter;
 import bocai.com.yanghuaji.util.DateUtils;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -104,6 +105,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("连接设备");
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.load_animation);
         mAnimBg.startAnimation(animation);

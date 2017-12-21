@@ -33,6 +33,7 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentSettingContrac
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentSettingPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.DateUtils;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -115,6 +116,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("种植机设置");
         etEquipName.setText(mPlantBean.getEquipName());
         tvRight.setVisibility(View.VISIBLE);

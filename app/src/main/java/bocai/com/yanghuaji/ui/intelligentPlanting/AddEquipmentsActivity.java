@@ -46,6 +46,7 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerPre
 import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.LongToothUtil;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
@@ -131,6 +132,7 @@ public class AddEquipmentsActivity extends Activity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("连接设备");
         mSave.setVisibility(View.VISIBLE);
         mSave.setText("保存");

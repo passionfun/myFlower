@@ -66,70 +66,81 @@
             </LinearLayout>
         </FrameLayout>
 
-        <!--<ScrollView-->
-        <!--android:background="#FFFFFF"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-
-        <LinearLayout
+        <FrameLayout
+            android:background="#F7F7F7"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <CheckBox
-                android:id="@+id/cb_all_equipments"
+            <LinearLayout
+                android:background="#ffffff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="18dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="16dp"
-                android:button="@null"
-                android:drawableEnd="@drawable/selector_cb_arrow"
-                android:drawablePadding="10dp"
-                android:drawableStart="@mipmap/img_all_equrment"
-                android:text="所有设备"
-                android:textColor="#333333"
-                android:textSize="15sp" />
+                android:orientation="vertical">
 
-            <View
-                android:id="@+id/view_all_equipments"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="11dp"
-                android:background="#E7E7E7" />
+                <CheckBox
+                    android:id="@+id/cb_all_equipments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="16dp"
+                    android:button="@null"
+                    android:drawableEnd="@drawable/selector_cb_arrow"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@mipmap/img_all_equrment"
+                    android:text="所有设备"
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
-            <com.jcodecraeer.xrecyclerview.XRecyclerView
-                android:id="@+id/recycler_all_equipment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                <View
+                    android:id="@+id/view_all_equipments"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="11dp"
+                    android:background="#E7E7E7" />
+
+                <com.jcodecraeer.xrecyclerview.XRecyclerView
+                    android:id="@+id/recycler_all_equipment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
 
 
-            <com.jcodecraeer.xrecyclerview.XRecyclerView
-                android:id="@+id/recycler_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                <com.jcodecraeer.xrecyclerview.XRecyclerView
+                    android:id="@+id/recycler_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <!--</ScrollView>-->
+
+        </FrameLayout>
+
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/tv_group_manager"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:background="#F7F7F7"
+        android:id="@+id/frame_group_manager"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="65dp"
-        android:layout_marginTop="26dp"
-        android:drawableStart="@mipmap/img_classified_management"
-        android:text="分组管理"
-        android:textColor="#666666"
-        android:textSize="13sp" />
+        android:layout_marginBottom="58dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/tv_group_manager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="4dp"
+            android:drawableStart="@mipmap/img_classified_management"
+            android:text="分组管理"
+            android:textColor="#666666"
+            android:textSize="13sp" />
+    </FrameLayout>
+
 
 
     <FrameLayout
@@ -139,38 +150,55 @@
         android:background="#FFFFFF"
         android:gravity="center_vertical">
 
-        <TextView
-            android:foreground="@drawable/ic_touch_fg"
-            android:id="@+id/tv_switch_type"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawablePadding="13dp"
-            android:drawableStart="@mipmap/img_change"
-            android:gravity="center_vertical"
-            android:paddingStart="24dp"
-            android:text="@string/switch_permutation_pattern"
-            android:textColor="#333333"
-            android:textSize="13sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:background="#E4E4E4" />
+            <FrameLayout
+                android:foreground="@drawable/ic_touch_fg"
+                android:id="@+id/frame_switch_type"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:foreground="@drawable/ic_touch_fg"
-            android:id="@+id/tv_shopping"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end|center_vertical"
-            android:drawablePadding="13dp"
-            android:drawableStart="@mipmap/img_shop"
-            android:gravity="center_vertical"
-            android:paddingEnd="48dp"
-            android:text="@string/go_to_shop"
-            android:textColor="#333333"
-            android:textSize="13sp" />
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="13dp"
+                    android:drawableStart="@mipmap/img_change"
+                    android:text="@string/switch_permutation_pattern"
+                    android:textColor="#333333"
+                    android:textSize="13sp" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="#E4E4E4" />
+
+            <FrameLayout
+                android:foreground="@drawable/ic_touch_fg"
+                android:id="@+id/frame_shopping"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="13dp"
+                    android:drawableStart="@mipmap/img_shop"
+                    android:text="@string/go_to_shop"
+                    android:textColor="#333333"
+                    android:textSize="13sp" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+
     </FrameLayout>
 
 </FrameLayout>

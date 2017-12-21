@@ -18,6 +18,7 @@ import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.GroupManagerContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.GroupManagerPresenter;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -60,6 +61,7 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("分组管理");
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapter(mAdapter = new RecyclerAdapter<GroupRspModel.ListBean>() {

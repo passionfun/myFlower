@@ -24,6 +24,7 @@ import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.plantingDiary.PlantDiaryListContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.PlantDiaryListPresenter;
 import bocai.com.yanghuaji.util.DateUtils;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
@@ -48,6 +49,11 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
 
 
 
+    @BindView(R.id.tv_diary_book)
+    TextView mDiaryBook;
+
+
+
     private int page = 1;
     private RecyclerAdapter<DiaryListModel.DiaryModl> mAdapter;
     public static final String PLANTING_DIARY_REFRESH = "PLANTING_DIARY_REFRESH";
@@ -65,6 +71,7 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
+        UiTool.setBlod(mDiaryBook);
         EventBus.getDefault().register(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter = new RecyclerAdapter<DiaryListModel.DiaryModl>() {

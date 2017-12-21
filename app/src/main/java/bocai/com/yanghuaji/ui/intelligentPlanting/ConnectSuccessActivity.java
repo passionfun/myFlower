@@ -26,6 +26,7 @@ import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessPresenter;
+import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -94,6 +95,7 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("连接设备");
         new CountDownTimer(4000, 1000) {
             @Override

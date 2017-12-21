@@ -34,6 +34,8 @@
                         android:layout_width="66dp"
                         android:layout_height="71dp"
                         android:src="@mipmap/img_main_empty"
+                        app:roundHeightRightUp="5dp"
+                        app:roundHeightRightBottom="5dp"
                         app:roundHeightLeftBottom="5dp"
                         app:roundHeightLeftUp="5dp" />
 

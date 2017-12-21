@@ -20,6 +20,7 @@ import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentsByGroupModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EditGroupContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EditGroupPresenter;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -99,6 +100,7 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("编辑分组");
         mSave.setVisibility(View.VISIBLE);
         mSave.setText("保存");

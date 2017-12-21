@@ -19,6 +19,7 @@ import bocai.com.yanghuaji.presenter.account.RegisterContract;
 import bocai.com.yanghuaji.presenter.account.RegisterPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.ui.personalCenter.GuideActivity;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.adapter.TextWatcherAdapter;
 import bocai.com.yanghuaji.util.adapter.account.CountDownTimerUtils;
 import butterknife.BindView;
@@ -73,6 +74,7 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText(R.string.phone_register);
         initEditContent();
     }

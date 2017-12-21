@@ -22,6 +22,7 @@ import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.PermissionUtils;
+import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -86,6 +87,7 @@ public class AddEquipmentDisplayActivity extends Activity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("添加设备");
         GlideApp.with(this)
                 .load(mPhotoPath)

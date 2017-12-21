@@ -17,6 +17,8 @@ import android.widget.TextView;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.common.Common;
+import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,9 +57,9 @@ public class PlantingRecordActivity extends Activity {
     @Override
     protected void initData() {
         super.initData();
+        UiTool.setBlod(mTitle);
         mTitle.setText("种植记录");
-
-
+        ActivityUtil.initWebSetting(webView.getSettings());
         webView.loadUrl(Common.Constance.H5_BASE+"record.html?token="+ Account.getToken());
         webView.setWebViewClient(new WebViewClient() {
             @Override

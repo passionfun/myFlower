@@ -110,7 +110,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         return R.layout.activity_main;
     }
 
-    @OnClick(R.id.tv_switch_type)
+    @OnClick(R.id.frame_switch_type)
     void onSwitchClick() {
         //切换横竖列表
         mNavigationFragment.switchType();
@@ -285,13 +285,13 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     }
 
 
-    @OnClick(R.id.tv_group_manager)
+    @OnClick(R.id.frame_group_manager)
     void onGroupManagerClick() {
         GroupManagerActivity.show(this);
     }
 
 
-    @OnClick(R.id.tv_shopping)
+    @OnClick(R.id.frame_shopping)
     void onShoppingClick() {
         String content = "WG101&8001F023412332&B0:F8:93:10:CF:E6";
         String[] result = content.split("&");

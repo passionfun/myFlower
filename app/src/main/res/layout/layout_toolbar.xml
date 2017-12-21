@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="#ffffff"
     xmlns:tools="http://schemas.android.com/tools">
     <android.support.v7.widget.Toolbar
         android:layout_marginTop="26dp"
@@ -12,10 +13,11 @@
         android:title="">
 
         <ImageView
+            android:scaleType="center"
             android:id="@+id/img_back"
             android:layout_marginStart="30dp"
             android:src="@mipmap/img_back"
-            android:layout_width="30dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent" />
 
 

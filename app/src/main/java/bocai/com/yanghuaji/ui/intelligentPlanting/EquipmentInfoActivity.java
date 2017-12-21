@@ -32,6 +32,7 @@ import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.model.UpdateVersionRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentInfoContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentInfoPresenter;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -305,6 +306,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("设备信息");
 
         map.put("Token", Account.getToken());

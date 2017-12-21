@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/ll_root"
+    android:background="#ffffff"
     tools:context="bocai.com.yanghuaji.ui.plantingDiary.DiaryListActivity">
 
     <android.support.v7.widget.Toolbar
@@ -63,6 +64,7 @@
         />
 
     <WebView
+        android:background="#ffffff"
         android:id="@+id/webView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

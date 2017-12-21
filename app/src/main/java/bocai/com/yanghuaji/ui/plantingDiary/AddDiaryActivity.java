@@ -33,6 +33,7 @@ import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryPresenter;
 import bocai.com.yanghuaji.ui.personalCenter.EquipmentListPopupWindow;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.DateUtils;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.RoundAngleImageView;
 import butterknife.BindView;
@@ -96,6 +97,7 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("添加日记本");
         mSave.setVisibility(View.VISIBLE);
     }

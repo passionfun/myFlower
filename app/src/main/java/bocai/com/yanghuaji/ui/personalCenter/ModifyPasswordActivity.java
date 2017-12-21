@@ -9,6 +9,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.presenter.personalCenter.ModifyPasswordContract;
 import bocai.com.yanghuaji.presenter.personalCenter.ModifyPasswordPresenter;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,6 +47,7 @@ public class ModifyPasswordActivity extends PresenterActivity<ModifyPasswordCont
     @Override
     protected void initData() {
         super.initData();
+        UiTool.setBlod(mTitle);
         mTitle.setText("修改密码");
     }
 

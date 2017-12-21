@@ -25,6 +25,7 @@ import bocai.com.yanghuaji.model.PlantSettingModel;
 import bocai.com.yanghuaji.model.PlantSettingModel_Table;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.SecondSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.SecondSettingPresenter;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -72,6 +73,7 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("设置");
         mCbPush.setChecked(mPlantBean.getPushStatus().equals("1"));
         mCbPush.setOnClickListener(new View.OnClickListener() {

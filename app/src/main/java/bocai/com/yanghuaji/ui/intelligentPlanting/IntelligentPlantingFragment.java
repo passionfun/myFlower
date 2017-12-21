@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Fragment;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -23,6 +25,9 @@ public class IntelligentPlantingFragment extends Fragment {
 
     @BindView(R.id.bt_go_to_add)
     Button mBtGoToAdd;
+
+    @BindView(R.id.tv_Equipment)
+    TextView mEquipment;
 
     private HorizontalRecyclerFragment mHorizontalFragment;
     private VeticalRecyclerFragment mVerticalFragment;
@@ -70,6 +75,7 @@ public class IntelligentPlantingFragment extends Fragment {
     @Override
     protected void initData() {
         super.initData();
+        UiTool.setBlod(mEquipment);
         mHorizontalFragment = new HorizontalRecyclerFragment();
         FragmentTransaction mTransaction = getChildFragmentManager().beginTransaction();
         mTransaction.add(R.id.container,mHorizontalFragment).commit();

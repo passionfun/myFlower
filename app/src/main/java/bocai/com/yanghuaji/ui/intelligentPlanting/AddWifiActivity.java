@@ -14,6 +14,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
+import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.fog.fog2sdk.MiCODevice;
@@ -76,6 +77,7 @@ public class AddWifiActivity extends Activity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        UiTool.setBlod(mTitle);
         mTitle.setText("添加设备");
         micodev = new MiCODevice(this);
         mWifiName.setText(micodev.getSSID());
@@ -100,7 +102,10 @@ public class AddWifiActivity extends Activity {
 
     @OnClick(R.id.tv_setting_wireless)
     void onSettingWirelessClick() {
-
+        //跳转WiFi页面
+        Intent intent = new Intent();
+        intent.setAction("android.net.wifi.PICK_WIFI_NETWORK");
+        startActivity(intent);
     }
 
 }
