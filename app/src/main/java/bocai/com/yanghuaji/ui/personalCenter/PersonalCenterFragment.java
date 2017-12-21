@@ -150,9 +150,9 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
     public void getNoticeStatusSuccess(NoticeStatusRspModel noticeStatusRspModel) {
         //0无新消息   1有新消息
         if (noticeStatusRspModel.getStatus().equals("0")){
-            mNoticeStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_no_message,0,0,0);
+            mNoticeStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_no_message,0,R.mipmap.img_personal_center_arrow,0);
         }else {
-            mNoticeStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_system_notification_new,0,0,0);
+            mNoticeStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_system_notification_new,0,R.mipmap.img_personal_center_arrow,0);
         }
     }
 

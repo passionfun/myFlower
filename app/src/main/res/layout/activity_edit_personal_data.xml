@@ -44,23 +44,24 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_add_portrait"
         android:src="@mipmap/img_edit_portrait"
-        android:layout_width="94dp"
-        android:layout_height="94dp" />
+        android:layout_width="65dp"
+        android:layout_height="65dp" />
 
     <bocai.com.yanghuaji.util.widget.RoundAngleImageView
-        android:layout_width="94dp"
-        app:roundHeightLeftBottom="47dp"
-        app:roundHeightLeftUp="47dp"
+        android:layout_width="65dp"
+        app:roundHeightLeftBottom="32.5dp"
+        app:roundHeightLeftUp="32.5dp"
         android:background="#64000000"
-        app:roundHeightRightBottom="47dp"
-        app:roundHeightRightUp="47dp"
-        android:layout_height="94dp"/>
+        app:roundHeightRightBottom="32.5dp"
+        app:roundHeightRightUp="32.5dp"
+        android:layout_height="65dp"/>
 
 
     <ImageView
+        android:scaleType="center"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:src="@mipmap/img_photo"/>
 
 </FrameLayout>
