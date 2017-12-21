@@ -231,7 +231,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Subscribe(threadMode = ThreadMode.MAIN)
             public void fresh(MessageEvent messageEvent) {
-                if (messageEvent.getMessage().equals(HORIZONTALRECYLER_REFRESH)) {
+                if (messageEvent.getMessage().equals(VeticalRecyclerFragment.VERTICALRECYCLER_DELETE_SUCCESS)) {
                     Log.d(TAG, "fresh: timer");
 //                    timer.cancel();
                     task.cancel();
@@ -537,7 +537,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     offLine();
                     return;
                 }
-                Log.d(TAG, "handleServiceResponse: " + jsonContent);
+                Log.d(TAG, "handleServiceResponse: " +mPlantModel.getLTID()+":"+ jsonContent);
                 PlantStatusRspModel plantStatusRspModel = gson.fromJson(jsonContent, PlantStatusRspModel.class);
                 if (plantStatusRspModel.getCODE() == 0) {
                     onLine();

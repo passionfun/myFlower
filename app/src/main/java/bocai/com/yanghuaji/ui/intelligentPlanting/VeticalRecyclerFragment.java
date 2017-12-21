@@ -75,10 +75,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     private int page = 1;
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
-//    //搜索设备用
-//    private MiCODevice micodev;
-//    //所有在线设备的mac集合
-//    List<String> longtoothIds = new ArrayList<>();
+    public static final String VERTICALRECYCLER_DELETE_SUCCESS = "VERTICALRECYCLER_DELETE_SUCCESS";
+
 
     @Override
     protected int getContentLayoutId() {
@@ -221,6 +219,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         Button mDelete;
 
         private MainRecylerContract.Presenter mPresenter;
+        private TimerTask task;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -242,7 +241,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     .into(mImage);
 
             Timer timer = new Timer();
-            TimerTask task = new TimerTask() {
+            task = new TimerTask() {
                 @Override
                 public void run() {
                    getEquipmentData(plantModel);
@@ -454,8 +453,13 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @Override
         public void deleteEquipmentSuccess() {
             VeticalRecyclerFragment.this.mPresenter.getAllEquipments(Account.getToken(),"0","0");
+            //通知Horizontal停止timertask
+            EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_DELETE_SUCCESS));
+            //通知Horizontal刷新页面
             EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
+            //通知MainActivity刷新页面
             EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
+            task.cancel();
         }
 
         private String getStatus(String code) {
@@ -523,7 +527,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     return;
                 }
                 String jsonContent = new String(bytes);
-                Log.d(TAG, "handleServiceResponse: " + jsonContent);
+                Log.d(TAG, "handleServiceResponse: "  +mPlantModel.getLTID()+":"+ jsonContent);
                 if (!jsonContent.contains("CODE")) {
                     offLine();
                     return;

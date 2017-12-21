@@ -228,6 +228,12 @@ public class AddEquipmentsActivity extends Activity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        micodev.stopEasyLink(null);
+        micodev.stopSearchDevices(null);
+    }
 
     private boolean isAdded(String longtoothId) {
         List<String> longtoothS = new ArrayList<>();
