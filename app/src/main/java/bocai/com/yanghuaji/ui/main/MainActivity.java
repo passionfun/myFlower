@@ -339,10 +339,11 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         if (mAdapter.getItems().size() == 0) {
             mRecyclerAll.setVisibility(View.GONE);
             mDivideAllEquipments.setVisibility(View.VISIBLE);
-        } else {
-            mRecyclerAll.setVisibility(View.VISIBLE);
-            mDivideAllEquipments.setVisibility(View.GONE);
         }
+//        else {
+//            mRecyclerAll.setVisibility(View.VISIBLE);
+//            mDivideAllEquipments.setVisibility(View.GONE);
+//        }
     }
 
     @Override

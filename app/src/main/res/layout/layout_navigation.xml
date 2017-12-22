@@ -85,6 +85,7 @@
                     android:layout_marginStart="22dp"
                     android:layout_marginTop="16dp"
                     android:button="@null"
+                    android:checked="true"
                     android:drawableEnd="@drawable/selector_cb_arrow"
                     android:drawablePadding="10dp"
                     android:drawableStart="@mipmap/img_all_equrment"
@@ -128,7 +129,7 @@
         android:layout_marginBottom="58dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="40dp">
         <TextView
             android:layout_gravity="center"
             android:id="@+id/tv_group_manager"
