@@ -254,7 +254,9 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                     mDivideAllEquipments.setVisibility(View.VISIBLE);
                 } else {
                     mRecyclerAll.setVisibility(View.VISIBLE);
-                    mDivideAllEquipments.setVisibility(View.GONE);
+                    if (mAdapter.getItemCount()>0){
+                        mDivideAllEquipments.setVisibility(View.GONE);
+                    }
                 }
             }
         });
