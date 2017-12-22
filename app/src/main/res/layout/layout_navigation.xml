@@ -101,14 +101,27 @@
                     android:layout_marginTop="11dp"
                     android:background="#E7E7E7" />
 
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
+                <!--<com.jcodecraeer.xrecyclerview.XRecyclerView-->
+                    <!--android:id="@+id/recycler_all_equipment"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:visibility="gone" />-->
+
+
+                <!--<com.jcodecraeer.xrecyclerview.XRecyclerView-->
+                    <!--android:id="@+id/recycler_group"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:visibility="gone" />-->
+
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_all_equipment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone" />
 
 
-                <com.jcodecraeer.xrecyclerview.XRecyclerView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

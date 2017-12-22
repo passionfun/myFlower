@@ -106,7 +106,7 @@
         android:textColor="#333333"
         android:textSize="16sp"
         android:drawablePadding="20dp"
-        android:drawableStart="@mipmap/img_system_notification_new"
+        android:drawableStart="@mipmap/img_no_message"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
         android:layout_marginEnd="20dp"
         />

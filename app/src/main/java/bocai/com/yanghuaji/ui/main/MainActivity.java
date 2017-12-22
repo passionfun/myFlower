@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,23 +15,16 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import com.jcodecraeer.xrecyclerview.ProgressStyle;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
-import bocai.com.yanghuaji.base.common.Factory;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
@@ -40,10 +34,8 @@ import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.main.MainActivityContract;
 import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
 import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
-import bocai.com.yanghuaji.ui.account.LoginActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.AddWifiActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
-import bocai.com.yanghuaji.ui.intelligentPlanting.SampleAttachment;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.LongToothUtil;
@@ -53,15 +45,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import de.hdodenhof.circleimageview.CircleImageView;
-import xpod.longtooth.LongTooth;
-import xpod.longtooth.LongToothAttachment;
-import xpod.longtooth.LongToothEvent;
-import xpod.longtooth.LongToothEventHandler;
-import xpod.longtooth.LongToothServiceRequestHandler;
-import xpod.longtooth.LongToothTunnel;
 
 public class MainActivity extends PresenterActivity<MainActivityContract.Presenter>
-        implements MainActivityContract.View, XRecyclerView.LoadingListener {
+        implements MainActivityContract.View {
     public static final String TAG = MainActivity.class.getName();
     private long firstTime = 0;
     private NavigationFragment mNavigationFragment;
@@ -81,7 +67,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     TextView mName;
 
     @BindView(R.id.recycler_all_equipment)
-    XRecyclerView mRecyclerAll;
+    RecyclerView mRecyclerAll;
 
     @BindView(R.id.view_all_equipments)
     View mDivideAllEquipments;
@@ -91,10 +77,10 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
 
     @BindView(R.id.recycler_group)
-    XRecyclerView mRecyclerGroup;
+    RecyclerView mRecyclerGroup;
 
-    private int page = 1;
-    private int pageGroup = 1;
+//    private int page = 1;
+//    private int pageGroup = 1;
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private RecyclerAdapter<GroupRspModel.ListBean> mGroupAdapter;
     public static final String MAIN_ACTIVITY_REFRESH = "MAIN_ACTIVITY_REFRESH";
@@ -217,26 +203,26 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             }
         });
 
-
-        mRecyclerGroup.setPullRefreshEnabled(true);
-        mRecyclerGroup.setLoadingMoreEnabled(true);
-        mRecyclerGroup.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerGroup.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
-        mRecyclerGroup.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                pageGroup = 1;
-                mPresenter.getAllGroups(Account.getToken(), "10", pageGroup + "");
-            }
-
-            @Override
-            public void onLoadMore() {
-                pageGroup++;
-                mPresenter.getAllGroups(Account.getToken(), "10", pageGroup + "");
-            }
-        });
-        pageGroup = 1;
-        mPresenter.getAllGroups(Account.getToken(), "10", pageGroup + "");
+//
+//        mRecyclerGroup.setPullRefreshEnabled(true);
+//        mRecyclerGroup.setLoadingMoreEnabled(true);
+//        mRecyclerGroup.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+//        mRecyclerGroup.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+//        mRecyclerGroup.setLoadingListener(new XRecyclerView.LoadingListener() {
+//            @Override
+//            public void onRefresh() {
+//                pageGroup = 1;
+//                mPresenter.getAllGroups(Account.getToken(), "10", pageGroup + "");
+//            }
+//
+//            @Override
+//            public void onLoadMore() {
+//                pageGroup++;
+//                mPresenter.getAllGroups(Account.getToken(), "10", pageGroup + "");
+//            }
+//        });
+//        pageGroup = 1;
+        mPresenter.getAllGroups(Account.getToken(), "0",  "0");
     }
 
     private void initAllEquipments() {
@@ -253,11 +239,11 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             }
         });
 
-        mRecyclerAll.setPullRefreshEnabled(true);
-        mRecyclerAll.setLoadingMoreEnabled(true);
-        mRecyclerAll.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerAll.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
-        mRecyclerAll.setLoadingListener(this);
+//        mRecyclerAll.setPullRefreshEnabled(true);
+//        mRecyclerAll.setLoadingMoreEnabled(true);
+//        mRecyclerAll.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+//        mRecyclerAll.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+//        mRecyclerAll.setLoadingListener(this);
 
 
         mCbAllEquipments.setOnClickListener(new View.OnClickListener() {
@@ -274,8 +260,8 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         });
 
 
-        page = 1;
-        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+//        page = 1;
+        mPresenter.getAllEquipments(Account.getToken(), "0",  "0");
     }
 
 
@@ -325,17 +311,17 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
     @Override
     public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
-        if (page == 1) {
-            mRecyclerAll.refreshComplete();
-            mAdapter.replace(listBeans);
-        } else {
-            if (listBeans == null || listBeans.size() == 0) {
-                Application.showToast("没有更多");
-            }
-            mRecyclerAll.loadMoreComplete();
-            mAdapter.add(listBeans);
-        }
-
+//        if (page == 1) {
+//            mRecyclerAll.refreshComplete();
+//            mAdapter.replace(listBeans);
+//        } else {
+//            if (listBeans == null || listBeans.size() == 0) {
+//                Application.showToast("没有更多");
+//            }
+//            mRecyclerAll.loadMoreComplete();
+//            mAdapter.add(listBeans);
+//        }
+        mAdapter.replace(listBeans);
         if (mAdapter.getItems().size() == 0) {
             mRecyclerAll.setVisibility(View.GONE);
             mDivideAllEquipments.setVisibility(View.VISIBLE);
@@ -348,17 +334,17 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
     @Override
     public void getAllGroupsSuccess(List<GroupRspModel.ListBean> listBeans) {
-        if (pageGroup == 1) {
-            mRecyclerGroup.refreshComplete();
-            mGroupAdapter.replace(listBeans);
-        } else {
-            if (listBeans == null || listBeans.size() == 0) {
-                Application.showToast("没有更多");
-            }
-            mRecyclerAll.loadMoreComplete();
-            mGroupAdapter.add(listBeans);
-        }
-
+//        if (pageGroup == 1) {
+//            mRecyclerGroup.refreshComplete();
+//            mGroupAdapter.replace(listBeans);
+//        } else {
+//            if (listBeans == null || listBeans.size() == 0) {
+//                Application.showToast("没有更多");
+//            }
+//            mRecyclerAll.loadMoreComplete();
+//            mGroupAdapter.add(listBeans);
+//        }
+        mGroupAdapter.replace(listBeans);
         if (listBeans != null && listBeans.size() > 0) {
             mRecyclerGroup.setVisibility(View.VISIBLE);
         } else {
@@ -391,17 +377,17 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         return new MainActivityPresenter(this);
     }
 
-    @Override
-    public void onRefresh() {
-        page = 1;
-        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
-    }
-
-    @Override
-    public void onLoadMore() {
-        page++;
-        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
-    }
+//    @Override
+//    public void onRefresh() {
+//        page = 1;
+//        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+//    }
+//
+//    @Override
+//    public void onLoadMore() {
+//        page++;
+//        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+//    }
 
 
 class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
