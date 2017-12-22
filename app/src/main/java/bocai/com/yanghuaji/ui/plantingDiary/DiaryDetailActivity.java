@@ -13,9 +13,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+
 import org.greenrobot.eventbus.EventBus;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.DiaryDetailModel;
 import bocai.com.yanghuaji.model.MessageEvent;
@@ -47,11 +54,13 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
     public static final String KEY_URL = "KEY_URL";
     private String mUrl;
     private String mDiaryItemId;
+    private UMWeb mShareWeb;
+    private UMShareListener mUMShareListener;
 
     //显示的入口
-    public static void show(Context context ,String url) {
+    public static void show(Context context, String url) {
         Intent intent = new Intent(context, DiaryDetailActivity.class);
-        intent.putExtra(KEY_URL,url);
+        intent.putExtra(KEY_URL, url);
         context.startActivity(intent);
     }
 
@@ -64,7 +73,9 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
     protected boolean initArgs(Bundle bundle) {
         mUrl = bundle.getString(KEY_URL);
         //http://121.41.128.239:8082/yhj/web/h5/yhj/diary_info.html?id=15
-        mDiaryItemId = mUrl.substring(mUrl.indexOf("=")+1,mUrl.length());
+        if (mUrl != null) {
+            mDiaryItemId = mUrl.substring(mUrl.indexOf("=") + 1, mUrl.length());
+        }
         return super.initArgs(bundle);
     }
 
@@ -72,7 +83,7 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
     protected void initData() {
         super.initData();
         ActivityUtil.initWebSetting(mWebview.getSettings());
-        mWebview.setWebChromeClient(new WebChromeClient(){
+        mWebview.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress == 100) {
@@ -86,7 +97,34 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
                 super.onProgressChanged(view, newProgress);
             }
         });
+        mShareWeb = new UMWeb(mUrl);
+        mShareWeb.setTitle("养花机");
+        //todo 修改为正式图标和描述
+        mShareWeb.setThumb(new UMImage(this, R.mipmap.img_connect_bg));//缩略图
+        mShareWeb.setDescription("养花机");
         mWebview.loadUrl(mUrl);
+        //分享的回调
+        mUMShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onResult(SHARE_MEDIA share_media) {
+                Application.showToast("分享成功");
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                Application.showToast("分享失败");
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media) {
+
+            }
+        };
     }
 
     @OnClick(R.id.img_back)
@@ -116,7 +154,7 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
 
     @Override
     public void getDiaryDetailSuccess(DiaryDetailModel diaryDetailModel) {
-        ShareDiaryContentPopupWindow popupWindow = new ShareDiaryContentPopupWindow(this);
+        final ShareDiaryContentPopupWindow popupWindow = new ShareDiaryContentPopupWindow(this);
         popupWindow.setOnTtemClickListener(new ShareDiaryContentPopupWindow.ItemClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -125,20 +163,43 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
                         // TODO 保存图片
                         break;
                     case R.id.img_share_qq:
-                        // TODO 分享到QQ
+                        //  分享到QQ
+                        new ShareAction(DiaryDetailActivity.this)
+                                .setPlatform(SHARE_MEDIA.QQ)//传入平台
+                                .withMedia(mShareWeb)
+                                .setCallback(mUMShareListener)
+                                .share();
+                        popupWindow.dismiss();
                         break;
                     case R.id.img_share_wechat:
-                        // TODO 分享到微信
+                        //  分享到微信
+                        new ShareAction(DiaryDetailActivity.this)
+                                .setPlatform(SHARE_MEDIA.WEIXIN)
+                                .withMedia(mShareWeb)
+                                .setCallback(mUMShareListener)
+                                .share();
+                        popupWindow.dismiss();
                         break;
                     case R.id.img_share_friends:
-                        // TODO 分享到朋友圈
+                        //  分享到朋友圈
+                        new ShareAction(DiaryDetailActivity.this)
+                                .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                                .withMedia(mShareWeb)
+                                .setCallback(mUMShareListener)
+                                .share();
+                        popupWindow.dismiss();
                         break;
                 }
             }
         });
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
-        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM,0,0);
-        popupWindow.initData(diaryDetailModel.getPhotos().get(0),diaryDetailModel.getContent());
+        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 30);
+        if (diaryDetailModel.getPhotos().size()>0){
+            popupWindow.initData(diaryDetailModel.getPhotos().get(0), diaryDetailModel.getContent());
+        }else {
+            popupWindow.initData("", diaryDetailModel.getContent());
+        }
+
     }
 
     @Override

@@ -289,7 +289,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
             }
         });
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
-        picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM, 0, 0);
+        picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM, 0, 30);
     }
 
     private void soSelectPhonts(){

@@ -197,7 +197,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
                         // TODO 分享链接
                         break;
                     case R.id.img_share_qq:
-                        // TODO 分享到QQ
+                        //  分享到QQ
                         new ShareAction(DiaryListActivity.this)
                                 .setPlatform(SHARE_MEDIA.QQ)//传入平台
                                 .withMedia(mShareWeb)
@@ -206,7 +206,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
                         popupWindow.dismiss();
                         break;
                     case R.id.img_share_wechat:
-                        // TODO 分享到微信
+                        //  分享到微信
                         new ShareAction(DiaryListActivity.this)
                                 .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
                                 .withMedia(mShareWeb)
@@ -215,7 +215,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
                         popupWindow.dismiss();
                         break;
                     case R.id.img_share_friends:
-                        // TODO 分享到朋友圈
+                        //  分享到朋友圈
                         new ShareAction(DiaryListActivity.this)
                                 .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
                                 .withMedia(mShareWeb)
@@ -227,7 +227,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
             }
         });
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
-        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 30);
     }
 
     @OnClick(R.id.img_data_card)
@@ -243,7 +243,7 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
         popupWindow.initData(diaryCardModel.getPhoto(), diaryCardModel.getPlantName(), diaryCardModel.getEquipName(),
                 diaryCardModel.getPlace(), DateUtils.timet(diaryCardModel.getPlantTime()));
-        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 30);
     }
 
     @Override
