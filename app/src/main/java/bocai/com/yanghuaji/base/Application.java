@@ -40,9 +40,9 @@ public class Application extends android.app.Application {
     }
 
     {
-        // 修改为正确的微信
+        // 设置微信参数
         PlatformConfig.setWeixin("wx8bb8dc2f4ebd73a5", "2c81167a27f12783d2cd014c4f0c60b8");
-        //修改为正确QQ的参数
+        //设置qq参数
         PlatformConfig.setQQZone("1106603998", "9GaOkyLJr7r5ql4f");
     }
 

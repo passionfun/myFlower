@@ -35,6 +35,7 @@
 
 
         <EditText
+            android:textCursorDrawable="@drawable/edit_cursor_color"
             android:layout_marginStart="29dp"
             android:id="@+id/et_diary_name"
             android:layout_width="wrap_content"

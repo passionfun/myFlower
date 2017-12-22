@@ -44,6 +44,7 @@
 
 
     <EditText
+        android:textCursorDrawable="@drawable/edit_cursor_color"
         android:id="@+id/et_input_equipment_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,6 +74,7 @@
 
 
     <EditText
+        android:textCursorDrawable="@drawable/edit_cursor_color"
         android:id="@+id/et_input_plant_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

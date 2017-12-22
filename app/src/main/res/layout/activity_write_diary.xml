@@ -33,6 +33,7 @@
 
 
     <EditText
+        android:textCursorDrawable="@drawable/edit_cursor_color"
         android:id="@+id/et_content"
         android:textColor="#333333"
         android:textSize="14sp"

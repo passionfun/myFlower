@@ -116,6 +116,7 @@
 
             <EditText
                 android:maxLength="11"
+                android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:id="@+id/et_input_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -136,6 +137,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:id="@+id/et_input_password"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

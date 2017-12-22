@@ -24,6 +24,7 @@
 
 
         <EditText
+            android:textCursorDrawable="@drawable/edit_cursor_color"
             android:id="@+id/et_equipName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -31,6 +31,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:id="@+id/et_input_phone_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -77,6 +78,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:id="@+id/et_input_verification_code"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -132,6 +134,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:id="@+id/et_input_password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -171,6 +174,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:id="@+id/et_confirm_password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
