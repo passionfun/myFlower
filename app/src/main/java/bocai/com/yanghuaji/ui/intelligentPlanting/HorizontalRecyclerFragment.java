@@ -424,6 +424,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 }
                 mEcStatus.setText(getStatus(model.getEstatus()));
                 mWaterStatus.setText(getStatus(model.getWstatus()));
+                mImgTemArrow.setVisibility(View.VISIBLE);
                 if (model.getWstatus().equals("0")) {
                     //温度过低
                     mImgTemArrow.setImageResource(R.mipmap.img_trending_down);

@@ -186,8 +186,8 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     void onSetupPlant() {
         plantName=mTvPlantName.getText().toString().trim();
         map.put("Token", Account.getToken());
-        map.put("PlantMode", plantMode);//种植模式
-        map.put("PMid", pMid);//种植模式id
+        map.put("PlantMode", plantMode==null?"":plantMode);//种植模式
+        map.put("PMid", pMid==null?"":pMid);//种植模式id
         map.put("PlantName", plantName);
         map.put("Pid", pId);//植物id
         map.put("LifeCycle", lifeCycle);//生长周期
