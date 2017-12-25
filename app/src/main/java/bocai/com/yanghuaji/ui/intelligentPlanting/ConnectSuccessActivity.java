@@ -111,6 +111,7 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
             @Override
             public void onFinish() {
                 AddPlantActivity.show(ConnectSuccessActivity.this,mEquipmentName,mEquipmentId);
+                finish();
             }
         }.start();
 

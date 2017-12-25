@@ -38,11 +38,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
 
 
-
-
-
-
-
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
@@ -92,11 +87,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".wxapi.WXEntryActivity"
+        <activity
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
             android:name="UMENG_APPKEY"
@@ -161,8 +157,8 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.intelligentPlanting.EquipmentSettingActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:theme="@style/BaseTheme" />
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateHidden" />
         <!--图片剪切-->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
@@ -177,16 +173,28 @@
         <activity
             android:name=".ui.intelligentPlanting.AddPlantActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.intelligentPlanting.GroupManagerActivity" />
-        <activity android:name=".ui.intelligentPlanting.EditGroupActivity" />
-        <activity android:name=".ui.intelligentPlanting.PlantingDateAct" />
-        <activity android:name=".ui.plantingDiary.WriteDiaryActivity" />
+        <activity
+            android:name=".ui.intelligentPlanting.GroupManagerActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.intelligentPlanting.EditGroupActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.intelligentPlanting.PlantingDateAct"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.plantingDiary.WriteDiaryActivity"
+            android:theme="@style/BaseTheme" />
 
         <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".ui.intelligentPlanting.AddEquipmentsActivity" />
-        <activity android:name=".ui.plantingDiary.PlantingDiaryActivity" />
+        <activity
+            android:name=".ui.intelligentPlanting.AddEquipmentsActivity"
+            android:theme="@style/BaseTheme" />
+        <activity
+            android:name=".ui.plantingDiary.PlantingDiaryActivity"
+            android:theme="@style/BaseTheme" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
