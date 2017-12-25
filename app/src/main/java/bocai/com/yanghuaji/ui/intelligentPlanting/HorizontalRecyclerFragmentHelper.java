@@ -15,6 +15,7 @@ import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentDataModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.model.PushModel;
 import bocai.com.yanghuaji.util.UiTool;
@@ -213,7 +214,7 @@ public class HorizontalRecyclerFragmentHelper {
          * "UUID": 1504608600
          * }
          */
-        if (TextUtils.isEmpty(plantModel.getLTID())||TextUtils.isEmpty(plantModel.getPSIGN())) {
+        if (TextUtils.isEmpty(plantModel.getLTID()) || TextUtils.isEmpty(plantModel.getPSIGN())) {
             return false;
         }
         BindEquipmentModel model = new BindEquipmentModel("isUpdate", plantModel.getPSIGN());
@@ -241,6 +242,39 @@ public class HorizontalRecyclerFragmentHelper {
                 default:
                     isHaveNew = false;
                     break;
+            }
+        }
+    }
+
+
+    private static boolean isLedOn = false;
+
+    public static boolean getLedStatus(EquipmentRspModel.ListBean plantModel) {
+        BindEquipmentModel model = new BindEquipmentModel("LedSet", plantModel.getPSIGN());
+        String request = gson.toJson(model);
+        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null, new MyLedStatusLongToothServiceResponseHandler());
+        return isLedOn;
+    }
+
+
+    static class MyLedStatusLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+        @Override
+        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                          String service_str, int data_type, byte[] args,
+                                          LongToothAttachment attachment) {
+            String result = new String(args);
+            LedSetRspModel ledSetRspModel = gson.fromJson(result, LedSetRspModel.class);
+            Log.d(TAG, "ledSetRspModel111:" + result);
+            int code = ledSetRspModel.getCODE();
+            if (code==0){
+                String ledStatus = ledSetRspModel.getSWTICH();
+                if (ledStatus!=null&&ledStatus.equals("On")){
+                    isLedOn = true;
+                }else {
+                    isLedOn = false;
+                }
+
             }
         }
     }

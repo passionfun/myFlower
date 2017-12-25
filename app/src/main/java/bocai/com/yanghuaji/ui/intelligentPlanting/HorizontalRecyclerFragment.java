@@ -235,6 +235,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     Log.d(TAG, "fresh: timer");
 //                    timer.cancel();
                     task.cancel();
+                }else if (messageEvent.getMessage().equals(VeticalRecyclerFragment.EQUIPMENT_LINE_ON)){
+                    mOffLine.setVisibility(View.INVISIBLE);
+                    mFramOffline.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -308,17 +311,18 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
                 if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
                         TextUtils.isEmpty(plantModel.getPid())) {
-                    Run.onUiAsync(new Action() {
-                        @Override
-                        public void call() {
-                            mOffLine.setVisibility(View.VISIBLE);
-                            mFramOffline.setVisibility(View.VISIBLE);
-                        }
-                    });
+//                    Run.onUiAsync(new Action() {
+//                        @Override
+//                        public void call() {
+//                            mOffLine.setVisibility(View.VISIBLE);
+//                            mFramOffline.setVisibility(View.VISIBLE);
+//                        }
+//                    });
 
                     return;
                 }
-                final boolean isLedOn = mLed.isChecked();
+//                final boolean isLedOn = mLed.isChecked();
+                final boolean isLedOn = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);
                 PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
                         1, Integer.parseInt(plantModel.getPid()));
                 String request = gson.toJson(model);
@@ -416,6 +420,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mTemperature.setText(model.getDegree());
                 if (model.getLight() != null) {
                     mLedStatus.setText(model.getLight().equals("0") ? "关" : "开");
+//                    mLed.setChecked(model.getLight().equals("1"));
                 }
                 mEcStatus.setText(getStatus(model.getEstatus()));
                 mWaterStatus.setText(getStatus(model.getWstatus()));
@@ -519,6 +524,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 Run.onUiAsync(new Action() {
                     @Override
                     public void call() {
+                        EventBus.getDefault().post(VeticalRecyclerFragment.EQUIPMENT_LINE_ON);
                         mOffLine.setVisibility(View.INVISIBLE);
                         mFrameOffLine.setVisibility(View.INVISIBLE);
                     }

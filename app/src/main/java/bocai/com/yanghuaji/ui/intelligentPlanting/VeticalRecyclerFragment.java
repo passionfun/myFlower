@@ -76,6 +76,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
     public static final String VERTICALRECYCLER_DELETE_SUCCESS = "VERTICALRECYCLER_DELETE_SUCCESS";
+    public static final String EQUIPMENT_LINE_ON = "EQUIPMENT_LINE_ON";
 
 
     @Override
@@ -223,7 +224,15 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         public ViewHolder(View itemView) {
             super(itemView);
+            EventBus.getDefault().register(this);
             new MainRecylerPresenter(this);
+        }
+
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        public void fresh(MessageEvent messageEvent) {
+            if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON)){
+                mImgTent.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
@@ -513,6 +522,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 Run.onUiAsync(new Action() {
                     @Override
                     public void call() {
+                        EventBus.getDefault().post(EQUIPMENT_LINE_ON);
                         mImgTent.setVisibility(View.INVISIBLE);
                     }
                 });
