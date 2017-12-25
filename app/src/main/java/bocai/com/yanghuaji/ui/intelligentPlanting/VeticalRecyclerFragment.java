@@ -232,6 +232,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         public void fresh(MessageEvent messageEvent) {
             if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON)){
                 mImgTent.setVisibility(View.INVISIBLE);
+            }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragment.HORIZONTALRECYLER_DELETE_SUCCESS)){
+                task.cancel();
             }
         }
 

@@ -1,5 +1,7 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,10 +47,12 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.GalleryLayoutManager;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.ScaleTransformer;
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
@@ -74,6 +78,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
     public static final String TAG = HorizontalRecyclerFragment.class.getName();
     public static final String HORIZONTALRECYLER_REFRESH = "HORIZONTALRECYLER_REFRESH";
+    public static final String HORIZONTALRECYLER_DELETE_SUCCESS = "HORIZONTALRECYLER_DELETE_SUCCESS";
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
 
@@ -97,6 +102,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 String url = Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId();
                 PlantingDateAct.show(getContext(), url, plantModel);
             }
+
         });
 
         layoutManager.setOnItemSelectedListener(new GalleryLayoutManager.OnItemSelectedListener() {
@@ -377,6 +383,21 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             }
 
+            @OnLongClick(R.id.frame_root)
+            boolean onItemLongClick(){
+                AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext());
+                deleteDialog.setTitle("确定删除该设备？");
+                deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mPresenter.deleteEquipment(mData.getId());
+                    }
+                });
+                deleteDialog.setNegativeButton("取消",null);
+                deleteDialog.show();
+                return true;
+            }
+
 
             @OnClick(R.id.img_setting)
             void onSettingClick() {
@@ -465,7 +486,14 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             public void deleteEquipmentSuccess() {
-
+                HorizontalRecyclerFragment.this.mPresenter.getAllEquipments(Account.getToken(),"0","0");
+                task.cancel();
+                //通知MainActivity刷新页面
+                EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
+                //通知verticalfragment停止task
+                EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_DELETE_SUCCESS));
+                //通知Vertical刷新页面
+                EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
             }
 
             private String getStatus(String code) {
