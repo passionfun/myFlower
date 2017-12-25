@@ -3,6 +3,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +37,9 @@ public class AddWifiActivity extends Activity {
 
     @BindView(R.id.et_wifi_password)
     EditText mWifiPassword;
+
+    @BindView(R.id.img_next)
+    ImageView mNext;
 
     private MiCODevice micodev;
     private List<String> mScanData;
@@ -93,12 +97,22 @@ public class AddWifiActivity extends Activity {
     void onNextClick() {
         String ssid = mWifiName.getText().toString();
         String password = mWifiPassword.getText().toString();
+        if (TextUtils.isEmpty(password)){
+            Application.showToast("请输入WiFi密码");
+            return;
+        }
         if (isAddEquipments){
             AddEquipmentsActivity.show(this,ssid,password,plantSeriesCard);
         }else {
             ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);}
+        mNext.setEnabled(false);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mNext.setEnabled(true);
+    }
 
     @OnClick(R.id.tv_setting_wireless)
     void onSettingWirelessClick() {

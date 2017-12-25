@@ -33,7 +33,7 @@
     <string name="system_notification">系统通知</string>
     <string name="modify_password">修改密码</string>
     <string name="setting">设置</string>
-    <string name="quit_application">退出应用</string>
+    <string name="quit_application">退出登录</string>
 
 
     <string name="switch_permutation_pattern">切换排列模式</string>
