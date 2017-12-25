@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,10 @@ import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentsByGroupModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EditGroupContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EditGroupPresenter;
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
@@ -129,6 +133,7 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
 
     @Override
     public void editGroupSuccess(EquipmentsByGroupModel model) {
+        EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
         mAdapter.replace(model.getList());
         mContent.setText("已添加" + mAdapter.getItemCount() + "个设备");
         mEtName.setText(model.getGroupName());

@@ -17,6 +17,8 @@ import android.widget.TimePicker;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +31,10 @@ import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel_Table;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentSettingPresenter;
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.UiTool;
@@ -308,6 +312,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
 
     @Override
     public void setupEquipmentSuccess(EquipmentSetupModel model) {
+        EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
         model.save();
         finish();
     }

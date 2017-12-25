@@ -59,7 +59,11 @@ public class GroupViewHolder extends RecyclerAdapter.ViewHolder<GroupRspModel.Li
             divider.setVisibility(View.VISIBLE);
         } else {
             mRecycler.setVisibility(View.VISIBLE);
-            divider.setVisibility(View.GONE);
+            if (mAdapter.getItemCount()>0){
+                divider.setVisibility(View.GONE);
+            }else {
+                divider.setVisibility(View.VISIBLE);
+            }
         }
     }
 
