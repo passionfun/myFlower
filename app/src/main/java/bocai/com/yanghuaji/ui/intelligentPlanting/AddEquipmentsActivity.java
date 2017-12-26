@@ -240,12 +240,12 @@ public class AddEquipmentsActivity extends Activity {
     }
 
     private boolean isAdded(String longtoothId) {
-        List<String> longtoothS = new ArrayList<>();
+        List<String> longtooths = new ArrayList<>();
         if (listBeans != null && listBeans.size() > 0) {
             for (EquipmentRspModel.ListBean listBean : listBeans) {
-                longtoothS.add(listBean.getLTID());
+                longtooths.add(listBean.getLTID());
             }
-            return longtoothS.contains(longtoothId);
+            return longtooths.contains(longtoothId);
         } else {
             return false;
         }
@@ -309,43 +309,46 @@ public class AddEquipmentsActivity extends Activity {
             final String request = gson.toJson(model);
             Log.d("sunhengchao", "startbind: " + request);
             //mEquipmentModel.getLTID()   "2000110256.1.2353.24.219"
-            LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
-                    new SampleAttachment(), new MyLongToothServiceResponseHandler(timeStamp));
-
 //            LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
-//                    new SampleAttachment(), new LongToothServiceResponseHandler() {
-//                        @Override
-//                        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-//                                                          String service_str, int data_type, byte[] args,
-//                                                          LongToothAttachment attachment) {
-//                            String result = new String(args);
-//                            Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
-//                            final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-//                            if (longToothRspModel.getCODE() == 0) {
-//                                String mEquipmentName = mEquipmentModel.getDEVNAME();
-//                                String macAddress = mEquipmentModel.getMAC();
-//                                String token = Account.getToken();
-//                                String serialNum = "";
-//                                String version = mEquipmentModel.get_$FirmwareRev196();
-//                                String series = mEquipmentName.substring(0, 5);
-//                                if (mPresenter != null) {
-//                                    mPresenter.addEquipment(token, mEquipmentName, macAddress, serialNum, version,
-//                                            mEquipmentModel.getLTID(), timeStamp, series);
-//                                }
-//                            } else {
-//                                Run.onUiAsync(new Action() {
-//                                    @Override
-//                                    public void call() {
-//                                        Factory.decodeRspCode(longToothRspModel);
-//                                        mLoading.stop();
-//                                        mAdd.setVisibility(View.VISIBLE);
-//                                        mAddSuccess.setVisibility(View.GONE);
-//                                        mLoading.setVisibility(View.GONE);
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    });
+//                    new SampleAttachment(), new MyLongToothServiceResponseHandler(timeStamp));
+
+            LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
+                    new SampleAttachment(), new LongToothServiceResponseHandler() {
+                        @Override
+                        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                          String service_str, int data_type, byte[] args,
+                                                          LongToothAttachment attachment) {
+                            String result = new String(args);
+                            if (TextUtils.isEmpty(result)){
+                                return;
+                            }
+                            Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
+                            final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                            if (longToothRspModel.getCODE() == 0) {
+                                String mEquipmentName = mEquipmentModel.getDEVNAME();
+                                String macAddress = mEquipmentModel.getMAC();
+                                String token = Account.getToken();
+                                String serialNum = "";
+                                String version = mEquipmentModel.get_$FirmwareRev196();
+                                String series = mEquipmentName.substring(0, 5);
+                                if (mPresenter != null) {
+                                    mPresenter.addEquipment(token, mEquipmentName, macAddress, serialNum, version,
+                                            mEquipmentModel.getLTID(), timeStamp, series);
+                                }
+                            } else {
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        Factory.decodeRspCode(longToothRspModel);
+                                        mLoading.stop();
+                                        mAdd.setVisibility(View.VISIBLE);
+                                        mAddSuccess.setVisibility(View.GONE);
+                                        mLoading.setVisibility(View.GONE);
+                                    }
+                                });
+                            }
+                        }
+                    });
 
         }
 
@@ -378,6 +381,9 @@ public class AddEquipmentsActivity extends Activity {
                                               LongToothAttachment attachment) {
                 String result = new String(args);
                 isResp = true;
+                if (TextUtils.isEmpty(result)){
+                    return;
+                }
                 Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
                 final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                 if (longToothRspModel.getCODE() == 0) {

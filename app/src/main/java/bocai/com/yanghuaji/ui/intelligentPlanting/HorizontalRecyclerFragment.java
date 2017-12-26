@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -225,6 +226,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private MainRecylerContract.Presenter mPresenter;
             private TimerTask task;
             private Timer timer = new Timer();
+            private static final String UNKNOWN = "- -";
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -444,6 +446,22 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 //                    mLed.setChecked(model.getLight().equals("1"));
                 }
                 mEcStatus.setText(getStatus(model.getEstatus()));
+                //如果不支持营养功能，则把图标设置为灰色
+                if (getStatus(model.getEstatus()).equals(UNKNOWN)){
+                    mEcStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_ec_normal,0,0,0);
+                    mEcStatus.setTextColor(Color.parseColor("#dadada"));
+                }else {
+                    mEcStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_ec,0,0,0);
+                    mEcStatus.setTextColor(Color.parseColor("#9FD166"));
+                }
+                //如果不支持水位功能，则把图标设置为灰色
+                if (getStatus(model.getWstatus()).equals(UNKNOWN)){
+                    mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever_normal,0,0,0);
+                    mWaterStatus.setTextColor(Color.parseColor("#dadada"));
+                }else {
+                    mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever,0,0,0);
+                    mWaterStatus.setTextColor(Color.parseColor("#FBB179"));
+                }
                 mWaterStatus.setText(getStatus(model.getWstatus()));
                 mImgTemArrow.setVisibility(View.VISIBLE);
                 if (model.getWstatus().equals("0")) {
@@ -451,7 +469,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mImgTemArrow.setImageResource(R.mipmap.img_trending_down);
                     PushModel pushModel = new PushModel("push", "sys101");
                     HorizontalRecyclerFragmentHelper.push(model, pushModel);
-                } else if (model.getDstatus().equals("2")) {
+                } else if (model.getWstatus().equals("2")) {
                     //温度过高
                     mImgTemArrow.setImageResource(R.mipmap.img_temperature_trending_up);
                     PushModel pushModel = new PushModel("push", "sys102");
@@ -463,7 +481,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     //营养过低
                     PushModel pushModel = new PushModel("push", "sys202");
                     HorizontalRecyclerFragmentHelper.push(model, pushModel);
-                } else if (model.getDstatus().equals("2")) {
+                } else if (model.getEstatus().equals("2")) {
                     //营养过高
                     PushModel pushModel = new PushModel("push", "sys201");
                     HorizontalRecyclerFragmentHelper.push(model, pushModel);
@@ -472,7 +490,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     //水位过低
                     PushModel pushModel = new PushModel("push", "sys301");
                     HorizontalRecyclerFragmentHelper.push(model, pushModel);
-                } else if (model.getDstatus().equals("2")) {
+                } else if (model.getWstatus().equals("2")) {
                     //水位过高
                     PushModel pushModel = new PushModel("push", "sys302");
                     HorizontalRecyclerFragmentHelper.push(model, pushModel);
@@ -505,7 +523,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     case "2":
                         return "过高";
                     default:
-                        return "未知";
+                        return UNKNOWN;
                 }
             }
 
