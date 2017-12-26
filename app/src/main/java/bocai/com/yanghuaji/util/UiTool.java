@@ -1,15 +1,27 @@
 package bocai.com.yanghuaji.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import net.qiujuer.genius.ui.widget.Loading;
+
+import bocai.com.yanghuaji.R;
 
 public class UiTool {
     private static int STATUS_BAR_HEIGHT = -1;
@@ -96,11 +108,12 @@ public class UiTool {
         return (int) (pxValue / scale + 0.5f);
     }
 
-    private static ProgressDialog dialog;
+    private static Dialog dialog;
 
     public static void showLoading(Context context) {
 
-        dialog  = new ProgressDialog(context);
+//        dialog  = new ProgressDialog(context);
+        dialog  = UiTool.createLoadingDialog(context);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
@@ -122,4 +135,45 @@ public class UiTool {
         TextPaint tp = textView.getPaint();
         tp.setFakeBoldText(true);
     }
+
+
+
+
+    /**
+     * 得到自定义的progressDialog
+     * @param context
+     * @param msg
+     * @return
+     */
+    public static Dialog createLoadingDialog(Context context) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.layout_loading_dialog, null);// 得到加载view
+        LinearLayout layout =  v.findViewById(R.id.dialog_view);// 加载布局
+        // main.xml中的ImageView
+        Loading spaceshipImage =  v.findViewById(R.id.loading);
+        spaceshipImage.setForegroundColor(Color.parseColor("#87BC52"));
+        TextView tipTextView = v.findViewById(R.id.tipTextView);// 提示文字
+        // 加载动画
+        Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(
+                context, R.anim.load_animation);
+        // 使用ImageView显示动画
+        spaceshipImage.startAnimation(hyperspaceJumpAnimation);
+        Dialog loadingDialog = new Dialog(context,R.style.loading_dialog);// 创建自定义样式dialog
+
+        loadingDialog.setCancelable(true);// 可以用“返回键”取消
+        loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));// 设置布局
+        return loadingDialog;
+
+    }
+
+
+
+
+
+
+
+
 }

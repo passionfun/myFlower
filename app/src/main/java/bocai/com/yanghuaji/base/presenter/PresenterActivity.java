@@ -1,11 +1,13 @@
 package bocai.com.yanghuaji.base.presenter;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.util.UiTool;
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -48,11 +50,12 @@ public abstract class PresenterActivity<Presenter extends BaseContract.Presenter
             mPresenter.destroy();
         }
     }
-    ProgressDialog dialog;
+    Dialog dialog;
     @Override
     public void showLoading() {
 
-        dialog  = new ProgressDialog(this);
+//        dialog  = new ProgressDialog(this);
+        dialog  = UiTool.createLoadingDialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }

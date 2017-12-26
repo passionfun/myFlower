@@ -14,6 +14,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
@@ -22,6 +25,7 @@ import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.base.common.Factory;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
@@ -226,7 +230,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                                           LongToothAttachment attachment) {
             String result = new String(args);
             Log.d("sunhengchao", "handleServiceResponse: "+new String(args));
-            LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+            final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             if (longToothRspModel.getCODE()==0){
                 String mEquipmentName = mModel.getDEVNAME();
                 String macAddress = mModel.getMAC();
@@ -237,6 +241,13 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 if (mPresenter != null){
                     mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,longToothId,timeStamp,series);
                 }
+            }else {
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        Factory.decodeRspCode(longToothRspModel);
+                    }
+                });
             }
 
         }

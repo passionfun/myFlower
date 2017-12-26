@@ -33,6 +33,7 @@ import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.base.common.Factory;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentModel;
@@ -311,12 +312,6 @@ public class AddEquipmentsActivity extends Activity {
             final String request = gson.toJson(model);
             Log.d("sunhengchao", "startbind: " + request);
             //mEquipmentModel.getLTID()   "2000110256.1.2353.24.219"
-            Run.onUiAsync(new Action() {
-                @Override
-                public void call() {
-                    Toast.makeText(AddEquipmentsActivity.this, "request:" + request + "\n" + "LTID:" + mEquipmentModel.getLTID(), Toast.LENGTH_LONG).show();
-                }
-            });
             LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
                     new SampleAttachment(), new LongToothServiceResponseHandler() {
                         @Override
@@ -325,7 +320,7 @@ public class AddEquipmentsActivity extends Activity {
                                                           LongToothAttachment attachment) {
                             String result = new String(args);
                             Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
-                            LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                            final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                             if (longToothRspModel.getCODE() == 0) {
                                 String mEquipmentName = mEquipmentModel.getDEVNAME();
                                 String macAddress = mEquipmentModel.getMAC();
@@ -340,7 +335,7 @@ public class AddEquipmentsActivity extends Activity {
                                 Run.onUiAsync(new Action() {
                                     @Override
                                     public void call() {
-                                        Application.showToast(R.string.add_failed);
+                                        Factory.decodeRspCode(longToothRspModel);
                                         mLoading.stop();
                                         mAdd.setVisibility(View.VISIBLE);
                                         mAddSuccess.setVisibility(View.GONE);

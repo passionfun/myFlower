@@ -6,6 +6,9 @@ package bocai.com.yanghuaji.model;
  */
 
 public class LongToothRspModel {
+    public static final int SUCCEED = 0;
+    public static final int BIND_FAILED = 1;
+    public static final int EQUIPMENT_HAVE_BINDED = 2;
     private int CODE;
     private int updateStat;
     private String softVer;

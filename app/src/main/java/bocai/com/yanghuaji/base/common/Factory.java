@@ -9,6 +9,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.util.DBFlowExclusionStrategy;
 
 /**
@@ -27,7 +28,7 @@ public class Factory {
         instance = new Factory();
     }
 
-    private Factory(){
+    private Factory() {
         // 新建一个4个线程的线程池
         executor = Executors.newFixedThreadPool(4);
         gson = new GsonBuilder()
@@ -37,7 +38,6 @@ public class Factory {
                 .setExclusionStrategies(new DBFlowExclusionStrategy())
                 .create();
     }
-
 
 
     /**
@@ -62,6 +62,24 @@ public class Factory {
     // 返回一个全局的Gson，在这可以进行Gson的一些全局的初始化
     public static Gson getGson() {
         return instance.gson;
+    }
+
+
+    public static void decodeRspCode(LongToothRspModel longToothRspModel) {
+        if (longToothRspModel == null) {
+            return;
+        }
+        switch (longToothRspModel.getCODE()) {
+            case LongToothRspModel.SUCCEED:
+                //绑定成功
+                break;
+            case LongToothRspModel.BIND_FAILED:
+                Application.showToast("绑定失败");
+                break;
+            case LongToothRspModel.EQUIPMENT_HAVE_BINDED:
+                Application.showToast("设备已被绑定");
+                break;
+        }
     }
 
 }
