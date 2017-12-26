@@ -49,6 +49,7 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.GalleryLayoutManager;
 import bocai.com.yanghuaji.ui.intelligentPlanting.recyclerHelper.ScaleTransformer;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
@@ -193,8 +194,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @BindView(R.id.img_lineOff)
             ImageView mOffLine;
 
-            @BindView(R.id.cb_led)
-            CheckBox mLed;
+            @BindView(R.id.tv_led)
+            TextView mLed;
 
             @BindView(R.id.cb_push)
             CheckBox mPush;
@@ -227,6 +228,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private MainRecylerContract.Presenter mPresenter;
             private TimerTask task;
             private Timer timer = new Timer();
+            private boolean isLedOn = false;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -256,7 +258,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mGroupName.setText(plantModel.getGroupName());
                 mTime.setText(plantModel.getDays() + "");
                 //台灯开关 0：关   1：开
-                mLed.setChecked(plantModel.getLight().equals("1"));
+                if (plantModel.getLight().equals("1")){
+                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open_horizontal,0,0);
+                }else {
+                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close_horizontal,0,0);
+                }
+
                 //消息推送状态   0关   1开
                 mPush.setChecked(plantModel.getPushStatus().equals("1"));
                 GlideApp.with(getContext())
@@ -336,7 +343,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 String request = gson.toJson(model);
                 if (!TextUtils.isEmpty(plantModel.getLTID())) {
                     LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                            0, request.getBytes().length, null, new LongToothResponse(mPresenter, plantModel, isLedOn, mOffLine, mFramOffline));
+                            0, request.getBytes().length, null, new LongToothResponse(mPresenter, plantModel,
+                                    isLedOn, mOffLine, mFramOffline));
                 }
             }
 
@@ -345,7 +353,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mLed.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (mLed.isChecked()) {
+                        UiTool.showLoading(getContext());
+                        if (!isLedOn) {
                             mPresenter.setCheckBox(Account.getToken(), "1", "1", plantModel.getId());
                             LedSetModel model = new LedSetModel("On", plantModel.getPSIGN());
                             String request = gson.toJson(model);
@@ -353,10 +362,20 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                     null, new LongToothServiceResponseHandler() {
                                         @Override
                                         public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                            UiTool.hideLoading();
                                             String jsonContent = new String(bytes);
                                             LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                             if (plantStatusRspModel.getCODE() == 0) {
                                                 Application.showToast("LED开启成功");
+                                                isLedOn = !isLedOn;
+                                                Run.onUiAsync(new Action() {
+                                                    @Override
+                                                    public void call() {
+                                                        mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open_horizontal,
+                                                                0,0);
+                                                    }
+                                                });
+
                                             } else {
                                                 Application.showToast("LED开启失败,稍后再试");
                                             }
@@ -366,14 +385,25 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                             mPresenter.setCheckBox(Account.getToken(), "1", "0", plantModel.getId());
                             LedSetModel model = new LedSetModel("Off", plantModel.getPSIGN());
                             String request = gson.toJson(model);
-                            LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
+                            LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0,
+                                    request.getBytes().length,
                                     null, new LongToothServiceResponseHandler() {
                                         @Override
                                         public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                            UiTool.hideLoading();
                                             String jsonContent = new String(bytes);
                                             LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                             if (plantStatusRspModel.getCODE() == 0) {
                                                 Application.showToast("LED关闭成功");
+                                                isLedOn = !isLedOn;
+                                                Run.onUiAsync(new Action() {
+                                                    @Override
+                                                    public void call() {
+                                                        mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close_horizontal,
+                                                                0,0);
+                                                    }
+                                                });
+
                                             } else {
                                                 Application.showToast("LED关闭失败,稍后再试");
                                             }

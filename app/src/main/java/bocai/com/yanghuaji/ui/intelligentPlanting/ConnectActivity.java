@@ -151,7 +151,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             }
         });
         //开始搜索设备
-        final String serviceName = "_easylink._tcp.local.";
+        final String serviceName = Account.getServiceName();
         micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
             @Override
             public void onFailure(int code, String message) {
@@ -193,6 +193,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 return;
             }
             if (content.equals(mScanData.get(2))&&equipmentModel.get_$BOUNDSTATUS310().equals("notBound")){
+                timer.cancel();
                 //停止搜索设备
                 Application.showToast("绑定中...");
                 micodev.stopSearchDevices( null);

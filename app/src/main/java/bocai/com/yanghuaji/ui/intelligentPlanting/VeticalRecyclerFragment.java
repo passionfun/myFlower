@@ -49,6 +49,7 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.IntelligentPlantPresent
 import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
@@ -187,8 +188,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @BindView(R.id.image)
         ImageView mImage;
 
-        @BindView(R.id.cb_led)
-        CheckBox mLed;
+        @BindView(R.id.tv_led)
+        TextView mTVLed;
 
         @BindView(R.id.cb_push)
         CheckBox mPush;
@@ -244,7 +245,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mPlantName.setText(plantModel.getPlantName());
             mGroupName.setText(plantModel.getGroupName());
             mTime.setText(plantModel.getDays() + "");
-            mLed.setChecked(plantModel.getLight().equals("1"));
+//            mLed.setChecked(plantModel.getLight().equals("1"));
             mPush.setChecked(plantModel.getPushStatus().equals("1"));
             GlideApp.with(getContext())
                     .load(plantModel.getPhoto())
@@ -343,7 +344,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 return;
             }
 
-            final boolean isLedOn = mLed.isChecked();
+            final boolean isLedOn  = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);;
             PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
                     1, Integer.parseInt(plantModel.getPid()));
             String request = gson.toJson(model);
@@ -352,12 +353,13 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         }
 
 
-
+        private boolean isLedOn = false;
         private void setLed(final EquipmentRspModel.ListBean plantModel) {
-            mLed.setOnClickListener(new View.OnClickListener() {
+            mTVLed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mLed.isChecked()) {
+                    UiTool.showLoading(getContext());
+                    if (isLedOn) {
                         mPresenter.setCheckBox(Account.getToken(), "1", "1", plantModel.getId());
                         LedSetModel model = new LedSetModel("On", plantModel.getPSIGN());
                         String request = gson.toJson(model);
@@ -365,10 +367,19 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                 null, new LongToothServiceResponseHandler() {
                             @Override
                             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                UiTool.hideLoading();
                                 String jsonContent = new String(bytes);
                                 LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                 if (plantStatusRspModel.getCODE() == 0) {
                                     Application.showToast("LED开启成功");
+                                    isLedOn = !isLedOn;
+                                    Run.onUiAsync(new Action() {
+                                        @Override
+                                        public void call() {
+                                            mTVLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open,
+                                                    0,0);
+                                        }
+                                    });
                                 } else {
                                     Application.showToast("LED开启失败,稍后再试");
                                 }
@@ -382,10 +393,19 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                 null, new LongToothServiceResponseHandler() {
                             @Override
                             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                UiTool.hideLoading();
                                 String jsonContent = new String(bytes);
                                 LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                 if (plantStatusRspModel.getCODE() == 0) {
                                     Application.showToast("LED关闭成功");
+                                    isLedOn = !isLedOn;
+                                    Run.onUiAsync(new Action() {
+                                        @Override
+                                        public void call() {
+                                            mTVLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close,
+                                                    0,0);
+                                        }
+                                    });
                                 } else {
                                     Application.showToast("LED关闭失败,稍后再试");
                                 }

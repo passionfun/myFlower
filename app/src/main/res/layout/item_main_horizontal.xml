@@ -278,8 +278,8 @@
                     android:textSize="12sp" />
 
 
-                <CheckBox
-                    android:id="@+id/cb_led"
+                <TextView
+                    android:id="@+id/tv_led"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -288,7 +288,7 @@
                     android:button="@null"
                     android:checked="false"
                     android:drawablePadding="4dp"
-                    android:drawableTop="@drawable/sel_cb_light_horizontal"
+                    android:drawableTop="@mipmap/img_light_close_horizontal"
                     android:gravity="center"
                     android:text="光照"
                     android:textColor="#FFFFFF"

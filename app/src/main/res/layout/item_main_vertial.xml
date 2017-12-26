@@ -301,15 +301,15 @@
                                 android:textSize="11sp" />
 
 
-                            <CheckBox
-                                android:id="@+id/cb_led"
+                            <TextView
+                                android:id="@+id/tv_led"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:button="@null"
                                 android:checked="false"
                                 android:drawablePadding="3dp"
-                                android:drawableTop="@drawable/sel_cb_light"
+                                android:drawableTop="@mipmap/img_light_close"
                                 android:gravity="center"
                                 android:text="光照"
                                 android:textColor="#FFFFFF"

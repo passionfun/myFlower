@@ -83,12 +83,12 @@ public class AddWifiActivity extends Activity {
     @Override
     protected void initWidget() {
         super.initWidget();
-        ssid = mWifiName.getText().toString();
-        mWifiPassword.setText(Account.getWifiPassword(this,ssid));
         UiTool.setBlod(mTitle);
         mTitle.setText("添加设备");
         micodev = new MiCODevice(this);
         mWifiName.setText(micodev.getSSID());
+        ssid = mWifiName.getText().toString();
+        mWifiPassword.setText(Account.getWifiPassword(this,ssid));
     }
 
     @OnClick(R.id.img_back)
@@ -105,6 +105,7 @@ public class AddWifiActivity extends Activity {
             Application.showToast("请输入WiFi密码");
             return;
         }
+        Account.saveWifiPassword(this,ssid,password);
         if (isAddEquipments){
             if (plantSeriesCard==null){
                 Application.showToast("系列信息为空");
@@ -118,7 +119,7 @@ public class AddWifiActivity extends Activity {
         }else {
             ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);
         }
-        Account.saveWifiPassword(this,ssid,password);
+
         mNext.setEnabled(false);
         finish();
     }
