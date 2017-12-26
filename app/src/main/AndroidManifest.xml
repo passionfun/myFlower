@@ -164,12 +164,18 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ui.intelligentPlanting.PlantSettingActivity" />
-        <activity android:name=".ui.intelligentPlanting.EquipmentInfoActivity" />
-        <activity android:name=".ui.intelligentPlanting.ConnectActivity" />
-        <activity android:name=".ui.intelligentPlanting.ConnectSuccessActivity" />
-        <activity android:name=".ui.intelligentPlanting.ConnectFailedActivity" />
-        <activity android:name=".ui.personalCenter.GuideActivity" />
+        <activity android:name=".ui.intelligentPlanting.PlantSettingActivity"
+            android:theme="@style/BaseTheme"/>
+        <activity android:name=".ui.intelligentPlanting.EquipmentInfoActivity"
+            android:theme="@style/BaseTheme"/>
+        <activity android:name=".ui.intelligentPlanting.ConnectActivity"
+            android:theme="@style/BaseTheme"/>
+        <activity android:name=".ui.intelligentPlanting.ConnectSuccessActivity"
+            android:theme="@style/BaseTheme"/>
+        <activity android:name=".ui.intelligentPlanting.ConnectFailedActivity"
+            android:theme="@style/BaseTheme"/>
+        <activity android:name=".ui.personalCenter.GuideActivity"
+            android:theme="@style/BaseTheme"/>
         <activity
             android:name=".ui.intelligentPlanting.AddPlantActivity"
             android:windowSoftInputMode="adjustPan" />

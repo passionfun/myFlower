@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,6 +22,8 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
@@ -196,7 +199,14 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                         Log.d(TAG, "update: " + result);
                         int code = longToothRspModel.getCODE();
                         if (code == 0) {
-                            checkUpdateState();
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    checkUpdateState();
+                                }
+                            },3000);
+
                         } else {
                             Run.onUiAsync(new Action() {
                                 @Override
@@ -225,7 +235,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                         }
                         String result = new String(args);
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                        Log.d(TAG, "update: " + result);
+                        Log.d(TAG, "update:1111 " + result);
                         int code = longToothRspModel.getUpdateStat();
                         Log.d(TAG, "handleServiceResponse: "+code);
                         if (code == 1) {//code=1:正在升级
@@ -317,7 +327,11 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     @Override
     public void equipmentInfoSuccess(EquipmentInfoModel model) {
         tvMacAddress.setText(model.getMac());
-        tvSerialNumber.setText(model.getSerialNum());
+        if (!TextUtils.isEmpty(model.getSerialNum())){
+            tvSerialNumber.setText(model.getSerialNum());
+        }else {
+            tvSerialNumber.setText("未知");
+        }
         tvEquipmentType.setText(model.getEquipName());
         tvVersion.setText(model.getVersion());
         updateVersion();

@@ -31,11 +31,11 @@ public class LongToothUtil {
                     Log.d("shcbind", "run: "+Account.getRegisterHost()
                     +Integer.valueOf(Account.getPort()));
                     LongTooth.setRegisterHost(Account.getRegisterHost(), Integer.valueOf(Account.getPort()));
-                    LongTooth.start(Application.getInstance(),
-                            Integer.valueOf(Account.getDevelopId()),
-                            Integer.valueOf(Account.getAppId()),
-                            Account.getAppKey(),
-                            new LongToothHandler());
+//                    LongTooth.start(Application.getInstance(),
+//                            Integer.valueOf(Account.getDevelopId()),
+//                            Integer.valueOf(Account.getAppId()),
+//                            Account.getAppKey(),
+//                            new LongToothHandler());
 
                 } catch (Exception e) {
                     e.printStackTrace();

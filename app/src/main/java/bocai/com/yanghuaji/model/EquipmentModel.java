@@ -11,20 +11,24 @@ public class EquipmentModel {
 
 
     /**
-     * LTID : 1.1.2353.29.152
-     * Name : EMW3080B Module#10C460
-     * DEVNAME: "WG_D034",
-     * Manufacturer : MXCHIP Inc.
-     * Hardware Rev : 3080B
-     * Port : 8000
-     * Model : EMW3080B
-     * IP : 192.168.23.5
-     * Seed : 0
-     * Firmware Rev : MICO_BASIC_1_0
-     * MAC : B0:F8:93:10:C4:60
-     * MICO OS Rev : 3080B002.013
-     * Protocol : com.mxchip.basic
+     "Name": "EMW3080B Module#10CFE6",
+     "IP": "192.168.23.4",
+     "Port": 8000,
+     "MAC": "B0:F8:93:10:CF:E6",
+     "Firmware Rev": "1.0.14",
+     "Hardware Rev": "3080B",
+     "MICO OS Rev": "3080B002.013",
+     "BOUND STATUS": "notBound",
+     "Model": "EMW3080B",
+     "Protocol": "com.mxchip.basic",
+     "LTID": "1.1.2353.31.798",
+     "Manufacturer": "MXCHIP Inc.",
+     "DEVNAME": "WG101_CFE6",
+     "Seed": "0"
      */
+
+
+
 
     private String LTID;
     private String Name;
@@ -38,10 +42,22 @@ public class EquipmentModel {
     private String Seed;
     @SerializedName("Firmware Rev")
     private String _$FirmwareRev196; // FIXME check this code
+    @SerializedName("BOUND STATUS")
+    private String _$BOUNDSTATUS310;
     private String MAC;
     @SerializedName("MICO OS Rev")
     private String _$MICOOSRev276; // FIXME check this code
     private String Protocol;
+
+
+    public String get_$BOUNDSTATUS310() {
+        return _$BOUNDSTATUS310;
+    }
+
+    public void set_$BOUNDSTATUS310(String _$BOUNDSTATUS310) {
+        this._$BOUNDSTATUS310 = _$BOUNDSTATUS310;
+    }
+
 
     public String getLTID() {
         return LTID;

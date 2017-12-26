@@ -22,6 +22,8 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
@@ -187,8 +189,9 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             //"B0:F8:93:10:CF:E6"
             String mac = equipmentModel.getMAC();
             String content = mac.replaceAll(":","");
-            if (content.equals(mScanData.get(2))){
+            if (content.equals(mScanData.get(2))&&equipmentModel.get_$BOUNDSTATUS310().equals("notBound")){
                 //停止搜索设备
+                Application.showToast("绑定中...");
                 micodev.stopSearchDevices( null);
                 mModel = equipmentModel;
                 Log.d("sunhengchao", "bind: "+mModel.toString());
@@ -198,6 +201,11 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 String request = gson.toJson(model);
                 LongTooth.request(longToothId,"longtooth",LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,
                         new SampleAttachment(),new LongToothResponse());
+            }else if ((content.equals(mScanData.get(2))&&!equipmentModel.get_$BOUNDSTATUS310().equals("notBound"))){
+                Application.showToast("该设备已被绑定过");
+                micodev.stopSearchDevices(null);
+                timer.cancel();
+                finish();
             }
         }
     }
@@ -223,6 +231,23 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
 
 
     private class LongToothResponse implements LongToothServiceResponseHandler {
+        private boolean isResp = false;
+        public LongToothResponse() {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (!isResp){
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                Application.showToast("绑定请求无响应");
+                            }
+                        });
+                    }
+                }
+            },6000);
+        }
 
         @Override
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
@@ -231,6 +256,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             String result = new String(args);
             Log.d("sunhengchao", "handleServiceResponse: "+new String(args));
             final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+            isResp = true;
             if (longToothRspModel.getCODE()==0){
                 String mEquipmentName = mModel.getDEVNAME();
                 String macAddress = mModel.getMAC();
