@@ -542,14 +542,16 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                             Log.d(TAG, "run: "+times);
                             times++;
                             getEquipmentData(mPlantModel);
+                            //如果三次请求无数据返回，则认为设备离线
                             if (times>3){
                                 offLine();
+                                times=0;
                             }
                         }
                     }
                 };
                 Timer timer = new Timer();
-                timer.schedule(task, 15000);
+                timer.schedule(task, 6000);
             }
 
 

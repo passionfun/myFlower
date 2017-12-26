@@ -588,6 +588,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         }
                         //如果没有三次没有数据返回，则认为设备离线
                         if (times>3){
+                            times=0;
                             offLine();
                         }
                     }

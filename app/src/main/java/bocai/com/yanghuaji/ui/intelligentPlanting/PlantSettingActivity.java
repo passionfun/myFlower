@@ -125,6 +125,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     protected void initData() {
         super.initData();
+        tvPlantMethod.setEnabled(false);
         PlantSettingModel model = SQLite.select()
                 .from(PlantSettingModel.class)
                 .where(PlantSettingModel_Table.Id.eq(id))
@@ -132,15 +133,17 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         if (model!=null){
             plantMode = model.getPlantMode();
             lifeCycle = model.getLifeCycle();
-            tvPlantMethod.setText(plantMode);
+//            tvPlantMethod.setText(plantMode);
             tvPlantCycle.setText(lifeCycle);
             lid = model.getLid();
             pMid = model.getPMid();
         }
         if (model==null||TextUtils.isEmpty(model.getPlantName())){
             mTvPlantName.setText("去添加");
+            tvPlantMethod.setText("手动");
         }else {
             mTvPlantName.setText(model.getPlantName());
+            tvPlantMethod.setText("智能");
         }
     }
 
@@ -151,7 +154,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
 
     @OnClick(R.id.tv_plant_method)
     void onMethod() {
-        mPresenter.plantMode();
+//        mPresenter.plantMode();
     }
 
     @OnClick(R.id.tv_plant_cycle)
@@ -178,6 +181,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         if (data!=null){
             mPlantcard = (PlantRspModel.PlantCard) data.getSerializableExtra(AddPlantActivity.KEY_PLANT_CARD);
             mTvPlantName.setText(mPlantcard.getPlantName());
+            tvPlantMethod.setText("智能");
             pId = mPlantcard.getId();
         }
     }
