@@ -2,6 +2,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -438,6 +439,22 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         public void setDataSuccess(EquipmentDataModel model) {
             mTemperature.setText(model.getDegree());
             mWaterStatus.setText(getStatus(model.getWstatus()));
+            //如果不支持营养功能，则把图标设置为灰色
+            if (getStatus(model.getEstatus()).equals(HorizontalRecyclerFragment.UNKNOWN)){
+                mEcStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_ec_normal,0,0,0);
+                mEcStatus.setTextColor(Color.parseColor("#dadada"));
+            }else {
+                mEcStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_ec,0,0,0);
+                mEcStatus.setTextColor(Color.parseColor("#9FD166"));
+            }
+            //如果不支持水位功能，则把图标设置为灰色
+            if (getStatus(model.getWstatus()).equals(HorizontalRecyclerFragment.UNKNOWN)){
+                mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever_normal,0,0,0);
+                mWaterStatus.setTextColor(Color.parseColor("#dadada"));
+            }else {
+                mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever,0,0,0);
+                mWaterStatus.setTextColor(Color.parseColor("#FBB179"));
+            }
             if (model.getLight() != null)
                 mLedStatus.setText(model.getLight().equals("0") ? "关" : "开");
             mEcStatus.setText(getStatus(model.getEstatus()));
@@ -482,7 +499,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 case "2":
                     return "过高";
                 default:
-                    return "未知";
+                    return HorizontalRecyclerFragment.UNKNOWN;
             }
         }
 

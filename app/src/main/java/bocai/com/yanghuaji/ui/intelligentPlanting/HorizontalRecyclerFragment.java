@@ -80,6 +80,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     public static final String TAG = HorizontalRecyclerFragment.class.getName();
     public static final String HORIZONTALRECYLER_REFRESH = "HORIZONTALRECYLER_REFRESH";
     public static final String HORIZONTALRECYLER_DELETE_SUCCESS = "HORIZONTALRECYLER_DELETE_SUCCESS";
+    public static final String UNKNOWN = "- -";
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
 
@@ -226,7 +227,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private MainRecylerContract.Presenter mPresenter;
             private TimerTask task;
             private Timer timer = new Timer();
-            private static final String UNKNOWN = "- -";
 
             public MyViewHolder(View itemView) {
                 super(itemView);
