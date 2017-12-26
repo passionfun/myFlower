@@ -81,6 +81,9 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     @BindView(R.id.frame_update)
     FrameLayout mFramUpdate;
 
+    @BindView(R.id.tv_latest_version)
+    TextView tvLatestVersion;
+
     public static final String KEY_PLANT_BEAN = "KEY_PLANT_BEAN";
     private Map<String, String> map = new HashMap<>();
     private String id;
@@ -161,6 +164,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                                 Run.onUiAsync(new Action() {
                                     @Override
                                     public void call() {
+                                        tvLatestVersion.setVisibility(View.GONE);
                                         imgUpgrade.setVisibility(View.VISIBLE);
                                     }
                                 });
@@ -169,6 +173,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                                 Run.onUiAsync(new Action() {
                                     @Override
                                     public void call() {
+                                        tvLatestVersion.setVisibility(View.VISIBLE);
                                         imgUpgrade.setVisibility(View.GONE);
                                     }
                                 });
