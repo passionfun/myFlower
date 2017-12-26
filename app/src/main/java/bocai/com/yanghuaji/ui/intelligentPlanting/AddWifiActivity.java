@@ -106,6 +106,7 @@ public class AddWifiActivity extends Activity {
         }else {
             ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);}
         mNext.setEnabled(false);
+        finish();
     }
 
     @Override

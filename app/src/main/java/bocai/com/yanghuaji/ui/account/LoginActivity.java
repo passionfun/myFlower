@@ -90,7 +90,9 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     private String openId;
     private String name;
     private String photoUrl;
-    private String[] phoneState = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private String[] phoneState = new String[]{Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.GET_ACCOUNTS};
     private static final int MY_PERMISSION_REQUEST_CODE = 10009;
 
 

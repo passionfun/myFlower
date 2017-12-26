@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#ffffff"
     android:layout_height="match_parent">
 
     <include layout="@layout/layout_toolbar" />
 
-    <bocai.com.yanghuaji.util.widget.EmptyView
-        android:id="@+id/empty"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone"/>
+        android:layout_height="match_parent">
+        <bocai.com.yanghuaji.util.widget.EmptyView
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:background="#ffffff"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:background="#ffffff"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <net.qiujuer.genius.ui.widget.Loading
+            android:visibility="visible"
+            android:id="@+id/loading_add_equipments"
+            android:layout_marginBottom="30dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+    </FrameLayout>
+
+
 
 
 </LinearLayout>

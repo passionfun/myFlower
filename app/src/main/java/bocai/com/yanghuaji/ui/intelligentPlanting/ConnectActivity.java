@@ -189,6 +189,9 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             //"B0:F8:93:10:CF:E6"
             String mac = equipmentModel.getMAC();
             String content = mac.replaceAll(":","");
+            if (mScanData==null){
+                return;
+            }
             if (content.equals(mScanData.get(2))&&equipmentModel.get_$BOUNDSTATUS310().equals("notBound")){
                 //停止搜索设备
                 Application.showToast("绑定中...");

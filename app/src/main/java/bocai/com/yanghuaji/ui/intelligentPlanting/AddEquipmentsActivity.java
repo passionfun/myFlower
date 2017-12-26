@@ -78,6 +78,9 @@ public class AddEquipmentsActivity extends Activity {
     @BindView(R.id.tv_right)
     TextView mSave;
 
+    @BindView(R.id.loading_add_equipments)
+    Loading mLoadingAddEquipments;
+
     public static String KEY_PLANT_CARD = "KEY_PLANT_CARD";
     private String ssid;
     private String password;
@@ -165,7 +168,10 @@ public class AddEquipmentsActivity extends Activity {
     @Override
     protected void initData() {
         super.initData();
-        mEmptyView.triggerLoading();
+//        mEmptyView.triggerLoading();
+        mLoadingAddEquipments.setForegroundColor(Color.parseColor("#87BC52"));
+        mLoadingAddEquipments.setVisibility(View.VISIBLE);
+        mLoadingAddEquipments.start();
         micodev = new MiCODevice(this);
         //开始配网
         micodev.startEasyLink(ssid, password, true, 60000, 20, "", "", new EasyLinkCallBack() {
@@ -221,6 +227,9 @@ public class AddEquipmentsActivity extends Activity {
                 Run.onUiAsync(new Action() {
                     @Override
                     public void call() {
+                        Log.d("shccall", "call: ");
+                        mLoadingAddEquipments.stop();
+                        mLoadingAddEquipments.setVisibility(View.INVISIBLE);
                         micodev.stopEasyLink(null);
                         micodev.stopSearchDevices(null);
                         mEmptyView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
