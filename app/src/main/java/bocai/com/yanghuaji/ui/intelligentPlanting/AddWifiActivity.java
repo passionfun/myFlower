@@ -16,6 +16,7 @@ import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.util.UiTool;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.fog.fog2sdk.MiCODevice;
@@ -45,6 +46,7 @@ public class AddWifiActivity extends Activity {
     private List<String> mScanData;
     PlantSeriesModel.PlantSeriesCard plantSeriesCard;
     private static boolean isAddEquipments = false;
+    private String ssid ;
 
     //显示的入口(单设备)
     public static void show(Context context,ArrayList<String> scanData) {
@@ -81,6 +83,8 @@ public class AddWifiActivity extends Activity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        ssid = mWifiName.getText().toString();
+        mWifiPassword.setText(Account.getWifiPassword(this,ssid));
         UiTool.setBlod(mTitle);
         mTitle.setText("添加设备");
         micodev = new MiCODevice(this);
@@ -95,16 +99,26 @@ public class AddWifiActivity extends Activity {
 
     @OnClick(R.id.img_next)
     void onNextClick() {
-        String ssid = mWifiName.getText().toString();
         String password = mWifiPassword.getText().toString();
+        ssid = mWifiName.getText().toString();
         if (TextUtils.isEmpty(password)){
             Application.showToast("请输入WiFi密码");
             return;
         }
         if (isAddEquipments){
+            if (plantSeriesCard==null){
+                Application.showToast("系列信息为空");
+                finish();
+            }
+            if (TextUtils.isEmpty(ssid)||TextUtils.isEmpty(password)){
+                Application.showToast("参数异常");
+                return;
+            }
             AddEquipmentsActivity.show(this,ssid,password,plantSeriesCard);
         }else {
-            ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);}
+            ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);
+        }
+        Account.saveWifiPassword(this,ssid,password);
         mNext.setEnabled(false);
         finish();
     }

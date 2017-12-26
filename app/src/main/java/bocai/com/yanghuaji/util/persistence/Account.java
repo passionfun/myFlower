@@ -142,6 +142,18 @@ public class Account {
     }
 
 
+    public static void saveWifiPassword(Context context,String wifiName,String wifiPassword){
+        SharedPreferences sp = context.getSharedPreferences("wifiConfig",
+                Context.MODE_PRIVATE);
+         sp.edit().putString(wifiName, wifiPassword).apply();
+    }
+
+    public static String getWifiPassword(Context context,String wifiName){
+        SharedPreferences sp = context.getSharedPreferences("wifiConfig",
+                Context.MODE_PRIVATE);
+        return sp.getString(wifiName,"");
+    }
+
     /**
      * 判断是否已经登录
      */
