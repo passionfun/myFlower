@@ -151,7 +151,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             }
         });
         //开始搜索设备
-        final String serviceName = Account.getServiceName();
+        final String serviceName = "_easylink._tcp.local.";
         micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
             @Override
             public void onFailure(int code, String message) {

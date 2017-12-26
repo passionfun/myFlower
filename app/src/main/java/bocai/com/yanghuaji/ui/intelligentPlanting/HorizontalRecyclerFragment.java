@@ -277,7 +277,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         getEquipmentData(plantModel);
                     }
                 };
-                timer.schedule(task, 5000, 30000);
+                timer.schedule(task, 2000, 30000);
                 setLed(plantModel);
 
                 mPlantData.setOnClickListener(new View.OnClickListener() {
@@ -323,7 +323,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             }
 
 
-            private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
+            public void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
                 if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
                         TextUtils.isEmpty(plantModel.getPid())) {
 //                    Run.onUiAsync(new Action() {
@@ -344,7 +344,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 if (!TextUtils.isEmpty(plantModel.getLTID())) {
                     LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                             0, request.getBytes().length, null, new LongToothResponse(mPresenter, plantModel,
-                                    isLedOn, mOffLine, mFramOffline));
+                                    isLedOn, mOffLine, mFramOffline,this));
                 }
             }
 
@@ -559,7 +559,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
 
         }
-
+        private int times=0;
         class LongToothResponse implements LongToothServiceResponseHandler {
 
             private MainRecylerContract.Presenter mPresenter;
@@ -568,23 +568,32 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private ImageView mOffLine;
             private FrameLayout mFrameOffLine;
             private boolean isResp = false;
+//            private MyViewHolder myViewHolder;
 
-            public LongToothResponse(MainRecylerContract.Presenter mPresenter, EquipmentRspModel.ListBean plantModel, boolean isLedOn, final ImageView offLine, FrameLayout frameOffLine) {
+            public LongToothResponse(MainRecylerContract.Presenter mPresenter, final EquipmentRspModel.ListBean plantModel,
+                                     boolean isLedOn, final ImageView offLine, FrameLayout frameOffLine, final MyViewHolder myViewHolder) {
                 this.mPresenter = mPresenter;
                 mPlantModel = plantModel;
                 this.isLedOn = isLedOn;
                 this.mOffLine = offLine;
                 this.mFrameOffLine = frameOffLine;
+//                this.myViewHolder = myViewHolder;
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
+                        Log.d(TAG, "run: "+times);
                         if (!isResp) {
+                            times++;
+                            myViewHolder.getEquipmentData(plantModel);
+                        }
+                        //如果没有三次没有数据返回，则认为设备离线
+                        if (times>3){
                             offLine();
                         }
                     }
                 };
                 Timer timer = new Timer();
-                timer.schedule(task, 15000);
+                timer.schedule(task, 6000);
             }
 
             private void offLine() {

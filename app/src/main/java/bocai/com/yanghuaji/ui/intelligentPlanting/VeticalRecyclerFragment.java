@@ -260,7 +260,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                    getEquipmentData(plantModel);
                 }
             };
-            timer.schedule(task, 5000, 30000);
+            timer.schedule(task, 2000, 30000);
             setLed(plantModel);
 
 
@@ -523,14 +523,15 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             }
         }
 
-
+        private int times = 0;
         class LongToothResponse implements LongToothServiceResponseHandler {
             private EquipmentRspModel.ListBean mPlantModel;
             private boolean isLedOn;
             private ImageView mImgTent;
             private boolean isResp = false;
 
-            public LongToothResponse(EquipmentRspModel.ListBean mPlantModel, boolean isLedOn, final ImageView imgTent) {
+            public LongToothResponse(final EquipmentRspModel.ListBean mPlantModel, boolean isLedOn,
+                                     final ImageView imgTent) {
                 this.mPlantModel = mPlantModel;
                 this.isLedOn = isLedOn;
                 this.mImgTent = imgTent;
@@ -538,7 +539,12 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     @Override
                     public void run() {
                         if (!isResp){
-                            offLine();
+                            Log.d(TAG, "run: "+times);
+                            times++;
+                            getEquipmentData(mPlantModel);
+                            if (times>3){
+                                offLine();
+                            }
                         }
                     }
                 };
