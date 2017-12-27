@@ -189,7 +189,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         ImageView mImage;
 
         @BindView(R.id.tv_led)
-        TextView mTVLed;
+        TextView mLed;
 
         @BindView(R.id.cb_push)
         CheckBox mPush;
@@ -204,7 +204,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         TextView mWaterStatus;
 
         @BindView(R.id.tv_led_status)
-        TextView mLedStatus;
+        TextView mLedMode;
 
         @BindView(R.id.tv_ec_status)
         TextView mEcStatus;
@@ -267,6 +267,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             task = new TimerTask() {
                 @Override
                 public void run() {
+                    isLedOn  = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);
+                    HorizontalRecyclerFragmentHelper.setLedSwitch(isLedOn,mLed);
                    getEquipmentData(plantModel);
                 }
             };
@@ -353,8 +355,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
                 return;
             }
-
-            final boolean isLedOn  = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);;
             PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
                     1, Integer.parseInt(plantModel.getPid()));
             String request = gson.toJson(model);
@@ -365,7 +365,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         private boolean isLedOn = false;
         private void setLed(final EquipmentRspModel.ListBean plantModel) {
-            mTVLed.setOnClickListener(new View.OnClickListener() {
+            mLed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     UiTool.showLoading(getContext());
@@ -386,7 +386,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                     Run.onUiAsync(new Action() {
                                         @Override
                                         public void call() {
-                                            mTVLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open,
+                                            mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open,
                                                     0,0);
                                         }
                                     });
@@ -412,7 +412,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                     Run.onUiAsync(new Action() {
                                         @Override
                                         public void call() {
-                                            mTVLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close,
+                                            mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close,
                                                     0,0);
                                         }
                                     });
@@ -486,7 +486,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 mWaterStatus.setTextColor(Color.parseColor("#FBB179"));
             }
             if (model.getLight() != null)
-                mLedStatus.setText(model.getLight().equals("0") ? "关" : "开");
+                mLedMode.setText(model.getLight().equals("0") ? "关" : "开");
             mEcStatus.setText(getStatus(model.getEstatus()));
             if (model.getWstatus().equals("0")) {
                 //温度过低
@@ -518,6 +518,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             //通知MainActivity刷新页面
             EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
             task.cancel();
+            //设备设置为出厂状态
+            HorizontalRecyclerFragmentHelper.equipmentReset(mData);
         }
 
         private String getStatus(String code) {

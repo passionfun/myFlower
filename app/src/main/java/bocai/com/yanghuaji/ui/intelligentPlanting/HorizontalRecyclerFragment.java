@@ -207,7 +207,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             TextView mWaterStatus;
 
             @BindView(R.id.tv_led_status)
-            TextView mLedStatus;
+            TextView mLedMode;
 
             @BindView(R.id.tv_ec_status)
             TextView mEcStatus;
@@ -267,12 +267,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_horizontal_nomal,0,0);
                     mUpdate.setEnabled(false);
                 }
-                //台灯开关 0：关   1：开
-                if (plantModel.getLight().equals("1")){
-                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open_horizontal,0,0);
-                }else {
-                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close_horizontal,0,0);
-                }
+//                //台灯开关 0：关   1：开
+//                if (plantModel.getLight().equals("1")){
+//                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open_horizontal,0,0);
+//                }else {
+//                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close_horizontal,0,0);
+//                }
 
                 //消息推送状态   0关   1开
                 mPush.setChecked(plantModel.getPushStatus().equals("1"));
@@ -284,6 +284,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 task = new TimerTask() {
                     @Override
                     public void run() {
+                        isLedOn = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);
+                        Log.d(TAG, "run: isledOn"+isLedOn);
+                        HorizontalRecyclerFragmentHelper.setLedSwitch(isLedOn,mLed);
                         getEquipmentData(plantModel);
                     }
                 };
@@ -336,18 +339,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
                 if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
                         TextUtils.isEmpty(plantModel.getPid())) {
-//                    Run.onUiAsync(new Action() {
-//                        @Override
-//                        public void call() {
-//                            mOffLine.setVisibility(View.VISIBLE);
-//                            mFramOffline.setVisibility(View.VISIBLE);
-//                        }
-//                    });
-
                     return;
                 }
-//                final boolean isLedOn = mLed.isChecked();
-                final boolean isLedOn = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);
                 PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
                         1, Integer.parseInt(plantModel.getPid()));
                 String request = gson.toJson(model);
@@ -368,10 +361,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                             mPresenter.setCheckBox(Account.getToken(), "1", "1", plantModel.getId());
                             LedSetModel model = new LedSetModel("On", plantModel.getPSIGN());
                             String request = gson.toJson(model);
-                            LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
+                            LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS,
+                                    request.getBytes(), 0, request.getBytes().length,
                                     null, new LongToothServiceResponseHandler() {
                                         @Override
-                                        public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+                                        public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1,
+                                                                          int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                                             UiTool.hideLoading();
                                             String jsonContent = new String(bytes);
                                             LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
@@ -482,7 +477,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             public void setDataSuccess(EquipmentDataModel model) {
                 mTemperature.setText(model.getDegree());
                 if (model.getLight() != null) {
-                    mLedStatus.setText(model.getLight().equals("0") ? "关" : "开");
+                    mLedMode.setText(model.getLight().equals("0") ? "关" : "开");
 //                    mLed.setChecked(model.getLight().equals("1"));
                 }
                 mEcStatus.setText(getStatus(model.getEstatus()));
@@ -552,6 +547,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_DELETE_SUCCESS));
                 //通知Vertical刷新页面
                 EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
+                //设备设置为出厂状态
+                HorizontalRecyclerFragmentHelper.equipmentReset(mData);
             }
 
             private String getStatus(String code) {
@@ -629,7 +626,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             }
 
             @Override
-            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i,
+                                              byte[] bytes, LongToothAttachment longToothAttachment) {
                 isResp = true;
                 if (bytes == null) {
                     offLine();

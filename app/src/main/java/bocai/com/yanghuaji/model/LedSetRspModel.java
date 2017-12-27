@@ -15,7 +15,16 @@ public class LedSetRspModel {
      */
 
     private int CODE;
-    private String SWTICH;
+    private String SWITCH;
+
+    public String getSWITCH() {
+        return SWITCH;
+    }
+
+    public void setSWITCH(String SWITCH) {
+        this.SWITCH = SWITCH;
+    }
+
     private int BRIGHTNESS;
 
     public int getCODE() {
@@ -24,14 +33,6 @@ public class LedSetRspModel {
 
     public void setCODE(int CODE) {
         this.CODE = CODE;
-    }
-
-    public String getSWTICH() {
-        return SWTICH;
-    }
-
-    public void setSWTICH(String SWTICH) {
-        this.SWTICH = SWTICH;
     }
 
     public int getBRIGHTNESS() {
