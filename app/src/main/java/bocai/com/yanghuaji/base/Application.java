@@ -6,6 +6,7 @@ import android.support.annotation.StringRes;
 import android.support.multidex.MultiDex;
 import android.widget.Toast;
 
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -37,6 +38,8 @@ public class Application extends android.app.Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         UMShareAPI.get(this);
+        //bugly初始化
+        CrashReport.initCrashReport(getApplicationContext(), "6d18085e76", true);
     }
 
     {

@@ -125,4 +125,8 @@ dependencies {
 
 
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+
+    //bugly 日志捕捉
+    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
 }

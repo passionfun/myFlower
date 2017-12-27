@@ -113,3 +113,6 @@
 -keep class com.linkedin.** { *; }
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 -keepattributes Signature
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
