@@ -267,7 +267,7 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
         //微信登录成功，但未绑定手机
         if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(name) && !TextUtils.isEmpty(photoUrl)) {
             BindPhoneActivity.show(this, photoUrl, name, openId);
-            finish();
+//            finish();
         } else {
             Application.showToast("参数有误");
         }

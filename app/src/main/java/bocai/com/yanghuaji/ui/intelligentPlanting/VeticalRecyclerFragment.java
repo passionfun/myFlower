@@ -269,6 +269,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 public void run() {
                     isLedOn  = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);
                     HorizontalRecyclerFragmentHelper.setLedSwitch(isLedOn,mLed);
+                    HorizontalRecyclerFragmentHelper.setLedMode(plantModel,mLedMode);
                    getEquipmentData(plantModel);
                 }
             };

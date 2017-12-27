@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.lidroid.xutils.db.table.Id;
 
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
@@ -206,6 +207,111 @@ public class HorizontalRecyclerFragmentHelper {
     }
 
 
+    public static void setLedSwitch(boolean isLedOn, final TextView mLed) {
+        //台灯开关 0：关   1：开
+        if (isLedOn) {
+            Run.onUiAsync(new Action() {
+                @Override
+                public void call() {
+                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_open_horizontal, 0, 0);
+                }
+            });
+
+        } else {
+            Run.onUiAsync(new Action() {
+                @Override
+                public void call() {
+                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_close_horizontal, 0, 0);
+                }
+            });
+
+        }
+    }
+
+    public static void equipmentReset(EquipmentRspModel.ListBean modell) {
+        BindEquipmentModel resetModel = new BindEquipmentModel("FactoryReset", modell.getPSIGN());
+        String request = gson.toJson(resetModel);
+        Log.d(TAG, "equipmentReset: ");
+        LongTooth.request(modell.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                    @Override
+                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                      String service_str, int data_type, byte[] args,
+                                                      LongToothAttachment attachment) {
+                        Log.d(TAG, "equipmentReset: args");
+                        if (args == null) {
+                            Application.showToast("未知错误");
+                            return;
+                        }
+                        String result = new String(args);
+                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                        int code = longToothRspModel.getCODE();
+                        if (code == 0) {
+                            Application.showToast("设备重置成功");
+                        }
+                    }
+                });
+
+    }
+
+    public static void setLedMode(EquipmentRspModel.ListBean modell, final TextView mLedMode) {
+        BindEquipmentModel resetModel = new BindEquipmentModel("getOpMode", modell.getPSIGN());
+        final String request = gson.toJson(resetModel);
+        LongTooth.request(modell.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                    @Override
+                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                      String service_str, int data_type, byte[] args,
+                                                      LongToothAttachment attachment) {
+                        if (args == null) {
+                            Application.showToast("未知错误");
+                            return;
+                        }
+                        String result = new String(args);
+
+                        Log.d(TAG, "getOpMode: "+result);
+                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                        int code = longToothRspModel.getCODE();
+                        if (code == 0) {
+                            String mode = longToothRspModel.getOpMode();
+                            if (mode==null){
+                                return;
+                            }
+                            switch (mode) {
+                                case "3":
+                                    Run.onUiAsync(new Action() {
+                                        @Override
+                                        public void call() {
+                                            mLedMode.setText("台灯");
+                                        }
+                                    });
+
+                                    break;
+                                case "5":
+                                    Run.onUiAsync(new Action() {
+                                        @Override
+                                        public void call() {
+                                            mLedMode.setText("待机");
+                                        }
+                                    });
+
+                                    break;
+                                default:
+                                    Run.onUiAsync(new Action() {
+                                        @Override
+                                        public void call() {
+                                            mLedMode.setText("补光");
+                                        }
+                                    });
+
+                                    break;
+                            }
+                        }
+                    }
+                });
+    }
+
+
     private static boolean isHaveNew = false;
 
     public static boolean isHaveNewVersion(final EquipmentRspModel.ListBean plantModel) {
@@ -225,53 +331,6 @@ public class HorizontalRecyclerFragmentHelper {
                 0, request.getBytes().length, null, new MyLongToothServiceResponseHandler());
 
         return isHaveNew;
-    }
-
-    public static void setLedSwitch(boolean isLedOn, final TextView mLed) {
-        //台灯开关 0：关   1：开
-                if (isLedOn){
-                    Run.onUiAsync(new Action() {
-                        @Override
-                        public void call() {
-                            mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_open_horizontal,0,0);
-                        }
-                    });
-
-                }else {
-                    Run.onUiAsync(new Action() {
-                        @Override
-                        public void call() {
-                            mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close_horizontal,0,0);
-                        }
-                    });
-
-                }
-    }
-
-    public static void equipmentReset(EquipmentRspModel.ListBean modell) {
-        BindEquipmentModel resetModel = new BindEquipmentModel("FactoryReset",modell.getPSIGN());
-        String request = gson.toJson(resetModel);
-        Log.d(TAG, "equipmentReset: ");
-        LongTooth.request(modell.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
-                    @Override
-                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                                                      String service_str, int data_type, byte[] args,
-                                                      LongToothAttachment attachment) {
-                        Log.d(TAG, "equipmentReset: args");
-                        if (args == null) {
-                            Application.showToast("未知错误");
-                            return;
-                        }
-                        String result = new String(args);
-                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                        int code = longToothRspModel.getCODE();
-                        if (code==0){
-                            Application.showToast("设备重置成功");
-                        }
-                    }
-                });
-
     }
 
     static class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
@@ -316,11 +375,11 @@ public class HorizontalRecyclerFragmentHelper {
             LedSetRspModel ledSetRspModel = gson.fromJson(result, LedSetRspModel.class);
             Log.d(TAG, "ledSetRspModel111:" + result);
             int code = ledSetRspModel.getCODE();
-            if (code==0){
+            if (code == 0) {
                 String ledStatus = ledSetRspModel.getSWITCH();
-                if (ledStatus!=null&&ledStatus.equals("On")){
+                if (ledStatus != null && ledStatus.equals("On")) {
                     isLedOn = true;
-                }else {
+                } else {
                     isLedOn = false;
                 }
 

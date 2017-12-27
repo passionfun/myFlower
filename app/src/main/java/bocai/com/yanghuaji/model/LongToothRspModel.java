@@ -12,6 +12,7 @@ public class LongToothRspModel {
     private int CODE;
     private int updateStat;
     private String softVer;
+    private String OpMode;
 
     public String getSoftVer() {
         return softVer;
@@ -36,4 +37,14 @@ public class LongToothRspModel {
     public int getCODE() {
         return CODE;
     }
+
+
+    public String getOpMode() {
+        return OpMode;
+    }
+
+    public void setOpMode(String opMode) {
+        OpMode = opMode;
+    }
+
 }

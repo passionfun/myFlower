@@ -287,6 +287,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         isLedOn = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);
                         Log.d(TAG, "run: isledOn"+isLedOn);
                         HorizontalRecyclerFragmentHelper.setLedSwitch(isLedOn,mLed);
+                        HorizontalRecyclerFragmentHelper.setLedMode(plantModel,mLedMode);
                         getEquipmentData(plantModel);
                     }
                 };
