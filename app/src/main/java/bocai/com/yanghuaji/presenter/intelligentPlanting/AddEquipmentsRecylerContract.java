@@ -15,14 +15,13 @@ public interface AddEquipmentsRecylerContract {
 
         void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel);
 
-        void addEquipmentSuccess(EquipmentCard card);
-        void addEquipmentFailed();
+
     }
     interface Presenter extends BaseContract.Presenter{
 
         // type:1添加设备产品演示区图      2连接设备成功-设备图
         void getEquipmentPhoto(String type,String equipmentType);
 
-        void addEquipment(String token,String equipmentName,String macAddress,String serialNum,String version,String longToothId,String timeStamp,String series);
+
     }
 }

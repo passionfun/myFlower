@@ -293,10 +293,10 @@ public interface RemoteService {
 
 
 
-//    //多设备添加
-//    @POST("equipment/create_equipment_more")
-//    @FormUrlEncoded
-//    Observable<BaseRspModel<List<EquipmentCard>>> addEquipments(@Field("Token") String token, @Field("Equipments") String equipments);
+    //多设备添加
+    @POST("equipment/create_equipment_more")
+    @FormUrlEncoded
+    Observable<BaseRspModel<List<EquipmentCard>>> addEquipments(@Field("Token") String token, @Field("Equipments") String equipments);
 
 
 

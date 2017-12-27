@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,8 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 import net.qiujuer.genius.ui.widget.Loading;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -34,6 +37,8 @@ import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.common.Factory;
+import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.AddEquipmentsModel;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentModel;
@@ -42,9 +47,13 @@ import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
+import bocai.com.yanghuaji.model.db.User;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsContract;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsPresenter;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.LongToothUtil;
 import bocai.com.yanghuaji.util.UiTool;
@@ -65,7 +74,8 @@ import xpod.longtooth.LongToothTunnel;
  * 邮箱 yuanfei221@126.com
  */
 
-public class AddEquipmentsActivity extends Activity {
+public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContract.Presenter>
+        implements AddEquipmentsContract.View {
     @BindView(R.id.empty)
     EmptyView mEmptyView;
 
@@ -93,6 +103,11 @@ public class AddEquipmentsActivity extends Activity {
     //所有已经添加过的设备
     private List<EquipmentRspModel.ListBean> listBeans = Account.getListBeans();
     private PlantSeriesModel.PlantSeriesCard plantSeriesCard;
+
+    //被选中要添加的设备集合
+    List<EquipmentModel> equipmentModels = new ArrayList<>();
+
+    private boolean isAllSuccess = true;
 
     //显示的入口
     public static void show(Context context, String ssid, String password, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
@@ -124,13 +139,144 @@ public class AddEquipmentsActivity extends Activity {
 
     @OnClick(R.id.tv_right)
     void onConfirmClick() {
-        // 添加完成，跳转主页面
-        MainActivity.show(this);
+        showLoading();
+        addEquipments();
     }
+
+    private void addEquipments() {
+        if (equipmentModels == null || equipmentModels.size() == 0) {
+            hideLoading();
+            Application.showToast("请选择要添加的设备");
+            return;
+        }
+        final List<AddEquipmentsModel> models = new ArrayList<>();
+        for (EquipmentModel equipmentModel : equipmentModels) {
+            startBind(models,equipmentModel);
+        }
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (mPresenter != null) {
+                    if (models.size()>0){
+                        String token = Account.getToken();
+                        mPresenter.addEquipments(token,gson.toJson(models));
+                    }else {
+                        hideLoading();
+                    }
+                }
+            }
+        }, 5000);
+
+    }
+
+
+
+
+
+    public  void startBind(List<AddEquipmentsModel> models, EquipmentModel mEquipmentModel) {
+        final String timeStamp = DateUtils.getCurrentDateTimes();
+        BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
+        final String request = gson.toJson(model);
+        Log.d("sunhengchao", "startbind: " + request);
+        LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length,
+                new SampleAttachment(), new MyLongToothServiceResponseHandler(models,mEquipmentModel));
+
+    }
+
+
+     class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+        private boolean isRsp = false;
+        private List<AddEquipmentsModel> models;
+        private EquipmentModel equipmentModel;
+
+         public MyLongToothServiceResponseHandler(List<AddEquipmentsModel> models, final EquipmentModel equipmentModel) {
+             this.models = models;
+             this.equipmentModel = equipmentModel;
+             Timer timer = new Timer();
+             isAllSuccess = true;
+             timer.schedule(new TimerTask() {
+                 @Override
+                 public void run() {
+                     if (!isRsp) {
+                         Application.showToast("绑定无响应");
+                         EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID()));
+                         isAllSuccess = false;
+                     }
+                 }
+             }, 5000);
+         }
+
+
+        @Override
+        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                          String service_str, int data_type, byte[] args,
+                                          LongToothAttachment attachment) {
+            String result = new String(args);
+            if (TextUtils.isEmpty(result)) {
+                return;
+            }
+            isRsp = true;
+            Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
+            final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+            if (longToothRspModel.getCODE() == 0) {
+                final String timeStamp = DateUtils.getCurrentDateTimes();
+                String mEquipmentName = equipmentModel.getDEVNAME();
+                String macAddress = equipmentModel.getMAC();
+                String serialNum = "";
+                String version = equipmentModel.get_$FirmwareRev196();
+                String series = mEquipmentName.substring(0, 5);
+                AddEquipmentsModel model = new AddEquipmentsModel(mEquipmentName,macAddress,serialNum,version,equipmentModel.getLTID()
+                        ,timeStamp,series);
+                models.add(model);
+            } else {
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID()));
+                        isAllSuccess = false;
+                        Factory.decodeRspCode(longToothRspModel);
+                    }
+                });
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void addEquipmentsSuccess(EquipmentCard card) {
+        EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
+        if (isAllSuccess){
+            MainActivity.show(this);
+        }
+    }
+
+    @Override
+    public void addEquipmentsFailed() {
+
+        isAllSuccess = false;
+    }
+
 
     @Override
     protected void initBefore() {
         super.initBefore();
+    }
+
+    @Override
+    protected AddEquipmentsContract.Presenter initPresenter() {
+        return new AddEquipmentsPresenter(this);
     }
 
     @Override
@@ -168,7 +314,6 @@ public class AddEquipmentsActivity extends Activity {
     @Override
     protected void initData() {
         super.initData();
-//        mEmptyView.triggerLoading();
         mLoadingAddEquipments.setForegroundColor(Color.parseColor("#87BC52"));
         mLoadingAddEquipments.setVisibility(View.VISIBLE);
         mLoadingAddEquipments.start();
@@ -204,7 +349,7 @@ public class AddEquipmentsActivity extends Activity {
                         //搜索所有搜索到该系列的设备，如果还没有添加过，并且设备没有被绑定过则显示
                         if (!series.contains(seriesName) && !isAdded(equipmentModel.getLTID())
                                 && seriesName.startsWith(plantSeriesCard.getSeries())
-                                && (equipmentModel.get_$BOUNDSTATUS310()!=null&&
+                                && (equipmentModel.get_$BOUNDSTATUS310() != null &&
                                 equipmentModel.get_$BOUNDSTATUS310().equals("notBound"))) {
                             series.add(seriesName);
                             Run.onUiAsync(new Action() {
@@ -273,156 +418,42 @@ public class AddEquipmentsActivity extends Activity {
         @BindView(R.id.tv_mac)
         TextView mMac;
 
-        @BindView(R.id.img_add)
-        ImageView mAdd;
-
-        @BindView(R.id.img_add_success)
-        ImageView mAddSuccess;
-
-        @BindView(R.id.loading)
-        Loading mLoading;
-
+        @BindView(R.id.cb_add)
+        CheckBox mCbAdd;
 
         private AddEquipmentsRecylerContract.Presenter mPresenter;
-        private Gson gson;
-        private EquipmentModel mEquipmentModel;
-
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            EventBus.getDefault().register(this);
             new AddEquipmentsRecylerPresenter(this);
+        }
+
+
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        public void onEidtPersonDataSuccess(MessageEvent messageEvent) {
+            if (messageEvent.getMessage().equals(mData.getLTID())) {
+                mCbAdd.setChecked(false);
+                equipmentModels.remove(mData);
+            }
         }
 
         @Override
         protected void onBind(EquipmentModel equipmentModel) {
-            mEquipmentModel = equipmentModel;
             mName.setText(equipmentModel.getDEVNAME());
             mMac.setText(equipmentModel.getMAC());
             String type = equipmentModel.getDEVNAME().substring(0, 4);
             mPresenter.getEquipmentPhoto("2", type);
         }
 
-        @OnClick(R.id.img_add)
+        @OnClick(R.id.cb_add)
         void onAddClick() {
-            mAdd.setVisibility(View.GONE);
-            mAddSuccess.setVisibility(View.GONE);
-            mLoading.setVisibility(View.VISIBLE);
-            mLoading.setForegroundColor(Color.parseColor("#75B62B"));
-            mLoading.start();
-            startBind();
-        }
-
-        private void startBind() {
-            final String timeStamp = DateUtils.getCurrentDateTimes();
-            BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
-            gson = new Gson();
-            final String request = gson.toJson(model);
-            Log.d("sunhengchao", "startbind: " + request);
-            //mEquipmentModel.getLTID()   "2000110256.1.2353.24.219"
-//            LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
-//                    new SampleAttachment(), new MyLongToothServiceResponseHandler(timeStamp));
-
-            LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
-                    new SampleAttachment(), new LongToothServiceResponseHandler() {
-                        @Override
-                        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                                                          String service_str, int data_type, byte[] args,
-                                                          LongToothAttachment attachment) {
-                            String result = new String(args);
-                            if (TextUtils.isEmpty(result)){
-                                return;
-                            }
-                            Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
-                            final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                            if (longToothRspModel.getCODE() == 0) {
-                                String mEquipmentName = mEquipmentModel.getDEVNAME();
-                                String macAddress = mEquipmentModel.getMAC();
-                                String token = Account.getToken();
-                                String serialNum = "";
-                                String version = mEquipmentModel.get_$FirmwareRev196();
-                                String series = mEquipmentName.substring(0, 5);
-                                if (mPresenter != null) {
-                                    mPresenter.addEquipment(token, mEquipmentName, macAddress, serialNum, version,
-                                            mEquipmentModel.getLTID(), timeStamp, series);
-                                }
-                            } else {
-                                Run.onUiAsync(new Action() {
-                                    @Override
-                                    public void call() {
-                                        Factory.decodeRspCode(longToothRspModel);
-                                        mLoading.stop();
-                                        mAdd.setVisibility(View.VISIBLE);
-                                        mAddSuccess.setVisibility(View.GONE);
-                                        mLoading.setVisibility(View.GONE);
-                                    }
-                                });
-                            }
-                        }
-                    });
-
-        }
-
-
-        private class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
-            private String timeStamp;
-            private boolean isResp = false;
-
-            public MyLongToothServiceResponseHandler(String timeStamp) {
-                this.timeStamp = timeStamp;
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        if (!isResp) {
-                            Run.onUiAsync(new Action() {
-                                @Override
-                                public void call() {
-                                    Application.showToast("绑定请求无响应");
-                                }
-                            });
-                        }
-                    }
-                }, 6000);
+            if (mCbAdd.isChecked()) {
+                equipmentModels.add(mData);
+            } else {
+                equipmentModels.remove(mData);
             }
-
-            @Override
-            public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                                              String service_str, int data_type, byte[] args,
-                                              LongToothAttachment attachment) {
-                String result = new String(args);
-                isResp = true;
-                if (TextUtils.isEmpty(result)){
-                    return;
-                }
-                Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
-                final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                if (longToothRspModel.getCODE() == 0) {
-                    String mEquipmentName = mEquipmentModel.getDEVNAME();
-                    String macAddress = mEquipmentModel.getMAC();
-                    String token = Account.getToken();
-                    String serialNum = "";
-                    String version = mEquipmentModel.get_$FirmwareRev196();
-                    String series = mEquipmentName.substring(0, 5);
-                    if (mPresenter != null) {
-                        mPresenter.addEquipment(token, mEquipmentName, macAddress, serialNum, version,
-                                mEquipmentModel.getLTID(), timeStamp, series);
-                    }
-                } else {
-                    Run.onUiAsync(new Action() {
-                        @Override
-                        public void call() {
-                            Factory.decodeRspCode(longToothRspModel);
-                            mLoading.stop();
-                            mAdd.setVisibility(View.VISIBLE);
-                            mAddSuccess.setVisibility(View.GONE);
-                            mLoading.setVisibility(View.GONE);
-                        }
-                    });
-                }
-            }
-
         }
-
 
         @Override
         public void showError(int str) {
@@ -453,22 +484,6 @@ public class AddEquipmentsActivity extends Activity {
                     .into(mPhoto);
         }
 
-        @Override
-        public void addEquipmentSuccess(EquipmentCard card) {
-            mLoading.stop();
-            mAdd.setVisibility(View.GONE);
-            mAddSuccess.setVisibility(View.VISIBLE);
-            mLoading.setVisibility(View.GONE);
-            EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
-        }
-
-        @Override
-        public void addEquipmentFailed() {
-            mLoading.stop();
-            mAdd.setVisibility(View.VISIBLE);
-            mAddSuccess.setVisibility(View.GONE);
-            mLoading.setVisibility(View.GONE);
-        }
 
     }
 
