@@ -257,6 +257,16 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mPlantName.setText(plantModel.getPlantName());
                 mGroupName.setText(plantModel.getGroupName());
                 mTime.setText(plantModel.getDays() + "");
+                //设置是否需要升级
+                if (HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel)){
+                    mUpdate.setText("设备升级");
+                    mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_horizontal,0,0);
+                    mUpdate.setEnabled(true);
+                }else {
+                    mUpdate.setText("最新版本");
+                    mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_horizontal_nomal,0,0);
+                    mUpdate.setEnabled(false);
+                }
                 //台灯开关 0：关   1：开
                 if (plantModel.getLight().equals("1")){
                     mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open_horizontal,0,0);
@@ -323,7 +333,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             }
 
 
-            public void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
+            private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
                 if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
                         TextUtils.isEmpty(plantModel.getPid())) {
 //                    Run.onUiAsync(new Action() {

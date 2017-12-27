@@ -245,6 +245,16 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mPlantName.setText(plantModel.getPlantName());
             mGroupName.setText(plantModel.getGroupName());
             mTime.setText(plantModel.getDays() + "");
+            //设置是否需要升级
+            if (HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel)){
+                mUpdate.setText("设备升级");
+                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_vertical,0,0);
+                mUpdate.setEnabled(true);
+            }else {
+                mUpdate.setText("最新版本");
+                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_vertical_nomal,0,0);
+                mUpdate.setEnabled(false);
+            }
 //            mLed.setChecked(plantModel.getLight().equals("1"));
             mPush.setChecked(plantModel.getPushStatus().equals("1"));
             GlideApp.with(getContext())
