@@ -76,10 +76,9 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
 
                     @Override
                     public void onNext(BaseRspModel<CheckboxStatusModel> checkboxStatusModelBaseRspModel) {
-//                        if (checkboxStatusModelBaseRspModel.getReturnCode().equals("200")) {
-////                            view.setCheckBoxSuccess(checkboxStatusModelBaseRspModel.getData());
-//                        } else
-                        if (checkboxStatusModelBaseRspModel.getReturnCode().equals("9997")) {
+                        if (checkboxStatusModelBaseRspModel.getReturnCode().equals("200")) {
+//                            view.setCheckBoxSuccess(checkboxStatusModelBaseRspModel.getData());
+                        } else if (checkboxStatusModelBaseRspModel.getReturnCode().equals("9997")) {
                             view.onConnectionConflict();
                         } else {
                             Application.showToast(checkboxStatusModelBaseRspModel.getMsg());

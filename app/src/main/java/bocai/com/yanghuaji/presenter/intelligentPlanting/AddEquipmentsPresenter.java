@@ -46,9 +46,10 @@ public class AddEquipmentsPresenter extends BasePresenter<AddEquipmentsContract.
                             view.addEquipmentsSuccess(listBaseRspModel.getData());
                         }else if (listBaseRspModel.getReturnCode().equals("9997")) {
                             view.onConnectionConflict();
+                        }else {
+                            Application.showToast(listBaseRspModel.getMsg());
                         }
                         view.hideLoading();
-                        Application.showToast(listBaseRspModel.getMsg());
                     }
 
                     @Override

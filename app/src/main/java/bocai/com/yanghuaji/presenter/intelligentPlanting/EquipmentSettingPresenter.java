@@ -83,8 +83,9 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
                             view.setupEquipmentSuccess(equipmentSetupModelBaseRspModel.getData());
                         }else if (equipmentSetupModelBaseRspModel.getReturnCode().equals("9997")){
                             view.onConnectionConflict();
+                        }else {
+                            Application.showToast(equipmentSetupModelBaseRspModel.getMsg());
                         }
-                        Application.showToast(equipmentSetupModelBaseRspModel.getMsg());
                         view.hideLoading();
                     }
 

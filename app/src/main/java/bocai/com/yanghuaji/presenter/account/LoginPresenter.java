@@ -119,7 +119,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
                     @Override
                     public void onNext(BaseRspModel baseRspModel) {
-                        Application.showToast(baseRspModel.getMsg());
+//                        Application.showToast(baseRspModel.getMsg());
                     }
 
                     @Override

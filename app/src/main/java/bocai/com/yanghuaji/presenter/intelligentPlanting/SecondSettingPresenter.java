@@ -43,8 +43,10 @@ public class SecondSettingPresenter extends BasePresenter<SecondSettingContract.
                             view.clearDataSuccess();
                         }else if (baseRspModel.getReturnCode().equals("9997")) {
                             view.onConnectionConflict();
+                        }else {
+                            Application.showToast(baseRspModel.getMsg());
                         }
-                        Application.showToast(baseRspModel.getMsg());
+
                         view.hideLoading();
                     }
 

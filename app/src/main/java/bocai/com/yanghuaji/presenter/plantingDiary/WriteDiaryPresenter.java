@@ -85,7 +85,7 @@ public class WriteDiaryPresenter extends BasePresenter<WriteDiaryContract.View>
                         }else if (baseRspModel.getReturnCode().equals("9997")) {
                             view.onConnectionConflict();
                         }
-                        Application.showToast(baseRspModel.getMsg());
+//                        Application.showToast(baseRspModel.getMsg());
                         view.hideLoading();
                     }
 

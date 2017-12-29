@@ -44,7 +44,7 @@ public class GroupListPresenter extends BasePresenter<GroupListContract.View>
                         }else if (listBeanBaseRspModel.getReturnCode().equals("9997")) {
                             view.onConnectionConflict();
                         }
-                        Application.showToast(listBeanBaseRspModel.getMsg());
+//                        Application.showToast(listBeanBaseRspModel.getMsg());
                         view.hideLoading();
                     }
 

@@ -49,9 +49,11 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
                             view.setupPlantSuccess(plantSettingModelBaseRspModel.getData());
                         }else if (plantSettingModelBaseRspModel.getReturnCode().equals("9997")){
                             view.onConnectionConflict();
+                        }else {
+                            Application.showToast(plantSettingModelBaseRspModel.getMsg());
                         }
                         view.hideLoading();
-                        Application.showToast(plantSettingModelBaseRspModel.getMsg());
+
                     }
 
 

@@ -40,8 +40,9 @@ public class ConnectPresenter extends BasePresenter<ConnectContract.View> implem
                             view.addEquipmentSuccess(equipmentCardBaseRspModel.getData());
                         }else if (equipmentCardBaseRspModel.getReturnCode().equals("9997")) {
                             view.onConnectionConflict();
+                        }else {
+                            Application.showToast(equipmentCardBaseRspModel.getMsg());
                         }
-                        Application.showToast(equipmentCardBaseRspModel.getMsg());
                     }
 
                     @Override

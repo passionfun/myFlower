@@ -54,8 +54,10 @@ public class EditPersonalDataPresenter extends BasePresenter<EditPersonalDataCon
                             view.modifyDataSuccess();
                         }else if (accountRspModelBaseRspModel.getReturnCode().equals("9997")) {
                             view.onConnectionConflict();
+                        }else {
+                            Application.showToast(accountRspModelBaseRspModel.getMsg());
                         }
-                        Application.showToast(accountRspModelBaseRspModel.getMsg());
+
                         view.hideLoading();
                     }
 
