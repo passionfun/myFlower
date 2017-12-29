@@ -117,6 +117,8 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         super.initWidget();
         UiTool.setBlod(mTitle);
         mTitle.setText("连接设备");
+//        mPresenter.addEquipment(Account.getToken(), "666", "B0:F8:93:15:22:DB", "666",
+//                "1.0.4", "1.1.2353.356.547", "1504608600", "WG301");
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.load_animation);
         mAnimBg.startAnimation(animation);
 

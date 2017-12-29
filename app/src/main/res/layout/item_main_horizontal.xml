@@ -181,7 +181,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_ec_status"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="4dp"
                     android:drawableStart="@mipmap/img_ec"

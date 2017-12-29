@@ -473,7 +473,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @Override
         public void setDataSuccess(EquipmentDataModel model) {
             mTemperature.setText(model.getDegree());
-            mWaterStatus.setText(HorizontalRecyclerFragmentHelper.getWaStatus(model.getWstatus()));
+            mWaterStatus.setText(HorizontalRecyclerFragmentHelper.getWaStatus(model.getWater()));
             //如果不支持营养功能，则把图标设置为灰色
             if (getStatus(model.getEstatus()).equals(HorizontalRecyclerFragment.UNKNOWN)) {
                 mEcStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_ec_normal, 0, 0, 0);
@@ -483,7 +483,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 mEcStatus.setTextColor(Color.parseColor("#9FD166"));
             }
             //如果不支持水位功能，则把图标设置为灰色
-            if (HorizontalRecyclerFragmentHelper.getWaStatus(model.getWstatus()).equals(HorizontalRecyclerFragment.UNKNOWN)) {
+            if (HorizontalRecyclerFragmentHelper.getWaStatus(model.getWater()).equals(HorizontalRecyclerFragment.UNKNOWN)) {
                 mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever_normal, 0, 0, 0);
                 mWaterStatus.setTextColor(Color.parseColor("#dadada"));
             } else {
@@ -495,7 +495,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             }
 
             mEcStatus.setText(getStatus(model.getEstatus()));
-            if (model.getWstatus().equals("0")) {
+            if (model.getDstatus().equals("0")) {
                 //温度过低
                 mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature, 0,
                         R.mipmap.img_trending_down, 0);

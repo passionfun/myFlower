@@ -91,4 +91,18 @@ public class EquipmentDataModel {
     public void setLTID(String LTID) {
         this.LTID = LTID;
     }
+
+    @Override
+    public String toString() {
+        return "EquipmentDataModel{" +
+                "Degree='" + Degree + '\'' +
+                ", Water='" + Water + '\'' +
+                ", Light='" + Light + '\'' +
+                ", Ec='" + Ec + '\'' +
+                ", Dstatus='" + Dstatus + '\'' +
+                ", Wstatus='" + Wstatus + '\'' +
+                ", Estatus='" + Estatus + '\'' +
+                ", LTID='" + LTID + '\'' +
+                '}';
+    }
 }

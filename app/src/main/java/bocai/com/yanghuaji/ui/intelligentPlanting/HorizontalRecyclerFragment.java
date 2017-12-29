@@ -485,6 +485,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             public void setDataSuccess(EquipmentDataModel model) {
+                Log.d(TAG, "setDataSuccess: "+model.toString());
                 mTemperature.setText(model.getDegree());
                 if (model.getLight() != null) {
 //                    mLedMode.setText(model.getLight().equals("0") ? "关" : "开");
@@ -499,21 +500,21 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mEcStatus.setTextColor(Color.parseColor("#9FD166"));
                 }
                 //如果不支持水位功能，则把图标设置为灰色
-                if (HorizontalRecyclerFragmentHelper.getWaStatus(model.getWstatus()).equals(UNKNOWN)){
+                if (HorizontalRecyclerFragmentHelper.getWaStatus(model.getWater()).equals(UNKNOWN)){
                     mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever_normal,0,0,0);
                     mWaterStatus.setTextColor(Color.parseColor("#dadada"));
                 }else {
                     mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever,0,0,0);
                     mWaterStatus.setTextColor(Color.parseColor("#FBB179"));
                 }
-                mWaterStatus.setText(HorizontalRecyclerFragmentHelper.getWaStatus(model.getWstatus()));
+                mWaterStatus.setText(HorizontalRecyclerFragmentHelper.getWaStatus(model.getWater()));
                 mImgTemArrow.setVisibility(View.VISIBLE);
-                if (model.getWstatus().equals("0")) {
+                if (model.getDstatus().equals("0")) {
                     //温度过低
                     mImgTemArrow.setImageResource(R.mipmap.img_trending_down);
                     PushModel pushModel = new PushModel("push", "sys101");
                     HorizontalRecyclerFragmentHelper.push(model, pushModel);
-                } else if (model.getWstatus().equals("2")) {
+                } else if (model.getDstatus().equals("2")) {
                     //温度过高
                     mImgTemArrow.setImageResource(R.mipmap.img_temperature_trending_up);
                     PushModel pushModel = new PushModel("push", "sys102");
@@ -530,15 +531,15 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     PushModel pushModel = new PushModel("push", "sys201");
                     HorizontalRecyclerFragmentHelper.push(model, pushModel);
                 }
-                if (model.getWstatus().equals("0")) {
-                    //水位过低
-                    PushModel pushModel = new PushModel("push", "sys301");
-                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
-                } else if (model.getWstatus().equals("2")) {
-                    //水位过高
-                    PushModel pushModel = new PushModel("push", "sys302");
-                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
-                }
+//                if (model.getWstatus().equals("0")) {
+//                    //水位过低
+//                    PushModel pushModel = new PushModel("push", "sys301");
+//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
+//                } else if (model.getWstatus().equals("2")) {
+//                    //水位过高
+//                    PushModel pushModel = new PushModel("push", "sys302");
+//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
+//                }
             }
 
 
