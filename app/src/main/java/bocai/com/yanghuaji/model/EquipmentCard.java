@@ -14,6 +14,7 @@ public class EquipmentCard {
 
     private String Id;
     private String EquipName;
+    private String LTID;
     private String PlantTime;
 
     public String getPlantTime() {
@@ -38,5 +39,13 @@ public class EquipmentCard {
 
     public void setEquipName(String EquipName) {
         this.EquipName = EquipName;
+    }
+
+    public String getLTID() {
+        return LTID;
+    }
+
+    public void setLTID(String LTID) {
+        this.LTID = LTID;
     }
 }

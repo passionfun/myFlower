@@ -240,8 +240,13 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
 
 
     @Override
-    public void addEquipmentsSuccess(EquipmentCard card) {
+    public void addEquipmentsSuccess(List<EquipmentCard> cards) {
+        //通知主页面刷新数据
         EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
+        for (EquipmentCard card : cards) {
+            EventBus.getDefault().post(new MessageEvent(card.getLTID(),MessageEvent.SUCCESS));
+        }
         if (isAllSuccess) {
             MainActivity.show(this);
         }
@@ -444,6 +449,11 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
                 equipmentModels.remove(mData);
                 mAddFailed.setVisibility(View.VISIBLE);
                 mAddSuccess.setVisibility(View.GONE);
+            }else if (messageEvent.getMessage().equals(mData.getLTID())&&
+                    messageEvent.getType().equals(MessageEvent.SUCCESS)){
+                mCbAdd.setVisibility(View.GONE);
+                mAddFailed.setVisibility(View.GONE);
+                mAddSuccess.setVisibility(View.VISIBLE);
             }
         }
 
