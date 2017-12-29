@@ -1,6 +1,8 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -258,6 +260,10 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     if (task!=null){
                         task.cancel();
                     }
+                }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.UPDATE_SUCCESS)){
+                    mUpdate.setEnabled(false);
+                    mUpdate.setText("最新版本");
+                    mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal_nomal, 0, 0);
                 }
             }
 
@@ -452,14 +458,19 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             }
 
+            Dialog dialog;
             @Override
             public void showLoading() {
-
+                dialog  = UiTool.createLoadingDialog(getContext());
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
             }
 
             @Override
             public void hideLoading() {
-
+                if (dialog!=null&&dialog.isShowing()){
+                    dialog.dismiss();
+                }
             }
 
             @Override
@@ -622,6 +633,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i,
                                               byte[] bytes, LongToothAttachment longToothAttachment) {
+                times=0;
                 isResp = true;
                 if (bytes == null) {
                     offLine();

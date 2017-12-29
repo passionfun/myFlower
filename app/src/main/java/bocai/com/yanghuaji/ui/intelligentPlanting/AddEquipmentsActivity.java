@@ -215,6 +215,9 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
+            if (args==null){
+                return;
+            }
             String result = new String(args);
             if (TextUtils.isEmpty(result)) {
                 return;

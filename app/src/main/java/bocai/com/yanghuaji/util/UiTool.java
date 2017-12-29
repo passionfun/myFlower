@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
 import net.qiujuer.genius.ui.widget.Loading;
 
 import bocai.com.yanghuaji.R;
@@ -218,17 +220,15 @@ public class UiTool {
 //            }
 //        });
 
-//        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "停止", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                progressDialogHandler.removeMessages(PROGRESSDIALOG_FLAG);
-//                progress = 0;
-//                progressDialog.setProgress(progress);
-//            }
-//        });
+
 
         // 展示
-        progressDialog.show();
+        Run.onUiAsync(new Action() {
+            @Override
+            public void call() {
+                progressDialog.show();
+            }
+        });
         return progressDialog;
     }
 

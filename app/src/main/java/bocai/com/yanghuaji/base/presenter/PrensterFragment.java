@@ -1,5 +1,6 @@
 package bocai.com.yanghuaji.base.presenter;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 
@@ -14,7 +15,7 @@ import bocai.com.yanghuaji.util.UiTool;
 
 public abstract class PrensterFragment<Presenter extends BaseContract.Presenter> extends Fragment implements BaseContract.View<Presenter> {
 //    private QMUITipDialog mProgressDialog;
-    protected ProgressDialog dialog;
+//    protected ProgressDialog dialog;
     protected Presenter mPresenter;
 
     @Override
@@ -49,10 +50,10 @@ public abstract class PrensterFragment<Presenter extends BaseContract.Presenter>
         UiTool.onConnectionConflict(getContext());
     }
 
+    Dialog dialog;
     @Override
     public void showLoading() {
-
-        dialog  = new ProgressDialog(getContext());
+        dialog  = UiTool.createLoadingDialog(getContext());
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }

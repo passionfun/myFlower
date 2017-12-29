@@ -1,5 +1,6 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -35,108 +36,97 @@ import xpod.longtooth.LongToothServiceResponseHandler;
 import xpod.longtooth.LongToothTunnel;
 
 /**
- *
  * Created by shc on 2017/12/6.
  */
 
-public class HorizontalRecyclerFragmentHelper {
+class HorizontalRecyclerFragmentHelper {
     private static final String TAG = HorizontalRecyclerFragmentHelper.class.getName();
+    public static final String UPDATE_SUCCESS = "UPDATE_SUCCESS";
     private static Gson gson = new Gson();
     private static Activity mActivity;
-    public static final String LED_ON = "ledOn";
-    public static final String LED_OFF = "ledOff";
+    static final String LED_ON = "ledOn";
+    static final String LED_OFF = "ledOff";
+    static ProgressDialog progressDialog;
+    static Timer timer = new Timer();
+    static Timer checkUpdateStateTimer = new Timer();
 
-    public static void update(final Activity activity, final EquipmentRspModel.ListBean plantModel) {
+    static void update(final Activity activity, final EquipmentRspModel.ListBean plantModel) {
         mActivity = activity;
+        //  501:有升级的新版本
+        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(activity);
+        deleteDialog.setTitle("有新版本，确定升级？");
+        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        progressDialog = UiTool.showProgressBarDialog(activity);
+                        timer.schedule(new TimerTask() {
+                            int times = 1;
+
+                            @Override
+                            public void run() {
+                                times++;
+                                if (times > 99) {
+                                    this.cancel();
+                                    timer.cancel();
+                                    Application.showToast("升级失败");
+                                    progressDialog.cancel();
+                                }
+                                progressDialog.setProgress(times);
+
+                            }
+                        }, 1500, 1500);
+                        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "停止", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                progressDialog.cancel();
+                                timer.cancel();
+                            }
+                        });
+                    }
+                });
+
+                //升级操作
+                BindEquipmentModel model = new BindEquipmentModel("update", plantModel.getPSIGN());
+                String request = gson.toJson(model);
+                //请求接口进行升级
+                LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                        0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
+                            @Override
+                            public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                              String service_str, int data_type, byte[] args,
+                                                              LongToothAttachment attachment) {
+                                String result = new String(args);
+                                LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                                int code = longToothRspModel.getCODE();
+                                if (code == 0) {
+                                    checkUpdateStateTimer.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            checkUpdateState(plantModel);
+                                        }
+                                    }, 5000, 5000);
+                                } else {
+                                    timer.cancel();
+                                    Application.showToast("升级失败");
+                                    progressDialog.cancel();
+                                }
+                            }
+                        });
+            }
+        });
+        deleteDialog.setNegativeButton("取消", null);
         Run.onUiAsync(new Action() {
             @Override
             public void call() {
-                UiTool.showLoading(activity);
+                deleteDialog.show();
             }
         });
-        BindEquipmentModel model = new BindEquipmentModel("isUpdate", plantModel.getPSIGN());
-        String request = gson.toJson(model);
-        //请求接口，判断是否需要更新
-        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
-                    @Override
-                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                                                      String service_str, int data_type, byte[] args,
-                                                      LongToothAttachment attachment) {
-                        Run.onUiAsync(new Action() {
-                            @Override
-                            public void call() {
-                                UiTool.hideLoading();
-                            }
-                        });
-                        if (args == null) {
-                            Application.showToast("未知错误");
-                            return;
-                        }
-                        String result = new String(args);
-                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                        int code = longToothRspModel.getCODE();
-                        switch (code) {
-                            case 501:
-                                //  501:有升级的新版本
-                                final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(activity);
-                                deleteDialog.setTitle("有新版本，确定升级？");
-                                deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Run.onUiAsync(new Action() {
-                                            @Override
-                                            public void call() {
-                                                UiTool.showLoading(activity);
-                                            }
-                                        });
-
-                                        //升级操作
-                                        BindEquipmentModel model = new BindEquipmentModel("update", plantModel.getPSIGN());
-                                        String request = gson.toJson(model);
-                                        //请求接口进行升级
-                                        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                                                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
-                                                    @Override
-                                                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                                                                                      String service_str, int data_type, byte[] args,
-                                                                                      LongToothAttachment attachment) {
-                                                        String result = new String(args);
-                                                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                                                        int code = longToothRspModel.getCODE();
-                                                        if (code == 0) {
-                                                            checkUpdateState(plantModel);
-                                                        } else {
-                                                            Run.onUiAsync(new Action() {
-                                                                @Override
-                                                                public void call() {
-                                                                    UiTool.hideLoading();
-                                                                }
-                                                            });
-                                                            Application.showToast("升级失败，稍后再试");
-                                                        }
-                                                    }
-                                                });
-                                    }
-                                });
-                                deleteDialog.setNegativeButton("取消", null);
-                                Run.onUiAsync(new Action() {
-                                    @Override
-                                    public void call() {
-                                        deleteDialog.show();
-                                    }
-                                });
-
-                                break;
-                            default:
-                                Application.showToast("已是最新版本");
-                                break;
-                        }
-                    }
-                });
     }
 
-
+    static int failTimes = 0;
     private static void checkUpdateState(final EquipmentRspModel.ListBean plantModel) {
         final BindEquipmentModel model = new BindEquipmentModel("checkUpdateStat", plantModel.getPSIGN());
         String request = gson.toJson(model);
@@ -154,41 +144,20 @@ public class HorizontalRecyclerFragmentHelper {
                         Log.d(TAG, "update: " + result);
                         int code = longToothRspModel.getUpdateStat();
                         if (code == 1) {//code=1:正在升级
-                            // 循环等待
-                            mActivity.getWindow().getDecorView()
-                                    .postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            checkUpdateState(plantModel);
-                                        }
-                                    }, 1000);
+
                         } else if (code == 2) {//code=2:升级成功
-                            Run.onUiAsync(new Action() {
-                                @Override
-                                public void call() {
-                                    UiTool.hideLoading();
-                                }
-                            });
+                            checkUpdateStateTimer.cancel();
+                            timer.cancel();
+                            progressDialog.cancel();
+                            EventBus.getDefault().post(new MessageEvent(UPDATE_SUCCESS));
                             Application.showToast("升级成功");
                         } else if (code == 3) {//code=3:升级失败
-                            int times = 0;
-                            times++;
-                            if (times <= 2) {
-                                // 循环等待
-                                mActivity.getWindow().getDecorView()
-                                        .postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                checkUpdateState(plantModel);
-                                            }
-                                        }, 1000);
-                            } else {
-                                Run.onUiAsync(new Action() {
-                                    @Override
-                                    public void call() {
-                                        UiTool.hideLoading();
-                                    }
-                                });
+                            failTimes++;
+                            if (failTimes > 2)  {
+                                failTimes=0;
+                                checkUpdateStateTimer.cancel();
+                                timer.cancel();
+                                progressDialog.cancel();
                                 Application.showToast("升级失败");
                             }
                         }
@@ -224,44 +193,45 @@ public class HorizontalRecyclerFragmentHelper {
                 0, request.getBytes().length, null, new EquipmentResetLongToothServiceResponseHandler(modell));
 
     }
-    private static int times =0;
 
-    static class EquipmentResetLongToothServiceResponseHandler implements LongToothServiceResponseHandler{
-            private boolean isRsp = false;
+    private static int times = 0;
+
+    static class EquipmentResetLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+        private boolean isRsp = false;
 
         public EquipmentResetLongToothServiceResponseHandler(final EquipmentRspModel.ListBean modell) {
             final Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (!isRsp){
+                    if (!isRsp) {
                         times++;
-                        if (times>1){
+                        if (times > 1) {
                             times = 0;
                             return;
                         }
                         equipmentReset(modell);
                     }
                 }
-            },3000);
+            }, 3000);
 
         }
 
         @Override
-            public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                    String service_str, int data_type, byte[] args,
-            LongToothAttachment attachment) {
-                Log.d(TAG, "equipmentReset: args");
-                if (args == null) {
-                    return;
-                }
-                String result = new String(args);
-                LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                int code = longToothRspModel.getCODE();
-                if (code == 0) {
-                    isRsp = true;
-                }
+        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                          String service_str, int data_type, byte[] args,
+                                          LongToothAttachment attachment) {
+            Log.d(TAG, "equipmentReset: args");
+            if (args == null) {
+                return;
             }
+            String result = new String(args);
+            LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+            int code = longToothRspModel.getCODE();
+            if (code == 0) {
+                isRsp = true;
+            }
+        }
 
     }
 
@@ -280,15 +250,15 @@ public class HorizontalRecyclerFragmentHelper {
                         }
                         String result = new String(args);
 
-                        Log.d(TAG, "getOpMode: "+result);
+                        Log.d(TAG, "getOpMode: " + result);
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                         int code = longToothRspModel.getCODE();
-                        if (mPresenter!=null){
-                            mPresenter.setCheckBox(Account.getToken(),"3",code+"",modell.getId());
+                        if (mPresenter != null) {
+                            mPresenter.setCheckBox(Account.getToken(), "3", code + "", modell.getId());
                         }
                         if (code == 0) {
                             String mode = longToothRspModel.getOpMode();
-                            if (mode==null){
+                            if (mode == null) {
                                 return;
                             }
                             switch (mode) {
@@ -331,7 +301,7 @@ public class HorizontalRecyclerFragmentHelper {
 
 //    private static boolean isHaveNew = false;
 
-    public static void isHaveNewVersion(final EquipmentRspModel.ListBean plantModel,TextView mUpdate, boolean isHorizontal) {
+    public static void isHaveNewVersion(final EquipmentRspModel.ListBean plantModel, TextView mUpdate, boolean isHorizontal) {
         /**
          * 是否有新版本请求格式
          * {
@@ -345,7 +315,7 @@ public class HorizontalRecyclerFragmentHelper {
         BindEquipmentModel model = new BindEquipmentModel("isUpdate", plantModel.getPSIGN());
         String request = gson.toJson(model);
         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                0, request.getBytes().length, null, new MyLongToothServiceResponseHandler(mUpdate,isHorizontal));
+                0, request.getBytes().length, null, new MyLongToothServiceResponseHandler(mUpdate, isHorizontal));
 
 //        return isHaveNew;
     }
@@ -370,56 +340,53 @@ public class HorizontalRecyclerFragmentHelper {
             switch (code) {
                 case 501:
                     //  501:有升级的新版本
-                    if (isHorizontal){
-                        mUpdate.setText("设备升级");
+                    if (isHorizontal) {
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
-                                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal,0,0);
+                                mUpdate.setText("设备升级");
+                                mUpdate.setEnabled(true);
+                                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal, 0, 0);
                             }
                         });
-                        mUpdate.setEnabled(true);
-                    }else {
-                        mUpdate.setText("设备升级");
+                    } else {
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
+                                mUpdate.setText("设备升级");
+                                mUpdate.setEnabled(true);
                                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical, 0, 0);
                             }
                         });
-                        mUpdate.setEnabled(true);
                     }
 
 //                    isHaveNew = true;
                     break;
                 default:
-                    if (isHorizontal){
-                        mUpdate.setText("最新版本");
+                    if (isHorizontal) {
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
-                                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_horizontal_nomal,0,0);
+                                mUpdate.setEnabled(false);
+                                mUpdate.setText("最新版本");
+                                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal_nomal, 0, 0);
                             }
                         });
-                        mUpdate.setEnabled(false);
-                    }else {
-                        mUpdate.setText("最新版本");
+                    } else {
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
+                                mUpdate.setText("最新版本");
+                                mUpdate.setEnabled(false);
                                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical_nomal, 0, 0);
                             }
                         });
-                        mUpdate.setEnabled(false);
                     }
 //                    isHaveNew = false;
                     break;
             }
         }
     }
-
-
-
 
 
     public static void setLedSwitch(EquipmentRspModel.ListBean plantModel) {

@@ -1,6 +1,7 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
@@ -248,6 +249,10 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 if (task!=null){
                     task.cancel();
                 }
+            }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.UPDATE_SUCCESS)){
+                mUpdate.setText("最新版本");
+                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical_nomal, 0, 0);
+                mUpdate.setEnabled(false);
             }
         }
 
@@ -259,15 +264,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mTime.setText(plantModel.getDays() + "");
             //设置是否需要升级
             HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel,mUpdate,false);
-//            if () {
-//                mUpdate.setText("设备升级");
-//                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical, 0, 0);
-//                mUpdate.setEnabled(true);
-//            } else {
-//                mUpdate.setText("最新版本");
-//                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical_nomal, 0, 0);
-//                mUpdate.setEnabled(false);
-//            }
             mPush.setChecked(plantModel.getPushStatus().equals("1"));
             GlideApp.with(getContext())
                     .load(plantModel.getPhoto())
@@ -449,14 +445,19 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         }
 
+        Dialog dialog;
         @Override
         public void showLoading() {
-
+            dialog  = UiTool.createLoadingDialog(getContext());
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
 
         @Override
         public void hideLoading() {
-
+            if (dialog!=null&&dialog.isShowing()){
+                dialog.dismiss();
+            }
         }
 
         @Override
@@ -592,6 +593,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             @Override
             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                 isResp = true;
+                times=0;
                 if (bytes == null) {
                     offLine();
                     return;
