@@ -499,14 +499,14 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mEcStatus.setTextColor(Color.parseColor("#9FD166"));
                 }
                 //如果不支持水位功能，则把图标设置为灰色
-                if (getStatus(model.getWstatus()).equals(UNKNOWN)){
+                if (HorizontalRecyclerFragmentHelper.getWaStatus(model.getWstatus()).equals(UNKNOWN)){
                     mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever_normal,0,0,0);
                     mWaterStatus.setTextColor(Color.parseColor("#dadada"));
                 }else {
                     mWaterStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_water_lever,0,0,0);
                     mWaterStatus.setTextColor(Color.parseColor("#FBB179"));
                 }
-                mWaterStatus.setText(getStatus(model.getWstatus()));
+                mWaterStatus.setText(HorizontalRecyclerFragmentHelper.getWaStatus(model.getWstatus()));
                 mImgTemArrow.setVisibility(View.VISIBLE);
                 if (model.getWstatus().equals("0")) {
                     //温度过低

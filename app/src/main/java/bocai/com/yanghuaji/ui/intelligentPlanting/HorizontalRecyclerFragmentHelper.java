@@ -266,6 +266,7 @@ class HorizontalRecyclerFragmentHelper {
                                     Run.onUiAsync(new Action() {
                                         @Override
                                         public void call() {
+                                            mLedMode.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_light_on,0,0,0);
                                             mLedMode.setText("台灯");
                                         }
                                     });
@@ -277,6 +278,7 @@ class HorizontalRecyclerFragmentHelper {
                                     Run.onUiAsync(new Action() {
                                         @Override
                                         public void call() {
+                                            mLedMode.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_light,0,0,0);
                                             mLedMode.setText("补光");
 
                                         }
@@ -287,6 +289,7 @@ class HorizontalRecyclerFragmentHelper {
                                     Run.onUiAsync(new Action() {
                                         @Override
                                         public void call() {
+                                            mLedMode.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_light,0,0,0);
                                             mLedMode.setText("待机");
                                         }
                                     });
@@ -415,6 +418,18 @@ class HorizontalRecyclerFragmentHelper {
                 }
 
             }
+        }
+    }
+
+
+    public static String getWaStatus(String code) {
+        switch (code) {
+            case "0":
+                return "不缺水";
+            case "1":
+                return "缺水";
+            default:
+                return HorizontalRecyclerFragment.UNKNOWN;
         }
     }
 
