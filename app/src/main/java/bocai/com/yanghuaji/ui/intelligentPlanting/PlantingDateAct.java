@@ -171,7 +171,7 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
                         return;
                     }
                     PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(mPlantBean.getPSIGN()),
-                            1, Integer.parseInt(mPlantBean.getPid()));
+                            1);
                     String request = gson.toJson(model);
                     if (!TextUtils.isEmpty(mPlantBean.getLTID())) {
                         LongTooth.request(mPlantBean.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),

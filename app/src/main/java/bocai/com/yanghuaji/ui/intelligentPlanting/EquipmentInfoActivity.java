@@ -182,6 +182,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                     }
                 });
     }
+    private TimerTask task;
 
     //升级版本
     private void doUpdate() {
@@ -205,12 +206,12 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                         int code = longToothRspModel.getCODE();
                         if (code == 0) {
                             Timer timer = new Timer();
-                            timer.schedule(new TimerTask() {
+                            timer.schedule(task =new TimerTask() {
                                 @Override
                                 public void run() {
                                     checkUpdateState();
                                 }
-                            },3000);
+                            },5000,5000);
 
                         } else {
                             Run.onUiAsync(new Action() {
@@ -225,7 +226,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                 });
     }
 
-
+    private int times = 0;
     private void checkUpdateState() {
         final BindEquipmentModel model = new BindEquipmentModel("checkUpdateStat", mUUID);
         String request = gson.toJson(model);
@@ -245,37 +246,25 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                         Log.d(TAG, "handleServiceResponse: "+code);
                         if (code == 1) {//code=1:正在升级
                             // 循环等待
-                            getWindow().getDecorView()
-                                    .postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            checkUpdateState();
-                                        }
-                                    }, 1000);
+
                         } else if (code == 2) {//code=2:升级成功
                             // 更新版本号
+                            task.cancel();
                             updateVersion();
                             Run.onUiAsync(new Action() {
                                 @Override
                                 public void call() {
+                                    tvLatestVersion.setVisibility(View.VISIBLE);
                                     imgUpgrading.clearAnimation();
                                     mFramUpdate.setVisibility(View.GONE);
                                 }
                             });
                             Application.showToast("升级成功");
                         } else if (code == 3) {//code=3:升级失败
-                            int times = 0;
                             times++;
-                            if (times <= 2) {
-                                // 循环等待
-                                getWindow().getDecorView()
-                                        .postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                checkUpdateState();
-                                            }
-                                        }, 1000);
-                            } else {
+                            if (times > 2)  {
+                                times = 0;
+                                task.cancel();
                                 Run.onUiAsync(new Action() {
                                     @Override
                                     public void call() {
@@ -284,7 +273,6 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                                         imgUpgrade.setVisibility(View.VISIBLE);
                                     }
                                 });
-
                                 Application.showToast("升级失败");
                             }
                         }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,13 +46,11 @@ import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
-import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsPresenter;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentsRecylerPresenter;
 import bocai.com.yanghuaji.ui.main.MainActivity;
-import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.LongToothUtil;
 import bocai.com.yanghuaji.util.UiTool;
@@ -61,9 +58,11 @@ import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.fog.fog2sdk.MiCODevice;
-import io.fogcloud.easylink.helper.EasyLinkCallBack;
-import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
+import io.fogcloud.sdk.easylink.api.EasyLink;
+import io.fogcloud.sdk.easylink.helper.EasyLinkCallBack;
+import io.fogcloud.sdk.easylink.helper.EasyLinkParams;
+import io.fogcloud.sdk.mdns.api.MDNS;
+import io.fogcloud.sdk.mdns.helper.SearchDeviceCallBack;
 import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
@@ -97,18 +96,16 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
     private RecyclerAdapter<EquipmentModel> mAdapter;
     private Gson gson = new Gson();
     //搜索设备用
-    private MiCODevice micodev;
     //所有在线设备的系列名称集合
     List<String> series = new ArrayList<>();
     //所有已经添加过的设备
     private List<EquipmentRspModel.ListBean> listBeans = Account.getListBeans();
     private PlantSeriesModel.PlantSeriesCard plantSeriesCard;
-
     //被选中要添加的设备集合
     List<EquipmentModel> equipmentModels = new ArrayList<>();
-
+    MDNS mdns = new MDNS(this);
     private boolean isAllSuccess = true;
-
+    EasyLink elink = new EasyLink(this);
     //显示的入口
     public static void show(Context context, String ssid, String password, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
         Intent intent = new Intent(context, AddEquipmentsActivity.class);
@@ -151,17 +148,17 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         }
         final List<AddEquipmentsModel> models = new ArrayList<>();
         for (EquipmentModel equipmentModel : equipmentModels) {
-            startBind(models,equipmentModel);
+            startBind(models, equipmentModel);
         }
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if (mPresenter != null) {
-                    if (models.size()>0){
+                    if (models.size() > 0) {
                         String token = Account.getToken();
-                        mPresenter.addEquipments(token,gson.toJson(models));
-                    }else {
+                        mPresenter.addEquipments(token, gson.toJson(models));
+                    } else {
                         hideLoading();
                     }
                 }
@@ -171,42 +168,41 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
     }
 
 
-
-
-
-    public  void startBind(List<AddEquipmentsModel> models, EquipmentModel mEquipmentModel) {
+    public void startBind(List<AddEquipmentsModel> models, EquipmentModel mEquipmentModel) {
         final String timeStamp = DateUtils.getCurrentDateTimes();
         BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
         final String request = gson.toJson(model);
         Log.d("sunhengchao", "startbind: " + request);
         LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                 0, request.getBytes().length,
-                new SampleAttachment(), new MyLongToothServiceResponseHandler(models,mEquipmentModel));
+                new SampleAttachment(), new MyLongToothServiceResponseHandler(models, mEquipmentModel,timeStamp));
 
     }
 
 
-     class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+    class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
         private boolean isRsp = false;
         private List<AddEquipmentsModel> models;
         private EquipmentModel equipmentModel;
+        private String timeStamp;
 
-         public MyLongToothServiceResponseHandler(List<AddEquipmentsModel> models, final EquipmentModel equipmentModel) {
-             this.models = models;
-             this.equipmentModel = equipmentModel;
-             Timer timer = new Timer();
-             isAllSuccess = true;
-             timer.schedule(new TimerTask() {
-                 @Override
-                 public void run() {
-                     if (!isRsp) {
-                         Application.showToast("绑定无响应");
-                         EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID()));
-                         isAllSuccess = false;
-                     }
-                 }
-             }, 5000);
-         }
+        public MyLongToothServiceResponseHandler(List<AddEquipmentsModel> models, final EquipmentModel equipmentModel,String timeStamp) {
+            this.models = models;
+            this.equipmentModel = equipmentModel;
+            this.timeStamp = timeStamp;
+            Timer timer = new Timer();
+            isAllSuccess = true;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (!isRsp) {
+                        Application.showToast("绑定无响应");
+                        EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID(),MessageEvent.FAILED));
+                        isAllSuccess = false;
+                    }
+                }
+            }, 5000);
+        }
 
 
         @Override
@@ -221,20 +217,19 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
             Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
             final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             if (longToothRspModel.getCODE() == 0) {
-                final String timeStamp = DateUtils.getCurrentDateTimes();
                 String mEquipmentName = equipmentModel.getDEVNAME();
                 String macAddress = equipmentModel.getMAC();
                 String serialNum = "";
                 String version = equipmentModel.get_$FirmwareRev196();
                 String series = mEquipmentName.substring(0, 5);
-                AddEquipmentsModel model = new AddEquipmentsModel(mEquipmentName,macAddress,serialNum,version,equipmentModel.getLTID()
-                        ,timeStamp,series);
+                AddEquipmentsModel model = new AddEquipmentsModel(mEquipmentName, macAddress, serialNum, version, equipmentModel.getLTID()
+                        , timeStamp, series);
                 models.add(model);
             } else {
                 Run.onUiAsync(new Action() {
                     @Override
                     public void call() {
-                        EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID()));
+                        EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID(),MessageEvent.FAILED));
                         isAllSuccess = false;
                         Factory.decodeRspCode(longToothRspModel);
                     }
@@ -244,20 +239,10 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
     }
 
 
-
-
-
-
-
-
-
-
-
-
     @Override
     public void addEquipmentsSuccess(EquipmentCard card) {
         EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
-        if (isAllSuccess){
+        if (isAllSuccess) {
             MainActivity.show(this);
         }
     }
@@ -317,9 +302,12 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         mLoadingAddEquipments.setForegroundColor(Color.parseColor("#87BC52"));
         mLoadingAddEquipments.setVisibility(View.VISIBLE);
         mLoadingAddEquipments.start();
-        micodev = new MiCODevice(this);
-        //开始配网
-        micodev.startEasyLink(ssid, password, true, 60000, 20, "", "", new EasyLinkCallBack() {
+        EasyLinkParams easylinkPara = new EasyLinkParams();
+        easylinkPara.ssid = ssid;
+        easylinkPara.password = password;
+        easylinkPara.runSecond = 60000;
+        easylinkPara.sleeptime = 20;
+        elink.startEasyLink(easylinkPara, new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
                 Log.d("sunhengchao", "onSuccess配网: " + message);
@@ -331,10 +319,20 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
                 finish();
             }
         });
+        String serviceInfo = "_easylink._tcp.local.";
+        mdns.startSearchDevices(serviceInfo, new SearchDeviceCallBack() {
+            @Override
+            public void onSuccess(int code, String message) {
+                super.onSuccess(code, message);
+            }
 
-        //开始搜索设备
-        final String serviceName = "_easylink._tcp.local.";
-        micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
+            @Override
+            public void onFailure(int code, String message) {
+                super.onFailure(code, message);
+                Application.showToast(message);
+                finish();
+            }
+
             @Override
             public void onDevicesFind(int code, JSONArray deviceStatus) {
                 super.onDevicesFind(code, deviceStatus);
@@ -366,6 +364,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         });
 
 
+
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -376,8 +375,8 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
                         Log.d("shccall", "call: ");
                         mLoadingAddEquipments.stop();
                         mLoadingAddEquipments.setVisibility(View.INVISIBLE);
-                        micodev.stopEasyLink(null);
-                        micodev.stopSearchDevices(null);
+                        mdns.stopSearchDevices(null);
+                        elink.stopEasyLink(null);
                         mEmptyView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
                     }
                 });
@@ -390,8 +389,8 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        micodev.stopEasyLink(null);
-        micodev.stopSearchDevices(null);
+        mdns.stopSearchDevices(null);
+        elink.stopEasyLink(null);
     }
 
     private boolean isAdded(String longtoothId) {
@@ -421,6 +420,12 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         @BindView(R.id.cb_add)
         CheckBox mCbAdd;
 
+        @BindView(R.id.img_add_failed)
+        ImageView mAddFailed;
+
+        @BindView(R.id.img_add_success)
+        ImageView mAddSuccess;
+
         private AddEquipmentsRecylerContract.Presenter mPresenter;
 
         public MyViewHolder(View itemView) {
@@ -432,9 +437,13 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
 
         @Subscribe(threadMode = ThreadMode.MAIN)
         public void onEidtPersonDataSuccess(MessageEvent messageEvent) {
-            if (messageEvent.getMessage().equals(mData.getLTID())) {
+            if (messageEvent.getMessage().equals(mData.getLTID())&&
+                    messageEvent.getType().equals(MessageEvent.FAILED)) {
                 mCbAdd.setChecked(false);
+                mCbAdd.setVisibility(View.GONE);
                 equipmentModels.remove(mData);
+                mAddFailed.setVisibility(View.VISIBLE);
+                mAddSuccess.setVisibility(View.GONE);
             }
         }
 

@@ -1,6 +1,7 @@
 package bocai.com.yanghuaji.model;
 
 /**
+ *
  * Created by shc on 2017/12/27.
  */
 

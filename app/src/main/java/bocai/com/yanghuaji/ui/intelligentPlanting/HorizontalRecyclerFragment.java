@@ -227,7 +227,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private boolean isShowSetting = false;
             private MainRecylerContract.Presenter mPresenter;
             private TimerTask task;
-            private Timer timer = new Timer();
+            private Timer timer ;
             private boolean isLedOn = false;
 
             public MyViewHolder(View itemView) {
@@ -242,12 +242,22 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Subscribe(threadMode = ThreadMode.MAIN)
             public void fresh(MessageEvent messageEvent) {
                 if (messageEvent.getMessage().equals(VeticalRecyclerFragment.VERTICALRECYCLER_DELETE_SUCCESS)) {
-                    Log.d(TAG, "fresh: timer");
-//                    timer.cancel();
-                    task.cancel();
+                    if (task!=null){
+                        task.cancel();
+                    }
                 }else if (messageEvent.getMessage().equals(VeticalRecyclerFragment.EQUIPMENT_LINE_ON)){
                     mOffLine.setVisibility(View.INVISIBLE);
                     mFramOffline.setVisibility(View.INVISIBLE);
+                }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_ON)){
+                    isLedOn = true;
+                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open_horizontal,0,0);
+                }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_OFF)){
+                    isLedOn = false;
+                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close_horizontal,0,0);
+                }else if ( messageEvent.getMessage().equals(MainActivity.MAINACTIVITY_DESTROY)){
+                    if (task!=null){
+                        task.cancel();
+                    }
                 }
             }
 
@@ -267,13 +277,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_horizontal_nomal,0,0);
                     mUpdate.setEnabled(false);
                 }
-//                //台灯开关 0：关   1：开
-//                if (plantModel.getLight().equals("1")){
-//                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open_horizontal,0,0);
-//                }else {
-//                    mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close_horizontal,0,0);
-//                }
-
                 //消息推送状态   0关   1开
                 mPush.setChecked(plantModel.getPushStatus().equals("1"));
                 GlideApp.with(getContext())
@@ -281,12 +284,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         .centerCrop()
                         .placeholder(R.mipmap.img_main_empty)
                         .into(mImage);
+                timer = new Timer();
                 task = new TimerTask() {
                     @Override
                     public void run() {
-                        isLedOn = HorizontalRecyclerFragmentHelper.getLedStatus(plantModel);
-                        Log.d(TAG, "run: isledOn"+isLedOn);
-                        HorizontalRecyclerFragmentHelper.setLedSwitch(isLedOn,mLed);
+                        HorizontalRecyclerFragmentHelper.setLedSwitch(plantModel);
                         HorizontalRecyclerFragmentHelper.setLedMode(plantModel,mLedMode);
                         getEquipmentData(plantModel);
                     }
@@ -338,12 +340,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
 
             private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
-                if (TextUtils.isEmpty(plantModel.getPSIGN()) ||
-                        TextUtils.isEmpty(plantModel.getPid())) {
+                if (TextUtils.isEmpty(plantModel.getPSIGN())) {
                     return;
                 }
                 PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
-                        1, Integer.parseInt(plantModel.getPid()));
+                        1);
                 String request = gson.toJson(model);
                 if (!TextUtils.isEmpty(plantModel.getLTID())) {
                     LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
@@ -478,8 +479,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             public void setDataSuccess(EquipmentDataModel model) {
                 mTemperature.setText(model.getDegree());
                 if (model.getLight() != null) {
-                    mLedMode.setText(model.getLight().equals("0") ? "关" : "开");
-//                    mLed.setChecked(model.getLight().equals("1"));
+//                    mLedMode.setText(model.getLight().equals("0") ? "关" : "开");
                 }
                 mEcStatus.setText(getStatus(model.getEstatus()));
                 //如果不支持营养功能，则把图标设置为灰色
@@ -541,6 +541,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             public void deleteEquipmentSuccess() {
                 HorizontalRecyclerFragment.this.mPresenter.getAllEquipments(Account.getToken(),"0","0");
+                timer.cancel();
                 task.cancel();
                 //通知MainActivity刷新页面
                 EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
@@ -576,7 +577,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private ImageView mOffLine;
             private FrameLayout mFrameOffLine;
             private boolean isResp = false;
-//            private MyViewHolder myViewHolder;
 
             public LongToothResponse(MainRecylerContract.Presenter mPresenter, final EquipmentRspModel.ListBean plantModel,
                                      boolean isLedOn, final ImageView offLine, FrameLayout frameOffLine, final MyViewHolder myViewHolder) {
@@ -585,7 +585,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 this.isLedOn = isLedOn;
                 this.mOffLine = offLine;
                 this.mFrameOffLine = frameOffLine;
-//                this.myViewHolder = myViewHolder;
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
@@ -652,8 +651,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         return;
                     }
                     mPresenter.setData(Account.getToken(), mPlantModel.getMac(), temperature, wagerState, isLihtOn, Ec);
-                } else {
-                    offLine();
                 }
 
             }

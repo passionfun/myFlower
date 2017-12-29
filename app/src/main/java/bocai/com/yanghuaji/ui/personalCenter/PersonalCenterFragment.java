@@ -1,5 +1,7 @@
 package bocai.com.yanghuaji.ui.personalCenter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -109,40 +111,27 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
     //退出应用
     @OnClick(R.id.tv_exit)
     void onExitClick() {
-        final SexSelectPopupWindow popupWindow = new SexSelectPopupWindow(getActivity());
-        popupWindow.setTextTop("确定");
-        popupWindow.setTextBottom("取消");
-        popupWindow.setOnTtemClickListener(new SexSelectPopupWindow.ItemClickListener() {
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext());
+        deleteDialog.setTitle("确定退出登录？");
+        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
-            public void onItemClick(View view) {
-                switch (view.getId()) {
-                    case R.id.tv_take_photo:
-                        //确定
-                        JPushInterface.clearAllNotifications(getActivity());
-                        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
-                        tagAliasBean.setAction(TagAliasOperatorHelper.ACTION_CLEAN);
-                        tagAliasBean.setAlias(Account.getPhone());
-                        tagAliasBean.setAliasAction(true);
-                        TagAliasOperatorHelper.getInstance().handleAction(getActivity().getApplicationContext(),
-                                0, tagAliasBean);
-                        JPushInterface.stopPush(getActivity());
-                        popupWindow.dismiss();
-
-                        Account.logOff(getContext());
-                        LoginActivity.show(getContext());
-                        getActivity().finish();
-                        break;
-                    case R.id.tv_from_gallery:
-                        // 取消
-                        popupWindow.dismiss();
-                        break;
-                }
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //确定
+                JPushInterface.clearAllNotifications(getActivity());
+                TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                tagAliasBean.setAction(TagAliasOperatorHelper.ACTION_CLEAN);
+                tagAliasBean.setAlias(Account.getPhone());
+                tagAliasBean.setAliasAction(true);
+                TagAliasOperatorHelper.getInstance().handleAction(getActivity().getApplicationContext(),
+                        0, tagAliasBean);
+                JPushInterface.stopPush(getActivity());
+                Account.logOff(getContext());
+                LoginActivity.show(getContext());
+                getActivity().finish();
             }
         });
-        ActivityUtil.setBackgroundAlpha(getActivity(), 0.19f);
-        popupWindow.showAtLocation(mRootLayout, Gravity.CENTER, 0, 0);
-
-
+        deleteDialog.setNegativeButton("取消",null);
+        deleteDialog.show();
     }
 
 

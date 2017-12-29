@@ -15,12 +15,15 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.GlideApp;
@@ -49,6 +52,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends PresenterActivity<MainActivityContract.Presenter>
         implements MainActivityContract.View {
     public static final String TAG = MainActivity.class.getName();
+    public static final String MAINACTIVITY_DESTROY = "MAINACTIVITY_DESTROY";
     private long firstTime = 0;
     private NavigationFragment mNavigationFragment;
     @BindView(R.id.drawer_layout)
@@ -79,7 +83,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @BindView(R.id.recycler_group)
     RecyclerView mRecyclerGroup;
 
-//    private int page = 1;
+    //    private int page = 1;
 //    private int pageGroup = 1;
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private RecyclerAdapter<GroupRspModel.ListBean> mGroupAdapter;
@@ -117,7 +121,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                         .centerCrop()
                         .into(mPortrait);
             }
-        }else if (messageEvent.getMessage().equals(MAIN_ACTIVITY_REFRESH)){
+        } else if (messageEvent.getMessage().equals(MAIN_ACTIVITY_REFRESH)) {
             initAllEquipments();
             initAllGroups();
         }
@@ -159,9 +163,11 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().post(new MessageEvent("MAINACTIVITY_DESTROY"));
         EventBus.getDefault().unregister(this);
     }
 
@@ -222,7 +228,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 //            }
 //        });
 //        pageGroup = 1;
-        mPresenter.getAllGroups(Account.getToken(), "0",  "0");
+        mPresenter.getAllGroups(Account.getToken(), "0", "0");
     }
 
     private void initAllEquipments() {
@@ -254,7 +260,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                     mDivideAllEquipments.setVisibility(View.VISIBLE);
                 } else {
                     mRecyclerAll.setVisibility(View.VISIBLE);
-                    if (mAdapter.getItemCount()>0){
+                    if (mAdapter.getItemCount() > 0) {
                         mDivideAllEquipments.setVisibility(View.GONE);
                     }
                 }
@@ -263,7 +269,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
 
 //        page = 1;
-        mPresenter.getAllEquipments(Account.getToken(), "0",  "0");
+        mPresenter.getAllEquipments(Account.getToken(), "0", "0");
     }
 
 
@@ -373,7 +379,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     }
 
 
-
     @Override
     protected MainActivityContract.Presenter initPresenter() {
         return new MainActivityPresenter(this);
@@ -392,19 +397,19 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 //    }
 
 
-class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
-    @BindView(R.id.tv_equipment_name)
-    TextView mName;
+    class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
+        @BindView(R.id.tv_equipment_name)
+        TextView mName;
 
-    public ViewHolder(View itemView) {
-        super(itemView);
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
+
+
+        @Override
+        protected void onBind(EquipmentRspModel.ListBean listBean) {
+            mName.setText(listBean.getEquipName());
+        }
     }
-
-
-    @Override
-    protected void onBind(EquipmentRspModel.ListBean listBean) {
-        mName.setText(listBean.getEquipName());
-    }
-}
 
 }

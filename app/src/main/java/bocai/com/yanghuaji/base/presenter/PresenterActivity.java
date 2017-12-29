@@ -53,8 +53,6 @@ public abstract class PresenterActivity<Presenter extends BaseContract.Presenter
     Dialog dialog;
     @Override
     public void showLoading() {
-
-//        dialog  = new ProgressDialog(this);
         dialog  = UiTool.createLoadingDialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();

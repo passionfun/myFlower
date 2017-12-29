@@ -21,16 +21,16 @@ public class PlantStatusModel {
     private int Temp;
     private int UUID;
     private int WaterStat;
-    private int Pid;
+//    private int Pid;
 
 
-    public PlantStatusModel(int EC, String CMD, int temp, int UUID, int waterStat, int pid) {
+    public PlantStatusModel(int EC, String CMD, int temp, int UUID, int waterStat) {
         this.EC = EC;
         this.CMD = CMD;
         Temp = temp;
         this.UUID = UUID;
         WaterStat = waterStat;
-        Pid = pid;
+//        Pid = pid;
     }
 
 
@@ -74,11 +74,11 @@ public class PlantStatusModel {
         WaterStat = waterStat;
     }
 
-    public int getPid() {
-        return Pid;
-    }
-
-    public void setPid(int pid) {
-        Pid = pid;
-    }
+//    public int getPid() {
+//        return Pid;
+//    }
+//
+//    public void setPid(int pid) {
+//        Pid = pid;
+//    }
 }

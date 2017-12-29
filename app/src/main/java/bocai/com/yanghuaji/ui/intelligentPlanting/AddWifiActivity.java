@@ -19,7 +19,7 @@ import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.fog.fog2sdk.MiCODevice;
+import io.fogcloud.sdk.easylink.api.EasyLink;
 
 /**
  * 作者 yuanfei on 2017/11/14.
@@ -42,16 +42,17 @@ public class AddWifiActivity extends Activity {
     @BindView(R.id.img_next)
     ImageView mNext;
 
-    private MiCODevice micodev;
+    //    private MiCODevice micodev;
+    private EasyLink elink;
     private List<String> mScanData;
     PlantSeriesModel.PlantSeriesCard plantSeriesCard;
     private static boolean isAddEquipments = false;
-    private String ssid ;
+    private String ssid;
 
     //显示的入口(单设备)
-    public static void show(Context context,ArrayList<String> scanData) {
+    public static void show(Context context, ArrayList<String> scanData) {
         Intent intent = new Intent(context, AddWifiActivity.class);
-        intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
+        intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA, scanData);
         isAddEquipments = false;
         context.startActivity(intent);
     }
@@ -59,11 +60,11 @@ public class AddWifiActivity extends Activity {
     //显示的入口(多设备添加)
     public static void show(Context context, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
         Intent intent = new Intent(context, AddWifiActivity.class);
-        if (plantSeriesCard==null){
+        if (plantSeriesCard == null) {
             Application.showToast("参数异常");
             return;
         }
-        intent.putExtra(AddEquipmentsActivity.KEY_PLANT_CARD,plantSeriesCard);
+        intent.putExtra(AddEquipmentsActivity.KEY_PLANT_CARD, plantSeriesCard);
         isAddEquipments = true;
         context.startActivity(intent);
     }
@@ -85,10 +86,12 @@ public class AddWifiActivity extends Activity {
         super.initWidget();
         UiTool.setBlod(mTitle);
         mTitle.setText("添加设备");
-        micodev = new MiCODevice(this);
-        mWifiName.setText(micodev.getSSID());
+//        micodev = new MiCODevice(this);
+        elink = new EasyLink(this);
+
+        mWifiName.setText(elink.getSSID());
         ssid = mWifiName.getText().toString();
-        mWifiPassword.setText(Account.getWifiPassword(this,ssid));
+        mWifiPassword.setText(Account.getWifiPassword(this, ssid));
     }
 
     @OnClick(R.id.img_back)
@@ -101,23 +104,23 @@ public class AddWifiActivity extends Activity {
     void onNextClick() {
         String password = mWifiPassword.getText().toString();
         ssid = mWifiName.getText().toString();
-        if (TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             Application.showToast("请输入WiFi密码");
             return;
         }
-        Account.saveWifiPassword(this,ssid,password);
-        if (isAddEquipments){
-            if (plantSeriesCard==null){
+        Account.saveWifiPassword(this, ssid, password);
+        if (isAddEquipments) {
+            if (plantSeriesCard == null) {
                 Application.showToast("系列信息为空");
                 finish();
             }
-            if (TextUtils.isEmpty(ssid)||TextUtils.isEmpty(password)){
+            if (TextUtils.isEmpty(ssid) || TextUtils.isEmpty(password)) {
                 Application.showToast("参数异常");
                 return;
             }
-            AddEquipmentsActivity.show(this,ssid,password,plantSeriesCard);
-        }else {
-            ConnectActivity.show(this,ssid,password, (ArrayList<String>) mScanData);
+            AddEquipmentsActivity.show(this, ssid, password, plantSeriesCard);
+        } else {
+            ConnectActivity.show(this, ssid, password, (ArrayList<String>) mScanData);
         }
 
         mNext.setEnabled(false);

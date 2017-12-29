@@ -41,9 +41,11 @@ import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.fog.fog2sdk.MiCODevice;
-import io.fogcloud.easylink.helper.EasyLinkCallBack;
-import io.fogcloud.fog_mdns.helper.SearchDeviceCallBack;
+import io.fogcloud.sdk.easylink.api.EasyLink;
+import io.fogcloud.sdk.easylink.helper.EasyLinkCallBack;
+import io.fogcloud.sdk.easylink.helper.EasyLinkParams;
+import io.fogcloud.sdk.mdns.api.MDNS;
+import io.fogcloud.sdk.mdns.helper.SearchDeviceCallBack;
 import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
@@ -71,19 +73,21 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
 
     public static final String KEY_SSID = "KEY_SSID";
     public static final String KEY_PASSWORD = "KEY_PASSWORD";
+    public static final String TAG = ConnectActivity.class.getName();
     private String ssid;
     private String password;
-    private MiCODevice micodev;
+    MDNS mdns = new MDNS(this);
     private CountDownTimer timer;
     private List<String> mScanData;
+
     //显示的入口
-    public static void show(Context context, String ssid, String password,ArrayList<String> scanData) {
+    public static void show(Context context, String ssid, String password, ArrayList<String> scanData) {
         if (TextUtils.isEmpty(ssid) || TextUtils.isEmpty(password)) {
             Application.showToast("参数错误");
             return;
         }
         Intent intent = new Intent(context, ConnectActivity.class);
-        intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
+        intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA, scanData);
         intent.putExtra(KEY_SSID, ssid);
         intent.putExtra(KEY_PASSWORD, password);
         context.startActivity(intent);
@@ -116,7 +120,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.load_animation);
         mAnimBg.startAnimation(animation);
 
-        timer =new CountDownTimer(61000, 1000) {
+        timer = new CountDownTimer(61000, 1000) {
             @Override
             public void onTick(long l) {
                 mTime.setText(l / 1000 + "");
@@ -125,6 +129,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             @Override
             public void onFinish() {
                 mTime.setText(0 + "");
+                stopSearch();
                 ConnectFailedActivity.show(ConnectActivity.this);
                 finish();
             }
@@ -134,30 +139,42 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     @Override
     protected void initData() {
         super.initData();
-        micodev = new MiCODevice(this);
-        //开始配网
-        micodev.startEasyLink(ssid, password, true, 60000, 20, "", "", new EasyLinkCallBack() {
+        EasyLink elink = new EasyLink(this);
+        EasyLinkParams easylinkPara = new EasyLinkParams();
+        easylinkPara.ssid = ssid;
+        easylinkPara.password = password;
+        easylinkPara.runSecond = 60000;
+        easylinkPara.sleeptime = 20;
+
+        elink.startEasyLink(easylinkPara, new EasyLinkCallBack() {
             @Override
             public void onSuccess(int code, String message) {
-                Log.d("sunhengchao", "onSuccess配网: " + message);
+                Log.d(TAG, "sunhengchao111" + code + message);
             }
 
             @Override
             public void onFailure(int code, String message) {
+                Log.d(TAG, "sunhengchao111" + code + message);
                 Application.showToast(message);
-                timer.cancel();
+                stopSearch();
                 ConnectFailedActivity.show(ConnectActivity.this);
                 finish();
             }
         });
-        //开始搜索设备
-        final String serviceName = "_easylink._tcp.local.";
-        micodev.startSearchDevices(serviceName, new SearchDeviceCallBack() {
+
+
+        String serviceInfo = "_easylink._tcp.local.";
+        mdns.startSearchDevices(serviceInfo, new SearchDeviceCallBack() {
+            @Override
+            public void onSuccess(int code, String message) {
+                super.onSuccess(code, message);
+            }
+
             @Override
             public void onFailure(int code, String message) {
                 super.onFailure(code, message);
                 Application.showToast(message);
-                timer.cancel();
+                stopSearch();
                 ConnectFailedActivity.show(ConnectActivity.this);
                 finish();
             }
@@ -170,10 +187,17 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 if (!TextUtils.isEmpty(content) && !content.equals("[]")) {
                     jsonContent = content;
                     bindEquipment(content);
-                    micodev.stopEasyLink(null);
                 }
             }
         });
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopSearch();
     }
 
     private Gson gson;
@@ -181,6 +205,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     private String longToothId;
     private String timeStamp;
     private String jsonContent;
+
     private void bindEquipment(String jsonContent) {
         gson = new Gson();
         List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
@@ -188,37 +213,42 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         for (EquipmentModel equipmentModel : equipmentModels) {
             //"B0:F8:93:10:CF:E6"
             String mac = equipmentModel.getMAC();
-            String content = mac.replaceAll(":","");
-            if (mScanData==null){
+            String content = mac.replaceAll(":", "");
+            if (mScanData == null) {
                 return;
             }
-            if (content.equals(mScanData.get(2))&&equipmentModel.get_$BOUNDSTATUS310().equals("notBound")){
-                timer.cancel();
+            if (content.equals(mScanData.get(2)) && equipmentModel.get_$BOUNDSTATUS310().equals("notBound")) {
+                stopSearch();
                 //停止搜索设备
                 Application.showToast("绑定中...");
-                micodev.stopSearchDevices( null);
                 mModel = equipmentModel;
-                Log.d("sunhengchao", "bind: "+mModel.toString());
+                Log.d("sunhengchao", "bind: " + mModel.toString());
                 longToothId = equipmentModel.getLTID();
                 timeStamp = DateUtils.getCurrentDateTimes();
                 BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
                 String request = gson.toJson(model);
-                LongTooth.request(longToothId,"longtooth",LongToothTunnel.LT_ARGUMENTS,request.getBytes(),0,request.getBytes().length,
-                        new SampleAttachment(),new LongToothResponse());
-            }else if ((content.equals(mScanData.get(2))&&!equipmentModel.get_$BOUNDSTATUS310().equals("notBound"))){
+                LongTooth.request(longToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
+                        new SampleAttachment(), new LongToothResponse());
+            } else if ((content.equals(mScanData.get(2)) && !equipmentModel.get_$BOUNDSTATUS310().equals("notBound"))) {
                 Application.showToast("该设备已被绑定过");
-                micodev.stopSearchDevices(null);
-                timer.cancel();
+                stopSearch();
                 finish();
             }
         }
+    }
+
+    private void stopSearch() {
+        if ( mdns!= null)
+            mdns.stopSearchDevices(null);
+        if (timer != null)
+            timer.cancel();
     }
 
     @Override
     public void addEquipmentSuccess(EquipmentCard card) {
         timer.cancel();
         EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
-        ConnectSuccessActivity.show(ConnectActivity.this, jsonContent,card.getId(),card.getEquipName(), (ArrayList<String>) mScanData);
+        ConnectSuccessActivity.show(ConnectActivity.this, jsonContent, card.getId(), card.getEquipName(), (ArrayList<String>) mScanData);
         finish();
     }
 
@@ -234,53 +264,54 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     }
 
 
-    private class LongToothResponse implements LongToothServiceResponseHandler {
-        private boolean isResp = false;
-        public LongToothResponse() {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (!isResp){
-                        Run.onUiAsync(new Action() {
-                            @Override
-                            public void call() {
-                                Application.showToast("绑定请求无响应");
-                            }
-                        });
-                    }
-                }
-            },6000);
-        }
+private class LongToothResponse implements LongToothServiceResponseHandler {
+    private boolean isResp = false;
 
-        @Override
-        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                                          String service_str, int data_type, byte[] args,
-                                          LongToothAttachment attachment) {
-            String result = new String(args);
-            Log.d("sunhengchao", "handleServiceResponse: "+new String(args));
-            final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-            isResp = true;
-            if (longToothRspModel.getCODE()==0){
-                String mEquipmentName = mModel.getDEVNAME();
-                String macAddress = mModel.getMAC();
-                String token = Account.getToken();
-                String serialNum = mScanData.get(1);
-                String version = mModel.get_$FirmwareRev196();
-                String series = mEquipmentName.substring(0,5);
-                if (mPresenter != null){
-                    mPresenter.addEquipment(token,mEquipmentName,macAddress,serialNum,version,longToothId,timeStamp,series);
+    public LongToothResponse() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!isResp) {
+                    Run.onUiAsync(new Action() {
+                        @Override
+                        public void call() {
+                            Application.showToast("绑定请求无响应");
+                        }
+                    });
                 }
-            }else {
-                Run.onUiAsync(new Action() {
-                    @Override
-                    public void call() {
-                        Factory.decodeRspCode(longToothRspModel);
-                    }
-                });
             }
-
-        }
+        }, 6000);
     }
+
+    @Override
+    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                      String service_str, int data_type, byte[] args,
+                                      LongToothAttachment attachment) {
+        String result = new String(args);
+        Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
+        final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+        isResp = true;
+        if (longToothRspModel.getCODE() == 0) {
+            String mEquipmentName = mModel.getDEVNAME();
+            String macAddress = mModel.getMAC();
+            String token = Account.getToken();
+            String serialNum = mScanData.get(1);
+            String version = mModel.get_$FirmwareRev196();
+            String series = mEquipmentName.substring(0, 5);
+            if (mPresenter != null) {
+                mPresenter.addEquipment(token, mEquipmentName, macAddress, serialNum, version, longToothId, timeStamp, series);
+            }
+        } else {
+            Run.onUiAsync(new Action() {
+                @Override
+                public void call() {
+                    Factory.decodeRspCode(longToothRspModel);
+                }
+            });
+        }
+
+    }
+}
 
 }

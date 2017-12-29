@@ -31,7 +31,6 @@ public class AddEquipmentsPresenter extends BasePresenter<AddEquipmentsContract.
 
     @Override
     public void addEquipments(String token, String equipments) {
-        view.showLoading();
         Observable<BaseRspModel<List<EquipmentCard>>> observable = Network.remote().addEquipments(token, equipments);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -74,7 +74,10 @@ dependencies {
     compile 'com.yalantis:ucrop:2.2.0-native'
     compile 'org.greenrobot:eventbus:3.0.0'
     //easyLink
-    compile 'io.fogcloud.sdk:fog2_sdk:0.1.1'
+//    compile 'io.fogcloud.sdk:fog2_sdk:0.1.1'
+    compile 'io.fogcloud.sdk:mdns:0.0.3'
+    //最新easyLink
+    compile 'io.fogcloud.sdk:easylinkv3:0.1.5'
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${rootProject.ext.dbflowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${rootProject.ext.dbflowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow:${rootProject.ext.dbflowVersion}"
