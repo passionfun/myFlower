@@ -106,6 +106,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
     MDNS mdns = new MDNS(this);
     private boolean isAllSuccess = true;
     EasyLink elink = new EasyLink(this);
+    private boolean isSaveClicked = false;
     //显示的入口
     public static void show(Context context, String ssid, String password, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
         Intent intent = new Intent(context, AddEquipmentsActivity.class);
@@ -136,6 +137,10 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
 
     @OnClick(R.id.tv_right)
     void onConfirmClick() {
+        if (isSaveClicked){
+            Application.showToast("请返回重新添加");
+            return;
+        }
         showLoading();
         addEquipments();
     }
@@ -146,6 +151,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
             Application.showToast("请选择要添加的设备");
             return;
         }
+        isSaveClicked = true;
         final List<AddEquipmentsModel> models = new ArrayList<>();
         for (EquipmentModel equipmentModel : equipmentModels) {
             startBind(models, equipmentModel);
