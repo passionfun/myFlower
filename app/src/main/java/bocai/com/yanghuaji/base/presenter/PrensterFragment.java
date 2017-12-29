@@ -5,6 +5,7 @@ import android.content.Context;
 
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.Fragment;
+import bocai.com.yanghuaji.util.UiTool;
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -43,6 +44,10 @@ public abstract class PrensterFragment<Presenter extends BaseContract.Presenter>
         }
     }
 
+    @Override
+    public void onConnectionConflict() {
+        UiTool.onConnectionConflict(getContext());
+    }
 
     @Override
     public void showLoading() {

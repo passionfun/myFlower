@@ -52,6 +52,8 @@ public class EditPersonalDataPresenter extends BasePresenter<EditPersonalDataCon
                             User user = model.build();
                             user.save();
                             view.modifyDataSuccess();
+                        }else if (accountRspModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                         Application.showToast(accountRspModelBaseRspModel.getMsg());
                         view.hideLoading();
@@ -87,7 +89,9 @@ public class EditPersonalDataPresenter extends BasePresenter<EditPersonalDataCon
                             ImageModel model = imageModelBaseRspModel.getData();
                             int id = model.getAvatar().get(0).getId();
                             view.modifyPortraitSuccess(String.valueOf(id));
-                        } else {
+                        } else if (imageModelBaseRspModel.getReturnCode().equals("9997")){
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(imageModelBaseRspModel.getMsg());
                         }
                     }

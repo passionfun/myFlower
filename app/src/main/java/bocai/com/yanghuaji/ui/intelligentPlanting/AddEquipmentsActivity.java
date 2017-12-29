@@ -496,6 +496,11 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         }
 
         @Override
+        public void onConnectionConflict() {
+            UiTool.onConnectionConflict(AddEquipmentsActivity.this);
+        }
+
+        @Override
         public void setPresenter(AddEquipmentsRecylerContract.Presenter presenter) {
             mPresenter = presenter;
         }

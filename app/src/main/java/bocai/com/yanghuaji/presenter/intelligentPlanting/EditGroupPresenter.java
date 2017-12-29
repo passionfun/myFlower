@@ -40,7 +40,9 @@ public class EditGroupPresenter extends BasePresenter<EditGroupContract.View>
                     public void onNext(BaseRspModel<EquipmentsByGroupModel> equipmentsByGroupModelBaseRspModel) {
                         if (equipmentsByGroupModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getEquipmentsByGroupSuccess(equipmentsByGroupModelBaseRspModel.getData());
-                        } else {
+                        } else if (equipmentsByGroupModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(equipmentsByGroupModelBaseRspModel.getMsg());
                         }
                     }
@@ -75,6 +77,8 @@ public class EditGroupPresenter extends BasePresenter<EditGroupContract.View>
                     public void onNext(BaseRspModel<EquipmentsByGroupModel> equipmentsByGroupModelBaseRspModel) {
                         if (equipmentsByGroupModelBaseRspModel.getReturnCode().equals("200")) {
                             view.editGroupSuccess(equipmentsByGroupModelBaseRspModel.getData());
+                        }else if (equipmentsByGroupModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                         Application.showToast(equipmentsByGroupModelBaseRspModel.getMsg());
                         view.hideLoading();

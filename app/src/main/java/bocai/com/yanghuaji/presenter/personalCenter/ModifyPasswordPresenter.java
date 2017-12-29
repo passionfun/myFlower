@@ -42,6 +42,8 @@ public class ModifyPasswordPresenter extends BasePresenter<ModifyPasswordContrac
                         view.hideLoading();
                         if (baseRspModel.getReturnCode().equals("200")){
                             view.modifySuccess();
+                        }else if (baseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                     }
 

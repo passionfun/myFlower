@@ -13,6 +13,8 @@ public interface BaseContract {
 
         void hideLoading();
 
+        void onConnectionConflict();
+
         // 支持设置一个Presenter
         void setPresenter(T presenter);
     }

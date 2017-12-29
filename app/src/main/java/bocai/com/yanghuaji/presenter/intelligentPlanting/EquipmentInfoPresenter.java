@@ -42,6 +42,8 @@ public class EquipmentInfoPresenter extends BasePresenter<EquipmentInfoContract.
                     public void onNext(BaseRspModel<UpdateVersionRspModel> updateVersionRspModelBaseRspModel) {
                         if (updateVersionRspModelBaseRspModel.getReturnCode().equals("200")) {
                             view.updateVersionSuccess(updateVersionRspModelBaseRspModel.getData());
+                        }else if (updateVersionRspModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                     }
 
@@ -72,7 +74,9 @@ public class EquipmentInfoPresenter extends BasePresenter<EquipmentInfoContract.
                     public void onNext(BaseRspModel<EquipmentInfoModel> equipmentInfoModelBaseRspModel) {
                         if (equipmentInfoModelBaseRspModel.getReturnCode().equals("200")) {
                             view.equipmentInfoSuccess(equipmentInfoModelBaseRspModel.getData());
-                        } else {
+                        } else if (equipmentInfoModelBaseRspModel.getReturnCode().equals("9997")){
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(equipmentInfoModelBaseRspModel.getMsg());
                         }
                     }

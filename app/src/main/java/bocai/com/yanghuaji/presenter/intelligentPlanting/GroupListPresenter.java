@@ -41,6 +41,8 @@ public class GroupListPresenter extends BasePresenter<GroupListContract.View>
                     public void onNext(BaseRspModel<GroupRspModel.ListBean> listBeanBaseRspModel) {
                         if (listBeanBaseRspModel.getReturnCode().equals("200")) {
                             view.addGroupSuccess(listBeanBaseRspModel.getData());
+                        }else if (listBeanBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                         Application.showToast(listBeanBaseRspModel.getMsg());
                         view.hideLoading();

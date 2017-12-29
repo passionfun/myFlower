@@ -37,6 +37,8 @@ public class PlantDataPresenter extends BasePresenter<PlantingDataContract.View>
                     public void onNext(BaseRspModel<EquipmentDataModel> equipmentDataModelBaseRspModel) {
                         if (equipmentDataModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setDataSuccess(equipmentDataModelBaseRspModel.getData());
+                        }else if (equipmentDataModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                     }
 

@@ -47,6 +47,8 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
                     public void onNext(BaseRspModel<PlantSettingModel> plantSettingModelBaseRspModel) {
                         if (plantSettingModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setupPlantSuccess(plantSettingModelBaseRspModel.getData());
+                        }else if (plantSettingModelBaseRspModel.getReturnCode().equals("9997")){
+                            view.onConnectionConflict();
                         }
                         view.hideLoading();
                         Application.showToast(plantSettingModelBaseRspModel.getMsg());

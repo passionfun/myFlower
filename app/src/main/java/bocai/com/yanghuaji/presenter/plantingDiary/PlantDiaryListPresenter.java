@@ -40,6 +40,8 @@ public class PlantDiaryListPresenter extends BasePresenter<PlantDiaryListContrac
                     public void onNext(BaseRspModel<DiaryListModel> diaryListModelBaseRspModel) {
                         if (diaryListModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getDiaryListSuccess(diaryListModelBaseRspModel.getData());
+                        }else if (diaryListModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }else {
                             Application.showToast(diaryListModelBaseRspModel.getMsg());
                         }

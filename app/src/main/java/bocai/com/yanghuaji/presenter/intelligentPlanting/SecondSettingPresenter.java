@@ -41,6 +41,8 @@ public class SecondSettingPresenter extends BasePresenter<SecondSettingContract.
                     public void onNext(BaseRspModel baseRspModel) {
                         if (baseRspModel.getReturnCode().equals("200")) {
                             view.clearDataSuccess();
+                        }else if (baseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                         Application.showToast(baseRspModel.getMsg());
                         view.hideLoading();
@@ -74,6 +76,8 @@ public class SecondSettingPresenter extends BasePresenter<SecondSettingContract.
                     public void onNext(BaseRspModel<CheckboxStatusModel> checkboxStatusModelBaseRspModel) {
                         if (checkboxStatusModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setCheckBoxSuccess(checkboxStatusModelBaseRspModel.getData());
+                        }else if (checkboxStatusModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                         Application.showToast(checkboxStatusModelBaseRspModel.getMsg());
                         view.hideLoading();

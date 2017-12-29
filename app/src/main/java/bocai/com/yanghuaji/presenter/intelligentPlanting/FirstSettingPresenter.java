@@ -41,6 +41,8 @@ public class FirstSettingPresenter extends BasePresenter<FirstSettingContract.Vi
                     public void onNext(BaseRspModel baseRspModel) {
                         if (baseRspModel.getReturnCode().equals("200")) {
                             view.setupSuccess();
+                        }else if (baseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                         Application.showToast(baseRspModel.getMsg());
                         view.hideLoading();

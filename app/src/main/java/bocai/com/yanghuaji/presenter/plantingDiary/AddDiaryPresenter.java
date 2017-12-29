@@ -50,6 +50,8 @@ public class AddDiaryPresenter extends BasePresenter<AddDiaryContract.View>
                             EquipmentListModel model = equipmentListModelBaseRspModel.getData();
                             List<EquipmentCard> list = model.getList();
                             view.getEquipmentListSuccess(list);
+                        }else if (equipmentListModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }else {
                             Application.showToast(equipmentListModelBaseRspModel.getMsg());
                         }
@@ -86,7 +88,9 @@ public class AddDiaryPresenter extends BasePresenter<AddDiaryContract.View>
                             ImageModel model = imageModelBaseRspModel.getData();
                             int id = model.getAvatar().get(0).getId();
                             view.loadCoverSuccess(String.valueOf(id));
-                        } else {
+                        } else if (imageModelBaseRspModel.getReturnCode().equals("9997")){
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(imageModelBaseRspModel.getMsg());
                         }
                         view.hideLoading();

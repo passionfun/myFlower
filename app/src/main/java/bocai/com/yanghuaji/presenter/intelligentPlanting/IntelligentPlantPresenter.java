@@ -6,6 +6,7 @@ import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.net.Network;
+import bocai.com.yanghuaji.util.UiTool;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -40,7 +41,9 @@ public class IntelligentPlantPresenter extends BasePresenter<IntelligentPlantCon
                     public void onNext(BaseRspModel<EquipmentRspModel> equipmentRspModelBaseRspModel) {
                         if (equipmentRspModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getAllEquipmentsSuccess(equipmentRspModelBaseRspModel.getData().getList());
-                        } else {
+                        } else if (equipmentRspModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(equipmentRspModelBaseRspModel.getMsg());
                         }
                     }

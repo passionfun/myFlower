@@ -44,6 +44,8 @@ public class AddEquipmentsPresenter extends BasePresenter<AddEquipmentsContract.
                     public void onNext(BaseRspModel<List<EquipmentCard>> listBaseRspModel) {
                         if (listBaseRspModel.getReturnCode().equals("200")) {
                             view.addEquipmentsSuccess(listBaseRspModel.getData());
+                        }else if (listBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                         view.hideLoading();
                         Application.showToast(listBaseRspModel.getMsg());

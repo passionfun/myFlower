@@ -58,7 +58,10 @@ public abstract class PresenterActivity<Presenter extends BaseContract.Presenter
         dialog.show();
     }
 
-
+    @Override
+    public void onConnectionConflict() {
+        UiTool.onConnectionConflict(this);
+    }
 
     @Override
     public void hideLoading() {

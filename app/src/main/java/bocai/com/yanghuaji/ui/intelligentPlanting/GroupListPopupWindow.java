@@ -136,6 +136,11 @@ public class GroupListPopupWindow extends PopupWindow implements GroupListContra
     }
 
     @Override
+    public void onConnectionConflict() {
+        UiTool.onConnectionConflict(mContext);
+    }
+
+    @Override
     public void setPresenter(GroupListContract.Presenter presenter) {
         mPresenter = presenter;
     }
@@ -168,7 +173,7 @@ public class GroupListPopupWindow extends PopupWindow implements GroupListContra
         mListener = listener;
     }
 
-    public  interface SelectListener {
+    public interface SelectListener {
         void selected(GroupRspModel.ListBean groupCard);
     }
 

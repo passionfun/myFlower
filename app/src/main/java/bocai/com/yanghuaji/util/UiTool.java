@@ -1,9 +1,12 @@
 package bocai.com.yanghuaji.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import net.qiujuer.genius.ui.widget.Loading;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.util.persistence.Account;
 
 public class UiTool {
     private static int STATUS_BAR_HEIGHT = -1;
@@ -142,7 +146,6 @@ public class UiTool {
     /**
      * 得到自定义的progressDialog
      * @param context
-     * @param msg
      * @return
      */
     public static Dialog createLoadingDialog(Context context) {
@@ -170,10 +173,21 @@ public class UiTool {
     }
 
 
-
-
-
-
-
+    /**
+     * 被踢下线
+     */
+    public static void onConnectionConflict(final Context context){
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(context);
+        deleteDialog.setTitle("账号已在其他终端登录，请重新登录？");
+        deleteDialog.setCancelable(false);
+        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ActivityUtil.finishActivity();
+                Account.logOff(context);
+            }
+        });
+        deleteDialog.show();
+    }
 
 }

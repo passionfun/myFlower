@@ -45,7 +45,9 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
                     public void onNext(BaseRspModel<GroupRspModel> groupRspModelBaseRspModel) {
                         if (groupRspModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getGroupListSuccess(groupRspModelBaseRspModel.getData().getList());
-                        } else {
+                        } else if (groupRspModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(groupRspModelBaseRspModel.getMsg());
                         }
                         view.hideLoading();
@@ -79,6 +81,8 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
                     public void onNext(BaseRspModel<EquipmentSetupModel> equipmentSetupModelBaseRspModel) {
                         if (equipmentSetupModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setupEquipmentSuccess(equipmentSetupModelBaseRspModel.getData());
+                        }else if (equipmentSetupModelBaseRspModel.getReturnCode().equals("9997")){
+                            view.onConnectionConflict();
                         }
                         Application.showToast(equipmentSetupModelBaseRspModel.getMsg());
                         view.hideLoading();
@@ -111,7 +115,9 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
                     public void onNext(BaseRspModel<EquipmentInfoModel> equipmentInfoModelBaseRspModel) {
                         if (equipmentInfoModelBaseRspModel.getReturnCode().equals("200")) {
                             view.equipmentInfoSuccess(equipmentInfoModelBaseRspModel.getData());
-                        } else {
+                        } else if (equipmentInfoModelBaseRspModel.getReturnCode().equals("9997")){
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(equipmentInfoModelBaseRspModel.getMsg());
                         }
                     }

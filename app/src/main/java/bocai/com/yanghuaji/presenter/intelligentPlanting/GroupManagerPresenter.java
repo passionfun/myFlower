@@ -41,7 +41,9 @@ public class GroupManagerPresenter extends BasePresenter<GroupManagerContract.Vi
                     public void onNext(BaseRspModel<GroupRspModel> groupRspModelBaseRspModel) {
                         if (groupRspModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getAllGroupsSuccess(groupRspModelBaseRspModel.getData().getList());
-                        } else {
+                        } else if (groupRspModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(groupRspModelBaseRspModel.getMsg());
                         }
                         view.hideLoading();

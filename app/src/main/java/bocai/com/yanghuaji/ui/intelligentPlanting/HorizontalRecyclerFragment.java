@@ -471,6 +471,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             }
 
             @Override
+            public void onConnectionConflict() {
+                UiTool.onConnectionConflict(getContext());
+            }
+
+            @Override
             public void setPresenter(MainRecylerContract.Presenter presenter) {
                 mPresenter = presenter;
             }

@@ -1,5 +1,7 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
+import android.util.Log;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
@@ -7,6 +9,7 @@ import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.CheckboxStatusModel;
 import bocai.com.yanghuaji.model.EquipmentDataModel;
 import bocai.com.yanghuaji.net.Network;
+import bocai.com.yanghuaji.util.UiTool;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,8 +42,11 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
 
                     @Override
                     public void onNext(BaseRspModel<EquipmentDataModel> equipmentDataModelBaseRspModel) {
+                        Log.d("sunhengchao","equipmentDataModelBaseRspModel"+equipmentDataModelBaseRspModel.getReturnCode());
                         if (equipmentDataModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setDataSuccess(equipmentDataModelBaseRspModel.getData());
+                        } else if (equipmentDataModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                     }
 
@@ -70,8 +76,11 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
 
                     @Override
                     public void onNext(BaseRspModel<CheckboxStatusModel> checkboxStatusModelBaseRspModel) {
-                        if (checkboxStatusModelBaseRspModel.getReturnCode().equals("200")) {
-//                            view.setCheckBoxSuccess(checkboxStatusModelBaseRspModel.getData());
+//                        if (checkboxStatusModelBaseRspModel.getReturnCode().equals("200")) {
+////                            view.setCheckBoxSuccess(checkboxStatusModelBaseRspModel.getData());
+//                        } else
+                        if (checkboxStatusModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         } else {
                             Application.showToast(checkboxStatusModelBaseRspModel.getMsg());
                         }

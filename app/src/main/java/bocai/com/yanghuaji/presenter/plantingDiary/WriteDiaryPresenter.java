@@ -45,7 +45,9 @@ public class WriteDiaryPresenter extends BasePresenter<WriteDiaryContract.View>
                         if (imageModelBaseRspModel.getReturnCode().equals("200")) {
                             ImageModel model = imageModelBaseRspModel.getData();
                             view.addPhotosSuccess(model.getAvatar());
-                        } else {
+                        } else if (imageModelBaseRspModel.getReturnCode().equals("9997")){
+                            view.onConnectionConflict();
+                        }else {
                             Application.showToast(imageModelBaseRspModel.getMsg());
                         }
                         view.hideLoading();
@@ -80,6 +82,8 @@ public class WriteDiaryPresenter extends BasePresenter<WriteDiaryContract.View>
                     public void onNext(BaseRspModel baseRspModel) {
                         if (baseRspModel.getReturnCode().equals("200")){
                             view.writeDiarySuccess();
+                        }else if (baseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
                         }
                         Application.showToast(baseRspModel.getMsg());
                         view.hideLoading();
