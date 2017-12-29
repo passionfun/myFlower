@@ -268,15 +268,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mGroupName.setText(plantModel.getGroupName());
                 mTime.setText(plantModel.getDays() + "");
                 //设置是否需要升级
-                if (HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel)){
-                    mUpdate.setText("设备升级");
-                    mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_horizontal,0,0);
-                    mUpdate.setEnabled(true);
-                }else {
-                    mUpdate.setText("最新版本");
-                    mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_horizontal_nomal,0,0);
-                    mUpdate.setEnabled(false);
-                }
+                HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel,mUpdate,true);
                 //消息推送状态   0关   1开
                 mPush.setChecked(plantModel.getPushStatus().equals("1"));
                 GlideApp.with(getContext())

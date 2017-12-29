@@ -16,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.BindEquipmentModel;
@@ -224,6 +225,7 @@ public class HorizontalRecyclerFragmentHelper {
 
     }
     private static int times =0;
+
     static class EquipmentResetLongToothServiceResponseHandler implements LongToothServiceResponseHandler{
             private boolean isRsp = false;
 
@@ -327,9 +329,9 @@ public class HorizontalRecyclerFragmentHelper {
     }
 
 
-    private static boolean isHaveNew = false;
+//    private static boolean isHaveNew = false;
 
-    public static boolean isHaveNewVersion(final EquipmentRspModel.ListBean plantModel) {
+    public static void isHaveNewVersion(final EquipmentRspModel.ListBean plantModel,TextView mUpdate, boolean isHorizontal) {
         /**
          * 是否有新版本请求格式
          * {
@@ -338,17 +340,25 @@ public class HorizontalRecyclerFragmentHelper {
          * }
          */
         if (TextUtils.isEmpty(plantModel.getLTID()) || TextUtils.isEmpty(plantModel.getPSIGN())) {
-            return false;
+            return;
         }
         BindEquipmentModel model = new BindEquipmentModel("isUpdate", plantModel.getPSIGN());
         String request = gson.toJson(model);
         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                0, request.getBytes().length, null, new MyLongToothServiceResponseHandler());
+                0, request.getBytes().length, null, new MyLongToothServiceResponseHandler(mUpdate,isHorizontal));
 
-        return isHaveNew;
+//        return isHaveNew;
     }
 
     static class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+        private TextView mUpdate;
+        private boolean isHorizontal;
+
+        public MyLongToothServiceResponseHandler(TextView mUpdate, boolean isHorizontal) {
+            this.mUpdate = mUpdate;
+            this.isHorizontal = isHorizontal;
+        }
+
         @Override
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
@@ -360,10 +370,49 @@ public class HorizontalRecyclerFragmentHelper {
             switch (code) {
                 case 501:
                     //  501:有升级的新版本
-                    isHaveNew = true;
+                    if (isHorizontal){
+                        mUpdate.setText("设备升级");
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal,0,0);
+                            }
+                        });
+                        mUpdate.setEnabled(true);
+                    }else {
+                        mUpdate.setText("设备升级");
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical, 0, 0);
+                            }
+                        });
+                        mUpdate.setEnabled(true);
+                    }
+
+//                    isHaveNew = true;
                     break;
                 default:
-                    isHaveNew = false;
+                    if (isHorizontal){
+                        mUpdate.setText("最新版本");
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_update_horizontal_nomal,0,0);
+                            }
+                        });
+                        mUpdate.setEnabled(false);
+                    }else {
+                        mUpdate.setText("最新版本");
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical_nomal, 0, 0);
+                            }
+                        });
+                        mUpdate.setEnabled(false);
+                    }
+//                    isHaveNew = false;
                     break;
             }
         }

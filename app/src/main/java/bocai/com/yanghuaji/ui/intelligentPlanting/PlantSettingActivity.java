@@ -115,11 +115,6 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         id = mPlantBean.getId();
         mUUID = mPlantBean.getPSIGN();
         mLongToothId = mPlantBean.getLTID();
-//        if (TextUtils.isEmpty(mPlantBean.getPlantName())){
-//            mTvPlantName.setText("去添加");
-//        }else {
-//            mTvPlantName.setText(mPlantBean.getPlantName());
-//        }
     }
 
     @Override

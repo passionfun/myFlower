@@ -26,8 +26,10 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentDataModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.model.PlantStatusModel;
 import bocai.com.yanghuaji.model.PlantStatusRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerContract;
@@ -85,14 +87,33 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
     @Override
     protected void initWidget() {
         super.initWidget();
+        isHaveNewVersion(mPlantBean);
+    }
 
-        if (HorizontalRecyclerFragmentHelper.isHaveNewVersion(mPlantBean)){
-            //  有新版本
-            mPresenter.setUpdateStatus(mPlantBean.getMac(),"1");
-        }else {
-            // 没有新版本
-            mPresenter.setUpdateStatus(mPlantBean.getMac(),"0");
-        }
+    private void isHaveNewVersion(EquipmentRspModel.ListBean plantModel){
+        BindEquipmentModel model = new BindEquipmentModel("isUpdate", plantModel.getPSIGN());
+        String request = gson.toJson(model);
+        LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null,new  LongToothServiceResponseHandler(){
+                    @Override
+                    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                                      String service_str, int data_type, byte[] args,
+                                                      LongToothAttachment attachment) {
+                        String result = new String(args);
+                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+                        Log.d(TAG, "update:" + result);
+                        int code = longToothRspModel.getCODE();
+                        switch (code) {
+                            case 501:
+                                //  501:有升级的新版本
+                                mPresenter.setUpdateStatus(mPlantBean.getMac(),"1");
+                                break;
+                            default:
+                                mPresenter.setUpdateStatus(mPlantBean.getMac(),"0");
+                                break;
+                        }
+                    }
+                });
     }
 
     @OnClick(R.id.img_back)

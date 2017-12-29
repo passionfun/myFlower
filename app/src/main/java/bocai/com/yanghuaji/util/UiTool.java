@@ -190,4 +190,46 @@ public class UiTool {
         deleteDialog.show();
     }
 
+
+    // 水平进度条的最大值
+    private static final int MAX_PROGRESS = 100;
+    // 默认的初始值
+    private int progress = 0;
+
+    public static ProgressDialog showProgressBarDialog(Context context){
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("升级中...");
+//        progressDialog.setMessage("请稍后...");
+        // 设置进度对话框的风格 ,默认是圆形的
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        // 设置是否可以通过点击Back键取消  默认true
+        progressDialog.setCancelable(false);
+        // 设置在点击Dialog外是否取消Dialog进度条  默认true
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        // 设置最大值
+        progressDialog.setMax(MAX_PROGRESS);
+        // 设置暂停按钮
+//        progressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "暂停", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                // 通过删除消息代码的方式停止定时器
+//                progressDialogHandler.removeMessages(PROGRESSDIALOG_FLAG);
+//            }
+//        });
+
+//        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "停止", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                progressDialogHandler.removeMessages(PROGRESSDIALOG_FLAG);
+//                progress = 0;
+//                progressDialog.setProgress(progress);
+//            }
+//        });
+
+        // 展示
+        progressDialog.show();
+        return progressDialog;
+    }
+
 }
