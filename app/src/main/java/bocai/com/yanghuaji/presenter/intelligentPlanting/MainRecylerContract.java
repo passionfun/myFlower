@@ -14,7 +14,7 @@ public interface MainRecylerContract {
     interface View extends BaseContract.View<Presenter>{
         void setDataSuccess(EquipmentDataModel model);
 
-        void setCheckBoxSuccess(CheckboxStatusModel model);
+//        void setCheckBoxSuccess(CheckboxStatusModel model);
 
         void deleteEquipmentSuccess();
     }

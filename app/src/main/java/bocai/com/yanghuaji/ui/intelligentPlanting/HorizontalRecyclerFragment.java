@@ -289,7 +289,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     @Override
                     public void run() {
                         HorizontalRecyclerFragmentHelper.setLedSwitch(plantModel);
-                        HorizontalRecyclerFragmentHelper.setLedMode(plantModel,mLedMode);
+                        HorizontalRecyclerFragmentHelper.setLedMode(plantModel,mLedMode,mPresenter);
                         getEquipmentData(plantModel);
                     }
                 };
@@ -533,10 +533,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 }
             }
 
-            @Override
-            public void setCheckBoxSuccess(CheckboxStatusModel model) {
 
-            }
 
             @Override
             public void deleteEquipmentSuccess() {

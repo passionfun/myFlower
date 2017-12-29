@@ -121,21 +121,22 @@
                     android:layout_height="match_parent">
                     <TextView
                         android:id="@+id/tv_temperature"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
                         android:layout_height="wrap_content"
                         android:drawablePadding="4dp"
                         android:drawableStart="@mipmap/img_temperature"
-                        android:text="未知"
+                        android:text="- -"
                         android:textColor="#FBB179"
                         android:textSize="13sp" />
 
                     <ImageView
                         android:visibility="invisible"
-                        android:layout_marginStart="2dp"
                         android:layout_gravity="center_vertical"
                         android:id="@+id/img_tem_arrow"
                         android:src="@mipmap/img_trending_down"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
@@ -148,11 +149,11 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_water_status"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="4dp"
                     android:drawableStart="@mipmap/img_water_lever"
-                    android:text="正常"
+                    android:text="- -"
                     android:textColor="#FBB179"
                     android:textSize="12dp" />
 
@@ -164,11 +165,11 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_led_status"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="4dp"
                     android:drawableStart="@mipmap/img_light"
-                    android:text="台灯"
+                    android:text="- -"
                     android:textColor="#90BDFF"
                     android:textSize="12dp" />
 
@@ -184,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="4dp"
                     android:drawableStart="@mipmap/img_ec"
-                    android:text="正常"
+                    android:text="- -"
                     android:textColor="#9FD166"
                     android:textSize="12dp" />
 

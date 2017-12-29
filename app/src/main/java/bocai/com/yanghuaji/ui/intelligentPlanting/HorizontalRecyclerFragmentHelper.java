@@ -25,7 +25,9 @@ import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
 import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.PushModel;
+import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerContract;
 import bocai.com.yanghuaji.util.UiTool;
+import bocai.com.yanghuaji.util.persistence.Account;
 import xpod.longtooth.LongTooth;
 import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
@@ -261,7 +263,7 @@ public class HorizontalRecyclerFragmentHelper {
 
     }
 
-    public static void setLedMode(EquipmentRspModel.ListBean modell, final TextView mLedMode) {
+    public static void setLedMode(final EquipmentRspModel.ListBean modell, final TextView mLedMode, final MainRecylerContract.Presenter mPresenter) {
         BindEquipmentModel resetModel = new BindEquipmentModel("getOpMode", modell.getPSIGN());
         final String request = gson.toJson(resetModel);
         LongTooth.request(modell.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
@@ -279,6 +281,9 @@ public class HorizontalRecyclerFragmentHelper {
                         Log.d(TAG, "getOpMode: "+result);
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                         int code = longToothRspModel.getCODE();
+                        if (mPresenter!=null){
+                            mPresenter.setCheckBox(Account.getToken(),"3",code+"",modell.getId());
+                        }
                         if (code == 0) {
                             String mode = longToothRspModel.getOpMode();
                             if (mode==null){

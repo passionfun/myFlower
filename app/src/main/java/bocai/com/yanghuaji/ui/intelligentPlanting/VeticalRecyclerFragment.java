@@ -279,7 +279,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 @Override
                 public void run() {
                     HorizontalRecyclerFragmentHelper.setLedSwitch(plantModel);
-                    HorizontalRecyclerFragmentHelper.setLedMode(plantModel, mLedMode);
+                    HorizontalRecyclerFragmentHelper.setLedMode(plantModel, mLedMode,mPresenter);
                     getEquipmentData(plantModel);
                 }
             };
@@ -500,12 +500,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 mTemperature.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_temperature,
                         0, 0, 0);
             }
-        }
-
-        @Override
-        public void setCheckBoxSuccess(CheckboxStatusModel model) {
-            EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
-
         }
 
         @Override

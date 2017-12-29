@@ -154,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="4dp"
                         android:drawableStart="@mipmap/img_temperature"
-                        android:text="未知"
+                        android:text="- -"
                         android:textColor="#FBB179"
                         android:textSize="13dp" />
 
@@ -169,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="4dp"
                         android:drawableStart="@mipmap/img_water_lever"
-                        android:text="正常"
+                        android:text="- -"
                         android:textColor="#FBB179"
                         android:textSize="12dp" />
 
@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="4dp"
                         android:drawableStart="@mipmap/img_light"
-                        android:text="台灯"
+                        android:text="- -"
                         android:textColor="#90BDFF"
                         android:textSize="12dp" />
 
@@ -199,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="4dp"
                         android:drawableStart="@mipmap/img_ec"
-                        android:text="正常"
+                        android:text="- -"
                         android:textColor="#9FD166"
                         android:textSize="12dp" />
 
