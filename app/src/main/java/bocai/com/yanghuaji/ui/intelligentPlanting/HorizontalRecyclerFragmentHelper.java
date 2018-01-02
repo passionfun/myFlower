@@ -410,6 +410,9 @@ class HorizontalRecyclerFragmentHelper {
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
+            if (args==null){
+                return;
+            }
             String result = new String(args);
             LedSetRspModel ledSetRspModel = gson.fromJson(result, LedSetRspModel.class);
             Log.d(TAG, "ledSetRspModel111:" + result);

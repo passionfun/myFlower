@@ -62,7 +62,7 @@ public class SelectPicPopupWindow extends PopupWindow {
         });
     }
 
-    interface ItemClickListener {
+    public interface ItemClickListener {
         void onItemClick(View view);
     }
 }
