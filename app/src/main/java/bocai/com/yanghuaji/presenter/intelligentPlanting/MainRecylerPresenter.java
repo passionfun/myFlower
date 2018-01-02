@@ -64,7 +64,9 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
 
     @Override
     public void setCheckBox(String token, String type, String status, String equipmentId) {
-        view.showLoading();
+        if (!type.equals("3")){
+            view.showLoading();
+        }
         Observable<BaseRspModel<CheckboxStatusModel>> observable = Network.remote().setCheckboxStatus(token, type, status, equipmentId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -83,7 +85,7 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
                         } else {
                             Application.showToast(checkboxStatusModelBaseRspModel.getMsg());
                         }
-                        view.hideLoading();
+//                        view.hideLoading();
                     }
 
                     @Override

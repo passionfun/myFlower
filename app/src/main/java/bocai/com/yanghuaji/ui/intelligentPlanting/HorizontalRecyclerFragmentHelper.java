@@ -252,9 +252,14 @@ class HorizontalRecyclerFragmentHelper {
 
                         Log.d(TAG, "getOpMode: " + result);
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-                        int code = longToothRspModel.getCODE();
+                        final int code = longToothRspModel.getCODE();
                         if (mPresenter != null) {
-                            mPresenter.setCheckBox(Account.getToken(), "3", code + "", modell.getId());
+                            Run.onUiAsync(new Action() {
+                                @Override
+                                public void call() {
+                                    mPresenter.setCheckBox(Account.getToken(), "3", code + "", modell.getId());
+                                }
+                            });
                         }
                         if (code == 0) {
                             String mode = longToothRspModel.getOpMode();
@@ -425,7 +430,7 @@ class HorizontalRecyclerFragmentHelper {
     public static String getWaStatus(String code) {
         switch (code) {
             case "0":
-                return "不缺水";
+                return "正常";
             case "1":
                 return "缺水";
             default:
