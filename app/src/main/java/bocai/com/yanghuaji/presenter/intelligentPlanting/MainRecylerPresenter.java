@@ -85,7 +85,7 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
                         } else {
                             Application.showToast(checkboxStatusModelBaseRspModel.getMsg());
                         }
-//                        view.hideLoading();
+                        view.hideLoading();
                     }
 
                     @Override

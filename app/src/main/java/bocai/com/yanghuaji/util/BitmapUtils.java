@@ -76,7 +76,6 @@ public class BitmapUtils {
     //用来删除一个本地uri
     public static void delteImageUri(Context context, Uri uri) {
         context.getContentResolver().delete(uri, null, null);
-
     }
 
 }

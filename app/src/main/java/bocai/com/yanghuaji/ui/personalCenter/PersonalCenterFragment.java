@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.GlideApp;
+import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
 import bocai.com.yanghuaji.model.NoticeStatusRspModel;
 import bocai.com.yanghuaji.model.PersonalCenterPresenter;

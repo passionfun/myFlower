@@ -33,7 +33,7 @@ import java.util.TimerTask;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
-import bocai.com.yanghuaji.base.GlideApp;
+import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;

@@ -27,13 +27,15 @@ import com.yalantis.ucrop.UCrop;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import boc.com.imgselector.utils.ImageSelectorUtils;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
-import bocai.com.yanghuaji.base.GlideApp;
+import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.media.GalleryFragment;
 import bocai.com.yanghuaji.model.MessageEvent;
@@ -206,15 +208,17 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
         picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM, 0, 30);
     }
-
+    private int REQUEST_CODE = 10006;
     private void doSelectPhoto() {
-        new GalleryFragment()
-                .setListener(new GalleryFragment.OnSelectedListener() {
-                    @Override
-                    public void onSelectedImage(String path) {
-                       cropPhoto(path);
-                    }
-                }).show(getSupportFragmentManager(), GalleryFragment.class.getName());
+        ImageSelectorUtils.openPhoto(this, REQUEST_CODE, true, 0);
+
+//        new GalleryFragment()
+//                .setListener(new GalleryFragment.OnSelectedListener() {
+//                    @Override
+//                    public void onSelectedImage(String path) {
+//                       cropPhoto(path);
+//                    }
+//                }).show(getSupportFragmentManager(), GalleryFragment.class.getName());
     }
 
     private void cropPhoto(String path) {
@@ -245,7 +249,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
             }
             if (permission) {
                 //  授权成功
-                doSelectPhoto();
+                onPortraitClick();
             } else {
                 // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
                 PermissionUtils.openAppDetails(this);
@@ -275,6 +279,9 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data==null){
+            return;
+        }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             // 通过UCrop得到对应的Uri
             final Uri resultUri = UCrop.getOutput(data);
@@ -288,6 +295,13 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
         if (requestCode == WriteDiaryActivity.TAKE_PHOTO_REQUEST_ONE) {
             cropPhoto(getRealFilePath(EditPersonalDataActivity.this, imageUri));
+        }
+
+        if (requestCode == REQUEST_CODE) {
+            ArrayList<String> stringArrayListExtra = data.getStringArrayListExtra(ImageSelectorUtils.SELECT_RESULT);
+            if (stringArrayListExtra!=null){
+                cropPhoto(stringArrayListExtra.get(0));
+            }
         }
     }
 

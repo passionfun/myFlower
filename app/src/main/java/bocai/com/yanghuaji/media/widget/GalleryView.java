@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 
 public class GalleryView extends RecyclerView {

@@ -23,6 +23,7 @@ import org.greenrobot.eventbus.EventBus;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.model.MessageEvent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,6 +52,7 @@ public class LocationActivity extends Activity {
     private String mCityName;
     private static final String CITY_NAME = "cityName";
     private RecyclerAdapter<PoiItem> mAdapter;
+    public static final String LOCATION = "LOCATION";
 
     //显示的入口
     public static void show(Context context, String cityName) {
@@ -106,7 +108,7 @@ public class LocationActivity extends Activity {
                 if (mSelectPosition != -1) {
                     poiName = mAdapter.getItems().get(mSelectPosition).getTitle();
                 }
-                EventBus.getDefault().post(poiName);
+                EventBus.getDefault().post(new MessageEvent(poiName,LOCATION));
             }
         });
 

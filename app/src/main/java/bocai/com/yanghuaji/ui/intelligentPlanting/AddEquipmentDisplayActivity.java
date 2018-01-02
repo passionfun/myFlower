@@ -18,7 +18,7 @@ import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
-import bocai.com.yanghuaji.base.GlideApp;
+import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.PermissionUtils;

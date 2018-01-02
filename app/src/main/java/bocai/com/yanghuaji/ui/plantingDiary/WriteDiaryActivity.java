@@ -33,15 +33,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import boc.com.imgselector.utils.ImageSelectorUtils;
 import bocai.com.yanghuaji.R;
-import bocai.com.yanghuaji.base.GlideApp;
+import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.ImageModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.plantingDiary.WriteDiaryContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.WriteDiaryPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
@@ -79,13 +82,14 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     ImageView mAdd;
     private static final int MY_PERMISSION_REQUEST_CODE = 10001;
     public static final int TAKE_PHOTO_REQUEST_ONE = 0x001;
+    public static final int PHOTO_FROM_GALLERY = 0x002;
     public static final String KEY_DIARY_ID = "KEY_DIARY_ID";
     private String mDiaryId;
     private Uri imageUri;
     private RecyclerAdapter<String> mAdapter;
     private String mCityName = "";
     private String mLocationStr = "";
-    private String[] storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
+    private String[] storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -274,9 +278,9 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                         picPopupWindow.dismiss();
                         // 从相册选择照片
                         boolean isHavePermission = PermissionUtils.checkPermissionAllGranted(WriteDiaryActivity.this, storagePermissions);
-                        if (!isHavePermission){
+                        if (!isHavePermission) {
                             //申请权限
-                            ActivityCompat.requestPermissions(WriteDiaryActivity.this,storagePermissions,MY_PERMISSION_REQUEST_CODE);
+                            ActivityCompat.requestPermissions(WriteDiaryActivity.this, storagePermissions, MY_PERMISSION_REQUEST_CODE);
                             return;
                         }
                         soSelectPhonts();
@@ -292,22 +296,25 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
         picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM, 0, 30);
     }
 
-    private void soSelectPhonts(){
-        MyGalleryFragment fragment = new MyGalleryFragment().setListener(new MyGalleryFragment.OnSelectedListener() {
-            @Override
-            public void onSelectedImage(String[] paths) {
-                mAdapter.add(paths);
-                switchVisibility(true);
-            }
-        });
-        fragment.show(getSupportFragmentManager(), MyGalleryFragment.class.getName());
+    private void soSelectPhonts() {
+
+        ImageSelectorUtils.openPhoto(this, PHOTO_FROM_GALLERY);
+
+//        MyGalleryFragment fragment = new MyGalleryFragment().setListener(new MyGalleryFragment.OnSelectedListener() {
+//            @Override
+//            public void onSelectedImage(String[] paths) {
+//                mAdapter.add(paths);
+//                switchVisibility(true);
+//            }
+//        });
+//        fragment.show(getSupportFragmentManager(), MyGalleryFragment.class.getName());
     }
 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode==MY_PERMISSION_REQUEST_CODE){
+        if (requestCode == MY_PERMISSION_REQUEST_CODE) {
             boolean permission = true;
             for (int grantResult : grantResults) {
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
@@ -336,7 +343,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                 params.put("pic_head" + (i + 1) + "\";" + "filename=\"" + file, body);
             }
             mPresenter.addPhotos(params);
-        }else {
+        } else {
             String token = Account.getToken();
             String content = mContent.getText().toString();
             String diaryId = mDiaryId;
@@ -348,12 +355,20 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TAKE_PHOTO_REQUEST_ONE) {
+            mAdapter.add(getRealFilePath(WriteDiaryActivity.this, imageUri));
+            switchVisibility(true);
+        }
+        if (data==null){
+            return;
+        }
         if (resultCode == RESULT_CANCELED) {
             BitmapUtils.delteImageUri(WriteDiaryActivity.this, imageUri);
             return;
         }
-        if (requestCode == TAKE_PHOTO_REQUEST_ONE) {
-            mAdapter.add(getRealFilePath(WriteDiaryActivity.this, imageUri));
+        if (requestCode == PHOTO_FROM_GALLERY) {
+            ArrayList<String> images = data.getStringArrayListExtra(ImageSelectorUtils.SELECT_RESULT);
+            mAdapter.add(images.toArray(new String[0]));
             switchVisibility(true);
         }
     }
@@ -472,12 +487,15 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     }
 
     @Subscribe
-    public void getLocation(String name) {
-        mLocationStr = name;
-        if (TextUtils.isEmpty(name)) {
-            mLocation.setText("不显示");
-        } else {
-            mLocation.setText(name);
+    public void getLocation(MessageEvent messageEvent) {
+        if (messageEvent.getType().equals(LocationActivity.LOCATION)){
+            mLocationStr = messageEvent.getMessage();
+            if (TextUtils.isEmpty(mLocationStr)) {
+                mLocation.setText("不显示");
+            } else {
+                mLocation.setText(mLocationStr);
+            }
         }
+
     }
 }

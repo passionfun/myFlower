@@ -1,4 +1,4 @@
-package bocai.com.yanghuaji.base;
+package boc.com.imgselector;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;

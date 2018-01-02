@@ -194,6 +194,7 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.plantingDiary.WriteDiaryActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme" />
 
         <activity
@@ -205,6 +206,21 @@
         <activity
             android:name=".ui.plantingDiary.PlantingDiaryActivity"
             android:theme="@style/BaseTheme" />
+
+        //图片选择Activity
+        <activity android:name="boc.com.imgselector.ImageSelectorActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        //图片预览Activity
+        <activity android:name="boc.com.imgselector.PreviewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        //图片剪切Activity
+        <activity
+            android:name="boc.com.imgselector.ClipImageActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

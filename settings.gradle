@@ -1,1 +1,1 @@
-include ':app', ':zxinglibrary'
+include ':app', ':zxinglibrary', ':imgselector'

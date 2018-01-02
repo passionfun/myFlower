@@ -23,7 +23,7 @@ import java.util.Map;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
-import bocai.com.yanghuaji.base.GlideApp;
+import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.media.GalleryFragment;
 import bocai.com.yanghuaji.model.EquipmentCard;

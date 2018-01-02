@@ -74,7 +74,7 @@ dependencies {
     compile 'com.yalantis:ucrop:2.2.0-native'
     compile 'org.greenrobot:eventbus:3.0.0'
     //easyLink
-//    compile 'io.fogcloud.sdk:fog2_sdk:0.1.1'
+    //    compile 'io.fogcloud.sdk:fog2_sdk:0.1.1'
     compile 'io.fogcloud.sdk:mdns:0.0.3'
     //最新easyLink
     compile 'io.fogcloud.sdk:easylinkv3:0.1.5'
@@ -117,19 +117,16 @@ dependencies {
     implementation files('libs/umeng_social_net.jar')
     implementation files('libs/umeng_social_tool.jar')
     implementation files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
-
-
     compile 'com.android.support:multidex:1.0.0'
-
     compile 'com.amap.api:location:latest.integration'
     //搜索功能
     compile 'com.amap.api:search:latest.integration'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
-
-
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
-
     //bugly 日志捕捉
-    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    implementation project(':imgselector')
 }
