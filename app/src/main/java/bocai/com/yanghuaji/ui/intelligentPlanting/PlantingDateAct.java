@@ -37,7 +37,9 @@ import bocai.com.yanghuaji.presenter.intelligentPlanting.PlantDataPresenter;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.PlantingDataContract;
 import bocai.com.yanghuaji.ui.plantingDiary.PlantingDiaryActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
+import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import xpod.longtooth.LongTooth;
@@ -58,6 +60,9 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
 
     @BindView(R.id.webView)
     WebView webView;
+
+    @BindView(R.id.empty)
+    EmptyView mEmpty;
 
     public static final String TAG = PlantingDateAct.class.getName();
     private String mUrl;
@@ -88,6 +93,7 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
     protected void initWidget() {
         super.initWidget();
         isHaveNewVersion(mPlantBean);
+        mEmpty.bind(webView);
     }
 
     private void isHaveNewVersion(EquipmentRspModel.ListBean plantModel){
@@ -136,6 +142,12 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
     @Override
     protected void initData() {
         super.initData();
+
+        if (!UiTool.isNetworkAvailable(this)){
+            mEmpty.setEmptyText(R.string.network_unavailable);
+            mEmpty.triggerEmpty();
+            return;
+        }
         mUrl = getIntent().getExtras().getString(MID);
         ActivityUtil.initWebSetting(webView.getSettings());
 

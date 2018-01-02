@@ -48,6 +48,13 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         />
+
+    <bocai.com.yanghuaji.util.widget.EmptyView
+        android:id="@+id/empty"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <WebView
         android:id="@+id/webView"
         android:layout_below="@+id/text_endLoading"

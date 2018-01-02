@@ -254,7 +254,8 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                 public void onClick(View view) {
                     isAddEquipments = true;
                     mPlantSeriesCard = plantSeriesCard;
-                    mPresenter.getEquipmentPhoto("1", TextUtils.isEmpty(plantSeriesCard.getSeries())?"":plantSeriesCard.getSeries());
+                    mPresenter.getEquipmentPhoto("1", TextUtils.isEmpty(plantSeriesCard.getSeries())?""
+                            :plantSeriesCard.getSeries());
                 }
             });
         }

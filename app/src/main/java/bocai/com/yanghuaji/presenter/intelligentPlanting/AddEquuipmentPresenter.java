@@ -60,6 +60,7 @@ public class AddEquuipmentPresenter extends BasePresenter<AddEquipmentContract.V
 
     @Override
     public void getEquipmentPhoto(String type,String equipmentType) {
+        view.showLoading();
         Observable<BaseRspModel<EquipmentPhotoModel>> observable = Network.remote().getEquipmentPhoto(type,equipmentType);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -71,6 +72,7 @@ public class AddEquuipmentPresenter extends BasePresenter<AddEquipmentContract.V
 
                     @Override
                     public void onNext(BaseRspModel<EquipmentPhotoModel> equipmentPhotoModelBaseRspModel) {
+                        view.hideLoading();
                         if (equipmentPhotoModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getEquipmentPhotoSuccess(equipmentPhotoModelBaseRspModel.getData());
                         } else {
