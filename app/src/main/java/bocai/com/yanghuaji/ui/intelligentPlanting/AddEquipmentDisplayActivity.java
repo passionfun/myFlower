@@ -99,6 +99,7 @@ public class AddEquipmentDisplayActivity extends Activity {
                     .asGif()
                     .load(mPhotoPath)
                     .centerCrop()
+                    .placeholder(R.mipmap.img_diary_cover_empty)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(mEquipmentPhoto);
         }else {
