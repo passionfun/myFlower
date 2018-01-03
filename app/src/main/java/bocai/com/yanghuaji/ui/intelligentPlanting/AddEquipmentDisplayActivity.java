@@ -7,11 +7,15 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,10 +93,20 @@ public class AddEquipmentDisplayActivity extends Activity {
         super.initWidget();
         UiTool.setBlod(mTitle);
         mTitle.setText("添加设备");
-        GlideApp.with(this)
-                .load(mPhotoPath)
-                .centerCrop()
-                .into(mEquipmentPhoto);
+        Log.d("gif", "initWidget: "+mPhotoPath);
+        if (mPhotoPath.endsWith(".gif")){
+            GlideApp.with(this)
+                    .asGif()
+                    .load(mPhotoPath)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(mEquipmentPhoto);
+        }else {
+            GlideApp.with(this)
+                    .load(mPhotoPath)
+                    .centerCrop()
+                    .into(mEquipmentPhoto);
+        }
     }
 
     @OnClick(R.id.img_back)

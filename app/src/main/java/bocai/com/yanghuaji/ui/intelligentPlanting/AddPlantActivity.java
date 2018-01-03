@@ -104,6 +104,11 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
         super.initWidget();
         UiTool.setBlod(mTitle);
         mTitle.setText("添加植物");
+        if (!TextUtils.isEmpty(className)){
+            mSkip.setVisibility(View.GONE);
+        }else {
+            mSkip.setVisibility(View.VISIBLE);
+        }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter = new RecyclerAdapter<PlantRspModel.PlantCard>() {
             @Override

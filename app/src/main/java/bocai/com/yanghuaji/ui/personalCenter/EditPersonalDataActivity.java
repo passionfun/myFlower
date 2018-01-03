@@ -210,7 +210,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
     }
     private int REQUEST_CODE = 10006;
     private void doSelectPhoto() {
-        ImageSelectorUtils.openPhoto(this, REQUEST_CODE, true, 0);
+        ImageSelectorUtils.openPhoto(this, REQUEST_CODE, false, 1);
 
 //        new GalleryFragment()
 //                .setListener(new GalleryFragment.OnSelectedListener() {

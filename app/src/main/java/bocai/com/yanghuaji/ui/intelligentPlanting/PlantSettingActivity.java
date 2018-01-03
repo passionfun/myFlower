@@ -83,6 +83,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     private PlantRspModel.PlantCard mPlantcard;
     public static final String KEY_PLANT_BEAN = "KEY_PLANT_BEAN";
     public static String KEY_CLASS_NAME = "KEY_CLASS_NAME";
+    private boolean isPlantsetted = false;
 
     //显示的入口
     public static void show(Context context,EquipmentRspModel.ListBean plantBean) {
@@ -136,9 +137,11 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         if (model==null||TextUtils.isEmpty(model.getPlantName())){
             mTvPlantName.setText("去添加");
             tvPlantMethod.setText("手动");
+            isPlantsetted = false;
         }else {
             mTvPlantName.setText(model.getPlantName());
             tvPlantMethod.setText("智能");
+            isPlantsetted = true;
         }
     }
 
@@ -159,7 +162,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
 
     @OnClick(R.id.tv_plant_name)
     void onPlantNameClick() {
-        if (mTvPlantName.getText().equals("去添加")){
+        if (!isPlantsetted){
             Intent intent = new Intent(this, AddPlantActivity.class);
             intent.putExtra(KEY_CLASS_NAME, PlantSettingActivity.class.getName());
             startActivityForResult(intent,1);

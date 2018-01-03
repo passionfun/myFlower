@@ -195,7 +195,6 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -230,7 +229,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                 BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
                 String request = gson.toJson(model);
                 LongTooth.request(longToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
-                        new SampleAttachment(), new LongToothResponse());
+                        new SampleAttachment(), new LongToothResponse(jsonContent));
             } else if ((content.equals(mScanData.get(2)) && !equipmentModel.get_$BOUNDSTATUS310().equals("notBound"))) {
                 Application.showToast("该设备已被绑定过");
                 stopSearch();
@@ -240,7 +239,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     }
 
     private void stopSearch() {
-        if ( mdns!= null)
+        if (mdns != null)
             mdns.stopSearchDevices(null);
         if (timer != null)
             timer.cancel();
@@ -266,55 +265,63 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         return new ConnectPresenter(this);
     }
 
+    private int times = 0;
 
-private class LongToothResponse implements LongToothServiceResponseHandler {
-    private boolean isResp = false;
+    private class LongToothResponse implements LongToothServiceResponseHandler {
+        private boolean isResp = false;
 
-    public LongToothResponse() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!isResp) {
-                    Run.onUiAsync(new Action() {
-                        @Override
-                        public void call() {
-                            Application.showToast("绑定请求无响应");
-                        }
-                    });
-                }
-            }
-        }, 6000);
-    }
-
-    @Override
-    public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
-                                      String service_str, int data_type, byte[] args,
-                                      LongToothAttachment attachment) {
-        String result = new String(args);
-        Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
-        final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-        isResp = true;
-        if (longToothRspModel.getCODE() == 0) {
-            String mEquipmentName = mModel.getDEVNAME();
-            String macAddress = mModel.getMAC();
-            String token = Account.getToken();
-            String serialNum = mScanData.get(1);
-            String version = mModel.get_$FirmwareRev196();
-            String series = mEquipmentName.substring(0, 5);
-            if (mPresenter != null) {
-                mPresenter.addEquipment(token, mEquipmentName, macAddress, serialNum, version, longToothId, timeStamp, series);
-            }
-        } else {
-            Run.onUiAsync(new Action() {
+        public LongToothResponse(final String jsonContent) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
                 @Override
-                public void call() {
-                    Factory.decodeRspCode(longToothRspModel);
+                public void run() {
+                    times++;
+                    if (!isResp) {
+                        if (times > 2) {
+                            times = 0;
+                            Run.onUiAsync(new Action() {
+                                @Override
+                                public void call() {
+                                    Application.showToast("绑定请求无响应");
+                                    finish();
+                                }
+                            });
+                        } else {
+                            bindEquipment(jsonContent);
+                        }
+                    }
                 }
-            });
+            }, 4000);
         }
 
+        @Override
+        public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
+                                          String service_str, int data_type, byte[] args,
+                                          LongToothAttachment attachment) {
+            String result = new String(args);
+            Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
+            final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
+            isResp = true;
+            if (longToothRspModel.getCODE() == 0) {
+                String mEquipmentName = mModel.getDEVNAME();
+                String macAddress = mModel.getMAC();
+                String token = Account.getToken();
+                String serialNum = mScanData.get(1);
+                String version = mModel.get_$FirmwareRev196();
+                String series = mEquipmentName.substring(0, 5);
+                if (mPresenter != null) {
+                    mPresenter.addEquipment(token, mEquipmentName, macAddress, serialNum, version, longToothId, timeStamp, series);
+                }
+            } else {
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        Factory.decodeRspCode(longToothRspModel);
+                    }
+                });
+            }
+
+        }
     }
-}
 
 }
