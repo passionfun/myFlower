@@ -57,10 +57,10 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_portrait"
-                android:layout_width="65dp"
+                android:layout_width="70dp"
                 android:layout_gravity="center"
                 android:src="@mipmap/img_portrait_empty"
-                android:layout_height="65dp" />
+                android:layout_height="70dp" />
         </FrameLayout>
 
     </LinearLayout>

@@ -237,9 +237,6 @@ public class UiTool {
 
     /**
      * 检查网络是否可用
-     *
-     * @param context
-     * @return
      */
     public static boolean isNetworkAvailable(Context context) {
 

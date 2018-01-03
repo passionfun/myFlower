@@ -52,9 +52,9 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_add_portrait"
         android:src="@mipmap/img_edit_portrait"
-        android:layout_width="65dp"
+        android:layout_width="70dp"
         android:layout_gravity="center"
-        android:layout_height="65dp" />
+        android:layout_height="70dp" />
 
     <bocai.com.yanghuaji.util.widget.RoundAngleImageView
         android:layout_width="65dp"

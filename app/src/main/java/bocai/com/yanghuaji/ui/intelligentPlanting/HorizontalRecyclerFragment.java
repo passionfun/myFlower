@@ -2,7 +2,6 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
