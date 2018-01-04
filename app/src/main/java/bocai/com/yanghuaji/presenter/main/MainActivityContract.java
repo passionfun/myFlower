@@ -6,6 +6,7 @@ import bocai.com.yanghuaji.base.presenter.BaseContract;
 import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.model.VersionInfoModel;
 
 /**
  * 作者 yuanfei on 2017/11/25.
@@ -22,6 +23,8 @@ public interface MainActivityContract {
         void getEquipmentConfigSuccess(EquipmentConfigModel equipmentConfigModel);
 
         void getEquipmentConfigFailed();
+
+        void checkVersionSuccess(VersionInfoModel model);
     }
 
     interface Presenter extends BaseContract.Presenter{
@@ -30,5 +33,8 @@ public interface MainActivityContract {
         void getAllGroups(String token,String limit,String page);
 
         void getEquipmentConfig();
+
+        //	平台   0 ios  1 android
+        void checkVersion(String platform);
     }
 }

@@ -33,6 +33,7 @@ import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.MessageEvent;
+import bocai.com.yanghuaji.model.VersionInfoModel;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.main.MainActivityContract;
 import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
@@ -40,6 +41,7 @@ import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
 import bocai.com.yanghuaji.ui.intelligentPlanting.AddWifiActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
+import bocai.com.yanghuaji.updateVersion.manager.UpdateManager;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.LongToothUtil;
 import bocai.com.yanghuaji.util.UiTool;
@@ -174,6 +176,8 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @Override
     protected void initData() {
         super.initData();
+        //	平台   0 ios  1 android
+        mPresenter.checkVersion("1");
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mNavigationFragment = NavigationFragment.newInstance();
         transaction.replace(R.id.frame_container, mNavigationFragment).commit();
@@ -375,6 +379,16 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
         if (!LongToothUtil.isInitSuccess) {
             LongToothUtil.longToothInit();
+        }
+    }
+
+    @Override
+    public void checkVersionSuccess(VersionInfoModel model) {
+        if (model != null) {
+            String version = model.getVersion();
+            if (!TextUtils.isEmpty(version)) {
+                new UpdateManager(this).checkUpdate(model);
+            }
         }
     }
 

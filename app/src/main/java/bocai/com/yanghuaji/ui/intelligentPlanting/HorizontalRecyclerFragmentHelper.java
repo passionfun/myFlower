@@ -432,9 +432,11 @@ class HorizontalRecyclerFragmentHelper {
 
     public static String getWaStatus(String code) {
         switch (code) {
-            case "0":
-                return "正常";
             case "1":
+                return "正常";
+            case "2":
+                return "偏低";
+            case "3":
                 return "缺水";
             default:
                 return HorizontalRecyclerFragment.UNKNOWN;

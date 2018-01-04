@@ -7,10 +7,12 @@ import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.model.VersionInfoModel;
 import bocai.com.yanghuaji.net.Network;
 import bocai.com.yanghuaji.util.persistence.Account;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -127,6 +129,36 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
                     @Override
                     public void onError(Throwable e) {
                         view.getEquipmentConfigFailed();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void checkVersion(String platform) {
+        Observable<BaseRspModel<VersionInfoModel>> observable = Network.remote().checkVersion("1");
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<VersionInfoModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<VersionInfoModel> versionInfoModelBaseRspModel) {
+                        if (versionInfoModelBaseRspModel.getReturnCode().equals("200")){
+                            view.checkVersionSuccess(versionInfoModelBaseRspModel.getData());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
                     }
 
                     @Override

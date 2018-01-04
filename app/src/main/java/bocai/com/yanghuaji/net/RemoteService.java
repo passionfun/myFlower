@@ -26,6 +26,7 @@ import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.model.PlantSettingModel;
 import bocai.com.yanghuaji.model.UpdateVersionRspModel;
+import bocai.com.yanghuaji.model.VersionInfoModel;
 import bocai.com.yanghuaji.model.db.EquipmentListModel;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -345,6 +346,12 @@ public interface RemoteService {
     //设备配置数据获取
     @POST("equipment/config_data")
     Observable<BaseRspModel<EquipmentConfigModel>> getEquipmentConfig();
+
+
+    //app版本更新
+    @POST("member/version")
+    @FormUrlEncoded
+    Observable<BaseRspModel<VersionInfoModel>> checkVersion(@Field("Platform") String platform);
 
 
 }
