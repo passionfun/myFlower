@@ -375,7 +375,11 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                     @Override
                                     public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                                         UiTool.hideLoading();
+                                        if (bytes==null)
+                                            return;
                                         String jsonContent = new String(bytes);
+                                        if (TextUtils.isEmpty(jsonContent)||!jsonContent.contains("CODE"))
+                                            return;
                                         LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                         if (plantStatusRspModel.getCODE() == 0) {
                                             Application.showToast("LED开启成功");
@@ -401,7 +405,11 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                     @Override
                                     public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                                         UiTool.hideLoading();
+                                        if (bytes==null)
+                                            return;
                                         String jsonContent = new String(bytes);
+                                        if (TextUtils.isEmpty(jsonContent)||!jsonContent.contains("CODE"))
+                                            return;
                                         LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                         if (plantStatusRspModel.getCODE() == 0) {
                                             Application.showToast("LED关闭成功");

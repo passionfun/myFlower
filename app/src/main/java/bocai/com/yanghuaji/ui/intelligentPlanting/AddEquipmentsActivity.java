@@ -215,11 +215,10 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
-            if (args==null){
+            if (args==null)
                 return;
-            }
             String result = new String(args);
-            if (TextUtils.isEmpty(result)) {
+            if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
                 return;
             }
             isRsp = true;

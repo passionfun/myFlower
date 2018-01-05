@@ -299,7 +299,12 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
+            if (args==null)
+                return;
             String result = new String(args);
+            if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
+                return;
+            }
             Log.d("sunhengchao", "handleServiceResponse: " + new String(args));
             final LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             isResp = true;

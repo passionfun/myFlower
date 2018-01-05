@@ -1,5 +1,6 @@
 package bocai.com.yanghuaji.ui.intelligentPlanting;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -54,7 +55,13 @@ public class EquipmentSettingHelper {
             public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                               String service_str, int data_type, byte[] args,
                                               LongToothAttachment attachment) {
+                if (args==null){
+                    return;
+                }
                 String result = new String(args);
+                if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
+                    return;
+                }
                 LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                 Log.d(TAG, "noDisturb: "+result);
                 if (longToothRspModel.getCODE()==0){
@@ -76,7 +83,12 @@ public class EquipmentSettingHelper {
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
+            if (args==null)
+                return;
             String result = new String(args);
+            if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
+                return;
+            }
             Log.d(TAG, "lightOn: "+result);
             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             if (longToothRspModel.getCODE()==0){

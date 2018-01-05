@@ -98,7 +98,12 @@ class HorizontalRecyclerFragmentHelper {
                             public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                                               String service_str, int data_type, byte[] args,
                                                               LongToothAttachment attachment) {
+                                if (args==null)
+                                    return;
                                 String result = new String(args);
+                                if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
+                                    return;
+                                }
                                 LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                                 int code = longToothRspModel.getCODE();
                                 if (code == 0) {
@@ -136,10 +141,12 @@ class HorizontalRecyclerFragmentHelper {
                     public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                                       String service_str, int data_type, byte[] args,
                                                       LongToothAttachment attachment) {
-                        if (args == null) {
+                        if (args==null)
+                            return;
+                        String result = new String(args);
+                        if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
                             return;
                         }
-                        String result = new String(args);
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                         Log.d(TAG, "update: " + result);
                         int code = longToothRspModel.getUpdateStat();
@@ -174,11 +181,13 @@ class HorizontalRecyclerFragmentHelper {
                     public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                                       String service_str, int data_type, byte[] args,
                                                       LongToothAttachment attachment) {
-                        if (args == null) {
-                            Application.showToast("未知错误");
+
+                        if (args==null)
+                            return;
+                        String result = new String(args);
+                        if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
                             return;
                         }
-                        String result = new String(args);
 //                        LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
 //                        int code = longToothRspModel.getCODE();
                     }
@@ -222,10 +231,12 @@ class HorizontalRecyclerFragmentHelper {
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
             Log.d(TAG, "equipmentReset: args");
-            if (args == null) {
+            if (args==null)
+                return;
+            String result = new String(args);
+            if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
                 return;
             }
-            String result = new String(args);
             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             int code = longToothRspModel.getCODE();
             if (code == 0) {
@@ -244,27 +255,28 @@ class HorizontalRecyclerFragmentHelper {
                     public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                                       String service_str, int data_type, byte[] args,
                                                       LongToothAttachment attachment) {
-                        if (args == null) {
-                            Application.showToast("未知错误");
+                        if (args==null)
+                            return;
+                        String result = new String(args);
+                        if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
                             return;
                         }
-                        String result = new String(args);
 
                         Log.d(TAG, "getOpMode: " + result);
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                         final int code = longToothRspModel.getCODE();
-                        if (mPresenter != null) {
-                            Run.onUiAsync(new Action() {
-                                @Override
-                                public void call() {
-                                    mPresenter.setCheckBox(Account.getToken(), "3", code + "", modell.getId());
-                                }
-                            });
-                        }
                         if (code == 0) {
-                            String mode = longToothRspModel.getOpMode();
+                            final String mode = longToothRspModel.getOpMode();
                             if (mode == null) {
                                 return;
+                            }
+                            if (mPresenter != null) {
+                                Run.onUiAsync(new Action() {
+                                    @Override
+                                    public void call() {
+                                        mPresenter.setCheckBox(Account.getToken(), "3", mode + "", modell.getId());
+                                    }
+                                });
                             }
                             switch (mode) {
                                 case "3":
@@ -285,7 +297,6 @@ class HorizontalRecyclerFragmentHelper {
                                         public void call() {
                                             mLedMode.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_light,0,0,0);
                                             mLedMode.setText("补光");
-
                                         }
                                     });
 
@@ -341,7 +352,12 @@ class HorizontalRecyclerFragmentHelper {
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
+            if (args==null)
+                return;
             String result = new String(args);
+            if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
+                return;
+            }
             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
             Log.d(TAG, "update:" + result);
             int code = longToothRspModel.getCODE();
@@ -410,10 +426,12 @@ class HorizontalRecyclerFragmentHelper {
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
-            if (args==null){
+            if (args==null)
+                return;
+            String result = new String(args);
+            if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
                 return;
             }
-            String result = new String(args);
             LedSetRspModel ledSetRspModel = gson.fromJson(result, LedSetRspModel.class);
             Log.d(TAG, "ledSetRspModel111:" + result);
             int code = ledSetRspModel.getCODE();

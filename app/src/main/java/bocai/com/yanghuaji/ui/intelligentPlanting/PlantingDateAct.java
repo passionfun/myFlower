@@ -105,7 +105,12 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
                     public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                                       String service_str, int data_type, byte[] args,
                                                       LongToothAttachment attachment) {
+                        if (args==null)
+                            return;
                         String result = new String(args);
+                        if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
+                            return;
+                        }
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                         Log.d(TAG, "update:" + result);
                         int code = longToothRspModel.getCODE();
@@ -259,7 +264,7 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
             return;
         }
         String jsonContent = new String(bytes);
-        if (!jsonContent.contains("CODE")) {
+        if (TextUtils.isEmpty(jsonContent)||!jsonContent.contains("CODE")) {
             return;
         }
         Log.d(TAG, "handleServiceResponse: " + jsonContent);
