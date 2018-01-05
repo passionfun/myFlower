@@ -28,8 +28,11 @@ public class LongToothUtil {
             public void run() {
                 try {
                     //启动长牙
-                    Log.d("shcbind", "run: "+Account.getRegisterHost()
-                    +Integer.valueOf(Account.getPort()));
+                    Log.d("shcbind", "run: "+Account.getRegisterHost()+"\n"+
+                    "port:"+Integer.valueOf(Account.getPort())+"\n"
+                    +"DevelopId:"+Integer.valueOf(Account.getDevelopId())+"\n"
+                            +"AppId:"+Integer.valueOf(Account.getAppId())+"\n"
+                    +"appkey:"+Account.getAppKey());
                     LongTooth.setRegisterHost(Account.getRegisterHost(), Integer.valueOf(Account.getPort()));
                     LongTooth.start(Application.getInstance(),
                             Integer.valueOf(Account.getDevelopId()),

@@ -155,7 +155,8 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @Override
     protected void initWidget() {
         super.initWidget();
-        mPresenter.getEquipmentConfig();
+        //	2 (Android)  3 (iOS)  4 (Java)
+        mPresenter.getEquipmentConfig("2");
         EventBus.getDefault().register(this);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             //将侧边栏顶部延伸至status bar

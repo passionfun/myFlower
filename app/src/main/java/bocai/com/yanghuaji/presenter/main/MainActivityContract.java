@@ -32,7 +32,7 @@ public interface MainActivityContract {
 
         void getAllGroups(String token,String limit,String page);
 
-        void getEquipmentConfig();
+        void getEquipmentConfig(String platform);
 
         //	平台   0 ios  1 android
         void checkVersion(String platform);

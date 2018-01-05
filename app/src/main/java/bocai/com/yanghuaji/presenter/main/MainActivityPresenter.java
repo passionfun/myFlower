@@ -103,8 +103,8 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
     }
 
     @Override
-    public void getEquipmentConfig() {
-        Observable<BaseRspModel<EquipmentConfigModel>> observable = Network.remote().getEquipmentConfig();
+    public void getEquipmentConfig(String platform) {
+        Observable<BaseRspModel<EquipmentConfigModel>> observable = Network.remote().getEquipmentConfig("2");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel<EquipmentConfigModel>>() {

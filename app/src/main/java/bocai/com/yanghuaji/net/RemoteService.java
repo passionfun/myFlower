@@ -345,7 +345,8 @@ public interface RemoteService {
 
     //设备配置数据获取
     @POST("equipment/config_data")
-    Observable<BaseRspModel<EquipmentConfigModel>> getEquipmentConfig();
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentConfigModel>> getEquipmentConfig(@Field("AppID") String appId);
 
 
     //app版本更新
