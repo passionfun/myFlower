@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
@@ -236,6 +237,9 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
         @BindView(R.id.tv_name)
         TextView mName;
 
+        @BindView(R.id.img_plant)
+        ImageView mPlant;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -249,6 +253,13 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                 mImgLeft.setBackgroundColor(Color.parseColor("#4F9818"));
             }
             mName.setText(plantSeriesCard.getTitle());
+            if (!TextUtils.isEmpty(plantSeriesCard.getPhoto())){
+                GlideApp.with(AddEquipmentActivity.this)
+                        .load(plantSeriesCard.getPhoto())
+                        .placeholder(R.mipmap.img_planting)
+                        .centerCrop()
+                        .into(mPlant);
+            }
             mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

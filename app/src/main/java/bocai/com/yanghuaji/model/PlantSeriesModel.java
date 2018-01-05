@@ -55,6 +55,7 @@ public class PlantSeriesModel {
         private String Id;
         private String Title;
         private String Series;
+        private String Photo;
 
         public String getId() {
             return Id;
@@ -78,6 +79,14 @@ public class PlantSeriesModel {
 
         public void setSeries(String series) {
             Series = series;
+        }
+
+        public String getPhoto() {
+            return Photo;
+        }
+
+        public void setPhoto(String photo) {
+            Photo = photo;
         }
     }
 }
