@@ -9,5 +9,6 @@
 
     <color name="normal">#BCBCBC</color>
     <color name="circle_stroke">#D5F2B7</color>
+    <color name="scan_corner_color">#0effc2</color>
 
 </resources>

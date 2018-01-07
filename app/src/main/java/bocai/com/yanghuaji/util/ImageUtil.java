@@ -14,7 +14,7 @@
 ********************************End of Head************************************\
 */
 
-package com.bocai.zxinglibrary.decode;
+package bocai.com.yanghuaji.util;
 
 import android.annotation.TargetApi;
 import android.content.ContentUris;
@@ -26,11 +26,22 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 /**
- * 获取图片的路径
+ * 文 件 名: ImageUtil
+ * 创 建 人: 蒋朋
+ * 创建日期: 16-8-22 11:36
+ * 描    述:
+ * 修 改 人:
+ * 修改时间：
+ * 修改备注：
  */
 
 public class ImageUtil {
-
+    /**
+     * 根据Uri获取图片绝对路径，解决Android4.4以上版本Uri转换
+     *
+     * @param context
+     * @param imageUri
+     */
     @TargetApi(19)
     public static String getImageAbsolutePath(Context context, Uri imageUri) {
         if (context == null || imageUri == null)

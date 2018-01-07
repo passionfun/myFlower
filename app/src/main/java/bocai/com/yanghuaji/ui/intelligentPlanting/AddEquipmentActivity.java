@@ -4,7 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +17,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bocai.zxinglibrary.android.CaptureActivity;
-import com.bocai.zxinglibrary.bean.ZxingConfig;
-import com.bocai.zxinglibrary.common.Constant;
+
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,12 +30,15 @@ import java.util.List;
 
 import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquipmentContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddEquuipmentPresenter;
+import bocai.com.yanghuaji.ui.intelligentPlanting.zxing.ScanActivity;
+import bocai.com.yanghuaji.util.ImageUtil;
 import bocai.com.yanghuaji.util.PermissionUtils;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
@@ -44,7 +50,7 @@ import butterknife.OnClick;
  */
 
 public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract.Presenter>
-        implements AddEquipmentContract.View, XRecyclerView.LoadingListener {
+        implements AddEquipmentContract.View, XRecyclerView.LoadingListener, ScanActivity.OnResultCallback {
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
@@ -62,6 +68,10 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     private boolean isAddEquipments = false;
     private PlantSeriesModel.PlantSeriesCard mPlantSeriesCard;
     private String[] camera = new String[]{Manifest.permission.CAMERA};
+    /**
+     * 请求CAMERA权限码
+     */
+    public static final int REQUEST_CAMERA_PERM = 101;
 
     //显示的入口
     public static void show(Context context) {
@@ -107,6 +117,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     @Override
     protected void initData() {
         super.initData();
+        ScanActivity.SetOnResultCallback(this);
         page = 1;
         mPresenter.getEquipmentSeries("10", page + "");
     }
@@ -130,16 +141,18 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     }
 
     private void doScan() {
-        Intent intent = new Intent(this, CaptureActivity.class);
-        /**
-         * ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
-         * 也可以不传这个参数
-         * 不传的话  默认都为默认不震动  其他都为true
-         */
-        ZxingConfig config = new ZxingConfig();
-        config.setPlayBeep(true);
-        config.setShake(true);
-        intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+//        Intent intent = new Intent(this, CaptureActivity.class);
+//        /**
+//         * ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+//         * 也可以不传这个参数
+//         * 不传的话  默认都为默认不震动  其他都为true
+//         */
+//        ZxingConfig config = new ZxingConfig();
+//        config.setPlayBeep(true);
+//        config.setShake(true);
+//        intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+//        startActivityForResult(intent, REQUEST_CODE_SCAN);
+        Intent intent = new Intent(this, ScanActivity.class);
         startActivityForResult(intent, REQUEST_CODE_SCAN);
     }
 
@@ -168,20 +181,92 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // 扫描二维码/条码回传
-        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
-            if (data != null) {
-                String content = data.getStringExtra(Constant.CODED_CONTENT);
-                Log.d("shc", "扫描结果为: " + content);
-                //型号，序列号，mac地址
-                //WG101&8001F023412332&B0F89310CFE6
-                String[] result = content.split("&");
-                scanData = new ArrayList<>(Arrays.asList(result));
-                String equipmentType = result[0];
-                isAddEquipments = false;
-                mPresenter.getEquipmentPhoto("1", equipmentType);
+//        // 扫描二维码/条码回传
+//        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+//            if (data != null) {
+////                String content = data.getStringExtra(Constant.CODED_CONTENT);
+//                String content = data.getStringExtra("");
+//                Log.d("shc", "扫描结果为: " + content);
+//                //型号，序列号，mac地址
+//                //WG101&8001F023412332&B0F89310CFE6
+//                String[] result = content.split("&");
+//                scanData = new ArrayList<>(Arrays.asList(result));
+//                String equipmentType = result[0];
+//                isAddEquipments = false;
+//                mPresenter.getEquipmentPhoto("1", equipmentType);
+//            }
+//        }
+
+
+        /**
+         * 处理二维码扫描结果
+         */
+        if (requestCode == REQUEST_CODE_SCAN) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String content = bundle.getString(CodeUtils.RESULT_STRING);
+                    Log.d("shc", "扫描结果为: " + content);
+                    if (content==null)
+                        return;
+                    Application.showToast(content);
+                    //型号，序列号，mac地址
+                    //WG101&8001F023412332&B0F89310CFE6
+                    String[] result = content.split("&");
+                    scanData = new ArrayList<>(Arrays.asList(result));
+                    String equipmentType = result[0];
+                    isAddEquipments = false;
+                    mPresenter.getEquipmentPhoto("1", equipmentType);
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Application.showToast("解析二维码失败");
+                }
             }
         }
+
+        /**
+         * 选择系统图片并解析
+         */
+        else if (requestCode == ScanActivity.REQUEST_IMAGE) {
+            if (data != null) {
+                Uri uri = data.getData();
+                try {
+                    CodeUtils.analyzeBitmap(ImageUtil.getImageAbsolutePath(this, uri), new CodeUtils.AnalyzeCallback() {
+                        @Override
+                        public void onAnalyzeSuccess(Bitmap mBitmap, String resultFromPhoto) {
+                            Application.showToast(resultFromPhoto);
+                            String content = resultFromPhoto;
+                            if (content==null)
+                                return;
+                            Log.d("shc", "扫描结果为: " + content);
+                            //型号，序列号，mac地址
+                            //WG101&8001F023412332&B0F89310CFE6
+                            String[] result = content.split("&");
+                            scanData = new ArrayList<>(Arrays.asList(result));
+                            String equipmentType = result[0];
+                            isAddEquipments = false;
+                            mPresenter.getEquipmentPhoto("1", equipmentType);
+                        }
+
+                        @Override
+                        public void onAnalyzeFailed() {
+                            Application.showToast("解析二维码失败");
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        else if (requestCode == REQUEST_CAMERA_PERM) {
+            Toast.makeText(this, "从设置页面返回...", Toast.LENGTH_SHORT)
+                    .show();
+        }
+
     }
 
 
@@ -224,6 +309,11 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     public void onLoadMore() {
         page++;
         mPresenter.getEquipmentSeries("10", page + "");
+    }
+
+    @Override
+    public void result(int requestCode, int resultCode, Intent data) {
+        onActivityResult(requestCode,resultCode,data);
     }
 
 

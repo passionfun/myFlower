@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
@@ -40,6 +41,8 @@ public class Application extends android.app.Application {
         UMShareAPI.get(this);
         //bugly初始化
         CrashReport.initCrashReport(getApplicationContext(), "6d18085e76", true);
+//        //扫一扫初始化
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     {
