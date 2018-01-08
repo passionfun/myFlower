@@ -5,12 +5,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import java.io.File;
 import java.io.IOException;
@@ -124,8 +127,24 @@ public class DownLoadService extends Service {
         Intent install = new Intent(Intent.ACTION_VIEW);
         install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         install.setDataAndType(uri, "application/vnd.android.package-archive");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+            Uri uriForFile = FileProvider.getUriForFile(mContext,
+                    mContext.getApplicationContext().getPackageName() + ".provider", file);
+            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            install.setDataAndType(uriForFile, mContext.getContentResolver().getType(uriForFile));
+        }else{
+            install.setDataAndType(Uri.fromFile(file), getMIMEType(file));
+        }
         // 执行意图进行安装
         mContext.startActivity(install);
+    }
+
+    public String getMIMEType(File file) {
+        String var1 = "";
+        String var2 = file.getName();
+        String var3 = var2.substring(var2.lastIndexOf(".") + 1, var2.length()).toLowerCase();
+        var1 = MimeTypeMap.getSingleton().getMimeTypeFromExtension(var3);
+        return var1;
     }
 
     /**
