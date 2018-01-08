@@ -56,6 +56,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_icon"
         android:supportsRtl="true"
+        tools:replace="icon,label,theme"
         android:theme="@style/AppTheme">
         <!--高德地图-->
         <meta-data
@@ -229,15 +230,25 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="bocai.com.yanghuaji.provider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true"
             tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths"
+                android:resource="@xml/provider_paths"
                 tools:replace="android:resource" />
         </provider>
+
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="${applicationId}.provider"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/provider_paths"/>-->
+        <!--</provider>-->
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
@@ -265,15 +276,7 @@
 
         <service android:name=".updateVersion.DownLoadService"/>
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
-        </provider>
+
     </application>
 
 </manifest>

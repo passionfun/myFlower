@@ -519,25 +519,25 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 if (model.getDstatus().equals("0")) {
                     //温度过低
                     mImgTemArrow.setImageResource(R.mipmap.img_trending_down);
-                    PushModel pushModel = new PushModel("push", "sys101");
-                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
+//                    PushModel pushModel = new PushModel("push", "sys101");
+//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
                 } else if (model.getDstatus().equals("2")) {
                     //温度过高
                     mImgTemArrow.setImageResource(R.mipmap.img_temperature_trending_up);
-                    PushModel pushModel = new PushModel("push", "sys102");
-                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
+//                    PushModel pushModel = new PushModel("push", "sys102");
+//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
                 } else {
                     mImgTemArrow.setImageResource(0);
                 }
-                if (model.getEstatus().equals("0")) {
-                    //营养过低
-                    PushModel pushModel = new PushModel("push", "sys202");
-                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
-                } else if (model.getEstatus().equals("2")) {
-                    //营养过高
-                    PushModel pushModel = new PushModel("push", "sys201");
-                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
-                }
+//                if (model.getEstatus().equals("0")) {
+//                    //营养过低
+//                    PushModel pushModel = new PushModel("push", "sys202");
+//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
+//                } else if (model.getEstatus().equals("2")) {
+//                    //营养过高
+//                    PushModel pushModel = new PushModel("push", "sys201");
+//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
+//                }
 //                if (model.getWstatus().equals("0")) {
 //                    //水位过低
 //                    PushModel pushModel = new PushModel("push", "sys301");
