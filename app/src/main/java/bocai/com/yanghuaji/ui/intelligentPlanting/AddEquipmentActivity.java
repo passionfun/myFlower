@@ -213,7 +213,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                     Log.d("shc", "扫描结果为: " + content);
                     if (content==null)
                         return;
-                    Application.showToast(content);
+//                    Application.showToast(content);
                     //型号，序列号，mac地址
                     //WG101&8001F023412332&B0F89310CFE6
                     String[] result = content.split("&");
@@ -237,7 +237,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                     CodeUtils.analyzeBitmap(ImageUtil.getImageAbsolutePath(this, uri), new CodeUtils.AnalyzeCallback() {
                         @Override
                         public void onAnalyzeSuccess(Bitmap mBitmap, String resultFromPhoto) {
-                            Application.showToast(resultFromPhoto);
+//                            Application.showToast(resultFromPhoto);
                             String content = resultFromPhoto;
                             if (content==null)
                                 return;
