@@ -217,6 +217,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     public void setupPlantSuccess(PlantSettingModel model) {
         model.save();
         EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
         finish();
     }
 
