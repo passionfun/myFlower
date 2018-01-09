@@ -104,6 +104,8 @@ public class EquipmentRspModel {
         private String PSIGN;
         private String PushStatus;
         private String Series;
+        private String LifeCycle;
+        private String Lid;
 
         public String getLTID() {
             return LTID;
@@ -255,6 +257,22 @@ public class EquipmentRspModel {
 
         public void setSeries(String series) {
             Series = series;
+        }
+
+        public String getLifeCycle() {
+            return LifeCycle;
+        }
+
+        public void setLifeCycle(String lifeCycle) {
+            LifeCycle = lifeCycle;
+        }
+
+        public String getLid() {
+            return Lid;
+        }
+
+        public void setLid(String lid) {
+            Lid = lid;
         }
     }
 }

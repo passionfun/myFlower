@@ -122,27 +122,43 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     protected void initData() {
         super.initData();
         tvPlantMethod.setEnabled(false);
-        PlantSettingModel model = SQLite.select()
-                .from(PlantSettingModel.class)
-                .where(PlantSettingModel_Table.Id.eq(id))
-                .querySingle();
-        if (model!=null){
-            plantMode = model.getPlantMode();
-            lifeCycle = model.getLifeCycle();
-//            tvPlantMethod.setText(plantMode);
-            tvPlantCycle.setText(lifeCycle);
-            lid = model.getLid();
-            pMid = model.getPMid();
-        }
-        if (model==null||TextUtils.isEmpty(model.getPlantName())){
+//        PlantSettingModel model = SQLite.select()
+//                .from(PlantSettingModel.class)
+//                .where(PlantSettingModel_Table.Id.eq(id))
+//                .querySingle();
+//        if (model!=null){
+//            plantMode = model.getPlantMode();
+//            lifeCycle = model.getLifeCycle();
+////            tvPlantMethod.setText(plantMode);
+//            tvPlantCycle.setText(lifeCycle);
+//            lid = model.getLid();
+//            pMid = model.getPMid();
+//        }
+//        if (model==null||TextUtils.isEmpty(model.getPlantName())){
+//            mTvPlantName.setText("去添加");
+//            tvPlantMethod.setText("手动");
+//            isPlantsetted = false;
+//        }else {
+//            mTvPlantName.setText(model.getPlantName());
+//            tvPlantMethod.setText("智能");
+//            isPlantsetted = true;
+//        }
+        if (!TextUtils.isEmpty(mPlantBean.getPlantName())){
+            mTvPlantName.setText(mPlantBean.getPlantName());
+            tvPlantMethod.setText("智能");
+            plantMode = "智能";
+            pMid = "14";
+            isPlantsetted = true;
+        }else {
             mTvPlantName.setText("去添加");
             tvPlantMethod.setText("手动");
+            plantMode = "手动";
+            pMid = "15";
             isPlantsetted = false;
-        }else {
-            mTvPlantName.setText(model.getPlantName());
-            tvPlantMethod.setText("智能");
-            isPlantsetted = true;
         }
+        tvPlantCycle.setText(mPlantBean.getLifeCycle());
+        lifeCycle= mPlantBean.getLifeCycle();
+        lid = mPlantBean.getLid();
     }
 
     @OnClick(R.id.img_back)
