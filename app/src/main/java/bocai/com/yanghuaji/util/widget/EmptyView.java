@@ -48,9 +48,9 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
 
     private void init(AttributeSet attrs, int defStyle) {
         inflate(getContext(), R.layout.lay_empty, this);
-        mEmptyImg = (ImageView) findViewById(R.id.im_empty);
-        mStatusText = (TextView) findViewById(R.id.txt_empty);
-        mLoading = (Loading) findViewById(R.id.loading);
+        mEmptyImg =  findViewById(R.id.im_empty);
+        mStatusText =  findViewById(R.id.txt_empty);
+        mLoading =  findViewById(R.id.loading);
 
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(

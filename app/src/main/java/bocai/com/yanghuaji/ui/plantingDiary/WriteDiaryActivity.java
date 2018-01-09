@@ -356,6 +356,9 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TAKE_PHOTO_REQUEST_ONE) {
+            if (resultCode==0){
+                return;
+            }
             mAdapter.add(getRealFilePath(WriteDiaryActivity.this, imageUri));
             switchVisibility(true);
         }
