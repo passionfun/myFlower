@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
@@ -221,6 +223,9 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         @BindView(R.id.btn_delete)
         Button mDelete;
+
+        @BindView(R.id.img_refresh)
+        ImageView mRefresh;
 
         private MainRecylerContract.Presenter mPresenter;
         private TimerTask task;
@@ -443,8 +448,21 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         }
 
 
-        @OnClick(R.id.tv_refresh)
-        void onRefreshClick() {
+        @OnClick(R.id.liner_refresh)
+        void onRefreshClick() {Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.load_animation);
+            mRefresh.startAnimation(animation);
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Run.onUiAsync(new Action() {
+                        @Override
+                        public void call() {
+                            mRefresh.clearAnimation();
+                        }
+                    });
+                }
+            },3000);
             getEquipmentData(mData);
         }
 
@@ -480,6 +498,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         @Override
         public void setDataSuccess(EquipmentDataModel model) {
+            mRefresh.clearAnimation();
             mTemperature.setText(model.getDegree());
             mWaterStatus.setText(HorizontalRecyclerFragmentHelper.getWaStatus(model.getWater()));
             //如果不支持营养功能，则把图标设置为灰色

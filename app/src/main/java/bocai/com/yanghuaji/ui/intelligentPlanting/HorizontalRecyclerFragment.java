@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -224,6 +226,9 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @BindView(R.id.tv_update)
             TextView mUpdate;
+
+            @BindView(R.id.img_refresh)
+            ImageView mRefresh;
 
             private boolean isShowSetting = false;
             private MainRecylerContract.Presenter mPresenter;
@@ -455,8 +460,22 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 }
             }
 
-            @OnClick(R.id.tv_refresh)
+            @OnClick(R.id.liner_refresh)
             void onRefreshClick() {
+                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.load_animation);
+                mRefresh.startAnimation(animation);
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                mRefresh.clearAnimation();
+                            }
+                        });
+                    }
+                },3000);
                 getEquipmentData(mData);
             }
 
@@ -492,6 +511,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             public void setDataSuccess(EquipmentDataModel model) {
+                mRefresh.clearAnimation();
                 Log.d(TAG, "setDataSuccess: "+model.toString());
                 mTemperature.setText(model.getDegree());
                 if (model.getLight() != null) {

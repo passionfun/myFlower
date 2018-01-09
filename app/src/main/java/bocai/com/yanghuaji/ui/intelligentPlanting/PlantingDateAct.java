@@ -114,6 +114,8 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
                         LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
                         Log.d(TAG, "update:" + result);
                         int code = longToothRspModel.getCODE();
+                        if (mPlantBean==null)
+                            return;
                         switch (code) {
                             case 501:
                                 //  501:有升级的新版本

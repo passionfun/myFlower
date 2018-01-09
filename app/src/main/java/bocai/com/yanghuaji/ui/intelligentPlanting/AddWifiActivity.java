@@ -105,8 +105,7 @@ public class AddWifiActivity extends Activity {
         String password = mWifiPassword.getText().toString();
         ssid = mWifiName.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            Application.showToast("请输入WiFi密码");
-            return;
+            password="";
         }
         Account.saveWifiPassword(this, ssid, password);
         if (isAddEquipments) {
@@ -114,7 +113,7 @@ public class AddWifiActivity extends Activity {
                 Application.showToast("系列信息为空");
                 finish();
             }
-            if (TextUtils.isEmpty(ssid) || TextUtils.isEmpty(password)) {
+            if (TextUtils.isEmpty(ssid)) {
                 Application.showToast("参数异常");
                 return;
             }
