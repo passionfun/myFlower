@@ -449,7 +449,10 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
 
         @OnClick(R.id.liner_refresh)
-        void onRefreshClick() {Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.load_animation);
+        void onRefreshClick() {
+            //设置是否需要升级
+            HorizontalRecyclerFragmentHelper.isHaveNewVersion(mData,mUpdate,false);
+            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.load_animation);
             mRefresh.startAnimation(animation);
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {

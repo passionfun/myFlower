@@ -462,6 +462,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @OnClick(R.id.liner_refresh)
             void onRefreshClick() {
+                //设置是否需要升级
+                HorizontalRecyclerFragmentHelper.isHaveNewVersion(mData,mUpdate,true);
                 Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.load_animation);
                 mRefresh.startAnimation(animation);
                 Timer timer = new Timer();
