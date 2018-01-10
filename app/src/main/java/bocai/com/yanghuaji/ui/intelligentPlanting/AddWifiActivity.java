@@ -3,6 +3,7 @@ package bocai.com.yanghuaji.ui.intelligentPlanting;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,6 +43,9 @@ public class AddWifiActivity extends Activity {
     @BindView(R.id.img_next)
     ImageView mNext;
 
+    @BindView(R.id.iv_show_psw)
+    ImageView mShowPsw;
+
     //    private MiCODevice micodev;
     private EasyLink elink;
     private List<String> mScanData;
@@ -79,6 +83,17 @@ public class AddWifiActivity extends Activity {
         mScanData = getIntent().getStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA);
         plantSeriesCard = (PlantSeriesModel.PlantSeriesCard) bundle.getSerializable(AddEquipmentsActivity.KEY_PLANT_CARD);
         return super.initArgs(bundle);
+    }
+
+    @OnClick(R.id.frame_show_pwd)
+    void onShowPswClick(){
+        if (mWifiPassword.getInputType() != InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+            mWifiPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            mShowPsw.setImageResource(R.mipmap.img_show_psw);
+        } else {
+            mWifiPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            mShowPsw.setImageResource(R.mipmap.img_hide_psw);
+        }
     }
 
     @Override

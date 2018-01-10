@@ -37,7 +37,8 @@
 
         <ImageView
             android:id="@+id/img_check"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
+            android:scaleType="center"
             android:layout_height="match_parent"
             android:src="@mipmap/img_check" />
     </LinearLayout>
@@ -60,18 +61,40 @@
         android:textColor="#333333"
         android:textSize="13sp" />
 
-
+<LinearLayout
+    android:layout_marginEnd="29dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <EditText
         android:textCursorDrawable="@drawable/edit_cursor_color"
         android:id="@+id/et_wifi_password"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
         android:layout_marginTop="23dp"
+        android:inputType="textPassword"
         android:background="@null"
         android:hint="@string/input_password"
         android:textColor="#333333"
         android:textSize="17sp" />
+
+    <FrameLayout
+        android:id="@+id/frame_show_pwd"
+        android:layout_width="50dp"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_show_psw"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="bottom"
+            android:src="@mipmap/img_hide_psw"
+            android:layout_width="50dp"
+            android:scaleType="centerInside"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+</LinearLayout>
+
 
 
     <View
