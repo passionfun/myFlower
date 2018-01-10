@@ -90,6 +90,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     public static final String UNKNOWN = "- -";
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
+    private boolean enable = true;
 
     @Override
     protected int getContentLayoutId() {
@@ -109,7 +110,10 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentRspModel.ListBean plantModel) {
                 Log.d("test", Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId());
                 String url = Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId();
-                PlantingDateAct.show(getContext(), url, plantModel);
+                if (enable){
+                    enable = false;
+                    PlantingDateAct.show(getContext(), url, plantModel);
+                }
             }
 
         });
@@ -127,6 +131,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         setPlaceHolderView(mEmptyView);
     }
 
+    @Override
+    public void onResume() {
+        enable=true;
+        super.onResume();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void fresh(MessageEvent messageEvent) {

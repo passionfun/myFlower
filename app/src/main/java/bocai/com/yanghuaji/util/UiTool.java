@@ -181,6 +181,8 @@ public class UiTool {
      * 被踢下线
      */
     public static void onConnectionConflict(final Context context){
+        if (context==null)
+            return;
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(context);
         deleteDialog.setTitle("账号已在其他终端登录，请重新登录？");
         deleteDialog.setCancelable(false);
