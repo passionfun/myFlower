@@ -257,6 +257,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         }
         if (isAllSuccess) {
             MainActivity.show(this);
+            finish();
         }
     }
 
