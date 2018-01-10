@@ -114,17 +114,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_weight="1">
+                android:layout_weight="1.1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:maxLines="1"
                         android:id="@+id/tv_temperature"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
+                        android:layout_weight="4"
                         android:drawablePadding="4dp"
                         android:drawableStart="@mipmap/img_temperature"
                         android:text="- -"
@@ -134,9 +135,10 @@
                     <ImageView
                         android:id="@+id/img_tem_arrow"
                         android:layout_width="0dp"
+                        android:scaleType="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="3"
+                        android:layout_weight="1"
                         android:src="@mipmap/img_trending_down"
                         android:visibility="invisible" />
                 </LinearLayout>

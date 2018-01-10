@@ -507,7 +507,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @Override
         public void setDataSuccess(EquipmentDataModel model) {
             mRefresh.clearAnimation();
-            mTemperature.setText(model.getDegree());
+            mTemperature.setText(model.getDegree()+"°C");
             mWaterStatus.setText(HorizontalRecyclerFragmentHelper.getWaStatus(model.getWater()));
             //如果不支持营养功能，则把图标设置为灰色
             if (getStatus(model.getEstatus()).equals(HorizontalRecyclerFragment.UNKNOWN)) {

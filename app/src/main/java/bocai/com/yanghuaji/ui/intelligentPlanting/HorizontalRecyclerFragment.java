@@ -529,7 +529,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             public void setDataSuccess(EquipmentDataModel model) {
                 mRefresh.clearAnimation();
                 Log.d(TAG, "setDataSuccess: "+model.toString());
-                mTemperature.setText(model.getDegree());
+                mTemperature.setText(model.getDegree()+"°C");
                 mEcStatus.setText(getStatus(model.getEstatus()));
                 //如果不支持营养功能，则把图标设置为灰色
                 if (getStatus(model.getEstatus()).equals(UNKNOWN)){
