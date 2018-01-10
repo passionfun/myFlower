@@ -62,6 +62,9 @@ import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
 import xpod.longtooth.LongToothTunnel;
 
+import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragmentHelper.LED_OFF;
+import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragmentHelper.LED_ON;
+
 /**
  * 作者 yuanfei on 2017/11/25.
  * 邮箱 yuanfei221@126.com
@@ -244,7 +247,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 mImgTent.setVisibility(View.INVISIBLE);
             } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragment.HORIZONTALRECYLER_DELETE_SUCCESS)) {
                 task.cancel();
-            } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_ON)) {
+            } else if (messageEvent.getMessage().equals(LED_ON)) {
                 isLedOn = true;
                 mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_open, 0, 0);
             } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_OFF)) {
@@ -371,7 +374,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 @Override
                 public void onClick(View view) {
                     UiTool.showLoading(getContext());
-                    if (isLedOn) {
+                    if (!isLedOn) {
                         mPresenter.setCheckBox(Account.getToken(), "1", "1", plantModel.getId());
                         LedSetModel model = new LedSetModel("On", plantModel.getPSIGN());
                         String request = gson.toJson(model);
@@ -388,7 +391,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                         LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                         if (plantStatusRspModel.getCODE() == 0) {
                                             Application.showToast("LED开启成功");
-                                            isLedOn = !isLedOn;
+                                            isLedOn = true;
+                                            EventBus.getDefault().post(new MessageEvent(LED_ON));
                                             Run.onUiAsync(new Action() {
                                                 @Override
                                                 public void call() {
@@ -418,7 +422,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                         LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                         if (plantStatusRspModel.getCODE() == 0) {
                                             Application.showToast("LED关闭成功");
-                                            isLedOn = !isLedOn;
+                                            EventBus.getDefault().post(new MessageEvent(LED_OFF));
+                                            isLedOn = false;
                                             Run.onUiAsync(new Action() {
                                                 @Override
                                                 public void call() {

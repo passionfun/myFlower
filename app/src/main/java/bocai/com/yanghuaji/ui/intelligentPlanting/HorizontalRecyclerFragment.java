@@ -63,6 +63,9 @@ import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
 import xpod.longtooth.LongToothTunnel;
 
+import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragmentHelper.LED_OFF;
+import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragmentHelper.LED_ON;
+
 /**
  * 作者 yuanfei on 2017/11/15.
  * 邮箱 yuanfei221@126.com
@@ -380,7 +383,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                             LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                             if (plantStatusRspModel.getCODE() == 0) {
                                                 Application.showToast("LED开启成功");
-                                                isLedOn = !isLedOn;
+                                                isLedOn = true;
+                                                EventBus.getDefault().post(new MessageEvent(LED_ON));
                                                 Run.onUiAsync(new Action() {
                                                     @Override
                                                     public void call() {
@@ -412,7 +416,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                             LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                             if (plantStatusRspModel.getCODE() == 0) {
                                                 Application.showToast("LED关闭成功");
-                                                isLedOn = !isLedOn;
+                                                EventBus.getDefault().post(new MessageEvent(LED_OFF));
+                                                isLedOn = false;
                                                 Run.onUiAsync(new Action() {
                                                     @Override
                                                     public void call() {
@@ -516,9 +521,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 mRefresh.clearAnimation();
                 Log.d(TAG, "setDataSuccess: "+model.toString());
                 mTemperature.setText(model.getDegree());
-                if (model.getLight() != null) {
-//                    mLedMode.setText(model.getLight().equals("0") ? "关" : "开");
-                }
                 mEcStatus.setText(getStatus(model.getEstatus()));
                 //如果不支持营养功能，则把图标设置为灰色
                 if (getStatus(model.getEstatus()).equals(UNKNOWN)){
@@ -541,34 +543,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 if (model.getDstatus().equals("0")) {
                     //温度过低
                     mImgTemArrow.setImageResource(R.mipmap.img_trending_down);
-//                    PushModel pushModel = new PushModel("push", "sys101");
-//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
                 } else if (model.getDstatus().equals("2")) {
                     //温度过高
                     mImgTemArrow.setImageResource(R.mipmap.img_temperature_trending_up);
-//                    PushModel pushModel = new PushModel("push", "sys102");
-//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
                 } else {
                     mImgTemArrow.setImageResource(0);
                 }
-//                if (model.getEstatus().equals("0")) {
-//                    //营养过低
-//                    PushModel pushModel = new PushModel("push", "sys202");
-//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
-//                } else if (model.getEstatus().equals("2")) {
-//                    //营养过高
-//                    PushModel pushModel = new PushModel("push", "sys201");
-//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
-//                }
-//                if (model.getWstatus().equals("0")) {
-//                    //水位过低
-//                    PushModel pushModel = new PushModel("push", "sys301");
-//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
-//                } else if (model.getWstatus().equals("2")) {
-//                    //水位过高
-//                    PushModel pushModel = new PushModel("push", "sys302");
-//                    HorizontalRecyclerFragmentHelper.push(model, pushModel);
-//                }
             }
 
 
