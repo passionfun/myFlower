@@ -14,6 +14,8 @@ import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.model.db.User_Table;
+import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 数据持久化
@@ -139,6 +141,18 @@ public class Account {
         SharedPreferences sp = context.getSharedPreferences(Account.class.getName(),
                 Context.MODE_PRIVATE);
         sp.edit().clear().apply();
+        clearJPushAlias(context);
+    }
+
+    public static void clearJPushAlias(Context context){
+        JPushInterface.clearAllNotifications(context);
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.setAction(TagAliasOperatorHelper.ACTION_CLEAN);
+        tagAliasBean.setAlias("");
+        tagAliasBean.setAliasAction(true);
+        TagAliasOperatorHelper.getInstance().handleAction(context,
+                0, tagAliasBean);
+        JPushInterface.stopPush(context);
     }
 
 

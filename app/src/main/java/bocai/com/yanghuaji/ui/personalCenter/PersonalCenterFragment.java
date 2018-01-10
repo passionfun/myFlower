@@ -117,14 +117,6 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //确定
-                JPushInterface.clearAllNotifications(getActivity());
-                TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
-                tagAliasBean.setAction(TagAliasOperatorHelper.ACTION_CLEAN);
-                tagAliasBean.setAlias(Account.getPhone());
-                tagAliasBean.setAliasAction(true);
-                TagAliasOperatorHelper.getInstance().handleAction(getActivity().getApplicationContext(),
-                        0, tagAliasBean);
-                JPushInterface.stopPush(getActivity());
                 Account.logOff(getContext());
                 LoginActivity.show(getContext());
                 getActivity().finish();
