@@ -90,6 +90,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private RecyclerAdapter<GroupRspModel.ListBean> mGroupAdapter;
     public static final String MAIN_ACTIVITY_REFRESH = "MAIN_ACTIVITY_REFRESH";
+    public static final String GROUP_REFRESH = "GROUP_REFRESH";
 
 
     //显示的入口
@@ -125,6 +126,8 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             }
         } else if (messageEvent.getMessage().equals(MAIN_ACTIVITY_REFRESH)) {
             initAllEquipments();
+            initAllGroups();
+        }else if (messageEvent.getMessage().equals(GROUP_REFRESH)) {
             initAllGroups();
         }
     }
@@ -172,6 +175,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         super.onDestroy();
         EventBus.getDefault().post(new MessageEvent("MAINACTIVITY_DESTROY"));
         EventBus.getDefault().unregister(this);
+        Account.clearJPushAlias(this);
     }
 
     @Override

@@ -192,6 +192,7 @@
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.intelligentPlanting.EditGroupActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme" />
         <activity
             android:name=".ui.intelligentPlanting.PlantingDateAct"

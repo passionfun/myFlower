@@ -10,14 +10,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.GroupManagerContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.GroupManagerPresenter;
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
@@ -87,6 +91,7 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
     public void deleteGroupSuccess() {
         //删除成功，刷新界面
         mPresenter.getAllGroups(Account.getToken());
+        EventBus.getDefault().post(new MessageEvent(MainActivity.GROUP_REFRESH));
     }
 
     @Override
