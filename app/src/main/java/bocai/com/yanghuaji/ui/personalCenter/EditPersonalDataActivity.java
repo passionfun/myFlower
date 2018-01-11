@@ -279,9 +279,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data==null){
-            return;
-        }
+
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             // 通过UCrop得到对应的Uri
             final Uri resultUri = UCrop.getOutput(data);
@@ -297,7 +295,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
             cropPhoto(getRealFilePath(EditPersonalDataActivity.this, imageUri));
         }
 
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE&&data!=null) {
             ArrayList<String> stringArrayListExtra = data.getStringArrayListExtra(ImageSelectorUtils.SELECT_RESULT);
             if (stringArrayListExtra!=null){
                 cropPhoto(stringArrayListExtra.get(0));

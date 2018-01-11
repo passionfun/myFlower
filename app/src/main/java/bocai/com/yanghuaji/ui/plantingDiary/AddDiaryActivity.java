@@ -1,12 +1,18 @@
 package bocai.com.yanghuaji.ui.plantingDiary;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -14,13 +20,17 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.yalantis.ucrop.UCrop;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import boc.com.imgselector.utils.ImageSelectorUtils;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import boc.com.imgselector.GlideApp;
@@ -30,8 +40,10 @@ import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.AddDiaryPresenter;
+import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EquipmentListPopupWindow;
 import bocai.com.yanghuaji.util.ActivityUtil;
+import bocai.com.yanghuaji.util.BitmapUtils;
 import bocai.com.yanghuaji.util.DateUtils;
 import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
@@ -82,6 +94,8 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
     private String mName,plantTime;
     private String mEquipmentId;
     private Map<String, String> map = new HashMap<>();
+    private Uri imageUri;
+    private int REQUEST_CODE = 1008;
 
 
     //显示的入口
@@ -109,25 +123,99 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
 
     @OnClick(R.id.img_add_cover)
     void onAddCoverClick() {
-//        DiaryListActivity.show(this);
-
         if (ContextCompat.checkSelfPermission(AddDiaryActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             //应用还未获取读取本地文件 的权限，询问是否允许
             ActivityCompat.requestPermissions(AddDiaryActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSON_STORGE);
         } else {
-            new GalleryFragment().setListener(new GalleryFragment.OnSelectedListener() {
+//            new GalleryFragment().setListener(new GalleryFragment.OnSelectedListener() {
+//                @Override
+//                public void onSelectedImage(String path) {
+//                    GlideApp.with(AddDiaryActivity.this)
+//                            .load(path)
+//                            .centerCrop()
+//                            .into(mCover);
+//                    loadCover(path);
+//                }
+//            }).show(getSupportFragmentManager(), GalleryFragment.class.getName());
+
+
+            final SelectPicPopupWindow picPopupWindow = new SelectPicPopupWindow(this);
+            picPopupWindow.setOnTtemClickListener(new SelectPicPopupWindow.ItemClickListener() {
                 @Override
-                public void onSelectedImage(String path) {
-                    GlideApp.with(AddDiaryActivity.this)
-                            .load(path)
-                            .centerCrop()
-                            .into(mCover);
-                    loadCover(path);
+                public void onItemClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.tv_take_photo:
+                            imageUri = BitmapUtils.createImageUri(AddDiaryActivity.this);
+                            Intent intent = new Intent();
+                            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                            //如果不设置EXTRA_OUTPUT getData()  获取的是bitmap数据  是压缩后的
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                            startActivityForResult(intent, WriteDiaryActivity.TAKE_PHOTO_REQUEST_ONE);
+                            picPopupWindow.dismiss();
+                            break;
+                        case R.id.tv_from_gallery:
+                            ImageSelectorUtils.openPhoto(AddDiaryActivity.this, REQUEST_CODE, false, 1);
+                            picPopupWindow.dismiss();
+                            break;
+                        case R.id.tv_cancel:
+                            picPopupWindow.dismiss();
+                            break;
+                    }
                 }
-            }).show(getSupportFragmentManager(), GalleryFragment.class.getName());
+            });
+            ActivityUtil.setBackgroundAlpha(this, 0.19f);
+            picPopupWindow.showAtLocation(mRoot, Gravity.BOTTOM, 0, 30);
+        }
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String coverPhotoPath = "";
+        if (requestCode == WriteDiaryActivity.TAKE_PHOTO_REQUEST_ONE) {
+            coverPhotoPath = getRealFilePath(AddDiaryActivity.this, imageUri);
         }
 
+        if (requestCode == REQUEST_CODE&&data!=null) {
+            ArrayList<String> stringArrayListExtra = data.getStringArrayListExtra(ImageSelectorUtils.SELECT_RESULT);
+            if (stringArrayListExtra!=null){
+                coverPhotoPath = stringArrayListExtra.get(0);
+            }
+        }
+
+        if (!TextUtils.isEmpty(coverPhotoPath)){
+            GlideApp.with(AddDiaryActivity.this)
+                            .load(coverPhotoPath)
+                            .centerCrop()
+                            .into(mCover);
+            loadCover(coverPhotoPath);
+        }
     }
+
+    public String getRealFilePath(final Context context, final Uri uri) {
+        if (null == uri) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if (scheme == null)
+            data = uri.getPath();
+        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
+            data = uri.getPath();
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
+            if (null != cursor) {
+                if (cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    if (index > -1) {
+                        data = cursor.getString(index);
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
+    }
+
 
     private void loadCover(String filePath) {
         Map<String, RequestBody> params = new HashMap<>();
