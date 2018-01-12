@@ -32,9 +32,8 @@ import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-/**
- * Created by zs on 2016/7/8.
- */
+
+
 public class DownLoadService extends Service {
 
     /**

@@ -7,14 +7,25 @@
 
     <include layout="@layout/layout_toolbar" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_marginStart="30dp"
         android:layout_marginTop="53dp"
-        android:text="WIFI名称"
-        android:textColor="#333333"
-        android:textSize="13sp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WIFI名称"
+            android:textColor="#333333"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(不支持5G Wi-Fi)"
+            android:textColor="#FDB46E"
+            android:textSize="13sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,7 +96,7 @@
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/iv_show_psw"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="bottom"
             android:src="@mipmap/img_hide_psw"
             android:layout_width="50dp"
@@ -104,17 +115,8 @@
         android:layout_marginStart="29dp"
         android:layout_marginTop="9dp"
         android:background="#C6C6C6" />
-
-    <ImageView
-        android:id="@+id/img_next"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
-        android:src="@mipmap/img_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <TextView
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
         android:textColor="#666666"
         android:textSize="11sp"
@@ -139,7 +141,7 @@
             android:textSize="11sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="设置-无限局域网"/>
+            android:text="设置-WLAN"/>
 
         <TextView
             android:textColor="#666666"
@@ -148,5 +150,15 @@
             android:layout_height="wrap_content"
             android:text="查看"/>
     </LinearLayout>
+
+    <ImageView
+        android:layout_marginTop="30dp"
+        android:id="@+id/img_next"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/img_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
 
 </LinearLayout>

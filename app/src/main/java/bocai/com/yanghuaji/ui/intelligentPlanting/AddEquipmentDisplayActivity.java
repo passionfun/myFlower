@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,6 +48,12 @@ public class AddEquipmentDisplayActivity extends Activity {
 
     @BindView(R.id.img_photo)
     ImageView mEquipmentPhoto;
+
+    @BindView(R.id.cb_led)
+    CheckBox mLedStatus;
+
+    @BindView(R.id.img_next)
+    ImageView mNext;
 
     public static final String KEY_SCAN_DATA = "KEY_SCAN_DATA";
     public static final String KEY_PHOTO_PATH = "KEY_PHOTO_PATH";
@@ -108,11 +115,22 @@ public class AddEquipmentDisplayActivity extends Activity {
                     .centerCrop()
                     .into(mEquipmentPhoto);
         }
+
+        mNext.setEnabled(false);
     }
 
     @OnClick(R.id.img_back)
     void onBackClick() {
         finish();
+    }
+
+    @OnClick(R.id.cb_led)
+    void onLedStatusClick(){
+        if (mLedStatus.isChecked()){
+            mNext.setEnabled(true);
+        }else {
+            mNext.setEnabled(false);
+        }
     }
 
     @OnClick(R.id.img_next)

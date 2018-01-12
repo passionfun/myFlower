@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#ffffff">
 
     <LinearLayout
@@ -27,30 +27,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="57dp"
+            android:layout_marginTop="17dp"
             android:drawablePadding="15dp"
             android:drawableTop="@mipmap/img_wireless_network"
             android:text="接通电源，确认设备进入配网状态"
             android:textColor="#696969"
             android:textSize="12sp" />
 
-        <ImageView
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/img_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
-            android:src="@mipmap/img_next" />
 
         <TextView
+            android:layout_marginTop="10dp"
             android:id="@+id/tv_show_pop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="36dp"
-            android:text="指示灯处于其他状态？"
+            android:layout_marginBottom="16dp"
+            android:text="@string/other_status"
             android:textColor="#FDB46E"
             android:textSize="11sp" />
+
+        <CheckBox
+            android:id="@+id/cb_led"
+            android:drawableStart="@drawable/sel_cb_led"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:button="@null"
+            android:drawablePadding="5dp"
+            android:layout_height="wrap_content"
+            android:text="指示灯闪烁中"/>
+
+
+        <ImageView
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/img_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sel_img_next" />
+
     </LinearLayout>
 </ScrollView>
 
