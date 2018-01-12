@@ -85,7 +85,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     private Gson gson = new Gson();
     public static final String VERTICALRECYCLER_DELETE_SUCCESS = "VERTICALRECYCLER_DELETE_SUCCESS";
     public static final String EQUIPMENT_LINE_ON = "EQUIPMENT_LINE_ON";
-
+    private boolean isNeedLoadData = false;
 
     @Override
     protected int getContentLayoutId() {
@@ -119,12 +119,21 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         setPlaceHolderView(mEmptyView);
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && isNeedLoadData) {
+            if (UiTool.isNetworkAvailable(getContext())) {
+                isNeedLoadData = false;
+                onRefresh();
+            }
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void fresh(MessageEvent messageEvent) {
         if (messageEvent.getMessage().equals(VERTICAL_RECYLER_REFRESH)) {
             onRefresh();
-
         }
     }
 
@@ -143,9 +152,16 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     }
 
     @Override
+    public void showError(int str) {
+        super.showError(str);
+        isNeedLoadData = true;
+    }
+
+    @Override
     public void onRefresh() {
         page = 1;
-        mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
+        if (mPresenter != null)
+            mPresenter.getAllEquipments(Account.getToken(), "10", page + "");
     }
 
     @Override
@@ -253,11 +269,11 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_OFF)) {
                 isLedOn = false;
                 mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_close, 0, 0);
-            }else if ( messageEvent.getMessage().equals(MainActivity.MAINACTIVITY_DESTROY)){
-                if (task!=null){
+            } else if (messageEvent.getMessage().equals(MainActivity.MAINACTIVITY_DESTROY)) {
+                if (task != null) {
                     task.cancel();
                 }
-            }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.UPDATE_SUCCESS)){
+            } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.UPDATE_SUCCESS)) {
                 mUpdate.setText("最新版本");
                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical_nomal, 0, 0);
                 mUpdate.setEnabled(false);
@@ -271,7 +287,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mGroupName.setText(plantModel.getGroupName());
             mTime.setText(plantModel.getDays() + "");
             //设置是否需要升级
-            HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel,mUpdate,false);
+            HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel, mUpdate, false);
             mPush.setChecked(plantModel.getPushStatus().equals("1"));
             GlideApp.with(getContext())
                     .load(plantModel.getPhoto())
@@ -284,7 +300,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 @Override
                 public void run() {
                     HorizontalRecyclerFragmentHelper.setLedSwitch(plantModel);
-                    HorizontalRecyclerFragmentHelper.setLedMode(plantModel, mLedMode,mPresenter);
+                    HorizontalRecyclerFragmentHelper.setLedMode(plantModel, mLedMode, mPresenter);
                     getEquipmentData(plantModel);
                 }
             };
@@ -383,10 +399,10 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                     @Override
                                     public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                                         UiTool.hideLoading();
-                                        if (bytes==null)
+                                        if (bytes == null)
                                             return;
                                         String jsonContent = new String(bytes);
-                                        if (TextUtils.isEmpty(jsonContent)||!jsonContent.contains("CODE"))
+                                        if (TextUtils.isEmpty(jsonContent) || !jsonContent.contains("CODE"))
                                             return;
                                         LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                         if (plantStatusRspModel.getCODE() == 0) {
@@ -414,10 +430,10 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                     @Override
                                     public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                                         UiTool.hideLoading();
-                                        if (bytes==null)
+                                        if (bytes == null)
                                             return;
                                         String jsonContent = new String(bytes);
-                                        if (TextUtils.isEmpty(jsonContent)||!jsonContent.contains("CODE"))
+                                        if (TextUtils.isEmpty(jsonContent) || !jsonContent.contains("CODE"))
                                             return;
                                         LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                         if (plantStatusRspModel.getCODE() == 0) {
@@ -456,7 +472,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @OnClick(R.id.liner_refresh)
         void onRefreshClick() {
             //设置是否需要升级
-            HorizontalRecyclerFragmentHelper.isHaveNewVersion(mData,mUpdate,false);
+            HorizontalRecyclerFragmentHelper.isHaveNewVersion(mData, mUpdate, false);
             Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.load_animation);
             mRefresh.startAnimation(animation);
             Timer timer = new Timer();
@@ -470,7 +486,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                         }
                     });
                 }
-            },3000);
+            }, 3000);
             getEquipmentData(mData);
         }
 
@@ -480,16 +496,17 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         }
 
         Dialog dialog;
+
         @Override
         public void showLoading() {
-            dialog  = UiTool.createLoadingDialog(getContext());
+            dialog = UiTool.createLoadingDialog(getContext());
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
 
         @Override
         public void hideLoading() {
-            if (dialog!=null&&dialog.isShowing()){
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
         }
@@ -507,7 +524,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @Override
         public void setDataSuccess(EquipmentDataModel model) {
             mRefresh.clearAnimation();
-            mTemperature.setText(model.getDegree()+"°C");
+            mTemperature.setText(model.getDegree() + "°C");
             mWaterStatus.setText(HorizontalRecyclerFragmentHelper.getWaStatus(model.getWater()));
             //如果不支持营养功能，则把图标设置为灰色
             if (getStatus(model.getEstatus()).equals(HorizontalRecyclerFragment.UNKNOWN)) {
@@ -628,7 +645,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             @Override
             public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
                 isResp = true;
-                times=0;
+                times = 0;
                 if (bytes == null) {
                     offLine();
                     return;

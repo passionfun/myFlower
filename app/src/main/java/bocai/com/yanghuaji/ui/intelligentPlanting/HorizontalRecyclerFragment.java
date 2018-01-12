@@ -91,7 +91,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
     private boolean enable = true;
-
+    private boolean isNeedLoadData = false;
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_horizontal_recycler;
@@ -142,7 +142,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         super.onHiddenChanged(hidden);
         if (!hidden){
             enable=true;
-            if (!Account.getIsNetEnable()){
+            if (UiTool.isNetworkAvailable(getContext())&&isNeedLoadData){
+                isNeedLoadData = false;
                 mPresenter.getAllEquipments(Account.getToken(),"0","0");
             }
         }
@@ -162,6 +163,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     }
 
     @Override
+    public void showError(int str) {
+        super.showError(str);
+        isNeedLoadData = true;
+    }
+
+    @Override
     protected void initData() {
         super.initData();
         mPresenter.getAllEquipments(Account.getToken(), "0", "0");
@@ -171,7 +178,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
     @Override
     public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
-        Account.setIsNetEnable(true);
         Account.setListBeans(listBeans);
         mAdapter.replace(listBeans);
         mTotalNum.setText(String.valueOf(listBeans.size()));

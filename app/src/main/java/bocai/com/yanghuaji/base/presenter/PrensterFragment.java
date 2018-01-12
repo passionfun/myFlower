@@ -37,11 +37,14 @@ public abstract class PrensterFragment<Presenter extends BaseContract.Presenter>
     public void showError(int str) {
         Application.showToast(str);
         hideLoading();
+        showNetError();
+    }
+
+    public void showNetError(){
         if (mPlaceHolderView!=null){
             mPlaceHolderView.setEmptyText(R.string.network_unavailable);
             mPlaceHolderView.triggerEmpty();
         }
-        Account.setIsNetEnable(false);
     }
 
     @Override

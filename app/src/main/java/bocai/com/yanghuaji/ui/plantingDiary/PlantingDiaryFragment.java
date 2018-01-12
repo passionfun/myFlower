@@ -48,15 +48,14 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     ImageView mShadow;
 
 
-
     @BindView(R.id.tv_diary_book)
     TextView mDiaryBook;
-
 
 
     private int page = 1;
     private RecyclerAdapter<DiaryListModel.DiaryModl> mAdapter;
     public static final String PLANTING_DIARY_REFRESH = "PLANTING_DIARY_REFRESH";
+    private boolean isNeedLoadData = false;
 
     public static PlantingDiaryFragment newInstance() {
         return new PlantingDiaryFragment();
@@ -66,6 +65,18 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_planting_diary;
+    }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden&& isNeedLoadData) {
+            if (UiTool.isNetworkAvailable(getContext())) {
+                isNeedLoadData = false;
+                onRefresh();
+            }
+        }
     }
 
     @Override
@@ -91,17 +102,23 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyclerView.setLoadingListener(this);
-        mEmptyView.bind(mRecyclerView,mShadow);
+        mEmptyView.bind(mRecyclerView, mShadow);
         mEmptyView.setEmptyImg(R.mipmap.status_diary_empty);
         mEmptyView.setEmptyText(R.string.diary_empty);
         setPlaceHolderView(mEmptyView);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refresh(MessageEvent messageEvent){
-        if (messageEvent.getMessage().equals(PLANTING_DIARY_REFRESH)){
+    public void refresh(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals(PLANTING_DIARY_REFRESH)) {
             onRefresh();
         }
+    }
+
+    @Override
+    public void showError(int str) {
+        super.showError(str);
+        isNeedLoadData = true;
     }
 
     @Override
@@ -147,13 +164,14 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
     @Override
     public void onRefresh() {
         page = 1;
-        mPresenter.getDiaryList(Account.getToken(), "10", page + "","");
+        if (mPresenter != null)
+            mPresenter.getDiaryList(Account.getToken(), "10", page + "", "");
     }
 
     @Override
     public void onLoadMore() {
         page++;
-        mPresenter.getDiaryList(Account.getToken(), "10", page + "","");
+        mPresenter.getDiaryList(Account.getToken(), "10", page + "", "");
     }
 
 
@@ -183,19 +201,19 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
         @Override
         protected void onBind(DiaryListModel.DiaryModl diaryListModel) {
             mTitle.setText(diaryListModel.getBookName());
-            mTime.setText("更新日期:"+ DateUtils.timet(diaryListModel.getTimeline()));
+            mTime.setText("更新日期:" + DateUtils.timet(diaryListModel.getTimeline()));
             List<String> photos = diaryListModel.getPhotos();
             mFirst.setVisibility(View.INVISIBLE);
             mSecond.setVisibility(View.INVISIBLE);
             mThird.setVisibility(View.INVISIBLE);
-            if (photos.size()==1) {
+            if (photos.size() == 1) {
                 mFirst.setVisibility(View.VISIBLE);
                 GlideApp.with(getContext())
                         .load(photos.get(0))
                         .placeholder(R.mipmap.img_content_empty)
                         .centerCrop()
                         .into(mFirst);
-            }else if (photos.size()==2){
+            } else if (photos.size() == 2) {
                 mFirst.setVisibility(View.VISIBLE);
                 mSecond.setVisibility(View.VISIBLE);
                 GlideApp.with(getContext())
@@ -208,7 +226,7 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
                         .placeholder(R.mipmap.img_content_empty)
                         .centerCrop()
                         .into(mSecond);
-            }else if (photos.size()==3){
+            } else if (photos.size() == 3) {
                 mFirst.setVisibility(View.VISIBLE);
                 mSecond.setVisibility(View.VISIBLE);
                 mThird.setVisibility(View.VISIBLE);
@@ -232,13 +250,14 @@ public class PlantingDiaryFragment extends PrensterFragment<PlantDiaryListContra
 
         @OnClick(R.id.img_write_diary)
         void onWriteDiaryClick() {
-            DiaryListModel.DiaryModl diaryModl = mAdapter.getItems().get(getAdapterPosition()-1);
-            WriteDiaryActivity.show(getContext(),diaryModl.getId());
+            DiaryListModel.DiaryModl diaryModl = mAdapter.getItems().get(getAdapterPosition() - 1);
+            WriteDiaryActivity.show(getContext(), diaryModl.getId());
         }
+
         @OnClick(R.id.ll_root)
         void onItemClick() {
-            DiaryListModel.DiaryModl diaryModl = mAdapter.getItems().get(getAdapterPosition()-1);
-            DiaryListActivity.show(getContext(),diaryModl.getId());
+            DiaryListModel.DiaryModl diaryModl = mAdapter.getItems().get(getAdapterPosition() - 1);
+            DiaryListActivity.show(getContext(), diaryModl.getId());
         }
 
     }
