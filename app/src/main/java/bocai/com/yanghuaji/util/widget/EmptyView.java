@@ -68,7 +68,7 @@ public class EmptyView extends LinearLayout implements PlaceHolderView {
     public void setEmptyImg(int res){
         mDrawableIds[0] = res;
     }
-
+    @Override
     public void setEmptyText(int res){
         mTextIds[0] = res;
     }

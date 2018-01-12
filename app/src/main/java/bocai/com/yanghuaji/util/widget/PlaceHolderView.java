@@ -44,4 +44,10 @@ public interface PlaceHolderView {
      * @param isOk 是否加载成功数据
      */
     void triggerOkOrEmpty(boolean isOk);
+
+    /**
+     * 设置提示文字
+     * @param res 文字资源ID
+     */
+     void setEmptyText(int res);
 }

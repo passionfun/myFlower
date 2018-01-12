@@ -51,7 +51,6 @@ public class IntelligentPlantingFragment extends Fragment {
             }else {
                 transaction.show(mHorizontalFragment);
             }
-//            transaction.replace(R.id.container,mHorizontalFragment).commit();
         }else {
             if (mHorizontalFragment!=null){
                 transaction.hide(mHorizontalFragment);
@@ -62,7 +61,6 @@ public class IntelligentPlantingFragment extends Fragment {
             }else {
                 transaction.show(mVerticalFragment);
             }
-//            transaction.replace(R.id.container,mVerticalFragment).commit();
         }
         transaction.commit();
     }
@@ -70,6 +68,17 @@ public class IntelligentPlantingFragment extends Fragment {
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_intelligent_planting;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (mHorizontalFragment!=null){
+            mHorizontalFragment.onHiddenChanged(hidden);
+        }
+        if (mVerticalFragment!=null){
+            mVerticalFragment.onHiddenChanged(hidden);
+        }
     }
 
     @Override

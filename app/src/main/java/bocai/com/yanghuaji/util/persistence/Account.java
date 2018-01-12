@@ -50,7 +50,7 @@ public class Account {
     private static String registerHost;
     private static String serviceName;
 
-
+    private static boolean isNetEnable = true;
     //所有已经添加过的设备
     private static List<EquipmentRspModel.ListBean> listBeans;
 
@@ -144,7 +144,7 @@ public class Account {
         clearJPushAlias(context);
     }
 
-    public static void clearJPushAlias(Context context){
+    public static void clearJPushAlias(Context context) {
         JPushInterface.clearAllNotifications(context);
         TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
         tagAliasBean.setAction(TagAliasOperatorHelper.ACTION_CLEAN);
@@ -156,16 +156,16 @@ public class Account {
     }
 
 
-    public static void saveWifiPassword(Context context,String wifiName,String wifiPassword){
+    public static void saveWifiPassword(Context context, String wifiName, String wifiPassword) {
         SharedPreferences sp = context.getSharedPreferences("wifiConfig",
                 Context.MODE_PRIVATE);
-         sp.edit().putString(wifiName, wifiPassword).apply();
+        sp.edit().putString(wifiName, wifiPassword).apply();
     }
 
-    public static String getWifiPassword(Context context,String wifiName){
+    public static String getWifiPassword(Context context, String wifiName) {
         SharedPreferences sp = context.getSharedPreferences("wifiConfig",
                 Context.MODE_PRIVATE);
-        return sp.getString(wifiName,"");
+        return sp.getString(wifiName, "");
     }
 
     /**
@@ -188,6 +188,14 @@ public class Account {
 
     public static void setListBeans(List<EquipmentRspModel.ListBean> listBeans) {
         Account.listBeans = listBeans;
+    }
+
+    public static boolean getIsNetEnable() {
+        return isNetEnable;
+    }
+
+    public static void setIsNetEnable(boolean isNetEnable) {
+        Account.isNetEnable = isNetEnable;
     }
 
     /**

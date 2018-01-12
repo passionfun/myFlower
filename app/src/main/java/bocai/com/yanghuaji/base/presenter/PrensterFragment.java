@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.Fragment;
 import bocai.com.yanghuaji.util.UiTool;
+import bocai.com.yanghuaji.util.persistence.Account;
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -35,6 +37,11 @@ public abstract class PrensterFragment<Presenter extends BaseContract.Presenter>
     public void showError(int str) {
         Application.showToast(str);
         hideLoading();
+        if (mPlaceHolderView!=null){
+            mPlaceHolderView.setEmptyText(R.string.network_unavailable);
+            mPlaceHolderView.triggerEmpty();
+        }
+        Account.setIsNetEnable(false);
     }
 
     @Override

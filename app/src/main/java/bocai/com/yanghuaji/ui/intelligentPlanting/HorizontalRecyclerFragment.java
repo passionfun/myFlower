@@ -133,8 +133,19 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
     @Override
     public void onResume() {
-        enable=true;
+
         super.onResume();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            enable=true;
+            if (!Account.getIsNetEnable()){
+                mPresenter.getAllEquipments(Account.getToken(),"0","0");
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -157,8 +168,10 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         mEmptyView.triggerLoading();
     }
 
+
     @Override
     public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
+        Account.setIsNetEnable(true);
         Account.setListBeans(listBeans);
         mAdapter.replace(listBeans);
         mTotalNum.setText(String.valueOf(listBeans.size()));
