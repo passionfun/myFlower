@@ -52,7 +52,7 @@
                     android:scaleType="center"
                     android:id="@+id/img_play_video"
                     android:layout_marginStart="10dp"
-                    android:src="@mipmap/img_play_video"
+                    android:src="@mipmap/img_play_video3"
                     android:layout_width="40dp"
                     android:layout_height="match_parent" />
             </LinearLayout>

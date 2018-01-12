@@ -34,6 +34,7 @@ import bocai.com.yanghuaji.model.PlantSeriesModel;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.PermissionUtils;
 import bocai.com.yanghuaji.util.UiTool;
+import bocai.com.yanghuaji.util.VoicePlayingBgUtil;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -72,7 +73,7 @@ public class AddEquipmentDisplayActivity extends Activity {
     private PlantSeriesModel.PlantSeriesCard plantSeriesCard;
     private static boolean isAddEquipments = false;
     private MediaPlayer mediaPlayer;
-    private Animation animation;
+    private VoicePlayingBgUtil voicePlayingBgUtil;
     private String[] phoneState = new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     //显示的入口(单设备添加)
@@ -133,8 +134,8 @@ public class AddEquipmentDisplayActivity extends Activity {
     @Override
     protected void initData() {
         super.initData();
-        animation = AnimationUtils.loadAnimation(this, R.anim.load_animation);
         mediaPlayer = new MediaPlayer();
+        voicePlayingBgUtil = new VoicePlayingBgUtil();
         if (!TextUtils.isEmpty(mEquipmentPhotoModel.getVideo())){
             try {
                 //"http://121.41.128.239:8082/yhj/web/upload/2018/01/11/15156580256172mlgxk.mp3"
@@ -143,7 +144,7 @@ public class AddEquipmentDisplayActivity extends Activity {
                 mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
-                        mPlayVideo.startAnimation(animation);
+                        voicePlayingBgUtil.playAudioAnimation(mPlayVideo,mediaPlayer);
                         mediaPlayer.start();
                         mPlayVideo.setEnabled(false);
                     }
@@ -155,7 +156,7 @@ public class AddEquipmentDisplayActivity extends Activity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                mPlayVideo.clearAnimation();
+                voicePlayingBgUtil.stopTimer();
                 mPlayVideo.setEnabled(true);
             }
         });
@@ -170,7 +171,7 @@ public class AddEquipmentDisplayActivity extends Activity {
     void onPlayClick() {
         if (mediaPlayer.isPlaying())
             return;
-        mPlayVideo.startAnimation(animation);
+        voicePlayingBgUtil.playAudioAnimation(mPlayVideo,mediaPlayer);
         mediaPlayer.start();
         mPlayVideo.setEnabled(false);
     }
@@ -182,6 +183,7 @@ public class AddEquipmentDisplayActivity extends Activity {
         if (mediaPlayer.isPlaying()){
             mediaPlayer.stop();
         }
+        voicePlayingBgUtil.stopTimer();
         mediaPlayer.reset();
         mediaPlayer.release();
     }
