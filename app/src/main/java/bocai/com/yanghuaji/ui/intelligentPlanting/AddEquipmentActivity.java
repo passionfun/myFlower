@@ -287,10 +287,10 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
     public void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel) {
         if (isAddEquipments) {
             //多设备添加
-            AddEquipmentDisplayActivity.show(this, photoModel.getPhoto(), mPlantSeriesCard);
+            AddEquipmentDisplayActivity.show(this, photoModel, mPlantSeriesCard);
         } else {
             //单设备添加
-            AddEquipmentDisplayActivity.show(this, photoModel.getPhoto(), (ArrayList<String>) scanData);
+            AddEquipmentDisplayActivity.show(this, photoModel, (ArrayList<String>) scanData);
         }
     }
 
