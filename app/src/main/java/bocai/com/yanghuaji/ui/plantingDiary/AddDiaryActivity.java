@@ -174,6 +174,9 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         String coverPhotoPath = "";
         if (requestCode == WriteDiaryActivity.TAKE_PHOTO_REQUEST_ONE) {
+            if (resultCode==0){
+                return;
+            }
             coverPhotoPath = getRealFilePath(AddDiaryActivity.this, imageUri);
         }
 
@@ -272,7 +275,7 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
                 }
             });
         } else {
-            Application.showToast("暂无设备");
+            Application.showToast("暂无种植中设备");
         }
 
     }
