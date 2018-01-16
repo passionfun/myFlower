@@ -122,6 +122,10 @@ public class AddWifiActivity extends Activity {
         if (TextUtils.isEmpty(password)) {
             password="";
         }
+        if (password.length()>0&&password.length()<8) {
+            Application.showToast("密码必须大于8位");
+            return;
+        }
         Account.saveWifiPassword(this, ssid, password);
         if (isAddEquipments) {
             if (plantSeriesCard == null) {
