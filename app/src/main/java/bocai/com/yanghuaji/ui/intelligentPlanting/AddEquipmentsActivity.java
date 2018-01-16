@@ -359,7 +359,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
                     for (final EquipmentModel equipmentModel : equipmentModels) {
                         String seriesName = equipmentModel.getDEVNAME();
                         //搜索所有搜索到该系列的设备，如果还没有添加过，并且设备没有被绑定过则显示
-                        if (!series.contains(seriesName) && !isAdded(equipmentModel.getLTID())
+                        if (!series.contains(seriesName)
                                 && seriesName.startsWith(plantSeriesCard.getSeries())
                                 && (equipmentModel.get_$BOUNDSTATUS310() != null &&
                                 equipmentModel.get_$BOUNDSTATUS310().equals("notBound"))) {

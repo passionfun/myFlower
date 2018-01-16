@@ -611,6 +611,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
         }
         private int times=0;
+        Timer timer = new Timer();
         class LongToothResponse implements LongToothServiceResponseHandler {
 
             private MainRecylerContract.Presenter mPresenter;
@@ -642,7 +643,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         }
                     }
                 };
-                Timer timer = new Timer();
                 timer.schedule(task, 6000);
             }
 
