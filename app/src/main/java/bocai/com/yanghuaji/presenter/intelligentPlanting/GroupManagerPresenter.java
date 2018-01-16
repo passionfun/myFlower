@@ -93,4 +93,39 @@ public class GroupManagerPresenter extends BasePresenter<GroupManagerContract.Vi
 
 
     }
+
+    @Override
+    public void addGroup(String token, String groupName) {
+        view.showLoading();
+        Observable<BaseRspModel<GroupRspModel.ListBean>> observable = Network.remote().addGroup(token, groupName);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<GroupRspModel.ListBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<GroupRspModel.ListBean> listBeanBaseRspModel) {
+                        view.hideLoading();
+                        if (listBeanBaseRspModel.getReturnCode().equals("200")) {
+                            view.addGroupSuccess(listBeanBaseRspModel.getData());
+                        }else if (listBeanBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
+                        }
+//                        Application.showToast(listBeanBaseRspModel.getMsg());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 }

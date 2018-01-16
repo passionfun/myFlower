@@ -16,18 +16,23 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.GroupListContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.GroupListPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
+
+import static bocai.com.yanghuaji.ui.main.MainActivity.GROUP_REFRESH;
 
 /**
  * 作者 yuanfei on 2017/11/27.
@@ -93,7 +98,7 @@ public class GroupListPopupWindow extends PopupWindow implements GroupListContra
             public void onClick(View view) {
                 //  添加分组
                 final EditText editText = new EditText(view.getContext());
-                editText.setHint("请输入组名：");
+                editText.setHint("请输入组名");
                 AlertDialog.Builder addGroupDialog = new AlertDialog.Builder(view.getContext());
                 addGroupDialog.setTitle("添加分组").setView(editText);
                 addGroupDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -147,6 +152,7 @@ public class GroupListPopupWindow extends PopupWindow implements GroupListContra
 
     @Override
     public void addGroupSuccess(GroupRspModel.ListBean groupCard) {
+        EventBus.getDefault().post(new MessageEvent(GROUP_REFRESH));
         mListener.selected(groupCard);
         this.dismiss();
     }

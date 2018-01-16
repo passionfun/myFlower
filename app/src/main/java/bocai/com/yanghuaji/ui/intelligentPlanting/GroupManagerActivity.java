@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,8 @@ import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static bocai.com.yanghuaji.ui.main.MainActivity.GROUP_REFRESH;
+
 /**
  * 作者 yuanfei on 2017/11/27.
  * 邮箱 yuanfei221@126.com
@@ -42,6 +45,9 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
 
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
+
+    @BindView(R.id.tv_right)
+    TextView mAddGroup;
 
     private RecyclerAdapter<GroupRspModel.ListBean> mAdapter;
 
@@ -67,6 +73,8 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
         super.initWidget();
         UiTool.setBlod(mTitle);
         mTitle.setText("分组管理");
+        mAddGroup.setVisibility(View.VISIBLE);
+        mAddGroup.setText("添加");
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapter(mAdapter = new RecyclerAdapter<GroupRspModel.ListBean>() {
             @Override
@@ -82,6 +90,30 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
         mPresenter.getAllGroups(Account.getToken());
     }
 
+    @OnClick(R.id.tv_right)
+    void onAddGroupClick(){
+        //  添加分组
+        final EditText editText = new EditText(this);
+        editText.setHint("请输入组名");
+        final AlertDialog.Builder addGroupDialog = new AlertDialog.Builder(this);
+        addGroupDialog.setTitle("添加分组").setView(editText);
+        addGroupDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mPresenter.addGroup(Account.getToken(), editText.getText().toString());
+
+            }
+        });
+
+        addGroupDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        addGroupDialog.show();
+    }
+
     @Override
     public void getAllGroupsSuccess(List<GroupRspModel.ListBean> groupCards) {
         mAdapter.replace(groupCards);
@@ -91,7 +123,13 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
     public void deleteGroupSuccess() {
         //删除成功，刷新界面
         mPresenter.getAllGroups(Account.getToken());
-        EventBus.getDefault().post(new MessageEvent(MainActivity.GROUP_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(GROUP_REFRESH));
+    }
+
+    @Override
+    public void addGroupSuccess(GroupRspModel.ListBean groupCard) {
+        mPresenter.getAllGroups(Account.getToken());
+        EventBus.getDefault().post(new MessageEvent(GROUP_REFRESH));
     }
 
     @Override

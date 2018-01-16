@@ -17,6 +17,8 @@ public interface GroupManagerContract {
         void getAllGroupsSuccess(List<GroupRspModel.ListBean> groupCards);
 
         void deleteGroupSuccess();
+
+        void addGroupSuccess(GroupRspModel.ListBean groupCard);
     }
 
     interface Presenter extends BaseContract.Presenter{
@@ -24,6 +26,8 @@ public interface GroupManagerContract {
         void getAllGroups(String token);
 
         void deleteGroup(String groupId);
+
+        void addGroup(String token,String groupName);
     }
 
 }
