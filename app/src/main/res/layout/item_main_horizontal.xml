@@ -378,11 +378,11 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:checked="true"
+                    android:enabled="false"
                     android:drawablePadding="4dp"
-                    android:drawableTop="@mipmap/img_update_horizontal"
+                    android:drawableTop="@mipmap/img_update_horizontal_nomal"
                     android:gravity="center"
-                    android:text="设备升级"
+                    android:text="最新版本"
                     android:textColor="#FFFFFF"
                     android:textSize="11sp" />
 
