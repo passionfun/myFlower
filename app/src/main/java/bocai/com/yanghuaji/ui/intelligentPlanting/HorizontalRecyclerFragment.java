@@ -133,7 +133,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
     @Override
     public void onResume() {
-
+        enable=true;
         super.onResume();
     }
 
@@ -141,7 +141,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden){
-            enable=true;
             if (UiTool.isNetworkAvailable(getContext())&&isNeedLoadData){
                 isNeedLoadData = false;
                 mPresenter.getAllEquipments(Account.getToken(),"0","0");
