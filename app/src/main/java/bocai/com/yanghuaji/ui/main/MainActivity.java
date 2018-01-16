@@ -40,6 +40,7 @@ import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
 import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
 import bocai.com.yanghuaji.ui.intelligentPlanting.AddWifiActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
+import bocai.com.yanghuaji.ui.intelligentPlanting.ShopActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.updateVersion.manager.UpdateManager;
 import bocai.com.yanghuaji.util.ActivityUtil;
@@ -270,10 +271,8 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
     @OnClick(R.id.frame_shopping)
     void onShoppingClick() {
-        String content = "WG101&8001F023412332&B0:F8:93:10:CF:E6";
-        String[] result = content.split("&");
-        List<String> data = new ArrayList<>(Arrays.asList(result));
-        AddWifiActivity.show(this, (ArrayList<String>) data);
+        ShopActivity.show(this);
+        hideLeft();
     }
 
     public void showLeft() {

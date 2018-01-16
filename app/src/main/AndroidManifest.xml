@@ -228,6 +228,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".ui.intelligentPlanting.zxing.ScanActivity"
             android:theme="@style/BaseTheme"/>
+        <activity android:name=".ui.intelligentPlanting.ShopActivity"
+            android:theme="@style/BaseTheme"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
