@@ -20,6 +20,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
@@ -280,34 +282,56 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     /**
      * 获取智能控制参数成功
      */
+    final Gson gson = new Gson();
+    private Timer timer = new Timer();
     @Override
     public void getAutoParaSuccess(List<AutoModel.ParaBean> paraBeans) {
-        mPresenter.setupPlant(map);
         AutoParaModel model = new AutoParaModel("Auto",Integer.parseInt(pId),Integer.parseInt(mUUID),paraBeans);
-        final Gson gson = new Gson();
         String request = gson.toJson(model);
         LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                0, request.getBytes().length, null, new LongToothServiceResponseHandler() {
-            @Override
-            public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i,
-                                              byte[] bytes, LongToothAttachment longToothAttachment) {
-                if(bytes==null){
-                    return;
-                }
-                String jsonContent = new String(bytes);
-                if (!jsonContent.contains("CODE")){
-                    return;
-                }
-                Log.d("shc", "handleServiceResponse: "+jsonContent);
-                LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
-                if (plantStatusRspModel.getCODE()==0){
-//                    Application.showToast("智能参数设置成功");
-                }else {
-//                    Application.showToast("智能参数设置失败");
-                }
-            }
-        });
+                0, request.getBytes().length, null, new MyLongToothServiceResponseHandler());
     }
+
+    private class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+        private boolean isRspSuccess = false;
+        private boolean isReturn = false;
+        public MyLongToothServiceResponseHandler() {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (!isRspSuccess){
+                        hideLoading();
+                        isReturn = true;
+                        Application.showToast("设备无响应，保存失败");
+                    }
+                }
+            },3000);
+        }
+
+        @Override
+        public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i,
+                                          byte[] bytes, LongToothAttachment longToothAttachment) {
+            if(bytes==null){
+                return;
+            }
+            String jsonContent = new String(bytes);
+            if (!jsonContent.contains("CODE")){
+                return;
+            }
+            Log.d("shc", "handleServiceResponse: "+jsonContent);
+            LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+            if (plantStatusRspModel.getCODE()==0){
+//                    Application.showToast("智能参数设置成功");
+                isRspSuccess =true;
+                hideLoading();
+                if (!isReturn)
+                mPresenter.setupPlant(map);
+            }else {
+//                    Application.showToast("智能参数设置失败");
+            }
+        }
+    }
+
     /**
      * 获取智能控制参数失败
      */

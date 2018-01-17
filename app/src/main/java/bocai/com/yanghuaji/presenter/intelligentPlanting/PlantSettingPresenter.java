@@ -139,6 +139,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
 
     @Override
     public void getAutoPara(String plantId, String lifeCircleId) {
+        view.showLoading();
         Observable<BaseRspModel<List<AutoModel.ParaBean>>> observable = Network.remote().getAutoPara(plantId, lifeCircleId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
