@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -15,22 +16,31 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.gson.Gson;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.AutoModel;
+import bocai.com.yanghuaji.model.AutoParaModel;
 import bocai.com.yanghuaji.model.EquipmentInfoModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel_Table;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.model.LedSetRspModel;
 import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentSettingContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.EquipmentSettingPresenter;
@@ -41,6 +51,10 @@ import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
+import xpod.longtooth.LongTooth;
+import xpod.longtooth.LongToothAttachment;
+import xpod.longtooth.LongToothServiceResponseHandler;
+import xpod.longtooth.LongToothTunnel;
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -217,7 +231,12 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             Application.showToast("请选择正确的时间");
             return;
         }
-        mPresenter.setupEquipment(map);
+        //如果没有设置过生命周期，则默认值为“0”
+        if (TextUtils.isEmpty(mPlantBean.getPid())||mPlantBean.getLid().equals("0")){
+            mPresenter.setupEquipment(map);
+        }else {
+            mPresenter.getAutoPara(equipmentId,mPlantBean.getPid(),mPlantBean.getLid());
+        }
     }
 
     @OnClick(R.id.tv_lightStart)
@@ -331,6 +350,67 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     @Override
     public void equipmentInfoSuccess(EquipmentInfoModel model) {
         leastNoLedTime = Integer.valueOf(model.getBanTime());
+    }
+    final Gson gson = new Gson();
+    private Timer timer = new Timer();
+    @Override
+    public void getAutoParaSuccess(List<AutoModel.ParaBean> paraBeans) {
+        AutoParaModel model = new AutoParaModel("Auto",Integer.parseInt(mPlantBean.getPid()),
+                Integer.parseInt(mUUID),paraBeans);
+        String request = gson.toJson(model);
+        LongTooth.request(mLongToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                0, request.getBytes().length, null, new MyLongToothServiceResponseHandler());
+    }
+
+
+    private class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+        private boolean isRspSuccess = false;
+        private boolean isReturn = false;
+        public MyLongToothServiceResponseHandler() {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (!isRspSuccess){
+                        hideLoading();
+                        isReturn = true;
+                        Application.showToast("设备无响应，保存失败");
+                    }
+                }
+            },3000);
+        }
+
+        @Override
+        public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i,
+                                          byte[] bytes, LongToothAttachment longToothAttachment) {
+            if(bytes==null){
+                return;
+            }
+            String jsonContent = new String(bytes);
+            if (!jsonContent.contains("CODE")){
+                return;
+            }
+            Log.d("shc", "handleServiceResponse: "+jsonContent);
+            LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+            if (plantStatusRspModel.getCODE()==0){
+//                    Application.showToast("智能参数设置成功");
+                isRspSuccess =true;
+                hideLoading();
+                if (!isReturn)
+                    Run.onUiAsync(new Action() {
+                        @Override
+                        public void call() {
+                            mPresenter.setupEquipment(map);
+                        }
+                    });
+            }else {
+//                    Application.showToast("智能参数设置失败");
+            }
+        }
+    }
+
+    @Override
+    public void getAutoParaFailed() {
+        Application.showToast("智能参数设置失败");
     }
 
     @Override

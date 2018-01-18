@@ -152,10 +152,10 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
 
                     @Override
                     public void onNext(BaseRspModel<List<AutoModel.ParaBean>> listBaseRspModel) {
-                        view.hideLoading();
                         if (listBaseRspModel.getReturnCode().equals("200")) {
                             view.getAutoParaSuccess(listBaseRspModel.getData());
                         }else {
+                            view.hideLoading();
                             view.getAutoParaFailed();
                         }
                     }

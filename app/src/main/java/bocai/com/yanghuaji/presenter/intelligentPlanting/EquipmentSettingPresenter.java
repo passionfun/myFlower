@@ -1,10 +1,12 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
+import java.util.List;
 import java.util.Map;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
+import bocai.com.yanghuaji.model.AutoModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.EquipmentInfoModel;
 import bocai.com.yanghuaji.model.EquipmentSetupModel;
@@ -134,4 +136,40 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
                     }
                 });
     }
+
+    @Override
+    public void getAutoPara(String equipmentId,String plantId, String lifeCircleId) {
+        view.showLoading();
+        Observable<BaseRspModel<List<AutoModel.ParaBean>>> observable = Network.remote().
+                getAutoPara(equipmentId,plantId, lifeCircleId);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<List<AutoModel.ParaBean>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<List<AutoModel.ParaBean>> listBaseRspModel) {
+                        if (listBaseRspModel.getReturnCode().equals("200")) {
+                            view.getAutoParaSuccess(listBaseRspModel.getData());
+                        }else {
+                            view.hideLoading();
+                            view.getAutoParaFailed();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.getAutoParaFailed();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 }
