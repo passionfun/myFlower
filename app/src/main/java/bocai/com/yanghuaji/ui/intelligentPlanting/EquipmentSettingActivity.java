@@ -130,6 +130,16 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         if (mPlantBean.getSeries().equals("WG101")){
             checkbox.setChecked(false);
             checkbox.setEnabled(false);
+        }else {
+            checkbox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (TextUtils.isEmpty(mPlantBean.getPid())||TextUtils.isEmpty(mPlantBean.getLid())){
+                        checkbox.setChecked(false);
+                        Application.showToast("植物设置不完善，不可开启节水模式");
+                    }
+                }
+            });
         }
     }
 
