@@ -75,10 +75,11 @@
 
     <TextView
         android:id="@+id/tv_my_planting_record"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
         android:text="@string/my_planting_record"
         android:textColor="#333333"
         android:textSize="15sp"
@@ -93,16 +94,16 @@
         android:layout_height="0.5dp"
         android:layout_marginEnd="14dp"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="22dp"
         android:background="@mipmap/img_dotted_background" />
 
     <TextView
         android:id="@+id/tv_system_notification"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="@string/system_notification"
+        android:gravity="center_vertical"
         android:textColor="#333333"
         android:textSize="16sp"
         android:drawablePadding="20dp"
@@ -116,16 +117,16 @@
         android:layout_height="0.5dp"
         android:layout_marginEnd="14dp"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="17dp"
         android:background="@mipmap/img_dotted_background" />
 
     <TextView
         android:id="@+id/tv_modify_password"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="@string/modify_password"
+        android:gravity="center_vertical"
         android:textColor="#333333"
         android:textSize="15sp"
         android:drawablePadding="20dp"
@@ -139,18 +140,18 @@
         android:layout_height="0.5dp"
         android:layout_marginEnd="14dp"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="19dp"
         android:background="@mipmap/img_dotted_background" />
 
     <TextView
         android:id="@+id/tv_setting"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="@string/setting"
         android:textColor="#333333"
         android:textSize="15sp"
+        android:gravity="center_vertical"
         android:drawablePadding="20dp"
         android:drawableStart="@mipmap/img_settings"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
@@ -162,16 +163,16 @@
         android:layout_height="0.5dp"
         android:layout_marginEnd="14dp"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="20dp"
         android:background="@mipmap/img_dotted_background" />
 
     <TextView
         android:id="@+id/tv_exit"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="34dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="@string/quit_application"
+        android:gravity="center_vertical"
         android:textSize="16sp"
         android:textColor="#75B62B"
         android:drawablePadding="20dp"
