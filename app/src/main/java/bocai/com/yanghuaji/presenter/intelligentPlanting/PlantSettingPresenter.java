@@ -138,9 +138,10 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
     }
 
     @Override
-    public void getAutoPara(String plantId, String lifeCircleId) {
+    public void getAutoPara(String equipmentId,String plantId, String lifeCircleId) {
         view.showLoading();
-        Observable<BaseRspModel<List<AutoModel.ParaBean>>> observable = Network.remote().getAutoPara(plantId, lifeCircleId);
+        Observable<BaseRspModel<List<AutoModel.ParaBean>>> observable = Network.remote().
+                getAutoPara(equipmentId,plantId, lifeCircleId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel<List<AutoModel.ParaBean>>>() {
@@ -151,6 +152,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
 
                     @Override
                     public void onNext(BaseRspModel<List<AutoModel.ParaBean>> listBaseRspModel) {
+                        view.hideLoading();
                         if (listBaseRspModel.getReturnCode().equals("200")) {
                             view.getAutoParaSuccess(listBaseRspModel.getData());
                         }else {

@@ -229,7 +229,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
 
     //从后台获取智能控制参数
     private void getAutoPara(){
-            mPresenter.getAutoPara(pId,lid);
+            mPresenter.getAutoPara(id,pId,lid);
     }
 
 

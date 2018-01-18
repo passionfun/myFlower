@@ -27,7 +27,7 @@ public interface PlantSettingContract  {
         void setupPlant(Map<String,String> map);
         void plantMode();
         void lifeCycle();
-        void getAutoPara(String plantId,String lifeCircleId);
+        void getAutoPara(String equipmentId,String plantId,String lifeCircleId);
 
     }
 }

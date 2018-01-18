@@ -262,7 +262,9 @@ public interface RemoteService {
     //智能控制植物数据
     @POST("plant/plant_info")
     @FormUrlEncoded
-    Observable<BaseRspModel<List<AutoModel.ParaBean>>> getAutoPara(@Field("Id") String plantId, @Field("Lid") String lifeCircleId);
+    Observable<BaseRspModel<List<AutoModel.ParaBean>>> getAutoPara(@Field("Eid") String equipmentId,
+                                                                   @Field("Id") String plantId,
+                                                                   @Field("Lid") String lifeCircleId);
 
 
     //设备数据输入
