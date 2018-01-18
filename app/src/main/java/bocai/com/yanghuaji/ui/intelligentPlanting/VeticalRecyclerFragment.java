@@ -360,7 +360,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext());
-                    deleteDialog.setTitle("确定删除？");
+                    deleteDialog.setTitle("删除将导致该设备恢复出厂设置，请确认是否删除？");
                     deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

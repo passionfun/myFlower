@@ -187,13 +187,14 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mNavigationFragment = NavigationFragment.newInstance();
         transaction.replace(R.id.frame_container, mNavigationFragment).commit();
-        mDrawerLayout.addDrawerListener(new MyDrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                mFrameLayout.layout(mFrameLeft.getRight(), -UiTool.getHeight(MainActivity.this),
-                        UiTool.getScreenWidth(MainActivity.this) + mFrameLeft.getRight(), UiTool.getScreenHeight(MainActivity.this));
-            }
-        });
+//        mDrawerLayout.addDrawerListener(new MyDrawerListener() {
+//            @Override
+//            public void onDrawerSlide(View drawerView, float slideOffset) {
+//                mFrameLayout.layout(mFrameLeft.getRight(), -UiTool.getHeight(MainActivity.this),
+//                        UiTool.getScreenWidth(MainActivity.this) + mFrameLeft.getRight(),
+//                        UiTool.getScreenHeight(MainActivity.this));
+//            }
+//        });
         initAllEquipments();
         initAllGroups();
 

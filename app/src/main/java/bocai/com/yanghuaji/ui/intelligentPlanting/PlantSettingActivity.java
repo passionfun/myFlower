@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
@@ -325,7 +328,12 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
                 isRspSuccess =true;
                 hideLoading();
                 if (!isReturn)
-                mPresenter.setupPlant(map);
+                    Run.onUiAsync(new Action() {
+                        @Override
+                        public void call() {
+                            mPresenter.setupPlant(map);
+                        }
+                    });
             }else {
 //                    Application.showToast("智能参数设置失败");
             }
@@ -338,7 +346,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @Override
     public void getAutoParaFailed() {
         Application.showToast("智能参数设置失败");
-        mPresenter.setupPlant(map);
+//        mPresenter.setupPlant(map);
     }
 
     @Override
