@@ -77,7 +77,8 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
     EditText mName;
 
     private static final int MY_PERMISSION_REQUEST_CODE = 10002;
-    private String[] storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    private String[] storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
     public static final String MODIFY_PERSONAL_DATA_SUCCESS = "MODIFY_PERSONAL_DATA_SUCCESS";
     final int DATE_DIALOG = 1;
     private int mYear, mMonth, mDay;
@@ -292,6 +293,9 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
         }
 
         if (requestCode == WriteDiaryActivity.TAKE_PHOTO_REQUEST_ONE) {
+            if (resultCode==0){
+                return;
+            }
             cropPhoto(getRealFilePath(EditPersonalDataActivity.this, imageUri));
         }
 
