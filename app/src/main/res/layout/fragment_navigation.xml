@@ -42,7 +42,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/img_planting_diary_nomal"
-            android:text="@string/intelligent_planting"/>
+            android:text="@string/planting_diary"/>
 
 
         <TextView
@@ -57,7 +57,7 @@
             android:drawablePadding="4dp"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/img_persnal_center_nomal"
-            android:text="@string/intelligent_planting"/>
+            android:text="@string/personal_center"/>
     </LinearLayout>
 
 
