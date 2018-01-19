@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -96,6 +97,7 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
     @Override
     protected void initWidget() {
         super.initWidget();
+        EventBus.getDefault().register(this);
         isHaveNewVersion(mPlantBean);
         mEmpty.bind(webView);
     }
@@ -251,6 +253,11 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
 
     @Override
     public void setDataSuccess(EquipmentDataModel model) {
+        webView.loadUrl("javascript:update()");
+    }
+
+    @Override
+    public void setUpdateStatusSuccess() {
         webView.loadUrl("javascript:update()");
     }
 

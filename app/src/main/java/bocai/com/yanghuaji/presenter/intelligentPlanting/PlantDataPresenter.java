@@ -68,7 +68,7 @@ public class PlantDataPresenter extends BasePresenter<PlantingDataContract.View>
 
                     @Override
                     public void onNext(BaseRspModel baseRspModel) {
-
+                        view.setUpdateStatusSuccess();
                     }
 
                     @Override

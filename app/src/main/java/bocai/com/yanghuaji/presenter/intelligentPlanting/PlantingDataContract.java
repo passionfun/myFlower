@@ -12,6 +12,7 @@ public interface PlantingDataContract {
 
     interface View extends BaseContract.View<Presenter> {
         void setDataSuccess(EquipmentDataModel model);
+        void setUpdateStatusSuccess();
     }
 
     interface Presenter extends BaseContract.Presenter {

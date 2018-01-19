@@ -510,8 +510,9 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
 
         @Override
         public void getEquipmentPhotoSuccess(EquipmentPhotoModel photoModel) {
+            String photoPath = photoModel == null?"":photoModel.getPhoto();
             GlideApp.with(AddEquipmentsActivity.this)
-                    .load(photoModel.getPhoto())
+                    .load(photoPath)
                     .centerCrop()
                     .placeholder(R.mipmap.img_content_empty)
                     .into(mPhoto);
