@@ -84,11 +84,12 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
                         if (equipmentSetupModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setupEquipmentSuccess(equipmentSetupModelBaseRspModel.getData());
                         }else if (equipmentSetupModelBaseRspModel.getReturnCode().equals("9997")){
+                            view.hideLoading();
                             view.onConnectionConflict();
                         }else {
+                            view.hideLoading();
                             Application.showToast(equipmentSetupModelBaseRspModel.getMsg());
                         }
-                        view.hideLoading();
                     }
 
                     @Override
@@ -139,7 +140,7 @@ public class EquipmentSettingPresenter extends BasePresenter<EquipmentSettingCon
 
     @Override
     public void getAutoPara(String equipmentId,String plantId, String lifeCircleId) {
-        view.showLoading();
+//        view.showLoading();
         Observable<BaseRspModel<List<AutoModel.ParaBean>>> observable = Network.remote().
                 getAutoPara(equipmentId,plantId, lifeCircleId);
         observable.subscribeOn(Schedulers.io())

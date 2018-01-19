@@ -231,12 +231,13 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             Application.showToast("请选择正确的时间");
             return;
         }
-        //如果没有设置过生命周期，则默认值为“0”
-        if (TextUtils.isEmpty(mPlantBean.getPid())||mPlantBean.getLid().equals("0")){
-            mPresenter.setupEquipment(map);
-        }else {
-            mPresenter.getAutoPara(equipmentId,mPlantBean.getPid(),mPlantBean.getLid());
-        }
+        mPresenter.setupEquipment(map);
+//        //如果没有设置过生命周期，则默认值为“0”
+//        if (TextUtils.isEmpty(mPlantBean.getPid())||mPlantBean.getLid().equals("0")){
+//            mPresenter.setupEquipment(map);
+//        }else {
+//            mPresenter.getAutoPara(equipmentId,mPlantBean.getPid(),mPlantBean.getLid());
+//        }
     }
 
     @OnClick(R.id.tv_lightStart)
@@ -343,7 +344,8 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     public void setupEquipmentSuccess(EquipmentSetupModel model) {
         EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
         model.save();
-        finish();
+        mPresenter.getAutoPara(equipmentId,mPlantBean.getPid(),mPlantBean.getLid());
+//        finish();
     }
 
 
@@ -365,14 +367,14 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
 
     private class MyLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
         private boolean isRspSuccess = false;
-        private boolean isReturn = false;
+//        private boolean isReturn = false;
         public MyLongToothServiceResponseHandler() {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     if (!isRspSuccess){
                         hideLoading();
-                        isReturn = true;
+//                        isReturn = true;
                         Application.showToast("设备无响应，保存失败");
                     }
                 }
@@ -395,13 +397,14 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
 //                    Application.showToast("智能参数设置成功");
                 isRspSuccess =true;
                 hideLoading();
-                if (!isReturn)
-                    Run.onUiAsync(new Action() {
-                        @Override
-                        public void call() {
-                            mPresenter.setupEquipment(map);
-                        }
-                    });
+                finish();
+//                if (!isReturn)
+//                    Run.onUiAsync(new Action() {
+//                        @Override
+//                        public void call() {
+//                            mPresenter.setupEquipment(map);
+//                        }
+//                    });
             }else {
 //                    Application.showToast("智能参数设置失败");
             }
