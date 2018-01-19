@@ -38,6 +38,9 @@ public class SystemNotificationActivity extends Activity {
     @BindView(R.id.web_view)
     WebView webView;
 
+    @BindView(R.id.tv_right)
+    TextView mRight;
+
     //显示的入口
     public static void show(Context context) {
         context.startActivity(new Intent(context, SystemNotificationActivity.class));
@@ -52,7 +55,8 @@ public class SystemNotificationActivity extends Activity {
     protected void initData() {
         super.initData();
         mTitle.setVisibility(View.GONE);
-
+        mRight.setVisibility(View.VISIBLE);
+        mRight.setText("编辑");
         ActivityUtil.initWebSetting(webView.getSettings());
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -87,6 +91,17 @@ public class SystemNotificationActivity extends Activity {
     @OnClick(R.id.img_back)
     void onBackClick() {
         finish();
+    }
+
+    @OnClick(R.id.tv_right)
+    void onRightClick() {
+        if (mRight.getText().equals("编辑")){
+            mRight.setText("完成");
+            webView.loadUrl("javascript:edit()");
+        }else {
+            mRight.setText("编辑");
+            webView.loadUrl("javascript:editOk()");
+        }
     }
 
 
