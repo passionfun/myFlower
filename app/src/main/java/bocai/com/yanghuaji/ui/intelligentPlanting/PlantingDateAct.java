@@ -19,6 +19,9 @@ import com.google.gson.Gson;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,6 +33,7 @@ import bocai.com.yanghuaji.model.BindEquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentDataModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.LongToothRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.PlantStatusModel;
 import bocai.com.yanghuaji.model.PlantStatusRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.MainRecylerContract;
@@ -94,6 +98,13 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
         super.initWidget();
         isHaveNewVersion(mPlantBean);
         mEmpty.bind(webView);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void fresh(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.UPDATE_SUCCESS)) {
+            mPresenter.setUpdateStatus(mPlantBean.getMac(),"0");
+        }
     }
 
     private void isHaveNewVersion(EquipmentRspModel.ListBean plantModel){
@@ -240,7 +251,7 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
 
     @Override
     public void setDataSuccess(EquipmentDataModel model) {
-
+        webView.loadUrl("javascript:update()");
     }
 
     @Override
@@ -264,7 +275,8 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
 
 
     @Override
-    public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes, LongToothAttachment longToothAttachment) {
+    public void handleServiceResponse(LongToothTunnel longToothTunnel, String s, String s1, int i, byte[] bytes,
+                                      LongToothAttachment longToothAttachment) {
         if (bytes == null) {
             return;
         }

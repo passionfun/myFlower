@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import bocai.com.yanghuaji.R;
@@ -20,6 +24,7 @@ import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.DiaryListModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.presenter.plantingDiary.PlantDiaryListContract;
 import bocai.com.yanghuaji.presenter.plantingDiary.PlantDiaryListPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.SecondSettingActivity;
@@ -28,6 +33,8 @@ import bocai.com.yanghuaji.util.persistence.Account;
 import bocai.com.yanghuaji.util.widget.EmptyView;
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static bocai.com.yanghuaji.ui.plantingDiary.PlantingDiaryFragment.PLANTING_DIARY_REFRESH;
 
 /**
  * 作者 yuanfei on 2017/12/18.
@@ -76,6 +83,7 @@ public class PlantingDiaryActivity extends PresenterActivity<PlantDiaryListContr
     @Override
     protected void initWidget() {
         super.initWidget();
+        EventBus.getDefault().register(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter = new RecyclerAdapter<DiaryListModel.DiaryModl>() {
 
@@ -106,6 +114,13 @@ public class PlantingDiaryActivity extends PresenterActivity<PlantDiaryListContr
         super.initData();
         onRefresh();
         mEmptyView.triggerLoading();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals(PLANTING_DIARY_REFRESH)) {
+            onRefresh();
+        }
     }
 
 

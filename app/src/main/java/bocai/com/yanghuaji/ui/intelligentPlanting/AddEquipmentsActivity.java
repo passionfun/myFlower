@@ -470,7 +470,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         protected void onBind(EquipmentModel equipmentModel) {
             mName.setText(equipmentModel.getDEVNAME());
             mMac.setText(equipmentModel.getMAC());
-            String type = equipmentModel.getDEVNAME().substring(0, 4);
+            String type = equipmentModel.getDEVNAME().substring(0, 5);
             mPresenter.getEquipmentPhoto("2", type);
         }
 
