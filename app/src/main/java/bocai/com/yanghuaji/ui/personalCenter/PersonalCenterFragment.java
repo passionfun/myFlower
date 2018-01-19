@@ -56,9 +56,11 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
 
 
     @Override
-    protected void initData() {
-        super.initData();
-        mPresenter.getNoticeStatus(Account.getToken());
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            mPresenter.getNoticeStatus(Account.getToken());
+        }
     }
 
     @Override
