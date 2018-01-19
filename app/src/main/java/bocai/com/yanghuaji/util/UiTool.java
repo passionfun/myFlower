@@ -190,7 +190,7 @@ public class UiTool {
         deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-//                ActivityUtil.finishActivity();
+                ActivityUtil.finishActivity();
                 Account.logOff(context);
                 LoginActivity.show(context);
             }

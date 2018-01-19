@@ -158,12 +158,6 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        ActivityUtil.finishActivity();
-        return super.onKeyDown(keyCode, event);
-    }
-
     @OnClick(R.id.verification_code_login)
     void onVerificationLogin() {
         mTvVerificationCodeLogin.setTextColor(Color.parseColor("#87BC52"));
