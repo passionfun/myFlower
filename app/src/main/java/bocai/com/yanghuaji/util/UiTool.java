@@ -29,6 +29,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 import net.qiujuer.genius.ui.widget.Loading;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.ui.account.LoginActivity;
 import bocai.com.yanghuaji.util.persistence.Account;
 
 public class UiTool {
@@ -189,8 +190,9 @@ public class UiTool {
         deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ActivityUtil.finishActivity();
+//                ActivityUtil.finishActivity();
                 Account.logOff(context);
+                LoginActivity.show(context);
             }
         });
         deleteDialog.show();

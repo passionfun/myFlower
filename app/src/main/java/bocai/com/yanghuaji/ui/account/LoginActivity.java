@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ import bocai.com.yanghuaji.presenter.account.LoginContract;
 import bocai.com.yanghuaji.presenter.account.LoginPresenter;
 import bocai.com.yanghuaji.ui.intelligentPlanting.SampleAttachment;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.PermissionUtils;
 import bocai.com.yanghuaji.util.adapter.account.CountDownTimerUtils;
 import bocai.com.yanghuaji.util.persistence.Account;
@@ -154,6 +156,12 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        ActivityUtil.finishActivity();
+        return super.onKeyDown(keyCode, event);
     }
 
     @OnClick(R.id.verification_code_login)
