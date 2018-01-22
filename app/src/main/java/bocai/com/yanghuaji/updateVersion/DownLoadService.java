@@ -1,6 +1,7 @@
 package bocai.com.yanghuaji.updateVersion;
 
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +14,11 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
+
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +57,8 @@ public class DownLoadService extends Service {
     private NotificationCompat.Builder builder;
     private NotificationManager notificationManager;
     private Retrofit.Builder retrofit;
+
+    private ProgressDialog progressDialog;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -171,13 +178,30 @@ public class DownLoadService extends Service {
      * 初始化Notification通知
      */
     public void initNotification() {
-        builder = new NotificationCompat.Builder(mContext)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentText("0%")
-                .setContentTitle("慕奈花舍更新")
-                .setProgress(100, 0, false);
-        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFY_ID, builder.build());
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setTitle("慕奈花舍更新");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMax(100);
+        progressDialog.setProgress(1);
+        progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
+        Run.onUiAsync(new Action() {
+            @Override
+            public void call() {
+                progressDialog.show();
+            }
+        });
+
+
+
+//        builder = new NotificationCompat.Builder(mContext)
+//                .setSmallIcon(R.mipmap.ic_launcher)
+//                .setContentText("0%")
+//                .setContentTitle("慕奈花舍更新")
+//                .setProgress(100, 0, false);
+//        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.notify(NOTIFY_ID, builder.build());
     }
 
     /**
@@ -186,17 +210,26 @@ public class DownLoadService extends Service {
     public void updateNotification(long progress) {
         int currProgress = (int) progress;
         if (preProgress < currProgress) {
-            builder.setContentText(progress + "%");
-            builder.setProgress(100, (int) progress, false);
-            notificationManager.notify(NOTIFY_ID, builder.build());
+            progressDialog.setProgress((int) progress);
         }
         preProgress = (int) progress;
+
+
+//        int currProgress = (int) progress;
+//        if (preProgress < currProgress) {
+//            builder.setContentText(progress + "%");
+//            builder.setProgress(100, (int) progress, false);
+//            notificationManager.notify(NOTIFY_ID, builder.build());
+//        }
+//        preProgress = (int) progress;
     }
 
     /**
      * 取消通知
      */
     public void cancelNotification() {
-        notificationManager.cancel(NOTIFY_ID);
+//        progressDialog.cancel();
+        progressDialog.dismiss();
+//        notificationManager.cancel(NOTIFY_ID);
     }
 }

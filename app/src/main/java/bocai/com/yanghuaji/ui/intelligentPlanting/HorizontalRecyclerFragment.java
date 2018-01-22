@@ -681,7 +681,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     offLine();
                     return;
                 }
-                Log.d(TAG, "handleServiceResponse: " +mPlantModel.getLTID()+":"+ jsonContent);
+                Log.d(TAG, "handleServiceResponse: " +mPlantModel.getLTID()+":"+mPlantModel.getEquipName()+":"+ jsonContent);
                 PlantStatusRspModel plantStatusRspModel = gson.fromJson(jsonContent, PlantStatusRspModel.class);
                 if (plantStatusRspModel.getCODE() == 0) {
                     onLine();
