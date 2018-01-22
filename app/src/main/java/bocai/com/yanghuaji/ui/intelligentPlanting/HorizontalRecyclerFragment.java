@@ -284,10 +284,12 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 }else if (messageEvent.getMessage().equals(VeticalRecyclerFragment.EQUIPMENT_LINE_ON)){
                     mOffLine.setVisibility(View.INVISIBLE);
                     mFramOffline.setVisibility(View.INVISIBLE);
-                }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_ON)){
+                }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_ON)&&
+                        (messageEvent.getType().equals(mData.getLTID()))){
                     isLedOn = true;
                     mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_open_horizontal,0,0);
-                }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_OFF)){
+                }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_OFF)&&
+                        (messageEvent.getType().equals(mData.getLTID()))){
                     isLedOn = false;
                     mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0,R.mipmap.img_light_close_horizontal,0,0);
                 }else if ( messageEvent.getMessage().equals(MainActivity.MAINACTIVITY_DESTROY)){
@@ -303,6 +305,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             protected void onBind(final EquipmentRspModel.ListBean plantModel) {
+                setIsRecyclable(false);
                 mEquipmentName.setText(plantModel.getEquipName());
                 mPlantName.setText(plantModel.getPlantName());
                 mGroupName.setText(plantModel.getGroupName());
@@ -541,6 +544,14 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             public void setPresenter(MainRecylerContract.Presenter presenter) {
                 mPresenter = presenter;
+            }
+
+            private void init(){
+                mTemperature.setText("- -");
+                mWaterStatus.setText("- -");
+                mLedMode.setText("- -");
+                mEcStatus.setText("- -");
+                mImgTemArrow.setImageResource(0);
             }
 
             @Override
