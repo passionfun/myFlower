@@ -279,7 +279,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Subscribe(threadMode = ThreadMode.MAIN)
             public void fresh(MessageEvent messageEvent) {
-                if (messageEvent.getMessage().equals(VeticalRecyclerFragment.VERTICALRECYCLER_DELETE_SUCCESS)) {
+                if (messageEvent.getMessage().equals(VeticalRecyclerFragment.VERTICALRECYCLER_DELETE_SUCCESS)&&
+                        (messageEvent.getType().equals(mData.getLTID()))) {
                     if (task!=null){
                         task.cancel();
                     }
@@ -602,7 +603,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 //通知MainActivity刷新页面
                 EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
                 //通知verticalfragment停止task
-                EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_DELETE_SUCCESS));
+                EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_DELETE_SUCCESS,mData.getLTID()));
                 //通知Vertical刷新页面
                 EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
                 //设备设置为出厂状态

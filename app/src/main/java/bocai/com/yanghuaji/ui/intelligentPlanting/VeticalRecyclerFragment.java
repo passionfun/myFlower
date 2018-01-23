@@ -264,8 +264,10 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON)&&
                     (messageEvent.getType().equals(mData.getLTID()))) {
                 mImgTent.setVisibility(View.INVISIBLE);
-            } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragment.HORIZONTALRECYLER_DELETE_SUCCESS)) {
+            } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragment.HORIZONTALRECYLER_DELETE_SUCCESS)&&
+                    (messageEvent.getType().equals(mData.getLTID()))) {
                 task.cancel();
+                timer.cancel();
             } else if (messageEvent.getMessage().equals(LED_ON)&&
                     (messageEvent.getType().equals(mData.getLTID()))) {
                 isLedOn = true;
@@ -571,7 +573,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         public void deleteEquipmentSuccess() {
             VeticalRecyclerFragment.this.mPresenter.getAllEquipments(Account.getToken(), "0", "0");
             //通知Horizontal停止timertask
-            EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_DELETE_SUCCESS));
+            EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_DELETE_SUCCESS,mData.getLTID()));
             //通知Horizontal刷新页面
             EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
             //通知MainActivity刷新页面
