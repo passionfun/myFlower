@@ -6,12 +6,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Fragment;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragment.HORIZONTALRECYLER_VISIABLE;
+import static bocai.com.yanghuaji.ui.intelligentPlanting.VeticalRecyclerFragment.VERTICALRECYCLER_VISIABLE;
 
 /**
  * 作者 yuanfei on 2017/11/9.
@@ -42,6 +48,7 @@ public class IntelligentPlantingFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         isHorizontal = !isHorizontal;
         if (isHorizontal){
+            EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
             if (mVerticalFragment!=null){
                 transaction.hide(mVerticalFragment);
             }
@@ -52,6 +59,7 @@ public class IntelligentPlantingFragment extends Fragment {
                 transaction.show(mHorizontalFragment);
             }
         }else {
+            EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_VISIABLE));
             if (mHorizontalFragment!=null){
                 transaction.hide(mHorizontalFragment);
             }
@@ -88,6 +96,7 @@ public class IntelligentPlantingFragment extends Fragment {
         mHorizontalFragment = new HorizontalRecyclerFragment();
         FragmentTransaction mTransaction = getChildFragmentManager().beginTransaction();
         mTransaction.add(R.id.container,mHorizontalFragment).commit();
+        EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
     }
 
     @Override

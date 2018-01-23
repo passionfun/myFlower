@@ -62,6 +62,7 @@ import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
 import xpod.longtooth.LongToothTunnel;
 
+import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragment.HORIZONTALRECYLER_VISIABLE;
 import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragmentHelper.LED_OFF;
 import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragmentHelper.LED_ON;
 
@@ -123,7 +124,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_VISIABLE));
         if (!hidden && isNeedLoadData) {
             if (UiTool.isNetworkAvailable(getContext())) {
                 isNeedLoadData = false;
@@ -259,7 +259,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             new MainRecylerPresenter(this);
         }
 
-        @Subscribe(threadMode = ThreadMode.MAIN)
+        @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
         public void fresh(MessageEvent messageEvent) {
             if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON)&&
                     (messageEvent.getType().equals(mData.getLTID()))) {
@@ -284,6 +284,26 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 mUpdate.setText("最新版本");
                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical_nomal, 0, 0);
                 mUpdate.setEnabled(false);
+            }else if (messageEvent.getMessage().equals(VERTICALRECYCLER_VISIABLE)) {
+                if (timer==null){
+                    timer = new Timer();
+                }
+                if (task==null){
+                    task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
+                            HorizontalRecyclerFragmentHelper.setLedMode(mData, mLedMode, mPresenter);
+                            getEquipmentData(mData);
+                        }
+                    };
+                }
+                timer.schedule(task, 2000, 30000);
+            }else if (messageEvent.getMessage().equals(HORIZONTALRECYLER_VISIABLE)) {
+                if (task!=null){
+                    task.cancel();
+                    task=null;
+                }
             }
         }
 
@@ -302,20 +322,21 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     .centerCrop()
                     .placeholder(R.mipmap.img_main_empty)
                     .into(mImage);
-
-            timer = new Timer();
-            task = new TimerTask() {
-                @Override
-                public void run() {
-                    HorizontalRecyclerFragmentHelper.setLedSwitch(plantModel);
-                    HorizontalRecyclerFragmentHelper.setLedMode(plantModel, mLedMode, mPresenter);
-                    getEquipmentData(plantModel);
-                }
-            };
-            timer.schedule(task, 2000, 30000);
             setLed(plantModel);
-
-
+            if (timer==null){
+                timer = new Timer();
+            }
+            if (task==null){
+                task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
+                        HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
+                        getEquipmentData(mData);
+                    }
+                };
+            }
+            timer.schedule(task, 2000, 30000);
             mPlantData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

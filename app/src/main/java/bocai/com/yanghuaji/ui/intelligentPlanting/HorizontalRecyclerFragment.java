@@ -65,6 +65,7 @@ import xpod.longtooth.LongToothTunnel;
 
 import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragmentHelper.LED_OFF;
 import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragmentHelper.LED_ON;
+import static bocai.com.yanghuaji.ui.intelligentPlanting.VeticalRecyclerFragment.VERTICALRECYCLER_VISIABLE;
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -141,7 +142,6 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
         if (!hidden){
             if (UiTool.isNetworkAvailable(getContext())&&isNeedLoadData){
                 isNeedLoadData = false;
@@ -277,7 +277,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
 
 
-            @Subscribe(threadMode = ThreadMode.MAIN)
+            @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
             public void fresh(MessageEvent messageEvent) {
                 if (messageEvent.getMessage().equals(VeticalRecyclerFragment.VERTICALRECYCLER_DELETE_SUCCESS)&&
                         (messageEvent.getType().equals(mData.getLTID()))) {
@@ -304,6 +304,26 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mUpdate.setEnabled(false);
                     mUpdate.setText("最新版本");
                     mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal_nomal, 0, 0);
+                }else if (messageEvent.getMessage().equals(HORIZONTALRECYLER_VISIABLE)) {
+                    if (timer==null){
+                        timer = new Timer();
+                    }
+                    if (task==null){
+                        task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
+                                HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
+                                getEquipmentData(mData);
+                            }
+                        };
+                    }
+                    timer.schedule(task, 2000, 30000);
+                }else if (messageEvent.getMessage().equals( VERTICALRECYCLER_VISIABLE )) {
+                    if (task!=null){
+                        task.cancel();
+                        task = null;
+                    }
                 }
             }
 
@@ -323,18 +343,21 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         .centerCrop()
                         .placeholder(R.mipmap.img_main_empty)
                         .into(mImage);
-                timer = new Timer();
-                task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        HorizontalRecyclerFragmentHelper.setLedSwitch(plantModel);
-                        HorizontalRecyclerFragmentHelper.setLedMode(plantModel,mLedMode,mPresenter);
-                        getEquipmentData(plantModel);
-                    }
-                };
-                timer.schedule(task, 2000, 30000);
                 setLed(plantModel);
-
+                if (timer==null){
+                    timer = new Timer();
+                }
+                if (task==null){
+                    task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
+                            HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
+                            getEquipmentData(mData);
+                        }
+                    };
+                }
+                timer.schedule(task, 2000, 30000);
                 mPlantData.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
