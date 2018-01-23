@@ -417,10 +417,15 @@ class HorizontalRecyclerFragmentHelper {
         BindEquipmentModel model = new BindEquipmentModel("LedSet", plantModel.getPSIGN());
         String request = gson.toJson(model);
         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                0, request.getBytes().length, null, new MyLedStatusLongToothServiceResponseHandler());
+                0, request.getBytes().length, null, new MyLedStatusLongToothServiceResponseHandler(plantModel));
     }
 
     static class MyLedStatusLongToothServiceResponseHandler implements LongToothServiceResponseHandler {
+        EquipmentRspModel.ListBean plantModel;
+
+        public MyLedStatusLongToothServiceResponseHandler(EquipmentRspModel.ListBean plantModel) {
+            this.plantModel = plantModel;
+        }
 
         @Override
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
@@ -438,9 +443,9 @@ class HorizontalRecyclerFragmentHelper {
             if (code == 0) {
                 String ledStatus = ledSetRspModel.getSWITCH();
                 if (ledStatus != null && ledStatus.equals("On")) {
-                    EventBus.getDefault().post(new MessageEvent(LED_ON));
+                    EventBus.getDefault().post(new MessageEvent(LED_ON,plantModel.getLTID()));
                 } else {
-                    EventBus.getDefault().post(new MessageEvent(LED_OFF));
+                    EventBus.getDefault().post(new MessageEvent(LED_OFF,plantModel.getLTID()));
                 }
 
             }

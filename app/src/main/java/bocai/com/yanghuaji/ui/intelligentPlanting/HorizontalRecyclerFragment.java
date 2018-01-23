@@ -414,7 +414,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                             if (plantStatusRspModel.getCODE() == 0) {
                                                 Application.showToast("LED开启成功");
                                                 isLedOn = true;
-                                                EventBus.getDefault().post(new MessageEvent(LED_ON));
+                                                EventBus.getDefault().post(new MessageEvent(LED_ON,plantModel.getLTID()));
                                                 Run.onUiAsync(new Action() {
                                                     @Override
                                                     public void call() {
@@ -446,7 +446,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                             LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                             if (plantStatusRspModel.getCODE() == 0) {
                                                 Application.showToast("LED关闭成功");
-                                                EventBus.getDefault().post(new MessageEvent(LED_OFF));
+                                                EventBus.getDefault().post(new MessageEvent(LED_OFF,plantModel.getLTID()));
                                                 isLedOn = false;
                                                 Run.onUiAsync(new Action() {
                                                     @Override
