@@ -87,6 +87,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     public static final String TAG = HorizontalRecyclerFragment.class.getName();
     public static final String HORIZONTALRECYLER_REFRESH = "HORIZONTALRECYLER_REFRESH";
     public static final String HORIZONTALRECYLER_DELETE_SUCCESS = "HORIZONTALRECYLER_DELETE_SUCCESS";
+    public static final String HORIZONTALRECYLER_VISIABLE = "HORIZONTALRECYLER_VISIABLE";
     public static final String UNKNOWN = "- -";
     private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
     private Gson gson = new Gson();
@@ -140,6 +141,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
         if (!hidden){
             if (UiTool.isNetworkAvailable(getContext())&&isNeedLoadData){
                 isNeedLoadData = false;
@@ -281,7 +283,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     if (task!=null){
                         task.cancel();
                     }
-                }else if (messageEvent.getMessage().equals(VeticalRecyclerFragment.EQUIPMENT_LINE_ON)){
+                }else if (messageEvent.getMessage().equals(VeticalRecyclerFragment.EQUIPMENT_LINE_ON)&&
+                        (messageEvent.getType().equals(mData.getLTID()))){
                     mOffLine.setVisibility(View.INVISIBLE);
                     mFramOffline.setVisibility(View.INVISIBLE);
                 }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_ON)&&
@@ -671,7 +674,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                 Run.onUiAsync(new Action() {
                     @Override
                     public void call() {
-                        EventBus.getDefault().post(VeticalRecyclerFragment.EQUIPMENT_LINE_ON);
+                        EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.EQUIPMENT_LINE_ON,mPlantModel.getLTID()));
                         mOffLine.setVisibility(View.INVISIBLE);
                         mFrameOffLine.setVisibility(View.INVISIBLE);
                     }

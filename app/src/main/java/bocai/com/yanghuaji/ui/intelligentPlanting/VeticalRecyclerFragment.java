@@ -85,6 +85,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     private Gson gson = new Gson();
     public static final String VERTICALRECYCLER_DELETE_SUCCESS = "VERTICALRECYCLER_DELETE_SUCCESS";
     public static final String EQUIPMENT_LINE_ON = "EQUIPMENT_LINE_ON";
+    public static final String VERTICALRECYCLER_VISIABLE = "VERTICALRECYCLER_VISIABLE";
     private boolean isNeedLoadData = false;
 
     @Override
@@ -122,6 +123,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_VISIABLE));
         if (!hidden && isNeedLoadData) {
             if (UiTool.isNetworkAvailable(getContext())) {
                 isNeedLoadData = false;
@@ -259,7 +261,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         @Subscribe(threadMode = ThreadMode.MAIN)
         public void fresh(MessageEvent messageEvent) {
-            if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON)) {
+            if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON)&&
+                    (messageEvent.getType().equals(mData.getLTID()))) {
                 mImgTent.setVisibility(View.INVISIBLE);
             } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragment.HORIZONTALRECYLER_DELETE_SUCCESS)) {
                 task.cancel();
@@ -638,7 +641,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 Run.onUiAsync(new Action() {
                     @Override
                     public void call() {
-                        EventBus.getDefault().post(EQUIPMENT_LINE_ON);
+                        EventBus.getDefault().post(new MessageEvent(EQUIPMENT_LINE_ON,mPlantModel.getLTID()));
                         mImgTent.setVisibility(View.INVISIBLE);
                     }
                 });
