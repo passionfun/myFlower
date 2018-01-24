@@ -53,6 +53,8 @@ public class Account {
 
     //所有已经添加过的设备
     private static List<EquipmentRspModel.ListBean> listBeans;
+    private static int horizonVisiablePosition = 0;
+    private static int verticalVisiablePosition = 1;
 
     /**
      * 存储数据到XML文件，持久化
@@ -264,5 +266,21 @@ public class Account {
 
     public static void setServiceName(String serviceName) {
         Account.serviceName = serviceName;
+    }
+
+    public static int getHorizonVisiablePosition() {
+        return horizonVisiablePosition;
+    }
+
+    public static void setHorizonVisiablePosition(int horizonVisiablePosition) {
+        Account.horizonVisiablePosition = horizonVisiablePosition;
+    }
+
+    public static int getVerticalVisiablePosition() {
+        return verticalVisiablePosition;
+    }
+
+    public static void setVerticalVisiablePosition(int verticalVisiablePosition) {
+        Account.verticalVisiablePosition = verticalVisiablePosition;
     }
 }

@@ -19,21 +19,21 @@ public class EquipmentRspModel {
      * "Estatus":null,"Photo":"http://121.41.128.239:8082/yhj/web/upload/2017/11/20/1511165402861mjqjl.png"}]
      * CountPage : 1
      * Count : 3
-     *
-     *
-         * Id	设备id	String	false
-     Pstatus	种植状态  0未种植  1种植中  2种植结束	String	false
-     EquipName	设备名称	String	false
-     PlantName	植物名称	String	true
-     Pid        植物id
-     GroupName	分组名称	String	true
-     Days	记录天数	String	true
-     Degree	温度	String	true
-     Dstatus	温度状态  0偏低  1正常  2偏高	String	true
-     Wstatus	水位状态  0偏低  1正常  2偏高	String	true
-     Light	台灯   0关  1开	String	true
-     Estatus	Ec状态  0偏低  1正常  2偏高	String	true
-     Photo	图片url	String	true
+     * <p>
+     * <p>
+     * Id	设备id	String	false
+     * Pstatus	种植状态  0未种植  1种植中  2种植结束	String	false
+     * EquipName	设备名称	String	false
+     * PlantName	植物名称	String	true
+     * Pid        植物id
+     * GroupName	分组名称	String	true
+     * Days	记录天数	String	true
+     * Degree	温度	String	true
+     * Dstatus	温度状态  0偏低  1正常  2偏高	String	true
+     * Wstatus	水位状态  0偏低  1正常  2偏高	String	true
+     * Light	台灯   0关  1开	String	true
+     * Estatus	Ec状态  0偏低  1正常  2偏高	String	true
+     * Photo	图片url	String	true
      */
 
     private int CountPage;
@@ -64,7 +64,7 @@ public class EquipmentRspModel {
         this.List = List;
     }
 
-    public static class ListBean implements Serializable{
+    public static class ListBean implements Serializable {
         /**
          * Id : 1 //设备id
          * Type : 0
@@ -82,7 +82,6 @@ public class EquipmentRspModel {
          * Photo : http://121.41.128.239:8082/yhj/web/upload/2017/11/20/151116546875djd66.jpg
          * LTID
          * PSIGN
-         *
          */
 
         private String Id;
@@ -106,6 +105,19 @@ public class EquipmentRspModel {
         private String Series;
         private String LifeCycle;
         private String Lid;
+
+        public EquipmentDataModel buildEquipmentDataModel() {
+            EquipmentDataModel equipmentDataModel = new EquipmentDataModel();
+            equipmentDataModel.setDegree(Degree);
+            equipmentDataModel.setWater(Wstatus);
+            equipmentDataModel.setLight(Light);
+            equipmentDataModel.setEc(Estatus);
+            equipmentDataModel.setDstatus(Dstatus);
+            equipmentDataModel.setWstatus(Wstatus);
+            equipmentDataModel.setEstatus(Estatus);
+            equipmentDataModel.setLTID(LTID);
+            return equipmentDataModel;
+        }
 
         public String getLTID() {
             return LTID;

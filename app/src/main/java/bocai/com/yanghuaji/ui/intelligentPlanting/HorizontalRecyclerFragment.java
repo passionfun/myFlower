@@ -104,7 +104,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
         super.initWidget(root);
         EventBus.getDefault().register(this);
         GalleryLayoutManager layoutManager = new GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL);
-        layoutManager.attach(mRecyclerView, 1);
+        layoutManager.attach(mRecyclerView, 0);
         layoutManager.setItemTransformer(new ScaleTransformer());
         mRecyclerView.setAdapter(mAdapter = new Adapter());
         mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<EquipmentRspModel.ListBean>() {
@@ -124,7 +124,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             public void onItemSelected(RecyclerView recyclerView, View item, int position) {
                 mCurrentNum.setText((position + 1) + "");
-                EventBus.getDefault().post(new MessageEvent(position));
+                EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_VISIABLE,position));
+                Account.setHorizonVisiablePosition(position);
             }
         });
         mCurrentNum.setText("1");
@@ -306,20 +307,28 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     mUpdate.setText("最新版本");
                     mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal_nomal, 0, 0);
                 }else if (messageEvent.getMessage().equals(HORIZONTALRECYLER_VISIABLE)) {
-                    if (timer==null){
-                        timer = new Timer();
+                    if (messageEvent.getPosition()==getAdapterPosition()){
+                        if (timer==null){
+                            timer = new Timer();
+                        }
+                        if (task==null){
+                            task = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
+                                    HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
+                                    getEquipmentData(mData);
+                                }
+                            };
+                        }
+                        timer.schedule(task, 2000, 30000);
+                    }else {
+                        if (task!=null){
+                            task.cancel();
+                            task = null;
+                        }
                     }
-                    if (task==null){
-                        task = new TimerTask() {
-                            @Override
-                            public void run() {
-                                HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
-                                HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
-                                getEquipmentData(mData);
-                            }
-                        };
-                    }
-                    timer.schedule(task, 2000, 30000);
+
                 }else if (messageEvent.getMessage().equals( VERTICALRECYCLER_VISIABLE )) {
                     if (task!=null){
                         task.cancel();
@@ -330,7 +339,8 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             protected void onBind(final EquipmentRspModel.ListBean plantModel) {
-                setIsRecyclable(false);
+                //初始化数据
+                setDataSuccess(plantModel.buildEquipmentDataModel());
                 mEquipmentName.setText(plantModel.getEquipName());
                 mPlantName.setText(plantModel.getPlantName());
                 mGroupName.setText(plantModel.getGroupName());
@@ -403,6 +413,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
 
             private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
+                Log.d(TAG, "getEquipmentData:horizon "+plantModel.getEquipName());
                 if (TextUtils.isEmpty(plantModel.getPSIGN())) {
                     return;
                 }
@@ -673,10 +684,19 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         Log.d(TAG, "run: "+times);
                         if (!isResp) {
                             times++;
-                            myViewHolder.getEquipmentData(plantModel);
+                            if (TextUtils.isEmpty(plantModel.getPSIGN())) {
+                                return;
+                            }
+                            PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(plantModel.getPSIGN()),
+                                    1);
+                            String request = gson.toJson(model);
+                            if (!TextUtils.isEmpty(plantModel.getLTID())) {
+                                LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                                        0, request.getBytes().length, null, LongToothResponse.this);
+                            }
                         }
                         //如果没有三次没有数据返回，则认为设备离线
-                        if (times>3){
+                        if (times>2){
                             times=0;
                             offLine();
                         }

@@ -8,11 +8,15 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Fragment;
 import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.UiTool;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -38,47 +42,55 @@ public class IntelligentPlantingFragment extends Fragment {
     private HorizontalRecyclerFragment mHorizontalFragment;
     private VeticalRecyclerFragment mVerticalFragment;
     private boolean isHorizontal = true;
+    private boolean isFirstTime = true;
+    private Timer timer = new Timer();
 
 
     public static IntelligentPlantingFragment newInstance() {
         return new IntelligentPlantingFragment();
     }
 
-    public void switchType(){
+    public void switchType() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         isHorizontal = !isHorizontal;
-        if (isHorizontal){
-            EventBus.getDefault().postSticky(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
-            if (mVerticalFragment!=null){
+        if (isHorizontal) {
+            if (mVerticalFragment != null) {
                 transaction.hide(mVerticalFragment);
             }
-            if (mHorizontalFragment==null){
+            if (mHorizontalFragment == null) {
                 mHorizontalFragment = new HorizontalRecyclerFragment();
-                transaction.add(R.id.container,mHorizontalFragment);
-            }else {
+                transaction.add(R.id.container, mHorizontalFragment);
+            } else {
                 transaction.show(mHorizontalFragment);
             }
-        }else {
-            EventBus.getDefault().postSticky(new MessageEvent(VERTICALRECYCLER_VISIABLE));
-            if (mHorizontalFragment!=null){
+        } else {
+            if (mHorizontalFragment != null) {
                 transaction.hide(mHorizontalFragment);
             }
-            if (mVerticalFragment ==null){
+            if (mVerticalFragment == null) {
                 mVerticalFragment = new VeticalRecyclerFragment();
-                transaction.add(R.id.container,mVerticalFragment);
-            }else {
+                transaction.add(R.id.container, mVerticalFragment);
+            } else {
                 transaction.show(mVerticalFragment);
             }
         }
-//        if (isHorizontal){
-//            if (mHorizontalFragment==null) {
-//                mHorizontalFragment = new HorizontalRecyclerFragment();
-//            }
-//            transaction.replace(R.id.container,mHorizontalFragment);
-//        }else {
-//
-//        }
         transaction.commit();
+        if (isHorizontal) {
+                EventBus.getDefault().postSticky(new MessageEvent(HORIZONTALRECYLER_VISIABLE, Account.getHorizonVisiablePosition()));
+        } else {
+            if (isFirstTime){
+                isFirstTime= false;
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        EventBus.getDefault().postSticky(new MessageEvent(VERTICALRECYCLER_VISIABLE, Account.getVerticalVisiablePosition()));
+                    }
+                },2000);
+
+            }else {
+                EventBus.getDefault().postSticky(new MessageEvent(VERTICALRECYCLER_VISIABLE, Account.getVerticalVisiablePosition()));
+            }
+        }
     }
 
     @Override
@@ -89,10 +101,10 @@ public class IntelligentPlantingFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (mHorizontalFragment!=null){
+        if (mHorizontalFragment != null) {
             mHorizontalFragment.onHiddenChanged(hidden);
         }
-        if (mVerticalFragment!=null){
+        if (mVerticalFragment != null) {
             mVerticalFragment.onHiddenChanged(hidden);
         }
     }
@@ -103,8 +115,8 @@ public class IntelligentPlantingFragment extends Fragment {
         UiTool.setBlod(mEquipment);
         mHorizontalFragment = new HorizontalRecyclerFragment();
         FragmentTransaction mTransaction = getChildFragmentManager().beginTransaction();
-        mTransaction.add(R.id.container,mHorizontalFragment).commit();
-        EventBus.getDefault().postSticky(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
+        mTransaction.add(R.id.container, mHorizontalFragment).commit();
+        EventBus.getDefault().postSticky(new MessageEvent(HORIZONTALRECYLER_VISIABLE, Account.getHorizonVisiablePosition()));
     }
 
     @Override
@@ -114,15 +126,14 @@ public class IntelligentPlantingFragment extends Fragment {
     }
 
     @OnClick(R.id.img_show_left)
-    void onShowLeftClick(){
+    void onShowLeftClick() {
         mMainActivity.showLeft();
     }
 
     @OnClick(R.id.bt_go_to_add)
-    void onGoToAddClick(){
+    void onGoToAddClick() {
         AddEquipmentActivity.show(getContext());
     }
-
 
 
 }

@@ -17,9 +17,11 @@ public class MessageEvent {
         this.type = type;
     }
 
-    public MessageEvent(int position) {
+    public MessageEvent(String message, int position) {
+        this.message = message;
         this.position = position;
     }
+
 
     public MessageEvent(String message) {
         this.message = message;

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -98,7 +99,8 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     protected void initWidget(View root) {
         super.initWidget(root);
         EventBus.getDefault().register(this);
-        mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecycler.setLayoutManager(linearLayoutManager);
         mRecycler.setAdapter(mAdapter = new RecyclerAdapter<EquipmentRspModel.ListBean>() {
             @Override
             protected int getItemViewType(int position, EquipmentRspModel.ListBean plantModel) {
@@ -115,6 +117,16 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         mRecycler.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecycler.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         mRecycler.setLoadingListener(this);
+        mRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    Log.d(TAG, "getEquip:.......... ");
+                    EventBus.getDefault().postSticky(new MessageEvent(VERTICALRECYCLER_VISIABLE, linearLayoutManager.findFirstVisibleItemPosition()));
+                }
+            }
+        });
         mEmptyView.bind(mRecycler);
         mEmptyView.setEmptyImg(R.mipmap.img_equipment_empty);
         mEmptyView.setEmptyText(R.string.equipment_empty);
@@ -259,20 +271,20 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             new MainRecylerPresenter(this);
         }
 
-        @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
+        @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
         public void fresh(MessageEvent messageEvent) {
-            if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON)&&
+            if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON) &&
                     (messageEvent.getType().equals(mData.getLTID()))) {
                 mImgTent.setVisibility(View.INVISIBLE);
-            } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragment.HORIZONTALRECYLER_DELETE_SUCCESS)&&
+            } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragment.HORIZONTALRECYLER_DELETE_SUCCESS) &&
                     (messageEvent.getType().equals(mData.getLTID()))) {
                 task.cancel();
                 timer.cancel();
-            } else if (messageEvent.getMessage().equals(LED_ON)&&
+            } else if (messageEvent.getMessage().equals(LED_ON) &&
                     (messageEvent.getType().equals(mData.getLTID()))) {
                 isLedOn = true;
                 mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_open, 0, 0);
-            } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_OFF)&&
+            } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_OFF) &&
                     (messageEvent.getType().equals(mData.getLTID()))) {
                 isLedOn = false;
                 mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_close, 0, 0);
@@ -284,32 +296,48 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 mUpdate.setText("最新版本");
                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical_nomal, 0, 0);
                 mUpdate.setEnabled(false);
-            }else if (messageEvent.getMessage().equals(VERTICALRECYCLER_VISIABLE)) {
-                if (timer==null){
-                    timer = new Timer();
+            } else if (messageEvent.getMessage().equals(VERTICALRECYCLER_VISIABLE)) {
+                if (getAdapterPosition() <= (messageEvent.getPosition() + 2) && getAdapterPosition() >= messageEvent.getPosition()) {
+                    if (timer == null) {
+                        timer = new Timer();
+                    }
+                    if (task == null) {
+                        task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
+                                HorizontalRecyclerFragmentHelper.setLedMode(mData, mLedMode, mPresenter);
+                                getEquipmentData(mData);
+                            }
+                        };
+                        timer.schedule(task, 2000, 30000);
+                    }
+                } else {
+                    if (task != null) {
+                        task.cancel();
+                        task = null;
+                    }
+                    if (timer != null) {
+                        timer.cancel();
+                        timer = null;
+                    }
                 }
-                if (task==null){
-                    task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
-                            HorizontalRecyclerFragmentHelper.setLedMode(mData, mLedMode, mPresenter);
-                            getEquipmentData(mData);
-                        }
-                    };
-                }
-                timer.schedule(task, 2000, 30000);
-            }else if (messageEvent.getMessage().equals(HORIZONTALRECYLER_VISIABLE)) {
-                if (task!=null){
+            } else if (messageEvent.getMessage().equals(HORIZONTALRECYLER_VISIABLE)) {
+                if (task != null) {
                     task.cancel();
-                    task=null;
+                    task = null;
+                }
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
                 }
             }
         }
 
         @Override
         protected void onBind(final EquipmentRspModel.ListBean plantModel) {
-            setIsRecyclable(false);
+            //初始化数据
+            setDataSuccess(plantModel.buildEquipmentDataModel());
             mEquipmentName.setText(plantModel.getEquipName());
             mPlantName.setText(plantModel.getPlantName());
             mGroupName.setText(plantModel.getGroupName());
@@ -323,20 +351,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     .placeholder(R.mipmap.img_main_empty)
                     .into(mImage);
             setLed(plantModel);
-//            if (timer==null){
-//                timer = new Timer();
-//            }
-//            if (task==null){
-//                task = new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
-//                        HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
-//                        getEquipmentData(mData);
-//                    }
-//                };
-//            }
-//            timer.schedule(task, 2000, 30000);
             mPlantData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -404,6 +418,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         }
 
         private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
+            Log.d(TAG, "getEquipmentData: " + plantModel.getEquipName());
             if (TextUtils.isEmpty(plantModel.getPSIGN())) {
                 return;
             }
@@ -437,7 +452,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                         if (plantStatusRspModel.getCODE() == 0) {
                                             Application.showToast("LED开启成功");
                                             isLedOn = true;
-                                            EventBus.getDefault().post(new MessageEvent(LED_ON,plantModel.getLTID()));
+                                            EventBus.getDefault().post(new MessageEvent(LED_ON, plantModel.getLTID()));
                                             Run.onUiAsync(new Action() {
                                                 @Override
                                                 public void call() {
@@ -467,7 +482,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                         LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                         if (plantStatusRspModel.getCODE() == 0) {
                                             Application.showToast("LED关闭成功");
-                                            EventBus.getDefault().post(new MessageEvent(LED_OFF,plantModel.getLTID()));
+                                            EventBus.getDefault().post(new MessageEvent(LED_OFF, plantModel.getLTID()));
                                             isLedOn = false;
                                             Run.onUiAsync(new Action() {
                                                 @Override
@@ -594,7 +609,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         public void deleteEquipmentSuccess() {
             VeticalRecyclerFragment.this.mPresenter.getAllEquipments(Account.getToken(), "0", "0");
             //通知Horizontal停止timertask
-            EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_DELETE_SUCCESS,mData.getLTID()));
+            EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_DELETE_SUCCESS, mData.getLTID()));
             //通知Horizontal刷新页面
             EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
             //通知MainActivity刷新页面
@@ -626,7 +641,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             private ImageView mImgTent;
             private boolean isResp = false;
 
-            public LongToothResponse(final EquipmentRspModel.ListBean mPlantModel, boolean isLedOn,
+            public LongToothResponse(final EquipmentRspModel.ListBean mPlantModel, final boolean isLedOn,
                                      final ImageView imgTent) {
                 this.mPlantModel = mPlantModel;
                 this.isLedOn = isLedOn;
@@ -637,7 +652,14 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                         if (!isResp) {
                             Log.d(TAG, "run: " + times);
                             times++;
-                            getEquipmentData(mPlantModel);
+                            if (TextUtils.isEmpty(mPlantModel.getPSIGN())) {
+                                return;
+                            }
+                            PlantStatusModel model = new PlantStatusModel(1, "getStatus", 1, Integer.parseInt(mPlantModel.getPSIGN()),
+                                    1);
+                            String request = gson.toJson(model);
+                            LongTooth.request(mPlantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
+                                    0, request.getBytes().length, null, LongToothResponse.this);
                             //如果三次请求无数据返回，则认为设备离线
                             if (times > 3) {
                                 offLine();
@@ -664,7 +686,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 Run.onUiAsync(new Action() {
                     @Override
                     public void call() {
-                        EventBus.getDefault().post(new MessageEvent(EQUIPMENT_LINE_ON,mPlantModel.getLTID()));
+                        EventBus.getDefault().post(new MessageEvent(EQUIPMENT_LINE_ON, mPlantModel.getLTID()));
                         mImgTent.setVisibility(View.INVISIBLE);
                     }
                 });
