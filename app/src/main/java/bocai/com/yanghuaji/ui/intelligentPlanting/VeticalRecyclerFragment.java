@@ -323,20 +323,20 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     .placeholder(R.mipmap.img_main_empty)
                     .into(mImage);
             setLed(plantModel);
-            if (timer==null){
-                timer = new Timer();
-            }
-            if (task==null){
-                task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
-                        HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
-                        getEquipmentData(mData);
-                    }
-                };
-            }
-            timer.schedule(task, 2000, 30000);
+//            if (timer==null){
+//                timer = new Timer();
+//            }
+//            if (task==null){
+//                task = new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
+//                        HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
+//                        getEquipmentData(mData);
+//                    }
+//                };
+//            }
+//            timer.schedule(task, 2000, 30000);
             mPlantData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

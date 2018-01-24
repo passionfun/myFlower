@@ -48,7 +48,7 @@ public class IntelligentPlantingFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         isHorizontal = !isHorizontal;
         if (isHorizontal){
-            EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
+            EventBus.getDefault().postSticky(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
             if (mVerticalFragment!=null){
                 transaction.hide(mVerticalFragment);
             }
@@ -59,7 +59,7 @@ public class IntelligentPlantingFragment extends Fragment {
                 transaction.show(mHorizontalFragment);
             }
         }else {
-            EventBus.getDefault().post(new MessageEvent(VERTICALRECYCLER_VISIABLE));
+            EventBus.getDefault().postSticky(new MessageEvent(VERTICALRECYCLER_VISIABLE));
             if (mHorizontalFragment!=null){
                 transaction.hide(mHorizontalFragment);
             }
@@ -70,6 +70,14 @@ public class IntelligentPlantingFragment extends Fragment {
                 transaction.show(mVerticalFragment);
             }
         }
+//        if (isHorizontal){
+//            if (mHorizontalFragment==null) {
+//                mHorizontalFragment = new HorizontalRecyclerFragment();
+//            }
+//            transaction.replace(R.id.container,mHorizontalFragment);
+//        }else {
+//
+//        }
         transaction.commit();
     }
 
@@ -96,7 +104,7 @@ public class IntelligentPlantingFragment extends Fragment {
         mHorizontalFragment = new HorizontalRecyclerFragment();
         FragmentTransaction mTransaction = getChildFragmentManager().beginTransaction();
         mTransaction.add(R.id.container,mHorizontalFragment).commit();
-        EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
+        EventBus.getDefault().postSticky(new MessageEvent(HORIZONTALRECYLER_VISIABLE));
     }
 
     @Override

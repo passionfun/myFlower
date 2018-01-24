@@ -124,6 +124,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @Override
             public void onItemSelected(RecyclerView recyclerView, View item, int position) {
                 mCurrentNum.setText((position + 1) + "");
+                EventBus.getDefault().post(new MessageEvent(position));
             }
         });
         mCurrentNum.setText("1");
@@ -344,20 +345,20 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                         .placeholder(R.mipmap.img_main_empty)
                         .into(mImage);
                 setLed(plantModel);
-                if (timer==null){
-                    timer = new Timer();
-                }
-                if (task==null){
-                    task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
-                            HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
-                            getEquipmentData(mData);
-                        }
-                    };
-                }
-                timer.schedule(task, 2000, 30000);
+//                if (timer==null){
+//                    timer = new Timer();
+//                }
+//                if (task==null){
+//                    task = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            HorizontalRecyclerFragmentHelper.setLedSwitch(mData);
+//                            HorizontalRecyclerFragmentHelper.setLedMode(mData,mLedMode,mPresenter);
+//                            getEquipmentData(mData);
+//                        }
+//                    };
+//                }
+//                timer.schedule(task, 2000, 30000);
                 mPlantData.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

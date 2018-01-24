@@ -10,12 +10,16 @@ public class MessageEvent {
     public static final String FAILED = "FAILED";
     private String message;
     private String type;
+    private int position;
 
     public MessageEvent(String message, String type) {
         this.message = message;
         this.type = type;
     }
 
+    public MessageEvent(int position) {
+        this.position = position;
+    }
 
     public MessageEvent(String message) {
         this.message = message;
@@ -35,5 +39,13 @@ public class MessageEvent {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }
