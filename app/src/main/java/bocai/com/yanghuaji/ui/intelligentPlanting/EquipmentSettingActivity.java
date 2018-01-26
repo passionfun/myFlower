@@ -56,6 +56,9 @@ import xpod.longtooth.LongToothAttachment;
 import xpod.longtooth.LongToothServiceResponseHandler;
 import xpod.longtooth.LongToothTunnel;
 
+import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH;
+import static bocai.com.yanghuaji.ui.intelligentPlanting.VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH;
+
 /**
  * 作者 yuanfei on 2017/11/15.
  * 邮箱 yuanfei221@126.com
@@ -343,8 +346,17 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     @Override
     public void setupEquipmentSuccess(EquipmentSetupModel model) {
         EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(VERTICAL_RECYLER_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_REFRESH));
         model.save();
-        mPresenter.getAutoPara(equipmentId,mPlantBean.getPid(),mPlantBean.getLid());
+        if (mPlantBean.getWaterMode().equals(checkbox.isChecked()?"1":"0")){
+            //节水模式状态没有改变，则不用再次下发智能参数
+            finish();
+        }else {
+            //节水模式状态发生改变，重新下发智能参数
+            mPresenter.getAutoPara(equipmentId,mPlantBean.getPid(),mPlantBean.getLid());
+        }
+
 //        finish();
     }
 
@@ -375,7 +387,8 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
                     if (!isRspSuccess){
                         hideLoading();
 //                        isReturn = true;
-                        Application.showToast("设备无响应，保存失败");
+                        Application.showToast("设备无响应，节水状态下发失败");
+                        finish();
                     }
                 }
             },3000);
@@ -413,7 +426,8 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
 
     @Override
     public void getAutoParaFailed() {
-        Application.showToast("智能参数设置失败");
+        Application.showToast("获取智能参数失败，节水模式下发失败");
+        finish();
     }
 
     @Override

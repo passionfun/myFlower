@@ -105,6 +105,7 @@ public class EquipmentRspModel {
         private String Series;
         private String LifeCycle;
         private String Lid;
+        private String WaterMode;
 
         public EquipmentDataModel buildEquipmentDataModel() {
             EquipmentDataModel equipmentDataModel = new EquipmentDataModel();
@@ -285,6 +286,14 @@ public class EquipmentRspModel {
 
         public void setLid(String lid) {
             Lid = lid;
+        }
+
+        public String getWaterMode() {
+            return WaterMode;
+        }
+
+        public void setWaterMode(String waterMode) {
+            WaterMode = waterMode;
         }
     }
 }
