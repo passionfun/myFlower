@@ -137,10 +137,11 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
 
     @OnClick(R.id.tv_right)
     void onConfirmClick() {
-        if (isSaveClicked){
-            Application.showToast("请返回重新添加");
-            return;
-        }
+//        if (isSaveClicked){
+//            Application.showToast("请返回重新添加");
+//            return;
+//        }
+        isAllSuccess = true;
         showLoading();
         addEquipments();
     }
@@ -203,7 +204,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
                 public void run() {
                     if (!isRsp) {
                         Application.showToast("绑定无响应");
-                        EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID(),MessageEvent.FAILED));
+//                        EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID(),MessageEvent.FAILED));
                         isAllSuccess = false;
                     }
                 }
@@ -453,9 +454,9 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         public void onEidtPersonDataSuccess(MessageEvent messageEvent) {
             if (messageEvent.getMessage().equals(mData.getLTID())&&
                     messageEvent.getType().equals(MessageEvent.FAILED)) {
-                mCbAdd.setChecked(false);
+                mCbAdd.setChecked(true);
                 mCbAdd.setVisibility(View.GONE);
-                equipmentModels.remove(mData);
+//                equipmentModels.remove(mData);
                 mAddFailed.setVisibility(View.VISIBLE);
                 mAddSuccess.setVisibility(View.GONE);
             }else if (messageEvent.getMessage().equals(mData.getLTID())&&
@@ -463,6 +464,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
                 mCbAdd.setVisibility(View.GONE);
                 mAddFailed.setVisibility(View.GONE);
                 mAddSuccess.setVisibility(View.VISIBLE);
+                equipmentModels.remove(mData);
             }
         }
 
