@@ -78,7 +78,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
     private static final int MY_PERMISSION_REQUEST_CODE = 10002;
     private String[] storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
     public static final String MODIFY_PERSONAL_DATA_SUCCESS = "MODIFY_PERSONAL_DATA_SUCCESS";
     final int DATE_DIALOG = 1;
     private int mYear, mMonth, mDay;
@@ -107,8 +107,19 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
         User user = Account.getUser();
         if (user != null) {
             mName.setText(user.getNickName());
-            if (user.getSex() != null)
-                mSex.setText(user.getSex().equals("1") ? "男" : "女");
+            if (user.getSex() != null) {
+                switch (user.getSex()) {
+                    case "0":
+                        mSex.setText("保密");
+                        break;
+                    case "1":
+                        mSex.setText("男");
+                        break;
+                    default:
+                        mSex.setText("女");
+                        break;
+                }
+            }
             if (!TextUtils.isEmpty(user.getBirthday())) {
                 mBirthday.setText(user.getBirthday());
             } else {
@@ -145,6 +156,11 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
                         mSex.setText("女");
                         popupWindow.dismiss();
                         break;
+                    case R.id.tv_secret:
+                        // 保密
+                        mSex.setText("保密");
+                        popupWindow.dismiss();
+                        break;
                 }
             }
         });
@@ -168,7 +184,6 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
         String name = mName.getText().toString();
         String set = mSex.getText().toString();
         String birthday = mBirthday.getText().toString();
-
         mPresenter.modifyData(token, portraitId, name, set, birthday);
     }
 
@@ -209,7 +224,9 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
         ActivityUtil.setBackgroundAlpha(this, 0.19f);
         picPopupWindow.showAtLocation(mRootLayout, Gravity.BOTTOM, 0, 30);
     }
+
     private int REQUEST_CODE = 10006;
+
     private void doSelectPhoto() {
         ImageSelectorUtils.openPhoto(this, REQUEST_CODE, false, 1);
 
@@ -293,15 +310,15 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
         }
 
         if (requestCode == WriteDiaryActivity.TAKE_PHOTO_REQUEST_ONE) {
-            if (resultCode==0){
+            if (resultCode == 0) {
                 return;
             }
             cropPhoto(getRealFilePath(EditPersonalDataActivity.this, imageUri));
         }
 
-        if (requestCode == REQUEST_CODE&&data!=null) {
+        if (requestCode == REQUEST_CODE && data != null) {
             ArrayList<String> stringArrayListExtra = data.getStringArrayListExtra(ImageSelectorUtils.SELECT_RESULT);
-            if (stringArrayListExtra!=null){
+            if (stringArrayListExtra != null) {
                 cropPhoto(stringArrayListExtra.get(0));
             }
         }

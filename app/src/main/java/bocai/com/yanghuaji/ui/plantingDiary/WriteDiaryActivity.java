@@ -41,6 +41,7 @@ import java.util.Map;
 import boc.com.imgselector.utils.ImageSelectorUtils;
 import bocai.com.yanghuaji.R;
 import boc.com.imgselector.GlideApp;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.ImageModel;
@@ -344,8 +345,12 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
             }
             mPresenter.addPhotos(params);
         } else {
-            String token = Account.getToken();
             String content = mContent.getText().toString();
+            if (TextUtils.isEmpty(content)){
+                Application.showToast("图片和文字内容不能同时为空");
+                return;
+            }
+            String token = Account.getToken();
             String diaryId = mDiaryId;
             mPresenter.writeDiary(token, content, mLocationStr, "", diaryId);
         }

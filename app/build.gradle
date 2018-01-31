@@ -107,7 +107,7 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //万能adapter
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
-    implementation files('libs/lt4-a-4.0.e_h_20170310.jar')
+//    implementation files('libs/lt4-a-4.0.e_h_20170310.jar')
     compile 'cn.jiguang.sdk:jpush:3.1.0'
     compile 'cn.jiguang.sdk:jcore:1.1.8'
     implementation files('libs/SocialSDK_QQ_Simplify.jar')
@@ -128,6 +128,6 @@ dependencies {
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     implementation project(':imgselector')
-
     compile 'cn.yipianfengye.android:zxing-library:2.2'
+    implementation files('libs/lt4-a-4.tmp_20180130143727.jar')
 }

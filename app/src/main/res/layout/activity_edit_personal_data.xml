@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:drawableEnd="@mipmap/img_left_arrow"
-        android:text="女"
+        android:text="保密"
         android:textColor="#333333"
         android:textSize="15sp" />
 

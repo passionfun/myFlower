@@ -19,7 +19,7 @@ import bocai.com.yanghuaji.util.ActivityUtil;
 
 public class SexSelectPopupWindow extends PopupWindow {
     private ItemClickListener mListener;
-    private TextView mMan, mWomac;
+    private TextView mMan, mWomac,mSecret;
 
     public void setOnTtemClickListener(ItemClickListener listener) {
         mListener = listener;
@@ -32,6 +32,7 @@ public class SexSelectPopupWindow extends PopupWindow {
         this.setContentView(view);
         mMan = view.findViewById(R.id.tv_take_photo);
         mWomac = view.findViewById(R.id.tv_from_gallery);
+        mSecret = view.findViewById(R.id.tv_secret);
         mMan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,6 +40,12 @@ public class SexSelectPopupWindow extends PopupWindow {
             }
         });
         mWomac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onItemClick(view);
+            }
+        });
+        mSecret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onItemClick(view);

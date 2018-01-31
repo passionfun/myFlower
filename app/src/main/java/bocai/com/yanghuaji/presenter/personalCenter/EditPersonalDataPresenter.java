@@ -35,7 +35,19 @@ public class EditPersonalDataPresenter extends BasePresenter<EditPersonalDataCon
     @Override
     public void modifyData(String token, String portraitId, String name, String sex, String birthday) {
         view.showLoading();
-        Observable<BaseRspModel<AccountRspModel>> observable = Network.remote().modifyData(token, portraitId, name, sex.equals("男") ? 1 : 2, birthday);
+        int sexPara;
+        switch (sex) {
+            case "保密":
+                sexPara = 0;
+                break;
+            case "男":
+                sexPara = 1;
+                break;
+            default:
+                sexPara = 2;
+                break;
+        }
+        Observable<BaseRspModel<AccountRspModel>> observable = Network.remote().modifyData(token, portraitId, name, sexPara, birthday);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel<AccountRspModel>>() {
