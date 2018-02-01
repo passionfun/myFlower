@@ -60,7 +60,7 @@ public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContrac
     @Override
     public void getMsmCode(String phone) {
         //请求类型， 0：注册， 1：找回密码， 2：修改手机， 3：验证码登陆， 4：绑定手机 开发阶段默认为1234
-        Observable<BaseRspModel> observable = Network.remote().getSmsCode(phone, "3");
+        Observable<BaseRspModel> observable = Network.remote().getSmsCode(phone, "1");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel>() {
