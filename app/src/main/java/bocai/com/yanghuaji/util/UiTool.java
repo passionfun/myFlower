@@ -177,7 +177,7 @@ public class UiTool {
 
     }
 
-
+    private static AlertDialog alertDialog;
     /**
      * 被踢下线
      */
@@ -195,9 +195,14 @@ public class UiTool {
                 LoginActivity.show(context);
             }
         });
-        deleteDialog.show();
+        alertDialog = deleteDialog.show();
     }
 
+    public static void closeConflictDialog(){
+        if (alertDialog!=null){
+            alertDialog.dismiss();
+        }
+    }
 
     // 水平进度条的最大值
     private static final int MAX_PROGRESS = 100;

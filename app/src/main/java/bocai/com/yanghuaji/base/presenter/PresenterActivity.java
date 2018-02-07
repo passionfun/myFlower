@@ -1,9 +1,6 @@
 package bocai.com.yanghuaji.base.presenter;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
-
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
@@ -16,7 +13,6 @@ import bocai.com.yanghuaji.util.UiTool;
 
 public abstract class PresenterActivity<Presenter extends BaseContract.Presenter> extends Activity
         implements BaseContract.View<Presenter> {
-    private QMUITipDialog mProgressDialog;
     protected Presenter mPresenter;
 
     @Override
@@ -41,14 +37,11 @@ public abstract class PresenterActivity<Presenter extends BaseContract.Presenter
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-        }
-
         if (mPresenter != null){
             mPresenter.destroy();
         }
+
+        UiTool.closeConflictDialog();
     }
     Dialog dialog;
     @Override
