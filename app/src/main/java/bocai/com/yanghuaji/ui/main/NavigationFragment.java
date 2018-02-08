@@ -1,6 +1,8 @@
 package bocai.com.yanghuaji.ui.main;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -34,6 +36,9 @@ public class NavigationFragment extends Fragment {
     @BindView(R.id.tv_personal_center)
     TextView mTvPersonalCenter;
 
+    @BindView(R.id.tv_shop)
+    TextView mTvShop;
+
 
     @Override
     protected int getContentLayoutId() {
@@ -51,25 +56,36 @@ public class NavigationFragment extends Fragment {
         setDefaultFragment();
     }
 
-    @OnClick(R.id.tv_intelligent_planting)
-    void onIntellingentPlantClick() {
-        resetTabState();
-        setTabState(mTvIntelligentPlanting, R.mipmap.img_intelligent_planting_selected, getColor(R.color.selected));
-        switchFrgment(0);
-    }
-
-    @OnClick(R.id.tv_planting_diary)
-    void onPlantingDiaryClick() {
-        resetTabState();
-        setTabState(mTvPlantingDiary, R.mipmap.img_planting_diary_selected, getColor(R.color.selected));
-        switchFrgment(1);
-    }
-
-    @OnClick(R.id.tv_personal_center)
-    void onPersonalCenterClick() {
-        resetTabState();
-        setTabState(mTvPersonalCenter, R.mipmap.img_persnal_center_selected, getColor(R.color.selected));
-        switchFrgment(2);
+    @OnClick({R.id.tv_intelligent_planting, R.id.tv_planting_diary, R.id.tv_personal_center, R.id.tv_shop})
+    void onTabClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_intelligent_planting:
+                //智能种植
+                resetTabState();
+                setTabState(mTvIntelligentPlanting, R.mipmap.img_intelligent_planting_selected, getColor(R.color.selected));
+                switchFrgment(0);
+                break;
+            case R.id.tv_planting_diary:
+                //种植日记
+                resetTabState();
+                setTabState(mTvPlantingDiary, R.mipmap.img_planting_diary_selected, getColor(R.color.selected));
+                switchFrgment(1);
+                break;
+            case R.id.tv_personal_center:
+                //个人中心
+                resetTabState();
+                setTabState(mTvPersonalCenter, R.mipmap.img_persnal_center_selected, getColor(R.color.selected));
+                switchFrgment(2);
+                break;
+            case R.id.tv_shop:
+                //商城
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse("https://h5.youzan.com/v2/showcase/homepage?alias=1dnmgamr");
+                intent.setData(content_url);
+                startActivity(intent);
+                break;
+        }
     }
 
     private void setTabState(TextView textView, int image, int color) {
@@ -81,7 +97,6 @@ public class NavigationFragment extends Fragment {
         setTabState(mTvIntelligentPlanting, R.mipmap.img_intelligent_planting_nomal, getColor(R.color.normal));
         setTabState(mTvPlantingDiary, R.mipmap.img_planting_diary_nomal, getColor(R.color.normal));
         setTabState(mTvPersonalCenter, R.mipmap.img_persnal_center_nomal, getColor(R.color.normal));
-
     }
 
     private int getColor(int i) {
@@ -136,7 +151,7 @@ public class NavigationFragment extends Fragment {
         transaction.add(R.id.sub_content, mIntelligentPlantingFragment).commit();
     }
 
-    public void switchType(){
+    public void switchType() {
         mIntelligentPlantingFragment.switchType();
     }
 

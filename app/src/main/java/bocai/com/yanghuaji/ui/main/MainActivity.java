@@ -29,6 +29,7 @@ import bocai.com.yanghuaji.base.Application;
 import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
@@ -73,14 +74,14 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @BindView(R.id.tv_name)
     TextView mName;
 
-    @BindView(R.id.recycler_all_equipment)
-    RecyclerView mRecyclerAll;
+    @BindView(R.id.recycler_default_equipment)
+    RecyclerView mRecyclerDefault;
 
     @BindView(R.id.view_all_equipments)
     View mDivideAllEquipments;
 
-    @BindView(R.id.cb_all_equipments)
-    CheckBox mCbAllEquipments;
+    @BindView(R.id.cb_default_equipments)
+    CheckBox mCbDefaultEquipments;
 
 
     @BindView(R.id.recycler_group)
@@ -88,7 +89,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
     //    private int page = 1;
 //    private int pageGroup = 1;
-    private RecyclerAdapter<EquipmentRspModel.ListBean> mAdapter;
+    private RecyclerAdapter<EquipmentCard> mAdapter;
     private RecyclerAdapter<GroupRspModel.ListBean> mGroupAdapter;
     public static final String MAIN_ACTIVITY_REFRESH = "MAIN_ACTIVITY_REFRESH";
     public static final String GROUP_REFRESH = "GROUP_REFRESH";
@@ -223,28 +224,28 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     }
 
     private void initAllEquipments() {
-        mRecyclerAll.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerAll.setAdapter(mAdapter = new RecyclerAdapter<EquipmentRspModel.ListBean>() {
+        mRecyclerDefault.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerDefault.setAdapter(mAdapter = new RecyclerAdapter<EquipmentCard>() {
             @Override
-            protected int getItemViewType(int position, EquipmentRspModel.ListBean listBean) {
+            protected int getItemViewType(int position, EquipmentCard equipmentCard) {
                 return R.layout.item_equipment;
             }
 
             @Override
-            protected ViewHolder<EquipmentRspModel.ListBean> onCreateViewHolder(View root, int viewType) {
+            protected ViewHolder<EquipmentCard> onCreateViewHolder(View root, int viewType) {
                 return new MainActivity.ViewHolder(root);
             }
         });
 
 
-        mCbAllEquipments.setOnClickListener(new View.OnClickListener() {
+        mCbDefaultEquipments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mCbAllEquipments.isChecked()) {
-                    mRecyclerAll.setVisibility(View.GONE);
+                if (mCbDefaultEquipments.isChecked()) {
+                    mRecyclerDefault.setVisibility(View.GONE);
                     mDivideAllEquipments.setVisibility(View.VISIBLE);
                 } else {
-                    mRecyclerAll.setVisibility(View.VISIBLE);
+                    mRecyclerDefault.setVisibility(View.VISIBLE);
                     if (mAdapter.getItemCount() > 0) {
                         mDivideAllEquipments.setVisibility(View.GONE);
                     }
@@ -254,7 +255,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
 
 //        page = 1;
-        mPresenter.getAllEquipments(Account.getToken(), "0", "0");
+        mPresenter.getDefaultEquipments(Account.getToken());
     }
 
 
@@ -270,11 +271,11 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     }
 
 
-    @OnClick(R.id.frame_shopping)
-    void onShoppingClick() {
-        ShopActivity.show(this);
-        hideLeft();
-    }
+//    @OnClick(R.id.frame_shopping)
+//    void onShoppingClick() {
+//        ShopActivity.show(this);
+//        hideLeft();
+//    }
 
     public void showLeft() {
         mDrawerLayout.openDrawer(GravityCompat.START);
@@ -300,14 +301,14 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         return super.onKeyUp(keyCode, event);
     }
 
-    @Override
-    public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
-        mAdapter.replace(listBeans);
-        if (mAdapter.getItems().size() == 0) {
-            mRecyclerAll.setVisibility(View.GONE);
-            mDivideAllEquipments.setVisibility(View.VISIBLE);
-        }
-    }
+//    @Override
+//    public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
+//        mAdapter.replace(listBeans);
+//        if (mAdapter.getItems().size() == 0) {
+//            mRecyclerDefault.setVisibility(View.GONE);
+//            mDivideAllEquipments.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     @Override
     public void getAllGroupsSuccess(List<GroupRspModel.ListBean> listBeans) {
@@ -347,13 +348,22 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         }
     }
 
+    @Override
+    public void getDefaultEquipmentsSuccess(List<EquipmentCard> equipmentCards) {
+        mAdapter.replace(equipmentCards);
+        if (mAdapter.getItems().size() == 0) {
+            mRecyclerDefault.setVisibility(View.GONE);
+            mDivideAllEquipments.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @Override
     protected MainActivityContract.Presenter initPresenter() {
         return new MainActivityPresenter(this);
     }
 
-    class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentRspModel.ListBean> {
+    class ViewHolder extends RecyclerAdapter.ViewHolder<EquipmentCard> {
         @BindView(R.id.tv_equipment_name)
         TextView mName;
 
@@ -363,8 +373,8 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
 
         @Override
-        protected void onBind(EquipmentRspModel.ListBean listBean) {
-            mName.setText(listBean.getEquipName());
+            protected void onBind(EquipmentCard equipmentCard) {
+            mName.setText(equipmentCard.getEquipName());
         }
     }
 

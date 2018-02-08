@@ -78,7 +78,7 @@
                 android:orientation="vertical">
 
                 <CheckBox
-                    android:id="@+id/cb_all_equipments"
+                    android:id="@+id/cb_default_equipments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="18dp"
@@ -89,7 +89,7 @@
                     android:drawableEnd="@drawable/selector_cb_arrow"
                     android:drawablePadding="10dp"
                     android:drawableStart="@mipmap/img_all_equrment"
-                    android:text="所有设备"
+                    android:text="默认设备"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 
@@ -115,7 +115,7 @@
                     <!--android:visibility="gone" />-->
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_all_equipment"
+                    android:id="@+id/recycler_default_equipment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone" />
@@ -187,28 +187,28 @@
 
             </FrameLayout>
 
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:background="#E4E4E4" />
+            <!--<View-->
+                <!--android:layout_width="0.5dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="#E4E4E4" />-->
 
-            <FrameLayout
-                android:foreground="@drawable/ic_touch_fg"
-                android:id="@+id/frame_shopping"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="13dp"
-                    android:drawableStart="@mipmap/img_shop"
-                    android:text="@string/go_to_shop"
-                    android:textColor="#333333"
-                    android:textSize="13sp" />
-            </FrameLayout>
+            <!--<FrameLayout-->
+                <!--android:foreground="@drawable/ic_touch_fg"-->
+                <!--android:id="@+id/frame_shopping"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent">-->
+                <!--<TextView-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:drawablePadding="13dp"-->
+                    <!--android:drawableStart="@mipmap/img_shop"-->
+                    <!--android:text="@string/go_to_shop"-->
+                    <!--android:textColor="#333333"-->
+                    <!--android:textSize="13sp" />-->
+            <!--</FrameLayout>-->
 
         </LinearLayout>
 

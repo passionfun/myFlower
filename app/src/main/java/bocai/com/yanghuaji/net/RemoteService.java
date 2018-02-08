@@ -108,6 +108,13 @@ public interface RemoteService {
     Observable<BaseRspModel<EquipmentListModel>> getEquipmentList(@Field("Token") String token);
 
 
+
+    //获取默认设备列表
+    @POST("group/nogroup_equip")
+    @FormUrlEncoded
+    Observable<BaseRspModel<EquipmentListModel>> getDefaultEquipmentList(@Field("Token") String token);
+
+
     //写日记
     @POST("diary/create_diary")
     @FormUrlEncoded

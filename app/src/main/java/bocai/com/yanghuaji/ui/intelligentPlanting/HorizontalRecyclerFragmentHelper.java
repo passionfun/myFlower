@@ -62,15 +62,17 @@ class HorizontalRecyclerFragmentHelper {
                     @Override
                     public void call() {
                         progressDialog = UiTool.showProgressBarDialog(activity);
+                        if (timer ==null)
+                            timer=new Timer();
                         timer.schedule(new TimerTask() {
                             int times = 1;
-
                             @Override
                             public void run() {
                                 times++;
                                 if (times > 99) {
                                     this.cancel();
                                     timer.cancel();
+                                    timer=null;
                                     Application.showToast("升级失败");
                                     progressDialog.cancel();
                                 }
@@ -83,6 +85,7 @@ class HorizontalRecyclerFragmentHelper {
                             public void onClick(DialogInterface dialog, int which) {
                                 progressDialog.cancel();
                                 timer.cancel();
+                                timer=null;
                             }
                         });
                     }
@@ -115,6 +118,7 @@ class HorizontalRecyclerFragmentHelper {
                                     }, 5000, 5000);
                                 } else {
                                     timer.cancel();
+                                    timer=null;
                                     Application.showToast("升级失败");
                                     progressDialog.cancel();
                                 }
@@ -155,6 +159,7 @@ class HorizontalRecyclerFragmentHelper {
                         } else if (code == 2) {//code=2:升级成功
                             checkUpdateStateTimer.cancel();
                             timer.cancel();
+                            timer=null;
                             progressDialog.cancel();
                             EventBus.getDefault().post(new MessageEvent(UPDATE_SUCCESS));
                             Application.showToast("升级成功");
@@ -164,6 +169,7 @@ class HorizontalRecyclerFragmentHelper {
                                 failTimes=0;
                                 checkUpdateStateTimer.cancel();
                                 timer.cancel();
+                                timer=null;
                                 progressDialog.cancel();
                                 Application.showToast("升级失败");
                             }

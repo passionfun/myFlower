@@ -58,6 +58,21 @@
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/img_persnal_center_nomal"
             android:text="@string/personal_center"/>
+
+        <TextView
+            android:paddingTop="8dp"
+            android:foreground="@drawable/ic_touch_fg"
+            android:id="@+id/tv_shop"
+            android:textSize="10sp"
+            android:textColor="#BCBCBC"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:drawablePadding="4dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/img_shop"
+            android:text="@string/go_to_shopping"/>
+
     </LinearLayout>
 
 

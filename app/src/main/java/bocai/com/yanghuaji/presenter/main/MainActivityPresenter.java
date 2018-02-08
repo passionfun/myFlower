@@ -1,13 +1,17 @@
 package bocai.com.yanghuaji.presenter.main;
 
+import java.util.List;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
 import bocai.com.yanghuaji.model.VersionInfoModel;
+import bocai.com.yanghuaji.model.db.EquipmentListModel;
 import bocai.com.yanghuaji.net.Network;
 import bocai.com.yanghuaji.util.persistence.Account;
 import io.reactivex.Observable;
@@ -30,39 +34,39 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
         super(view);
     }
 
-    @Override
-    public void getAllEquipments(String token, String limit, String page) {
-        Observable<BaseRspModel<EquipmentRspModel>> observable = Network.remote().getAllEquipments(token, limit, page);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseRspModel<EquipmentRspModel>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BaseRspModel<EquipmentRspModel> equipmentRspModelBaseRspModel) {
-                        if (equipmentRspModelBaseRspModel.getReturnCode().equals("200")) {
-                            view.getAllEquipmentsSuccess(equipmentRspModelBaseRspModel.getData().getList());
-                        } else if (equipmentRspModelBaseRspModel.getReturnCode().equals("9997")) {
-                            view.onConnectionConflict();
-                        }else {
-                            Application.showToast(equipmentRspModelBaseRspModel.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        view.showError(R.string.net_error);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
+//    @Override
+//    public void getAllEquipments(String token, String limit, String page) {
+//        Observable<BaseRspModel<EquipmentRspModel>> observable = Network.remote().getAllEquipments(token, limit, page);
+//        observable.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<BaseRspModel<EquipmentRspModel>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(BaseRspModel<EquipmentRspModel> equipmentRspModelBaseRspModel) {
+//                        if (equipmentRspModelBaseRspModel.getReturnCode().equals("200")) {
+//                            view.getAllEquipmentsSuccess(equipmentRspModelBaseRspModel.getData().getList());
+//                        } else if (equipmentRspModelBaseRspModel.getReturnCode().equals("9997")) {
+//                            view.onConnectionConflict();
+//                        }else {
+//                            Application.showToast(equipmentRspModelBaseRspModel.getMsg());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        view.showError(R.string.net_error);
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+//    }
 
     @Override
     public void getAllGroups(String token, String limit, String page) {
@@ -159,6 +163,44 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
                     @Override
                     public void onError(Throwable e) {
 
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getDefaultEquipments(String token) {
+        view.showLoading();
+        Observable<BaseRspModel<EquipmentListModel>> observable = Network.remote().getDefaultEquipmentList(token);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<EquipmentListModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<EquipmentListModel> equipmentListModelBaseRspModel) {
+                        if (equipmentListModelBaseRspModel.getReturnCode().equals("200")) {
+                            EquipmentListModel model = equipmentListModelBaseRspModel.getData();
+                            List<EquipmentCard> list = model.getList();
+                            view.getDefaultEquipmentsSuccess(list);
+                        }else if (equipmentListModelBaseRspModel.getReturnCode().equals("9997")) {
+                            view.onConnectionConflict();
+                        }else {
+                            Application.showToast(equipmentListModelBaseRspModel.getMsg());
+                        }
+                        view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
                     }
 
                     @Override

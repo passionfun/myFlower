@@ -43,28 +43,28 @@ public class ShopActivity extends Activity {
     protected void initData() {
         super.initData();
         ActivityUtil.initWebSetting(mWebView.getSettings());
-        mWebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.d("test", url);
-                view.loadUrl(url);
-                return true;
-            }
-        });
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                if (newProgress == 100) {
-                    progress.setVisibility(View.GONE);
-                } else {
-                    if (progress.getVisibility() == View.GONE) {
-                        progress.setVisibility(View.VISIBLE);
-                    }
-                    progress.setProgress(newProgress);
-                }
-                super.onProgressChanged(view, newProgress);
-            }
-        });
+//        mWebView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                Log.d("test", url);
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+//        mWebView.setWebChromeClient(new WebChromeClient() {
+//            @Override
+//            public void onProgressChanged(WebView view, int newProgress) {
+//                if (newProgress == 100) {
+//                    progress.setVisibility(View.GONE);
+//                } else {
+//                    if (progress.getVisibility() == View.GONE) {
+//                        progress.setVisibility(View.VISIBLE);
+//                    }
+//                    progress.setProgress(newProgress);
+//                }
+//                super.onProgressChanged(view, newProgress);
+//            }
+//        });
         mWebView.loadUrl("https://h5.youzan.com/v2/showcase/homepage?alias=1dnmgamr");
     }
 

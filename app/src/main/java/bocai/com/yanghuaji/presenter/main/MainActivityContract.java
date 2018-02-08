@@ -3,6 +3,7 @@ package bocai.com.yanghuaji.presenter.main;
 import java.util.List;
 
 import bocai.com.yanghuaji.base.presenter.BaseContract;
+import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentConfigModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
@@ -16,7 +17,7 @@ import bocai.com.yanghuaji.model.VersionInfoModel;
 public interface MainActivityContract {
 
     interface View extends BaseContract.View<Presenter>{
-        void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans );
+//        void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans );
 
         void getAllGroupsSuccess(List<GroupRspModel.ListBean> listBeans);
 
@@ -25,10 +26,12 @@ public interface MainActivityContract {
         void getEquipmentConfigFailed();
 
         void checkVersionSuccess(VersionInfoModel model);
+
+        void getDefaultEquipmentsSuccess(List<EquipmentCard> equipmentCards);
     }
 
     interface Presenter extends BaseContract.Presenter{
-        void getAllEquipments(String token,String limit,String page);
+//        void getAllEquipments(String token,String limit,String page);
 
         void getAllGroups(String token,String limit,String page);
 
@@ -36,5 +39,7 @@ public interface MainActivityContract {
 
         //	平台   0 ios  1 android
         void checkVersion(String platform);
+
+        void getDefaultEquipments(String token);
     }
 }
