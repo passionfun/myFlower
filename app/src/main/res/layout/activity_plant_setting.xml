@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#ffffff"
-    android:id="@+id/ll_root">
+    android:orientation="vertical">
 
     <include layout="@layout/layout_toolbar" />
 
@@ -19,9 +19,9 @@
 
     <TextView
         android:id="@+id/tv_plant_method"
-        android:layout_marginEnd="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:text="去设置"
@@ -50,11 +50,11 @@
         android:id="@+id/tv_plant_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="去添加"
-        android:layout_marginEnd="25dp"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
+        android:text="去添加"
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -77,9 +77,9 @@
 
     <TextView
         android:id="@+id/tv_plant_cycle"
-        android:layout_marginEnd="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
@@ -94,5 +94,27 @@
         android:layout_marginStart="29dp"
         android:layout_marginTop="12dp"
         android:background="#C6C6C6" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="更改植物名称请在上一步设置页面点击“删除当前数据”"
+        android:textColor="#999999"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="25dp"
+        android:text="后再次进行操作"
+        android:textColor="#999999"
+        android:textSize="13sp" />
 
 </LinearLayout>

@@ -106,7 +106,7 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     @OnClick(R.id.tv_plant_setting)
     void onPlantSettingClick() {
         PlantSettingActivity.show(this, mPlantBean);
-        finish();
+//        finish();
     }
 
     @OnClick(R.id.tv_equipment_info)
