@@ -62,9 +62,9 @@ public class EditGroupPresenter extends BasePresenter<EditGroupContract.View>
     }
 
     @Override
-    public void editGroup(String groupId, String token, String groupName, String deleteIds) {
+    public void editGroup(String groupId, String token, String groupName, String deleteIds,String addIds) {
         view.showLoading();
-        Observable<BaseRspModel<EquipmentsByGroupModel>> observable = Network.remote().editGroup(groupId, token, groupName, deleteIds);
+        Observable<BaseRspModel<EquipmentsByGroupModel>> observable = Network.remote().editGroup(groupId, token, groupName, deleteIds,addIds);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel<EquipmentsByGroupModel>>() {

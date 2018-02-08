@@ -19,6 +19,6 @@ public interface EditGroupContract {
     interface Presenter extends BaseContract.Presenter{
         void getEquipmentsByGroup(String token,String id);
 
-        void editGroup(String groupId,String token,String groupName,String deleteIds);
+        void editGroup(String groupId,String token,String groupName,String deleteIds,String addIds);
     }
 }

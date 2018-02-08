@@ -163,6 +163,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     @Override
     protected void initData() {
         super.initData();
+        mGroupName.setText(mPlantBean.getGroupName());
         EquipmentSetupModel equipmentSetupModel = SQLite.select()
                 .from(EquipmentSetupModel.class)
                 .where(EquipmentSetupModel_Table.Id.eq(equipmentId))
@@ -174,7 +175,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             tvLightStart.setText(equipmentSetupModel.getLightStart());
             tvBanStart.setText(equipmentSetupModel.getBanStart());
             tvBanStop.setText(equipmentSetupModel.getBanStop());
-            mGroupName.setText(equipmentSetupModel.getGroupName());
+//            mGroupName.setText(equipmentSetupModel.getGroupName());
             lightStart = equipmentSetupModel.getLightStart();
             banStart = equipmentSetupModel.getBanStart();
             banStop = equipmentSetupModel.getBanStop();

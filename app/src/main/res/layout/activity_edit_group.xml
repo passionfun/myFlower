@@ -43,5 +43,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="27dp"
+        android:textColor="#999999"
+        android:textSize="13sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="默认分组"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_default_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
 
 </LinearLayout>

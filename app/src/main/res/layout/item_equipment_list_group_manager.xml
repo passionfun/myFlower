@@ -25,7 +25,7 @@
             android:layout_height="40dp"
             android:layout_marginEnd="27dp"
             android:scaleType="center"
-            android:src="@mipmap/img_delete_group" />
+            android:src="@mipmap/img_delete_icon" />
     </LinearLayout>
 
 

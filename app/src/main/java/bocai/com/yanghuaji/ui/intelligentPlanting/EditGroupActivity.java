@@ -29,6 +29,9 @@ import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static bocai.com.yanghuaji.ui.intelligentPlanting.HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH;
+import static bocai.com.yanghuaji.ui.intelligentPlanting.VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH;
+
 /**
  * 作者 yuanfei on 2017/11/27.
  * 邮箱 yuanfei221@126.com
@@ -55,13 +58,19 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
     @BindView(R.id.tv_content)
     TextView mContent;
 
+    @BindView(R.id.recycler_default_group)
+    RecyclerView mRecyclerDefaultGroup;
+
     public static final String KEY_GROUP_ID = "KEY_GROUP_ID";
     public static final String KEY_GROUP_NAME = "KEY_GROUP_NAME";
     private RecyclerAdapter<EquipmentCard> mAdapter;
+    private RecyclerAdapter<EquipmentCard> mAdapterDefaultGroup;
     private String mGroupId;
     private String mGroupName;
     private List<String> deleteIds = new ArrayList<>();
+    private List<String> addIds = new ArrayList<>();
     private String ids;
+    private String addIdsStr;
 
     //显示的入口
     public static void show(Context context, String groupId, String groupName) {
@@ -98,7 +107,12 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
             buffer.append(deleteId).append(",");
         }
         ids = buffer.toString();
-        mPresenter.editGroup(mGroupId, token, mGroupName, ids);
+        StringBuffer addBuffer = new StringBuffer();
+        for (String deleteId : addIds) {
+            addBuffer.append(deleteId).append(",");
+        }
+        addIdsStr = addBuffer.toString();
+        mPresenter.editGroup(mGroupId, token, mGroupName, ids,addIdsStr);
     }
 
     @Override
@@ -122,6 +136,24 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
             }
         });
         mPresenter.getEquipmentsByGroup(Account.getToken(), mGroupId);
+        initDefaultGroup();
+//        onSaveClick();
+    }
+
+
+    private void initDefaultGroup(){
+        mRecyclerDefaultGroup.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerDefaultGroup.setAdapter(mAdapterDefaultGroup = new RecyclerAdapter<EquipmentCard>() {
+            @Override
+            protected int getItemViewType(int position, EquipmentCard equipmentCard) {
+                return R.layout.item_equipment_list_group_manager;
+            }
+
+            @Override
+            protected ViewHolder<EquipmentCard> onCreateViewHolder(View root, int viewType) {
+                return new MyDefaultGroupViewHolder(root);
+            }
+        });
     }
 
     @Override
@@ -129,14 +161,18 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
         mAdapter.replace(model.getList());
         mContent.setText("已添加" + mAdapter.getItemCount() + "个设备");
         mEtName.setText(model.getGroupName());
+        mAdapterDefaultGroup.replace(model.getNoGroupList());
     }
 
     @Override
     public void editGroupSuccess(EquipmentsByGroupModel model) {
         EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_REFRESH));
+        EventBus.getDefault().post(new MessageEvent(VERTICAL_RECYLER_REFRESH));
         mAdapter.replace(model.getList());
         mContent.setText("已添加" + mAdapter.getItemCount() + "个设备");
         mEtName.setText(model.getGroupName());
+        mAdapterDefaultGroup.replace(model.getNoGroupList());
     }
 
     @Override
@@ -153,7 +189,7 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
         ImageView mImage;
 
         private String mDeleteId;
-        private boolean isDelete = false;
+//        private boolean isDelete = false;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -163,21 +199,74 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
         protected void onBind(EquipmentCard card) {
             mName.setText(card.getEquipName());
             mDeleteId = card.getId();
+            mImage.setImageResource(R.mipmap.img_delete_icon);
         }
 
         @OnClick(R.id.img_delete)
         void onDeleteClick() {
             //删除设备操作
-            isDelete = !isDelete;
-            if (isDelete) {
-                deleteIds.add(mDeleteId);
-                mImage.setImageResource(R.mipmap.img_edit_group);
-            } else {
-                deleteIds.remove(mDeleteId);
-                mImage.setImageResource(R.mipmap.img_delete_group);
+//            isDelete = !isDelete;
+//            if (isDelete) {
+//                deleteIds.add(mDeleteId);
+//                mImage.setImageResource(R.mipmap.img_edit_group);
+//            } else {
+//                deleteIds.remove(mDeleteId);
+//                mImage.setImageResource(R.mipmap.img_delete_group);
+//            }
+            if (addIds.contains(mDeleteId)){
+                addIds.remove(mDeleteId);
             }
+            if (!deleteIds.contains(mDeleteId)){
+                deleteIds.add(mDeleteId);
+            }
+            mAdapter.remove(mData);
+            mAdapterDefaultGroup.add(mData);
         }
     }
 
+
+    class MyDefaultGroupViewHolder extends RecyclerAdapter.ViewHolder<EquipmentCard> {
+        @BindView(R.id.tv_name)
+        TextView mName;
+
+        @BindView(R.id.img_delete)
+        ImageView mImage;
+
+        private String mDeleteId;
+//        private boolean isDelete = false;
+
+        public MyDefaultGroupViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        protected void onBind(EquipmentCard card) {
+            mName.setText(card.getEquipName());
+            mDeleteId = card.getId();
+            mImage.setImageResource(R.mipmap.img_add);
+        }
+
+        @OnClick(R.id.img_delete)
+        void onDeleteClick() {
+            //添加设备操作
+//            isDelete = !isDelete;
+//            if (isDelete) {
+//                deleteIds.add(mDeleteId);
+//                mImage.setImageResource(R.mipmap.img_edit_group);
+//            } else {
+//                deleteIds.remove(mDeleteId);
+//                mImage.setImageResource(R.mipmap.img_delete_group);
+//            }
+
+            if (deleteIds.contains(mDeleteId)){
+                deleteIds.remove(mDeleteId);
+            }
+            if (!addIds.contains(mDeleteId)){
+                addIds.add(mDeleteId);
+            }
+            mAdapter.add(mData);
+            mAdapterDefaultGroup.remove(mData);
+        }
+    }
 
 }

@@ -190,7 +190,8 @@ public interface RemoteService {
     @POST("group/edit_group")
     @FormUrlEncoded
     Observable<BaseRspModel<EquipmentsByGroupModel>> editGroup(@Field("Id") String groupId,@Field("Token") String token,
-                                                               @Field("GroupName") String groupName,@Field("Eids") String deleteIds);
+                                                               @Field("GroupName") String groupName,@Field("Eids") String deleteIds,
+                                                               @Field("AddEids") String addIds);
 
 
 //    //分组列表（获取所有分组）
