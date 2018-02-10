@@ -577,6 +577,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
 
             @Override
             public void onConnectionConflict() {
+                Account.logOff(getContext());
                 UiTool.onConnectionConflict(getContext());
             }
 

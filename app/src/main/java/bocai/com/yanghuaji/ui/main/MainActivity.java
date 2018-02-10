@@ -177,7 +177,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         super.onDestroy();
         EventBus.getDefault().post(new MessageEvent("MAINACTIVITY_DESTROY"));
         EventBus.getDefault().unregister(this);
-        Account.clearJPushAlias(this);
+//        Account.clearJPushAlias(this);
     }
 
     @Override

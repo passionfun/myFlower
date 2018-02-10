@@ -17,6 +17,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 import java.io.File;
 
 import bocai.com.yanghuaji.base.common.Factory;
+import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
 import bocai.com.yanghuaji.util.persistence.Account;
 import cn.jpush.android.api.JPushInterface;
 
@@ -36,6 +37,8 @@ public class Application extends android.app.Application {
         Account.loadEquipmentConfig(this);
         Factory.setup();
         //该接口需在init接口之前调用，避免出现部分日志没打印的情况
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.setAlias("");
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         UMShareAPI.get(this);

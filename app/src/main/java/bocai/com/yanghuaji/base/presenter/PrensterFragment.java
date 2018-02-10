@@ -57,6 +57,7 @@ public abstract class PrensterFragment<Presenter extends BaseContract.Presenter>
 
     @Override
     public void onConnectionConflict() {
+        Account.logOff(getContext());
         UiTool.onConnectionConflict(getContext());
     }
 
