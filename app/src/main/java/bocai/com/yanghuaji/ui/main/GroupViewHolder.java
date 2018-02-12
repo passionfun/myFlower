@@ -6,9 +6,15 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.util.List;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.base.common.Common;
+import bocai.com.yanghuaji.model.EquipmentRspModel;
 import bocai.com.yanghuaji.model.GroupRspModel;
+import bocai.com.yanghuaji.ui.intelligentPlanting.PlantingDateAct;
+import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -46,6 +52,19 @@ public class GroupViewHolder extends RecyclerAdapter.ViewHolder<GroupRspModel.Li
             @Override
             protected ViewHolder<GroupRspModel.ListBean.EquipmentBean> onCreateViewHolder(View root, int viewType) {
                 return new MyViewHolder(root);
+            }
+        });
+        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<GroupRspModel.ListBean.EquipmentBean>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, GroupRspModel.ListBean.EquipmentBean equipmentBean) {
+                super.onItemClick(holder, equipmentBean);
+                List<EquipmentRspModel.ListBean> listBeans = Account.getListBeans();
+                for (EquipmentRspModel.ListBean bean : listBeans) {
+                    if (bean.getEquipName().equals(equipmentBean.getEquipName())){
+                        String url = Common.Constance.H5_BASE + "product.html?id=" + bean.getId();
+                            PlantingDateAct.show(mRecycler.getContext(), url, bean);
+                    }
+                }
             }
         });
         mAdapter.replace(listBean.getEquipment());

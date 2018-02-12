@@ -28,6 +28,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
+import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentConfigModel;
@@ -41,6 +42,7 @@ import bocai.com.yanghuaji.presenter.main.MainActivityPresenter;
 import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
 import bocai.com.yanghuaji.ui.intelligentPlanting.AddWifiActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
+import bocai.com.yanghuaji.ui.intelligentPlanting.PlantingDateAct;
 import bocai.com.yanghuaji.ui.intelligentPlanting.ShopActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuaji.updateVersion.manager.UpdateManager;
@@ -234,6 +236,20 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             @Override
             protected ViewHolder<EquipmentCard> onCreateViewHolder(View root, int viewType) {
                 return new MainActivity.ViewHolder(root);
+            }
+        });
+
+        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<EquipmentCard>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentCard equipmentCard) {
+                super.onItemClick(holder, equipmentCard);
+                List<EquipmentRspModel.ListBean> listBeans = Account.getListBeans();
+                for (EquipmentRspModel.ListBean bean : listBeans) {
+                    if (bean.getEquipName().equals(equipmentCard.getEquipName())){
+                        String url = Common.Constance.H5_BASE + "product.html?id=" + bean.getId();
+                        PlantingDateAct.show(mName.getContext(), url, bean);
+                    }
+                }
             }
         });
 
