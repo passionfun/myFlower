@@ -25,6 +25,7 @@ import bocai.com.yanghuaji.base.Application;
 import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.RecyclerAdapter;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantPresenter;
@@ -67,8 +68,9 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
 
     private int page = 1;
     private RecyclerAdapter<PlantRspModel.PlantCard> mAdapter;
-    public static String KEY_EQUIPMENT_NAME = "KEY_EQUIPMENT_NAME";
-    public static String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
+//    public static String KEY_EQUIPMENT_NAME = "KEY_EQUIPMENT_NAME";
+//    public static String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
+    public static String KEY_EQUIPMENT_CARD = "KEY_EQUIPMENT_CARD";
     public static String KEY_PLANT_CARD = "KEY_PLANT_CARD";
 
     private String mEquipmentName;
@@ -76,13 +78,14 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
     private String mPlantName;
     private String mPlantId;
     private String className;
+    private EquipmentCard mEquipmentCard;
 
 
     //显示的入口
-    public static void show(Context context, String equipmentName, String equipmentId) {
+    public static void show(Context context, EquipmentCard equipmentCard) {
         Intent intent = new Intent(context, AddPlantActivity.class);
-        intent.putExtra(KEY_EQUIPMENT_NAME, equipmentName);
-        intent.putExtra(KEY_EQUIPMENT_ID, equipmentId);
+        intent.putExtra(KEY_EQUIPMENT_CARD, equipmentCard);
+//        intent.putExtra(KEY_EQUIPMENT_ID, equipmentId);
         context.startActivity(intent);
     }
 
@@ -93,8 +96,11 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-        mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
-        mEquipmentName = bundle.getString(KEY_EQUIPMENT_NAME);
+        mEquipmentCard = (EquipmentCard) bundle.getSerializable(KEY_EQUIPMENT_CARD);
+        mEquipmentId = mEquipmentCard.getId();
+        mEquipmentName = mEquipmentCard.getEquipName();
+//        mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
+//        mEquipmentName = bundle.getString(KEY_EQUIPMENT_NAME);
         className = bundle.getString(PlantSettingActivity.KEY_CLASS_NAME);
         return super.initArgs(bundle);
     }
@@ -168,7 +174,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
 
     @OnClick(R.id.tv_right)
     void onSkipClick() {
-        FirstSettingActivity.show(this, mEquipmentName, mEquipmentId);
+        FirstSettingActivity.show(this, mEquipmentCard);
         AddPlantActivity.this.finish();
     }
 
@@ -228,7 +234,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
                     mPlantName = card.getPlantName();
                     mPlantId = card.getId();
                     if (TextUtils.isEmpty(className)){
-                        FirstSettingActivity.show(AddPlantActivity.this, mEquipmentName, mEquipmentId, mPlantName, mPlantId);
+                        FirstSettingActivity.show(AddPlantActivity.this,mEquipmentCard, mPlantName, mPlantId);
                     }else {
                         Intent intent = new Intent();
                         intent.putExtra(KEY_PLANT_CARD,card);
@@ -277,7 +283,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
             String plantName = plantCard.getPlantName();
             String plantId = plantCard.getId();
             if (TextUtils.isEmpty(className)){
-                FirstSettingActivity.show(AddPlantActivity.this, mEquipmentName, mEquipmentId, plantName, plantId);
+                FirstSettingActivity.show(AddPlantActivity.this, mEquipmentCard, plantName, plantId);
             }else {
                 Intent intent = new Intent();
                 intent.putExtra(KEY_PLANT_CARD,plantCard);

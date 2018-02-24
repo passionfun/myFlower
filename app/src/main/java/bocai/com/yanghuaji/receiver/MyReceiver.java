@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.Iterator;
 
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.ui.personalCenter.SystemNotificationActivity;
 import cn.jpush.android.api.JPushInterface;
 
@@ -49,7 +50,7 @@ public class MyReceiver extends BroadcastReceiver {
                 Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
                 //打开自定义的Activity
 //                SystemNotificationActivity.show(context);
-                Intent i = new Intent(context, SystemNotificationActivity.class);
+                Intent i = new Intent(context, MainActivity.class);
 //                i.putExtras(bundle);
 //                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

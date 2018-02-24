@@ -4,6 +4,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
 import bocai.com.yanghuaji.model.BaseRspModel;
+import bocai.com.yanghuaji.model.LifeCycleModel;
 import bocai.com.yanghuaji.net.Network;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -26,6 +27,40 @@ public class FirstSettingPresenter extends BasePresenter<FirstSettingContract.Vi
     }
 
     @Override
+    public void lifeCycle() {
+        view.showLoading();
+        Observable<BaseRspModel<LifeCycleModel>> observable = Network.remote().lifeCycle();
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<LifeCycleModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<LifeCycleModel> lifeCycleModelBaseRspModel) {
+                        if (lifeCycleModelBaseRspModel.getReturnCode().equals("200")) {
+                            view.lifeCycleSuccess(lifeCycleModelBaseRspModel.getData());
+                        } else {
+                            Application.showToast(lifeCycleModelBaseRspModel.getMsg());
+                        }
+                        view.hideLoading();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
     public void setup(String token, String equipmentName, String plantName, String plantId, String equipmentId) {
         view.showLoading();
         Observable<BaseRspModel> observable = Network.remote().firstSetting(token, equipmentName, plantName, plantId, equipmentId);
@@ -41,9 +76,9 @@ public class FirstSettingPresenter extends BasePresenter<FirstSettingContract.Vi
                     public void onNext(BaseRspModel baseRspModel) {
                         if (baseRspModel.getReturnCode().equals("200")) {
                             view.setupSuccess();
-                        }else if (baseRspModel.getReturnCode().equals("9997")) {
+                        } else if (baseRspModel.getReturnCode().equals("9997")) {
                             view.onConnectionConflict();
-                        }else {
+                        } else {
                             Application.showToast(baseRspModel.getMsg());
                         }
 

@@ -22,6 +22,7 @@ import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
+import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.EquipmentModel;
 import bocai.com.yanghuaji.model.EquipmentPhotoModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.ConnectSuccessContract;
@@ -56,15 +57,16 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
     ImageView mPhoto;
 
     public static final String KEY_JSON_CONTENT = "KEY_JSON_CONTENT";
-    public static final String KEY_EQUIPMENT_ID = "KEY_EQUIPMENT_ID";
-    public static final String KEY_EQUIPMENT_NAME = "KEY_EQUIPMENT_NAME";
+    public static final String KEY_EQUIPMENT_CARD = "KEY_EQUIPMENT_CARD";
+//    public static final String KEY_EQUIPMENT_NAME = "KEY_EQUIPMENT_NAME";
     private String jsonContent;
     private String mEquipmentName;
     private String mEquipmentId;
     private List<String> mScanData;
+    private EquipmentCard mEquipmentCard;
 
     //显示的入口
-    public static void show(Context context, String jsonString,String equipmentId,String equipmentName,ArrayList<String> scanData) {
+    public static void show(Context context, String jsonString, EquipmentCard equipmentCard, ArrayList<String> scanData) {
         if (TextUtils.isEmpty(jsonString)) {
             Application.showToast("参数错误");
             return;
@@ -72,9 +74,8 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
         Intent intent = new Intent(context, ConnectSuccessActivity.class);
         intent.putStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA,scanData);
         intent.putExtra(KEY_JSON_CONTENT, jsonString);
-        intent.putExtra(KEY_EQUIPMENT_ID, equipmentId);
-        intent.putExtra(KEY_EQUIPMENT_NAME, equipmentName);
-
+        intent.putExtra(KEY_EQUIPMENT_CARD, equipmentCard);
+//        intent.putExtra(KEY_EQUIPMENT_NAME, equipmentName);
         context.startActivity(intent);
     }
 
@@ -87,8 +88,9 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
     protected boolean initArgs(Bundle bundle) {
         mScanData = getIntent().getStringArrayListExtra(AddEquipmentDisplayActivity.KEY_SCAN_DATA);
         jsonContent = bundle.getString(KEY_JSON_CONTENT);
-        mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
-        mEquipmentName = bundle.getString(KEY_EQUIPMENT_NAME);
+        mEquipmentCard = (EquipmentCard) bundle.getSerializable(KEY_EQUIPMENT_CARD);
+        mEquipmentId = mEquipmentCard.getId();
+        mEquipmentName = mEquipmentCard.getEquipName();
         return super.initArgs(bundle);
     }
 
@@ -110,7 +112,7 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
 
             @Override
             public void onFinish() {
-                AddPlantActivity.show(ConnectSuccessActivity.this,mEquipmentName,mEquipmentId);
+                AddPlantActivity.show(ConnectSuccessActivity.this,mEquipmentCard);
                 finish();
             }
         }.start();

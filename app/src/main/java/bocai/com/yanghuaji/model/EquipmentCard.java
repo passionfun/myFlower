@@ -1,11 +1,13 @@
 package bocai.com.yanghuaji.model;
 
+import java.io.Serializable;
+
 /**
  * 作者 yuanfei on 2017/11/23.
  * 邮箱 yuanfei221@126.com
  */
 
-public class EquipmentCard {
+public class EquipmentCard implements Serializable{
 
     /**
      * Id : 2
@@ -16,6 +18,7 @@ public class EquipmentCard {
     private String EquipName;
     private String LTID;
     private String PlantTime;
+    private String PSIGN;
 
     public String getPlantTime() {
         return PlantTime;
@@ -47,5 +50,13 @@ public class EquipmentCard {
 
     public void setLTID(String LTID) {
         this.LTID = LTID;
+    }
+
+    public String getPSIGN() {
+        return PSIGN;
+    }
+
+    public void setPSIGN(String PSIGN) {
+        this.PSIGN = PSIGN;
     }
 }

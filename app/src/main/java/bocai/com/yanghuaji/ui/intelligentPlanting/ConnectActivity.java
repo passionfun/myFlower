@@ -251,7 +251,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
         timer.cancel();
         EventBus.getDefault().post(new MessageEvent(VeticalRecyclerFragment.VERTICAL_RECYLER_REFRESH));
         EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
-        ConnectSuccessActivity.show(ConnectActivity.this, jsonContent, card.getId(), card.getEquipName(), (ArrayList<String>) mScanData);
+        ConnectSuccessActivity.show(ConnectActivity.this, jsonContent, card, (ArrayList<String>) mScanData);
         finish();
     }
 
