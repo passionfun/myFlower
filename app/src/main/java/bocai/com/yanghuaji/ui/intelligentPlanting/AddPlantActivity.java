@@ -29,6 +29,7 @@ import bocai.com.yanghuaji.model.EquipmentCard;
 import bocai.com.yanghuaji.model.PlantRspModel;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantContract;
 import bocai.com.yanghuaji.presenter.intelligentPlanting.AddPlantPresenter;
+import bocai.com.yanghuaji.ui.main.MainActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.UiTool;
 import bocai.com.yanghuaji.util.widget.EmptyView;
@@ -97,8 +98,10 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
     @Override
     protected boolean initArgs(Bundle bundle) {
         mEquipmentCard = (EquipmentCard) bundle.getSerializable(KEY_EQUIPMENT_CARD);
-        mEquipmentId = mEquipmentCard.getId();
-        mEquipmentName = mEquipmentCard.getEquipName();
+        if (mEquipmentCard!=null){
+            mEquipmentId = mEquipmentCard.getId();
+            mEquipmentName = mEquipmentCard.getEquipName();
+        }
 //        mEquipmentId = bundle.getString(KEY_EQUIPMENT_ID);
 //        mEquipmentName = bundle.getString(KEY_EQUIPMENT_NAME);
         className = bundle.getString(PlantSettingActivity.KEY_CLASS_NAME);
@@ -174,7 +177,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
 
     @OnClick(R.id.tv_right)
     void onSkipClick() {
-        FirstSettingActivity.show(this, mEquipmentCard);
+        MainActivity.show(this);
         AddPlantActivity.this.finish();
     }
 
