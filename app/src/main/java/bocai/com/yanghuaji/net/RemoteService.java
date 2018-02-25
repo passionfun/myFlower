@@ -141,7 +141,9 @@ public interface RemoteService {
     @POST("equipment/first_setup")
     @FormUrlEncoded
     Observable<BaseRspModel> firstSetting(@Field("Token") String token, @Field("EquipName") String equipmentName,
-                                                        @Field("PlantName") String plantName,@Field("Pid") String plantId,@Field("Id") String equipmentId);
+                                                        @Field("PlantName") String plantName,@Field("Pid") String plantId,
+                                          @Field("Id") String equipmentId,@Field("LifeCycle") String lifeCycle,
+                                          @Field("Lid") String lifeCycleId);
 
 
     //通用植物

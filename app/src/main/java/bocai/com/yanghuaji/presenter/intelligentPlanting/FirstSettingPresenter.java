@@ -1,8 +1,11 @@
 package bocai.com.yanghuaji.presenter.intelligentPlanting;
 
+import java.util.List;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.BasePresenter;
+import bocai.com.yanghuaji.model.AutoModel;
 import bocai.com.yanghuaji.model.BaseRspModel;
 import bocai.com.yanghuaji.model.LifeCycleModel;
 import bocai.com.yanghuaji.net.Network;
@@ -61,9 +64,11 @@ public class FirstSettingPresenter extends BasePresenter<FirstSettingContract.Vi
     }
 
     @Override
-    public void setup(String token, String equipmentName, String plantName, String plantId, String equipmentId) {
+    public void setup(String token, String equipmentName, String plantName, String plantId, String equipmentId,
+                      String lifeCycle,String lifeCycleId) {
         view.showLoading();
-        Observable<BaseRspModel> observable = Network.remote().firstSetting(token, equipmentName, plantName, plantId, equipmentId);
+        Observable<BaseRspModel> observable = Network.remote().firstSetting(token, equipmentName, plantName,
+                plantId, equipmentId,lifeCycle,lifeCycleId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel>() {
@@ -88,6 +93,41 @@ public class FirstSettingPresenter extends BasePresenter<FirstSettingContract.Vi
                     @Override
                     public void onError(Throwable e) {
                         view.showError(R.string.net_error);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getAutoPara(String equipmentId, String plantId, String lifeCircleId) {
+        view.showLoading();
+        Observable<BaseRspModel<List<AutoModel.ParaBean>>> observable = Network.remote().
+                getAutoPara(equipmentId,plantId, lifeCircleId);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BaseRspModel<List<AutoModel.ParaBean>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRspModel<List<AutoModel.ParaBean>> listBaseRspModel) {
+                        if (listBaseRspModel.getReturnCode().equals("200")) {
+                            view.getAutoParaSuccess(listBaseRspModel.getData());
+                        }else {
+                            view.hideLoading();
+                            view.getAutoParaFailed();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.getAutoParaFailed();
                     }
 
                     @Override
