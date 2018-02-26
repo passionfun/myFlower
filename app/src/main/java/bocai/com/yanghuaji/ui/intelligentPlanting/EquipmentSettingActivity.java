@@ -164,26 +164,26 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     protected void initData() {
         super.initData();
         mGroupName.setText(mPlantBean.getGroupName());
-        EquipmentSetupModel equipmentSetupModel = SQLite.select()
-                .from(EquipmentSetupModel.class)
-                .where(EquipmentSetupModel_Table.Id.eq(equipmentId))
-                .querySingle();
-        if (equipmentSetupModel != null) {
-            etEquipName.setText(equipmentSetupModel.getEquipName());
-            // 	节水模式  0关  1开
-            checkbox.setChecked(equipmentSetupModel.getWaterMode().equals("1"));
-            tvLightStart.setText(equipmentSetupModel.getLightStart());
-            tvBanStart.setText(equipmentSetupModel.getBanStart());
-            tvBanStop.setText(equipmentSetupModel.getBanStop());
-//            mGroupName.setText(equipmentSetupModel.getGroupName());
-            lightStart = equipmentSetupModel.getLightStart();
-            banStart = equipmentSetupModel.getBanStart();
-            banStop = equipmentSetupModel.getBanStop();
-            if (!TextUtils.isEmpty(banStart)&&!TextUtils.isEmpty(banStop)){
-                mNoDistrubStart = DateUtils.getTimeSecond(banStart)+"";
-                mNoDistrubEnd = DateUtils.getTimeSecond(banStop)+"";
-            }
-        }
+//        EquipmentSetupModel equipmentSetupModel = SQLite.select()
+//                .from(EquipmentSetupModel.class)
+//                .where(EquipmentSetupModel_Table.Id.eq(equipmentId))
+//                .querySingle();
+//        if (equipmentSetupModel != null) {
+//            etEquipName.setText(equipmentSetupModel.getEquipName());
+//            // 	节水模式  0关  1开
+//            checkbox.setChecked(equipmentSetupModel.getWaterMode().equals("1"));
+//            tvLightStart.setText(equipmentSetupModel.getLightStart());
+//            tvBanStart.setText(equipmentSetupModel.getBanStart());
+//            tvBanStop.setText(equipmentSetupModel.getBanStop());
+////            mGroupName.setText(equipmentSetupModel.getGroupName());
+//            lightStart = equipmentSetupModel.getLightStart();
+//            banStart = equipmentSetupModel.getBanStart();
+//            banStop = equipmentSetupModel.getBanStop();
+//            if (!TextUtils.isEmpty(banStart)&&!TextUtils.isEmpty(banStop)){
+//                mNoDistrubStart = DateUtils.getTimeSecond(banStart)+"";
+//                mNoDistrubEnd = DateUtils.getTimeSecond(banStop)+"";
+//            }
+//        }
     }
 
     @OnClick(R.id.tv_group)
@@ -364,6 +364,20 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
 
     @Override
     public void equipmentInfoSuccess(EquipmentInfoModel model) {
+
+        etEquipName.setText(model.getEquipName());
+        // 	节水模式  0关  1开
+        checkbox.setChecked(model.getWaterMode().equals("1"));
+        tvLightStart.setText(model.getLightStart());
+        tvBanStart.setText(model.getBanStart());
+        tvBanStop.setText(model.getBanStop());
+        lightStart = model.getLightStart();
+        banStart = model.getBanStart();
+        banStop = model.getBanStop();
+        if (!TextUtils.isEmpty(banStart)&&!TextUtils.isEmpty(banStop)){
+            mNoDistrubStart = DateUtils.getTimeSecond(banStart)+"";
+            mNoDistrubEnd = DateUtils.getTimeSecond(banStop)+"";
+        }
         leastNoLedTime = Integer.valueOf(model.getBanTime());
     }
     final Gson gson = new Gson();
