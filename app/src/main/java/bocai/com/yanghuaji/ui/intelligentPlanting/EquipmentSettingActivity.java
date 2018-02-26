@@ -191,6 +191,10 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         mPresenter.getGroupList(Account.getToken());
     }
 
+    //补光开启是否设置成功
+    public static boolean isSetLightOnSuccess = false;
+    //免打扰是否设置成功
+    public static boolean isSetNoDisturbSuccess = false;
     @OnClick(R.id.tv_right)
     void onSave() {
         if (checkbox.isChecked()) {
@@ -218,6 +222,8 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
                 }
             }
             EquipmentSettingHelper.setLightOn(mBengin, mUUID, mLongToothId);
+        }else {
+            isSetLightOnSuccess= true;
         }
         //设置免打扰时间
         if (!TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd)) {
@@ -231,11 +237,26 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             }else {
                 EquipmentSettingHelper.setNoDisturb(mNoDistrubStart, mNoDistrubEnd, mUUID, mLongToothId);
             }
-        }else if ((TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd))||(!TextUtils.isEmpty(mNoDistrubStart) && TextUtils.isEmpty(mNoDistrubEnd))){
+        }else if ((TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd))||
+                (!TextUtils.isEmpty(mNoDistrubStart) && TextUtils.isEmpty(mNoDistrubEnd))){
             Application.showToast("请选择正确的时间");
             return;
+        }else {
+            isSetNoDisturbSuccess=true;
         }
-        mPresenter.setupEquipment(map);
+        showLoading();
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                hideLoading();
+                if (isSetNoDisturbSuccess&&isSetLightOnSuccess){
+                    mPresenter.setupEquipment(map);
+                }else {
+                    Application.showToast("设置失败");
+                }
+            }
+        },3500);
+
 //        //如果没有设置过生命周期，则默认值为“0”
 //        if (TextUtils.isEmpty(mPlantBean.getPid())||mPlantBean.getLid().equals("0")){
 //            mPresenter.setupEquipment(map);
