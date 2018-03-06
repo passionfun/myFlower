@@ -132,12 +132,14 @@ public class DownLoadService extends Service {
         Uri uri = Uri.fromFile(file);
         Intent install = new Intent(Intent.ACTION_VIEW);
         install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        install.setDataAndType(uri, "application/vnd.android.package-archive");
+//        install.setDataAndType(uri, "application/vnd.android.package-archive");
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
             Uri uriForFile = FileProvider.getUriForFile(mContext,
-                    mContext.getApplicationContext().getPackageName() + ".provider", file);
+            mContext.getApplicationContext().getPackageName() + ".provider", file);
             install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            install.setDataAndType(uri, "application/vnd.android.package-archive");
             install.setDataAndType(uriForFile, mContext.getContentResolver().getType(uriForFile));
+
         }else{
             install.setDataAndType(Uri.fromFile(file), getMIMEType(file));
         }
@@ -185,7 +187,12 @@ public class DownLoadService extends Service {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMax(100);
         progressDialog.setProgress(1);
-        progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0
+            progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY));
+        }else {
+            progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
+        }
         Run.onUiAsync(new Action() {
             @Override
             public void call() {

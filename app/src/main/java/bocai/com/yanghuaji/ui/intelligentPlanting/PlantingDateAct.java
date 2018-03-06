@@ -183,7 +183,9 @@ public class PlantingDateAct extends PresenterActivity<PlantingDataContract.Pres
                     PlantingDiaryActivity.show(PlantingDateAct.this,mPlantBean);
                 }else if (url.startsWith(Common.Constance.H5_BASE+"upgrade")){
                     HorizontalRecyclerFragmentHelper.update(PlantingDateAct.this, mPlantBean);
-                } else {
+                } else if (url.startsWith(Common.Constance.H5_BASE+"addPlant")){
+                    PlantSettingActivity.show(PlantingDateAct.this,mPlantBean);
+                }else {
                     view.loadUrl(url);
                 }
                 return true;

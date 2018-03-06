@@ -48,6 +48,10 @@
     <uses-permission android:name="bocai.com.yanghuaji.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
+    <uses-permission  android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission  android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+
 
     <application
         android:name=".base.Application"
