@@ -43,14 +43,14 @@
             android:layout_marginTop="15dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="40dp">
             <TextView
-                android:paddingBottom="10dp"
                 android:id="@+id/tv_title"
                 android:layout_marginStart="27dp"
                 android:textSize="25sp"
                 android:textColor="#333333"
                 android:text="@string/bind_phone"
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -59,13 +59,30 @@
                 android:visibility="visible"
                 android:layout_marginStart="30dp"
                 android:id="@+id/loading_add_equipments"
-                android:layout_marginBottom="30dp"
-                android:layout_gravity="center_vertical|bottom"
+                android:layout_gravity="center_vertical"
                 android:layout_width="30dp"
                 android:layout_height="30dp" />
 
+            <TextView
+                android:layout_marginStart="10dp"
+                android:textSize="15sp"
+                android:textColor="#87BC52"
+                android:text="搜索中"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:layout_marginStart="27dp"
+        android:textColor="#FDB46E"
+        android:textSize="13sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请搜索完成后再添加设备"/>
 
     <FrameLayout
         android:layout_width="match_parent"
