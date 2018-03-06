@@ -211,16 +211,25 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         map.put("LightStart", lightStart == null ? "" : lightStart);
         map.put("Id", equipmentId);// 	设备id
         //设置补光开启时间
-        if (!TextUtils.isEmpty(mBengin)) {
-            if (!TextUtils.isEmpty(banStop) && !TextUtils.isEmpty(banStart)&& !TextUtils.isEmpty(lightStart)){
-                int noDisStrart = DateUtils.getTimeSecondNoZone(banStart);
-                int noDisStop = DateUtils.getTimeSecondNoZone(banStop);
-                int begin = DateUtils.getTimeSecondNoZone(lightStart);
-                if (begin>=noDisStrart&&begin<=noDisStop){
-                    Application.showToast("开启时间不能再禁止时间之间");
-                    return;
-                }
+        if (!TextUtils.isEmpty(banStop) && !TextUtils.isEmpty(banStart)&& !TextUtils.isEmpty(lightStart)){
+            int noDisStrart = DateUtils.getTimeSecondNoZone(banStart);
+            int noDisStop = DateUtils.getTimeSecondNoZone(banStop);
+            int begin = DateUtils.getTimeSecondNoZone(lightStart);
+            if (begin>=noDisStrart&&begin<=noDisStop){
+                Application.showToast("开启时间不能再禁止时间之间");
+                return;
             }
+        }
+        if ((DateUtils.getTimeSecondNoZone(banStop) -DateUtils.getTimeSecondNoZone(banStart) )>leastNoLedTime*3600){
+            Application.showToast("禁止光照时间不能超过"+leastNoLedTime+"小时");
+            return;
+        }
+         if ((TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd))||
+                (!TextUtils.isEmpty(mNoDistrubStart) && TextUtils.isEmpty(mNoDistrubEnd))){
+            Application.showToast("请选择正确的时间");
+            return;
+        }
+        if (!TextUtils.isEmpty(mBengin)) {
             EquipmentSettingHelper.setLightOn(mBengin, mUUID, mLongToothId);
         }else {
             isSetLightOnSuccess= true;
@@ -228,8 +237,9 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         //设置免打扰时间
         if (!TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd)) {
             if ((DateUtils.getTimeSecondNoZone(banStop) -DateUtils.getTimeSecondNoZone(banStart) )<=0){
-                Application.showToast("请选择正确的时间");
-                return;
+//                Application.showToast("请选择正确的时间");
+//                return;
+                mNoDistrubEnd = Integer.valueOf(mNoDistrubEnd)+24*3600+"";
             }
             if ((DateUtils.getTimeSecondNoZone(banStop) -DateUtils.getTimeSecondNoZone(banStart) )>leastNoLedTime*3600){
                 Application.showToast("禁止光照时间不能超过"+leastNoLedTime+"小时");
@@ -237,10 +247,6 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             }else {
                 EquipmentSettingHelper.setNoDisturb(mNoDistrubStart, mNoDistrubEnd, mUUID, mLongToothId);
             }
-        }else if ((TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd))||
-                (!TextUtils.isEmpty(mNoDistrubStart) && TextUtils.isEmpty(mNoDistrubEnd))){
-            Application.showToast("请选择正确的时间");
-            return;
         }else {
             isSetNoDisturbSuccess=true;
         }

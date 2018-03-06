@@ -551,6 +551,9 @@ public class DateUtils {
      * @return 4564949
      */
     public static int getTimeSecondNoZone(String time){
+        if (time==null){
+            return 0;
+        }
         String[] times = time.split(":");
         String hour = times[0];
         if (hour.startsWith("0")){
@@ -565,9 +568,9 @@ public class DateUtils {
     }
 
     /**
-     * 把时间转化为妙,不考虑时区
+     * 把时间转化为小时和分钟构成的数组
      * @param time //08:09
-     * @return 4564949
+     * @return {08,09}
      */
     public static int[] getHourAndMinute(String time){
         int[] timeArray = new int[2];
