@@ -158,8 +158,10 @@ class HorizontalRecyclerFragmentHelper {
 
                         } else if (code == 2) {//code=2:升级成功
                             checkUpdateStateTimer.cancel();
-                            timer.cancel();
-                            timer=null;
+                            if (timer!=null){
+                                timer.cancel();
+                                timer=null;
+                            }
                             progressDialog.cancel();
                             EventBus.getDefault().post(new MessageEvent(UPDATE_SUCCESS));
                             Application.showToast("升级成功");
