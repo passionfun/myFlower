@@ -1,5 +1,7 @@
 package bocai.com.yanghuaji.util;
 
+import android.text.TextUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -551,7 +553,7 @@ public class DateUtils {
      * @return 4564949
      */
     public static int getTimeSecondNoZone(String time){
-        if (time==null){
+        if (TextUtils.isEmpty(time)){
             return 0;
         }
         String[] times = time.split(":");

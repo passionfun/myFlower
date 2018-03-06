@@ -207,12 +207,12 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     private String longToothId;
     private String timeStamp;
     private String jsonContent;
-
-    private void bindEquipment(String jsonContent) {
+    Timer bindTimer = new Timer();
+    private void bindEquipment(final String jsonContent) {
         gson = new Gson();
         List<EquipmentModel> equipmentModels = gson.fromJson(jsonContent, new TypeToken<List<EquipmentModel>>() {
         }.getType());
-        for (EquipmentModel equipmentModel : equipmentModels) {
+        for (final EquipmentModel equipmentModel : equipmentModels) {
             //"B0:F8:93:10:CF:E6"
             String mac = equipmentModel.getMAC();
             String content = mac.replaceAll(":", "");
@@ -221,16 +221,22 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
             }
             if (content.equals(mScanData.get(2)) && equipmentModel.get_$BOUNDSTATUS310().equals("notBound")) {
                 stopSearch();
-                //停止搜索设备
-                Application.showToast("绑定中...");
-                mModel = equipmentModel;
-                Log.d("sunhengchao", "bind: " + mModel.toString());
-                longToothId = equipmentModel.getLTID();
-                timeStamp = DateUtils.getCurrentDateTimes();
-                BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
-                String request = gson.toJson(model);
-                LongTooth.request(longToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
-                        new SampleAttachment(), new LongToothResponse(jsonContent));
+                bindTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        //停止搜索设备
+                        Application.showToast("绑定中...");
+                        mModel = equipmentModel;
+                        Log.d("sunhengchao", "bind: " + mModel.toString());
+                        longToothId = equipmentModel.getLTID();
+                        timeStamp = DateUtils.getCurrentDateTimes();
+                        BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
+                        String request = gson.toJson(model);
+                        LongTooth.request(longToothId, "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
+                                new SampleAttachment(), new LongToothResponse(jsonContent));
+                    }
+                },5000);
+
             } else if ((content.equals(mScanData.get(2)) && !equipmentModel.get_$BOUNDSTATUS310().equals("notBound"))) {
                 Application.showToast("该设备已被绑定过");
                 stopSearch();
@@ -292,7 +298,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
                         }
                     }
                 }
-            }, 4000);
+            }, 5000);
         }
 
         @Override
