@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 
@@ -188,7 +190,9 @@ public class DownLoadService extends Service {
         progressDialog.setMax(100);
         progressDialog.setProgress(1);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){//6.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M&&Build.VERSION.SDK_INT < Build.VERSION_CODES.O){//6.0
+            progressDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
+        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY));
         }else {
             progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));

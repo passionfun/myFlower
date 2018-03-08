@@ -3,6 +3,7 @@ package bocai.com.yanghuaji.ui.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -131,7 +132,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         } else if (messageEvent.getMessage().equals(MAIN_ACTIVITY_REFRESH)) {
             initAllEquipments();
             initAllGroups();
-        }else if (messageEvent.getMessage().equals(GROUP_REFRESH)) {
+        } else if (messageEvent.getMessage().equals(GROUP_REFRESH)) {
             initAllGroups();
         }
     }
@@ -246,7 +247,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                 super.onItemClick(holder, equipmentCard);
                 List<EquipmentRspModel.ListBean> listBeans = Account.getListBeans();
                 for (EquipmentRspModel.ListBean bean : listBeans) {
-                    if (bean.getEquipName().equals(equipmentCard.getEquipName())){
+                    if (bean.getEquipName().equals(equipmentCard.getEquipName())) {
                         String url = Common.Constance.H5_BASE + "product.html?id=" + bean.getId();
                         PlantingDateAct.show(mName.getContext(), url, bean);
                     }
@@ -358,9 +359,53 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @Override
     public void checkVersionSuccess(VersionInfoModel model) {
         if (model != null) {
+            this.model = model;
             String version = model.getVersion();
             if (!TextUtils.isEmpty(version)) {
+                checkWindowPermission(model);
+
+            }
+        }
+    }
+    private VersionInfoModel model;
+    private int OVERLAY_PERMISSION_REQ_CODE = 10011;
+
+    private void checkWindowPermission(VersionInfoModel model) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (Settings.canDrawOverlays(this)) {
+                //有悬浮窗权限
                 new UpdateManager(this).checkUpdate(model);
+
+            } else {
+                //没有悬浮窗权限m,去开启悬浮窗权限
+                try {
+                    Application.showToast("请打开慕奈花舍悬浮窗权限");
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                    startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } else {
+            new UpdateManager(this).checkUpdate(model);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (!Settings.canDrawOverlays(this)) {
+                    //没有开启
+                    Application.showToast("请打开慕奈花舍悬浮窗权限");
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                    startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                } else {
+                    new UpdateManager(this).checkUpdate(model);
+                }
             }
         }
     }
@@ -390,7 +435,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
 
 
         @Override
-            protected void onBind(EquipmentCard equipmentCard) {
+        protected void onBind(EquipmentCard equipmentCard) {
             mName.setText(equipmentCard.getEquipName());
         }
     }

@@ -4,6 +4,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -254,9 +255,15 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+
                 hideLoading();
                 if (isSetNoDisturbSuccess&&isSetLightOnSuccess){
-                    mPresenter.setupEquipment(map);
+                    Run.onUiAsync(new Action() {
+                        @Override
+                        public void call() {
+                            mPresenter.setupEquipment(map);
+                        }
+                    });
                 }else {
                     Application.showToast("设置失败");
                 }
