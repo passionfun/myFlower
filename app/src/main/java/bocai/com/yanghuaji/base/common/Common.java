@@ -14,9 +14,9 @@ public class Common {
 //        String API_URL = "http://121.41.128.239:8082/yhj/web/api/index.php/";
         //正式服务器地址
         String API_URL = "http://47.98.46.78/web/api/index.php/";
-        //测试地址
+        //H5测试地址
 //        String H5_BASE = "http://121.41.128.239:8082/yhj/web/h5/yhj/";
-        //正式地址 http://47.98.46.78/web/h5/yhj/product.html?id=123
+        //H5正式地址 http://47.98.46.78/web/h5/yhj/product.html?id=123
         String H5_BASE = "http://47.98.46.78/web/h5/yhj/";
 
 

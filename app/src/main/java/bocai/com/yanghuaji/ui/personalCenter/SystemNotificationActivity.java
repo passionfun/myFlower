@@ -14,9 +14,12 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.common.Common;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
@@ -104,5 +107,9 @@ public class SystemNotificationActivity extends Activity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().post(new MessageEvent(PersonalCenterFragment.REFRESH_NOTICE_STATUS));
+    }
 }

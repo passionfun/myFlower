@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
 
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.ui.main.MainActivity;
+import bocai.com.yanghuaji.ui.personalCenter.PersonalCenterFragment;
 import bocai.com.yanghuaji.ui.personalCenter.SystemNotificationActivity;
 import cn.jpush.android.api.JPushInterface;
 
@@ -50,6 +53,7 @@ public class MyReceiver extends BroadcastReceiver {
                 Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
                 //打开自定义的Activity
 //                SystemNotificationActivity.show(context);
+//                EventBus.getDefault().post(new MessageEvent(PersonalCenterFragment.REFRESH_NOTICE_STATUS));
                 Intent i = new Intent(context, MainActivity.class);
 //                i.putExtras(bundle);
 //                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

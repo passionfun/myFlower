@@ -8,20 +8,22 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import bocai.com.yanghuaji.R;
 import boc.com.imgselector.GlideApp;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
+import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.NoticeStatusRspModel;
 import bocai.com.yanghuaji.model.PersonalCenterPresenter;
 import bocai.com.yanghuaji.model.db.User;
 import bocai.com.yanghuaji.presenter.personalCenter.PersonalCenterContract;
-import bocai.com.yanghuaji.receiver.TagAliasOperatorHelper;
 import bocai.com.yanghuaji.ui.account.LoginActivity;
-import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -44,6 +46,8 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
     @BindView(R.id.tv_system_notification)
     TextView mNoticeStatus;
 
+    public static final String REFRESH_NOTICE_STATUS="REFRESH_NOTICE_STATUS";
+
 
     public static PersonalCenterFragment newInstance() {
         return new PersonalCenterFragment();
@@ -54,6 +58,18 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
         return R.layout.fragment_personal_center;
     }
 
+    @Override
+    protected void initWidget(View root) {
+        super.initWidget(root);
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void fresh(MessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals(REFRESH_NOTICE_STATUS)) {
+            mPresenter.getNoticeStatus(Account.getToken());
+        }
+    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
