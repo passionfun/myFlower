@@ -217,9 +217,17 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             int noDisStrart = DateUtils.getTimeSecondNoZone(banStart);
             int noDisStop = DateUtils.getTimeSecondNoZone(banStop);
             int begin = DateUtils.getTimeSecondNoZone(lightStart);
-            if (begin >= noDisStrart && begin <= noDisStop) {
-                Application.showToast("开启时间不能再禁止时间之间");
-                return;
+            if (noDisStop>noDisStrart){
+                if (begin >= noDisStrart && begin <= noDisStop) {
+                    Application.showToast("开启时间不能再禁止时间之间");
+                    return;
+                }
+            }else {
+                //隔天的情况
+                if (begin<=noDisStop||begin>=noDisStrart){
+                    Application.showToast("开启时间不能再禁止时间之间");
+                    return;
+                }
             }
         }
         if ((TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd)) ||
@@ -229,10 +237,12 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         }
         //设置免打扰时间
         if (!TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd)) {
-            if ((DateUtils.getTimeSecondNoZone(banStop) - DateUtils.getTimeSecondNoZone(banStart)) <= 0) {
-                //禁止光照时间为隔天的情况
+            if (Integer.valueOf(mNoDistrubEnd) - Integer.valueOf(mNoDistrubStart) <= 0) {
                 mNoDistrubEnd = Integer.valueOf(mNoDistrubEnd) + 24 * 3600 + "";
-                if (Integer.valueOf(mNoDistrubEnd) - Integer.valueOf(mNoDistrubStart) > leastNoLedTime * 3600) {
+            }
+            if ((DateUtils.getTimeSecondNoZone(banStop) - DateUtils.getTimeSecondNoZone(banStart)) < 0) {
+                //禁止光照时间为隔天的情况
+                if ((DateUtils.getTimeSecondNoZone(banStop) + 24 * 3600 - DateUtils.getTimeSecondNoZone(banStart)) > leastNoLedTime * 3600) {
                     Application.showToast("禁止光照时间不能超过" + leastNoLedTime + "小时");
                     return;
                 }
