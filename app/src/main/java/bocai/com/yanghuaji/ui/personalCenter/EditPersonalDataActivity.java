@@ -350,6 +350,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
 
     private void modifyPortrait(String filePath) {
+        Log.d("shc", "modifyPortrait: "+filePath);
         Map<String, RequestBody> params = new HashMap<>();
         File file = new File(filePath);
         RequestBody body = RequestBody.create(MediaType.parse("image/jpeg;charset=utf-8"), file);

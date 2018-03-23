@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="37dp"
-            android:text="日记本名称"
+            android:text="@string/diary_name"
             android:textColor="#999999"
             android:textSize="13sp" />
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@null"
-            android:text="满天星的一生"
+            android:text="@string/please_input_diary_name"
             android:textColor="#333333"
             android:textSize="14sp" />
 
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="设备名称"
+            android:text="@string/equipment_name"
             android:textColor="#999999"
             android:textSize="13sp" />
 
@@ -71,7 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="去添加"
             android:layout_marginEnd="30dp"
             android:drawableRight="@mipmap/img_left_arrow"
             android:textColor="#333333"
@@ -91,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="种植时间"
+            android:text="@string/plant_time"
             android:textColor="#999999"
             android:textSize="13sp" />
 

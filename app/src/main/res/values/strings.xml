@@ -60,13 +60,51 @@
     <string name="prompt_empty">Oh~, it empty!</string>
     <string name="prompt_error">Sorry, you have or more error!</string>
     <string name="prompt_loading">Loading…</string>
-
     <string name="reload"><u>重新加载</u></string>
-
     <string name="diary_empty">暂无日记本，快去添加</string>
     <string name="equipment_empty">暂无设备，快去添加</string>
-
     <string name="network_unavailable">网络不可用</string>
     <string name="add_failed">添加失败</string>
-    <string name="other_status"><u>指示灯处于其他状态？</u></string>
+    <string name="light_in_other_status"><u>指示灯处于其他状态？</u></string>
+
+    <string name="diary_name">日记本名称</string>
+    <string name="please_input_diary_name">请输入日记本名称</string>
+    <string name="equipment_name">设备名称</string>
+    <string name="plant_time">种植时间</string>
+    <string name="add_equipment">添加设备</string>
+    <string name="scan_two_dimensional_code_after_product">扫一扫产品后二维码</string>
+    <string name="or_click_icon_follow">或点击如下对应产品图标</string>
+    <string name="connect_power_and_confirm_entering_network">接通电源，确认设备进入配网状态</string>
+    <string name="light_flicker">指示灯闪烁中</string>
+    <string name="searching">搜索中</string>
+    <string name="add_equipment_after_search_completed">请搜索完成后再添加设备</string>
+    <string name="not_add_skip">暂不添加，跳过</string>
+    <string name="search_plant">搜索植物</string>
+    <string name="wifi_name">WIFI名称</string>
+    <string name="not_support_5g_wifi">(不支持5G Wi-Fi)</string>
+    <string name="please_input_wifi_name">请输入WiFi名称</string>
+    <string name="wifi_password">WIFI密码</string>
+    <string name="wifi_name_is_current_phone_wifi">WiFi名称为当前手机所连WiFi的名称</string>
+    <string name="can_go_to">可前往</string>
+    <string name="set_wlan">设置-WLAN</string>
+    <string name="check">查看</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </resources>

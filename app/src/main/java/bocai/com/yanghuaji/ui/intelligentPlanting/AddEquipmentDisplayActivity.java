@@ -113,7 +113,8 @@ public class AddEquipmentDisplayActivity extends Activity {
         UiTool.setBlod(mTitle);
         mTitle.setText("添加设备");
         Log.d("gif", "initWidget: "+mEquipmentPhotoModel.getPhoto());
-        if (mEquipmentPhotoModel.getPhoto().endsWith(".gif")){
+        if (mEquipmentPhotoModel.getPhoto()!=null&&
+                mEquipmentPhotoModel.getPhoto().endsWith(".gif")){
             GlideApp.with(this)
                     .asGif()
                     .load(mEquipmentPhotoModel.getPhoto())

@@ -15,13 +15,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WIFI名称"
+            android:text="@string/wifi_name"
             android:textColor="#333333"
             android:textSize="13sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(不支持5G Wi-Fi)"
+            android:text="@string/not_support_5g_wifi"
             android:textColor="#FDB46E"
             android:textSize="13sp" />
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="请输入WiFi名称"
+            android:hint="@string/please_input_wifi_name"
             android:textColor="#333333"
             android:textSize="17sp" />
 
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="26dp"
-        android:text="WIFI密码"
+        android:text="@string/wifi_password"
         android:textColor="#333333"
         android:textSize="13sp" />
 
@@ -122,7 +122,7 @@
         android:textSize="11sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WiFi名称为当前手机所连WiFi的名称"/>
+        android:text="@string/wifi_name_is_current_phone_wifi"/>
     <LinearLayout
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
             android:textSize="11sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="可前往"/>
+            android:text="@string/can_go_to"/>
 
         <TextView
             android:id="@+id/tv_setting_wireless"
@@ -141,14 +141,14 @@
             android:textSize="11sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="设置-WLAN"/>
+            android:text="@string/set_wlan"/>
 
         <TextView
             android:textColor="#666666"
             android:textSize="11sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="查看"/>
+            android:text="@string/check"/>
     </LinearLayout>
 
     <ImageView

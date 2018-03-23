@@ -67,7 +67,7 @@
                 android:layout_marginStart="10dp"
                 android:textSize="15sp"
                 android:textColor="#87BC52"
-                android:text="搜索中"
+                android:text="@string/searching"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
         android:textSize="13sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="请搜索完成后再添加设备"/>
+        android:text="@string/add_equipment_after_search_completed"/>
 
     <FrameLayout
         android:layout_width="match_parent"

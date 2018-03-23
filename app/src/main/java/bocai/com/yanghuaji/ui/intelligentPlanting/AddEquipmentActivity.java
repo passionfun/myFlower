@@ -218,6 +218,10 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                     //WG101&8001F023412332&B0F89310CFE6
                     String[] result = content.split("&");
                     scanData = new ArrayList<>(Arrays.asList(result));
+                    if (scanData.size()!=3){
+                        Application.showToast("参数有误");
+                        return;
+                    }
                     String equipmentType = result[0];
                     isAddEquipments = false;
                     mPresenter.getEquipmentPhoto("1", equipmentType);
@@ -246,6 +250,10 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                             //WG101&8001F023412332&B0F89310CFE6
                             String[] result = content.split("&");
                             scanData = new ArrayList<>(Arrays.asList(result));
+                            if (scanData.size()!=3){
+                                Application.showToast("参数有误");
+                                return;
+                            }
                             String equipmentType = result[0];
                             isAddEquipments = false;
                             mPresenter.getEquipmentPhoto("1", equipmentType);

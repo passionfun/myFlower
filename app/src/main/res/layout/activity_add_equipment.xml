@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="24dp"
-            android:text="添加设备"
+            android:text="@string/add_equipment"
             android:textColor="#333333"
             android:textSize="17sp" />
 
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="扫一扫产品后二维码"
+        android:text="@string/scan_two_dimensional_code_after_product"
         android:textColor="#6FBD31"
         android:textSize="12sp" />
 
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="或点击如下对应产品图标"
+        android:text="@string/or_click_icon_follow"
         android:textColor="#6FBD31"
         android:textSize="12sp" />
 
