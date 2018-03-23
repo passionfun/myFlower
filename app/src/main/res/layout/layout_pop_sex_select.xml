@@ -15,7 +15,7 @@
             android:textColor="#333333"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="男" />
+            android:text="@string/male" />
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -32,7 +32,7 @@
             android:textColor="#333333"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="女" />
+            android:text="@string/female" />
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -50,7 +50,7 @@
             android:textColor="#333333"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="保密" />
+            android:text="@string/secrecy" />
 
 
 </LinearLayout>

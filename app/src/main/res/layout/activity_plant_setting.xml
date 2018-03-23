@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="26dp"
-        android:text="种植模式"
+        android:text="@string/plant_mode"
         android:textColor="#999999"
         android:textSize="13sp" />
 
@@ -24,7 +24,7 @@
         android:layout_marginEnd="25dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="去设置"
+        android:text=""
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="9dp"
-        android:text="植物名称"
+        android:text="@string/plant_name"
         android:textColor="#999999"
         android:textSize="13sp" />
 
@@ -54,7 +54,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
-        android:text="去添加"
+        android:text=""
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="12dp"
-        android:text="生长周期"
+        android:text="@string/growth_circle"
         android:textColor="#999999"
         android:textSize="13sp" />
 
@@ -83,7 +83,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:drawableEnd="@mipmap/img_personal_center_arrow"
-        android:text="去设置"
+        android:text=""
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -104,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="更改植物名称请在上一步设置页面点击“删除当前数据”"
+        android:text="@string/change_name_please_delete_data_before"
         android:textColor="#999999"
         android:textSize="13sp" />
 
@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="25dp"
-        android:text="后再次进行操作"
+        android:text="@string/operation_then"
         android:textColor="#999999"
         android:textSize="13sp" />
 

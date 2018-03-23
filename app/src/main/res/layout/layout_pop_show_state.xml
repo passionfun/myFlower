@@ -24,7 +24,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="如何进入状态"/>
+                android:text="@string/how_to_into_state"/>
 
 
             <!--<TextView-->
@@ -103,7 +103,7 @@
                 android:button="@null"
                 android:drawableLeft="@mipmap/img_checkbox"
                 android:drawablePadding="7dp"
-                android:text="勾选状态按钮"
+                android:text="@string/check_state_button"
                 android:textColor="#6DBC30"
                 android:textSize="12sp" />
 

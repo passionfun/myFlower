@@ -26,7 +26,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/item_iv_check"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="联合大厦B座ffffffffffffffffffff ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa" />
+        tools:text="" />
 
     <TextView
         android:id="@+id/item_tv_addr"
@@ -37,7 +37,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/item_iv_check"
         app:layout_constraintTop_toBottomOf="@id/item_tv_poi"
-        tools:text="联合大厦B座" />
+        tools:text="" />
 
     <ImageView
         android:layout_width="match_parent"

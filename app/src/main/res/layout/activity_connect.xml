@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="37dp"
-        android:text="设备连接中，请稍后..."
+        android:text="@string/equipment_connecting_please_white"
         android:textColor="#666666"
         android:textSize="13sp" />
 

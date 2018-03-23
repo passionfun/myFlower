@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="二维码"
+                android:text="@string/qr_code"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
@@ -50,7 +50,7 @@
             android:textSize="12sp"
             android:layout_marginTop="30dp"
             android:gravity="center_horizontal"
-            android:text="将二维码放入框内，即可自动扫描"/>
+            android:text="@string/qr_code_into_frame_can_auto_scan"/>
     </LinearLayout>
 
 
@@ -78,7 +78,7 @@
                 android:background="@drawable/bg_button"
                 android:textColor="#FFFFFF"
                 android:textSize="12sp"
-                android:text="相册"
+                android:text="@string/gallery"
                 android:layout_width="81dp"
                 android:layout_height="30dp"
                 />
@@ -100,7 +100,7 @@
                 android:background="@drawable/bg_button"
                 android:textColor="#FAA000"
                 android:textSize="12sp"
-                android:text="手电筒"
+                android:text="@string/flashlight"
                 android:layout_width="81dp"
                 android:layout_height="30dp"
                 />

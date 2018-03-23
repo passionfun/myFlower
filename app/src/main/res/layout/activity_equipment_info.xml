@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="26dp"
-        android:text="MAC地址"
+        android:text="@string/mac_address"
         android:textColor="#999999"
         android:textSize="13sp" />
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="102:111:233"
+        android:text=""
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="9dp"
-        android:text="序列号"
+        android:text="@string/serial_number"
         android:textColor="#999999"
         android:textSize="13sp" />
 
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="1234567890"
+        android:text=""
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="12dp"
-        android:text="设备型号"
+        android:text="@string/equipment_type"
         android:textColor="#999999"
         android:textSize="13sp" />
 
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="WG222+333"
+        android:text=""
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="12dp"
-        android:text="软件版本"
+        android:text="@string/software_version"
         android:textColor="#999999"
         android:textSize="13sp" />
 
@@ -110,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:text="WG222+333"
+        android:text=""
         android:textColor="#333333"
         android:textSize="15sp" />
 
@@ -122,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:text="最新"
+        android:text="@string/newest"
         android:visibility="gone"
         android:textColor="#87BC52"
         android:textSize="15sp" />

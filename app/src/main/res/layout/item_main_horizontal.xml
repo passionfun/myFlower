@@ -280,7 +280,7 @@
                     android:drawablePadding="4dp"
                     android:drawableTop="@drawable/sel_cb_push_horizontal"
                     android:gravity="center"
-                    android:text="消息推送"
+                    android:text="@string/message_push"
                     android:textColor="#FFFFFF"
                     android:textSize="12sp" />
 
@@ -297,7 +297,7 @@
                     android:drawablePadding="4dp"
                     android:drawableTop="@mipmap/img_light_close_horizontal"
                     android:gravity="center"
-                    android:text="光照"
+                    android:text="@string/light"
                     android:textColor="#FFFFFF"
                     android:textSize="12sp" />
 
@@ -324,7 +324,7 @@
                         android:layout_marginTop="4dp"
                         android:checked="true"
                         android:gravity="center_horizontal"
-                        android:text="刷新"
+                        android:text="@string/refresh"
                         android:textColor="#FFFFFF"
                         android:textSize="11sp" />
 
@@ -367,7 +367,7 @@
                     android:drawablePadding="4dp"
                     android:drawableTop="@mipmap/img_setting_horizontal"
                     android:gravity="center"
-                    android:text="种植设置"
+                    android:text="@string/planting_setting"
                     android:textColor="#FFFFFF"
                     android:textSize="11sp" />
 
@@ -382,7 +382,7 @@
                     android:drawablePadding="4dp"
                     android:drawableTop="@mipmap/img_update_horizontal_nomal"
                     android:gravity="center"
-                    android:text="最新版本"
+                    android:text="@string/newest_version"
                     android:textColor="#FFFFFF"
                     android:textSize="11sp" />
 

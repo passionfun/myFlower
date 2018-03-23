@@ -17,7 +17,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:textAlignment="center"
-                app:title="选择图片"
+                app:title="@string/select_photo"
                 app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:titleTextColor="#4e5864" >
 

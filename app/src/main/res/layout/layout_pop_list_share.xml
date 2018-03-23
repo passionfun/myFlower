@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="13dp"
-                android:text="分享至"
+                android:text="@string/share_to"
                 android:textColor="#333333"
                 android:textSize="15sp" />
 
@@ -93,7 +93,7 @@
         android:layout_marginTop="13sp"
         android:background="@drawable/ll_pop_add_picture_bg"
         android:gravity="center"
-        android:text="取消"
+        android:text="@string/cancel"
         android:textColor="#6EBC30"
         android:textSize="17sp" />
 

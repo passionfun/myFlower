@@ -9,7 +9,7 @@
         android:textColor="#333333"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="添加分组"/>
+        android:text="@string/add_group"/>
 
 
     <EditText
@@ -17,6 +17,6 @@
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入分组名称"/>
+        android:hint="@string/please_input_group_name"/>
 
 </LinearLayout>

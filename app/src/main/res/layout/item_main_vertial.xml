@@ -297,7 +297,7 @@
                                 android:drawablePadding="3dp"
                                 android:drawableTop="@drawable/sel_cb_push"
                                 android:gravity="center"
-                                android:text="消息推送"
+                                android:text="@string/message_push"
                                 android:textColor="#FFFFFF"
                                 android:textSize="11sp" />
 
@@ -312,7 +312,7 @@
                                 android:drawablePadding="3dp"
                                 android:drawableTop="@mipmap/img_light_close"
                                 android:gravity="center"
-                                android:text="光照"
+                                android:text="@string/light"
                                 android:textColor="#FFFFFF"
                                 android:textSize="11sp" />
 
@@ -340,7 +340,7 @@
                                     android:checked="true"
                                     android:layout_marginTop="3dp"
                                     android:gravity="center"
-                                    android:text="刷新"
+                                    android:text="@string/refresh"
                                     android:textColor="#FFFFFF"
                                     android:textSize="11sp" />
 
@@ -381,7 +381,7 @@
                                 android:drawablePadding="3dp"
                                 android:drawableTop="@mipmap/img_setting_main_vertical"
                                 android:gravity="center"
-                                android:text="种植设置"
+                                android:text="@string/planting_setting"
                                 android:textColor="#FFFFFF"
                                 android:textSize="11sp" />
 
@@ -395,7 +395,7 @@
                                 android:drawablePadding="3dp"
                                 android:drawableTop="@mipmap/img_update_vertical_nomal"
                                 android:gravity="center"
-                                android:text="最新版本"
+                                android:text="@string/newest_version"
                                 android:textColor="#FFFFFF"
                                 android:textSize="11sp" />
 

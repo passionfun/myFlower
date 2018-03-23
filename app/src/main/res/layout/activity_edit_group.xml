@@ -18,7 +18,7 @@
         android:textColor="#333333"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="办公室"/>
+        android:text=""/>
 
     <View
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:textSize="13sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="已添加一个设备"/>
+        android:text=""/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
@@ -50,7 +50,7 @@
         android:textSize="13sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="默认分组"/>
+        android:text=""/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_default_group"

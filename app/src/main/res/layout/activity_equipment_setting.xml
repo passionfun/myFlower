@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="24dp"
-            android:text="设备名称"
+            android:text="@string/equipment_name"
             android:textColor="#999999"
             android:textSize="13sp" />
 
@@ -31,8 +31,8 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:background="@null"
-            android:hint="@string/input_password"
-            android:text="WG310+2222"
+            android:hint="@string/please_input_equipment_name"
+            android:text=""
             android:textColor="#333333"
             android:textSize="15sp" />
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="14dp"
-            android:text="节水模式"
+            android:text="@string/save_water_model"
             android:textColor="#999999"
             android:textSize="13sp" />
 
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="12dp"
-            android:text="开启光照时间"
+            android:text="@string/open_light_time"
             android:textColor="#999999"
             android:textSize="13sp" />
 
@@ -90,7 +90,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:drawableEnd="@mipmap/img_personal_center_arrow"
-            android:text="去设置"
+            android:text=""
             android:textColor="#333333"
             android:textSize="15sp" />
 
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="12dp"
-            android:text="禁止光照时间开启"
+            android:text="@string/forbid_light_open"
             android:textColor="#999999"
             android:textSize="13sp" />
 
@@ -121,7 +121,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:drawableEnd="@mipmap/img_personal_center_arrow"
-            android:text="去设置"
+            android:text=""
             android:textColor="#333333"
             android:textSize="15sp" />
 
@@ -140,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="12dp"
-            android:text="禁止光照时间关闭"
+            android:text="@string/forbid_light_close"
             android:textColor="#999999"
             android:textSize="13sp" />
 
@@ -152,7 +152,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:drawableEnd="@mipmap/img_personal_center_arrow"
-            android:text="去设置"
+            android:text=""
             android:textColor="#333333"
             android:textSize="15sp" />
 
@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="12dp"
-            android:text="设备分组"
+            android:text="@string/equipment_group"
             android:textColor="#999999"
             android:textSize="13sp" />
 
@@ -185,7 +185,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="15dp"
             android:drawableEnd="@mipmap/img_personal_center_arrow"
-            android:text="去设置"
+            android:text=""
             android:textColor="#333333"
             android:textSize="15sp" />
 

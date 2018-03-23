@@ -44,7 +44,7 @@
                         android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="沉迷工作的网银少女"
+                        android:text=""
                         android:textColor="#FFFFFF"
                         android:textSize="17sp"
                         tools:ignore="HardcodedText" />
@@ -89,7 +89,7 @@
                     android:drawableEnd="@drawable/selector_cb_arrow"
                     android:drawablePadding="10dp"
                     android:drawableStart="@mipmap/img_all_equrment"
-                    android:text="默认设备"
+                    android:text="@string/default_equipment"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 
@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="4dp"
             android:drawableStart="@mipmap/img_classified_management"
-            android:text="分组管理"
+            android:text="@string/group_manage"
             android:textColor="#666666"
             android:textSize="13sp" />
     </FrameLayout>

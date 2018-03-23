@@ -21,7 +21,7 @@
             android:textColor="#333333"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="拍摄" />
+            android:text="@string/take_photo" />
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -38,7 +38,7 @@
             android:textColor="#333333"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="从手机相册选择" />
+            android:text="@string/select_from_gallery" />
 
     </LinearLayout>
 
@@ -54,6 +54,6 @@
         android:textColor="#6EBC30"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="取消" />
+        android:text="@string/cancel" />
 
 </LinearLayout>

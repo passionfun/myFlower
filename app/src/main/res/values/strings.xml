@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">慕奈花舍</string>
-
-
     <string name="verification_code_login">验证码登录</string>
     <string name="password_login">密码登录</string>
     <string name="input_phone_number">请输入您的手机号码</string>
@@ -26,37 +24,26 @@
     <string name="yanghuaji_agreement">《养花机服务协议》</string>
     <string name="phone_register">手机注册</string>
     <string name="save">保存</string>
-
-
     <string name="check_and_edit_personal_data">查看并编辑个人资料</string>
     <string name="my_planting_record">我的种植记录</string>
     <string name="system_notification">系统通知</string>
     <string name="modify_password">修改密码</string>
     <string name="setting">设置</string>
     <string name="quit_application">退出登录</string>
-
-
     <string name="switch_permutation_pattern">切换排列模式</string>
     <string name="go_to_shop">进入商城</string>
     <string name="my_equipment">我的设备</string>
     <string name="planting_diary_title">种植日记本</string>
     <string name="go_to_add">去添加 +</string>
     <string name="add_diary">添加日记本 +</string>
-
-
     <string name="intelligent_planting">智能种植</string>
     <string name="planting_diary">种植日记</string>
     <string name="personal_center">个人中心</string>
     <string name="go_to_shopping">在线商城</string>
     <string name="title_activity_diary_list">DiaryListActivity</string>
-
-
     <string name="net_error">网络错误</string>
     <string name="empty">空信息</string>
-
-
     <string name="label_gallery_select_max_size">至多选择%d张</string>
-
     <string name="prompt_empty">Oh~, it empty!</string>
     <string name="prompt_error">Sorry, you have or more error!</string>
     <string name="prompt_loading">Loading…</string>
@@ -66,7 +53,6 @@
     <string name="network_unavailable">网络不可用</string>
     <string name="add_failed">添加失败</string>
     <string name="light_in_other_status"><u>指示灯处于其他状态？</u></string>
-
     <string name="diary_name">日记本名称</string>
     <string name="please_input_diary_name">请输入日记本名称</string>
     <string name="equipment_name">设备名称</string>
@@ -88,23 +74,80 @@
     <string name="can_go_to">可前往</string>
     <string name="set_wlan">设置-WLAN</string>
     <string name="check">查看</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="equipment_connecting_please_white">设备连接中，请稍后…</string>
+    <string name="equipment_connect_failed_please_check_follow_question">设备连接失败！请排查以下问题：</string>
+    <string name="if_input_correct_wifi_name_and_password">1.是否输入正确的WiFi名称和密码</string>
+    <string name="ensure_equipment_entering_network">2.请确保设备进入配网状态</string>
+    <string name="ensure_equipment_covered_wifi">3.请确保设备在WiFi覆盖范围内</string>
+    <string name="ensure_equipment_connect_2.4g_wifi">4.请确保手机连接2.4G的WiFi网络</string>
+    <string name="equipment_name_with_colon">设备名称：</string>
+    <string name="equipment_bind_success">设备绑定成功</string>
+    <string name="three_seconds_into_next">3s后进入下一步</string>
+    <string name="user_name">用户名</string>
+    <string name="please_input_user_name">请输入用户名</string>
+    <string name="sex">性别</string>
+    <string name="birthday">生日</string>
+    <string name="mac_address">MAC地址</string>
+    <string name="serial_number">序列号</string>
+    <string name="equipment_type">设备型号</string>
+    <string name="software_version">软件版本</string>
+    <string name="newest">最新</string>
+    <string name="please_input_equipment_name">请输入设备名称</string>
+    <string name="save_water_model">节水模式</string>
+    <string name="open_light_time">开启光照时间</string>
+    <string name="forbid_light_open">禁止光照时间开启</string>
+    <string name="forbid_light_close">禁止光照时间关闭</string>
+    <string name="equipment_group">设备分组</string>
+    <string name="plant_name">植物名称</string>
+    <string name="please_input_plant_name">请输入植物名称</string>
+    <string name="growth_circle">生长周期</string>
+    <string name="custom_group">自定义分组</string>
+    <string name="complete">完成</string>
+    <string name="search_nearby_location">搜索附近位置</string>
+    <string name="not_display_location">不显示位置</string>
+    <string name="original_password">原密码</string>
+    <string name="please_input_original_password">请输入原密码</string>
+    <string name="new_password">新密码</string>
+    <string name="please_input_new_password">请输入新密码</string>
+    <string name="please_input_password_again">请再次输入密码</string>
+    <string name="plant_mode">种植模式</string>
+    <string name="change_name_please_delete_data_before">更改植物名称请在上一步设置页面点击“删除当前数据”</string>
+    <string name="operation_then">后再次进行操作</string>
+    <string name="add_diary_record_changes_every_day">添加日记本，记录每一天的微小改变</string>
+    <string name="qr_code">二维码</string>
+    <string name="qr_code_into_frame_can_auto_scan">将二维码放入框内，即可自动扫描</string>
+    <string name="gallery">相册</string>
+    <string name="flashlight">手电筒</string>
+    <string name="equipment_setting">设备设置</string>
+    <string name="plant_setting">植物设置</string>
+    <string name="message_push">消息推送</string>
+    <string name="equipment_information">设备信息</string>
+    <string name="clear_current_data">清除当前数据</string>
+    <string name="novice_guide">新手指南</string>
+    <string name="service_terms">服务条款</string>
+    <string name="version_information">版本信息</string>
+    <string name="online_shop">在线商城</string>
+    <string name="record_cultivation_moving">记录这一刻的种植心得与感动</string>
+    <string name="select_photo">选择图片</string>
+    <string name="add_equipment_open_journey_plant_flower">添加设备，开启属于自己的种花之旅</string>
+    <string name="light">光照</string>
+    <string name="refresh">刷新</string>
+    <string name="planting_setting">种植设置</string>
+    <string name="newest_version">最新版本</string>
+    <string name="add_group">添加分组</string>
+    <string name="please_input_group_name">请输入分组名称</string>
+    <string name="default_equipment">默认设备</string>
+    <string name="group_manage">分组管理</string>
+    <string name="take_photo">拍摄</string>
+    <string name="select_from_gallery">从手机相册选择</string>
+    <string name="cancel">取消</string>
+    <string name="placement_position">摆放位置</string>
+    <string name="share_to">分享至</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="secrecy">保密</string>
+    <string name="how_to_into_state">如何进入状态</string>
+    <string name="check_state_button">勾选状态按钮</string>
 
 
 </resources>

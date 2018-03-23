@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="24dp"
-            android:text="保存"
+            android:text="@string/save"
             android:textColor="#87BC52"
             android:textSize="15sp" />
 
@@ -39,7 +39,7 @@
         android:textSize="14sp"
         android:gravity="start|top"
         android:textColorHint="#999999"
-        android:hint="记录这一刻的种植心得与感动"
+        android:hint="@string/record_cultivation_moving"
         android:background="@null"
         android:layout_marginTop="20dp"
         android:layout_marginStart="26dp"
@@ -52,7 +52,7 @@
         android:id="@+id/tv_location"
         android:textSize="12sp"
         android:textColor="#000000"
-        android:text="杭州 联合大厦"
+        android:text=""
         android:drawablePadding="9dp"
         android:drawableStart="@mipmap/img_location_green"
         android:layout_marginStart="34dp"

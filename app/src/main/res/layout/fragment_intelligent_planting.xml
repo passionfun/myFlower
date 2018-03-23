@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="添加设备，开启属于自己的种花之旅"
+                android:text="@string/add_equipment_open_journey_plant_flower"
                 android:textColor="#C2C2C2"
                 android:textSize="13sp"
                 tools:ignore="HardcodedText" />

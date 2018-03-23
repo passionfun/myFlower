@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="13dp"
-                android:text="分享至"
+                android:text="@string/share_to"
                 android:textColor="#333333"
                 android:textSize="15sp" />
 
