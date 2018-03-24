@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,7 +39,7 @@ public class ConnectFailedActivity extends Activity {
     protected void initData() {
         super.initData();
         UiTool.setBlod(mTitle);
-        mTitle.setText("连接设备");
+        mTitle.setText(Application.getStringText(R.string.connect_equipment));
     }
 
     @OnClick(R.id.img_back)

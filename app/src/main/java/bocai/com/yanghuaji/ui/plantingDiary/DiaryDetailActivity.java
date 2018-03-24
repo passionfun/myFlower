@@ -98,10 +98,10 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
             }
         });
         mShareWeb = new UMWeb(mUrl);
-        mShareWeb.setTitle("养花机");
+        mShareWeb.setTitle(Application.getStringText(R.string.app_name));
         //todo 修改为正式图标和描述
         mShareWeb.setThumb(new UMImage(this, R.mipmap.img_connect_bg));//缩略图
-        mShareWeb.setDescription("养花机");
+        mShareWeb.setDescription(Application.getStringText(R.string.app_name));
         mWebview.loadUrl(mUrl);
         //分享的回调
         mUMShareListener = new UMShareListener() {
@@ -112,12 +112,12 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
 
             @Override
             public void onResult(SHARE_MEDIA share_media) {
-                Application.showToast("分享成功");
+                Application.showToast(R.string.share_success);
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                Application.showToast("分享失败");
+                Application.showToast(R.string.share_failed);
             }
 
             @Override
@@ -141,14 +141,14 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
     void onDeleteClick() {
         //删除操作
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
-        deleteDialog.setTitle("确认删除该日记？");
-        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        deleteDialog.setTitle(Application.getStringText(R.string.ensure_delete_this_diary));
+        deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mPresenter.deleteDiaryItem(mDiaryItemId);
             }
         });
-        deleteDialog.setNegativeButton("取消", null);
+        deleteDialog.setNegativeButton(getResources().getString(R.string.please_input_group_name), null);
         deleteDialog.show();
     }
 

@@ -185,9 +185,9 @@ public class UiTool {
         if (context==null)
             return;
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(context);
-        deleteDialog.setTitle("账号已在其他终端登录，请重新登录？");
+        deleteDialog.setTitle(context.getString(R.string.account_conflict_please_login_again));
         deleteDialog.setCancelable(false);
-        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        deleteDialog.setPositiveButton(context.getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ActivityUtil.finishActivity();
@@ -211,7 +211,7 @@ public class UiTool {
 
     public static ProgressDialog showProgressBarDialog(Context context){
         final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle("升级中...");
+        progressDialog.setTitle(context.getString(R.string.updating));
 //        progressDialog.setMessage("请稍后...");
         // 设置进度对话框的风格 ,默认是圆形的
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

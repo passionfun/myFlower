@@ -123,7 +123,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
             if (!TextUtils.isEmpty(user.getBirthday())) {
                 mBirthday.setText(user.getBirthday());
             } else {
-                mBirthday.setText("去设置");
+                mBirthday.setText("");
             }
             GlideApp.with(this)
                     .load(user.getRelativePath())

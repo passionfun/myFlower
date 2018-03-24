@@ -139,7 +139,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("种植机设置");
+        mTitle.setText(Application.getStringText(R.string.equipment_setting));
         etEquipName.setText(mPlantBean.getEquipName());
         tvRight.setVisibility(View.VISIBLE);
         map.put("Token", Account.getToken());

@@ -72,9 +72,9 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("分组管理");
+        mTitle.setText(getResources().getString(R.string.group_manage));
         mAddGroup.setVisibility(View.VISIBLE);
-        mAddGroup.setText("添加");
+        mAddGroup.setText(getResources().getString(R.string.add));
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapter(mAdapter = new RecyclerAdapter<GroupRspModel.ListBean>() {
             @Override
@@ -94,10 +94,10 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
     void onAddGroupClick(){
         //  添加分组
         final EditText editText = new EditText(this);
-        editText.setHint("请输入组名");
+        editText.setHint(getResources().getString(R.string.please_input_group_name));
         final AlertDialog.Builder addGroupDialog = new AlertDialog.Builder(this);
-        addGroupDialog.setTitle("添加分组").setView(editText);
-        addGroupDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        addGroupDialog.setTitle(getResources().getString(R.string.add_group)).setView(editText);
+        addGroupDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mPresenter.addGroup(Account.getToken(), editText.getText().toString());
@@ -105,7 +105,7 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
             }
         });
 
-        addGroupDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        addGroupDialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -201,14 +201,14 @@ public class GroupManagerActivity extends PresenterActivity<GroupManagerContract
         void onDeleteClick() {
             //删除操作
             AlertDialog.Builder deleteDialog = new AlertDialog.Builder(mDelete.getContext());
-            deleteDialog.setTitle("确认删除该分组？");
-            deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            deleteDialog.setTitle(getResources().getString(R.string.ensure_delete_this_group));
+            deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     mPresenter.deleteGroup(mGroupId);
                 }
             });
-            deleteDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            deleteDialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 

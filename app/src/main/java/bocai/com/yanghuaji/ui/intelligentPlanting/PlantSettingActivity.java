@@ -115,7 +115,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("植物设置");
+        mTitle.setText(Application.getStringText(R.string.plant_setting));
         tvRight.setVisibility(View.VISIBLE);
         pId=mPlantBean.getPid();
         id = mPlantBean.getId();

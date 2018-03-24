@@ -54,8 +54,8 @@ class HorizontalRecyclerFragmentHelper {
         mActivity = activity;
         //  501:有升级的新版本
         final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(activity);
-        deleteDialog.setTitle("有新版本，确定升级？");
-        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        deleteDialog.setTitle(Application.getInstance().getString(R.string.select));
+        deleteDialog.setPositiveButton(Application.getInstance().getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Run.onUiAsync(new Action() {
@@ -73,14 +73,15 @@ class HorizontalRecyclerFragmentHelper {
                                     this.cancel();
                                     timer.cancel();
                                     timer=null;
-                                    Application.showToast("升级失败");
+                                    Application.showToast(Application.getInstance().getString(R.string.update_failed));
                                     progressDialog.cancel();
                                 }
                                 progressDialog.setProgress(times);
 
                             }
                         }, 1500, 1500);
-                        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "停止", new DialogInterface.OnClickListener() {
+                        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+                                Application.getInstance().getString(R.string.stop), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 progressDialog.cancel();
@@ -126,7 +127,7 @@ class HorizontalRecyclerFragmentHelper {
                         });
             }
         });
-        deleteDialog.setNegativeButton("取消", null);
+        deleteDialog.setNegativeButton(Application.getInstance().getString(R.string.cancel), null);
         Run.onUiAsync(new Action() {
             @Override
             public void call() {
@@ -164,7 +165,7 @@ class HorizontalRecyclerFragmentHelper {
                             }
                             progressDialog.cancel();
                             EventBus.getDefault().post(new MessageEvent(UPDATE_SUCCESS));
-                            Application.showToast("升级成功");
+                            Application.showToast(Application.getInstance().getString(R.string.update_success));
                         } else if (code == 3) {//code=3:升级失败
                             failTimes++;
                             if (failTimes > 2)  {
@@ -173,7 +174,7 @@ class HorizontalRecyclerFragmentHelper {
                                 timer.cancel();
                                 timer=null;
                                 progressDialog.cancel();
-                                Application.showToast("升级失败");
+                                Application.showToast(Application.getInstance().getString(R.string.update_failed));
                             }
                         }
                     }

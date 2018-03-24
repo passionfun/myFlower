@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -276,14 +277,14 @@ public class ImageSelectorActivity extends AppCompatActivity {
         if (count == 0) {
             btnConfirm.setEnabled(false);
             btnPreview.setEnabled(false);
-            tvConfirm.setText("确定");
-            tvPreview.setText("预览");
+            tvConfirm.setText(getResources().getString(R.string.ensure));
+            tvPreview.setText(getResources().getString(R.string.preview));
         } else {
             btnConfirm.setEnabled(true);
             btnPreview.setEnabled(true);
             tvPreview.setText("预览(" + count + ")");
             if (isSingle) {
-                tvConfirm.setText("确定");
+                tvConfirm.setText(getResources().getString(R.string.ensure));
             } else if (mMaxCount > 0) {
                 tvConfirm.setText("确定(" + count + "/" + mMaxCount + ")");
             } else {
@@ -497,15 +498,15 @@ public class ImageSelectorActivity extends AppCompatActivity {
     private void showExceptionDialog() {
         new AlertDialog.Builder(this)
                 .setCancelable(false)
-                .setTitle("提示")
-                .setMessage("该相册需要赋予访问存储的权限，请到“设置”>“应用”>“权限”中配置权限。")
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                .setTitle(getResources().getString(R.string.hint))
+                .setMessage(getResources().getString(R.string.need_gallery_permission_please_authorization))
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         finish();
                     }
-                }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                }).setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

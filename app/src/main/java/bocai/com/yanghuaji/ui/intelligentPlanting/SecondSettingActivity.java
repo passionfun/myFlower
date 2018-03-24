@@ -15,6 +15,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import org.greenrobot.eventbus.EventBus;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.CheckboxStatusModel;
 import bocai.com.yanghuaji.model.EquipmentRspModel;
@@ -74,7 +75,7 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("设置");
+        mTitle.setText(Application.getStringText(R.string.setting));
         mCbPush.setChecked(mPlantBean.getPushStatus().equals("1"));
         mCbPush.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,14 +120,14 @@ public class SecondSettingActivity extends PresenterActivity<SecondSettingContra
     void onClearDataClick() {
         // 清除数据
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
-        deleteDialog.setTitle("确定清除？");
-        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        deleteDialog.setTitle(Application.getStringText(R.string.ensure_clear));
+        deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mPresenter.clearData(Account.getToken(), mPlantBean.getId());
             }
         });
-        deleteDialog.setNegativeButton("取消", null);
+        deleteDialog.setNegativeButton(getResources().getString(R.string.cancel), null);
         deleteDialog.show();
 
     }

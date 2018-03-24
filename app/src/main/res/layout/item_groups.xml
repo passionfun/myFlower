@@ -17,7 +17,7 @@
         android:drawableEnd="@drawable/selector_cb_arrow"
         android:drawablePadding="10dp"
         android:drawableStart="@mipmap/img_location_left"
-        android:text="客厅"
+        android:text=""
         android:checked="true"
         android:textColor="#333333"
         android:textSize="15sp" />

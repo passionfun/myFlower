@@ -304,7 +304,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                     }
                 }else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.UPDATE_SUCCESS)){
                     mUpdate.setEnabled(false);
-                    mUpdate.setText("最新版本");
+                    mUpdate.setText(Application.getStringText(R.string.newest_version));
                     mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal_nomal, 0, 0);
                 }else if (messageEvent.getMessage().equals(HORIZONTALRECYLER_VISIABLE)) {
                     if (messageEvent.getPosition()==getAdapterPosition()){
@@ -451,7 +451,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                                 return;
                                             LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                             if (plantStatusRspModel.getCODE() == 0) {
-                                                Application.showToast("LED开启成功");
+                                                Application.showToast(Application.getStringText(R.string.light_open_success));
                                                 isLedOn = true;
                                                 EventBus.getDefault().post(new MessageEvent(LED_ON,plantModel.getLTID()));
                                                 Run.onUiAsync(new Action() {
@@ -463,7 +463,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                                 });
 
                                             } else {
-                                                Application.showToast("LED开启失败,稍后再试");
+                                                Application.showToast(Application.getStringText(R.string.light_open_failed_retry_later));
                                             }
                                         }
                                     });
@@ -484,7 +484,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                                 return;
                                             LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
                                             if (plantStatusRspModel.getCODE() == 0) {
-                                                Application.showToast("LED关闭成功");
+                                                Application.showToast(Application.getStringText(R.string.light_close_success));
                                                 EventBus.getDefault().post(new MessageEvent(LED_OFF,plantModel.getLTID()));
                                                 isLedOn = false;
                                                 Run.onUiAsync(new Action() {
@@ -496,7 +496,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
                                                 });
 
                                             } else {
-                                                Application.showToast("LED关闭失败,稍后再试");
+                                                Application.showToast(Application.getStringText(R.string.light_close_failed_retry_later));
                                             }
                                         }
                                     });
@@ -509,14 +509,14 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @OnLongClick(R.id.frame_root)
             boolean onItemLongClick(){
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext());
-                deleteDialog.setTitle("删除将导致该设备恢复出厂设置，请确认是否删除？");
-                deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                deleteDialog.setTitle(Application.getStringText(R.string.delete_will_reset_equipment_if_ensure));
+                deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mPresenter.deleteEquipment(mData.getId());
                     }
                 });
-                deleteDialog.setNegativeButton("取消",null);
+                deleteDialog.setNegativeButton(getResources().getString(R.string.cancel),null);
                 deleteDialog.show();
                 return true;
             }
@@ -649,11 +649,11 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             private String getStatus(String code) {
                 switch (code) {
                     case "0":
-                        return "过低";
+                        return Application.getStringText(R.string.too_low);
                     case "1":
-                        return "正常";
+                        return Application.getStringText(R.string.normal);
                     case "2":
-                        return "过高";
+                        return Application.getStringText(R.string.too_high);
                     default:
                         return UNKNOWN;
                 }

@@ -94,7 +94,7 @@
                             android:layout_marginStart="17dp"
                             android:drawablePadding="6dp"
                             android:drawableStart="@mipmap/img_plant"
-                            android:text="绿藤大叶"
+                            android:text=""
                             android:textColor="#818181"
                             android:textSize="12sp" />
 
@@ -105,7 +105,7 @@
                             android:layout_marginStart="13dp"
                             android:drawablePadding="4dp"
                             android:drawableStart="@mipmap/img_location"
-                            android:text="书房"
+                            android:text=""
                             android:textColor="#818181"
                             android:textSize="12sp" />
 
@@ -116,7 +116,7 @@
                             android:layout_marginStart="16dp"
                             android:drawablePadding="6dp"
                             android:drawableStart="@mipmap/img_calendar"
-                            android:text="10天"
+                            android:text=""
                             android:textColor="#818181"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -355,7 +355,7 @@
                                     <!--android:drawablePadding="3dp"-->
                                     <!--android:drawableTop="@mipmap/img_refresh_vertical"-->
                                     <!--android:gravity="center"-->
-                                    <!--android:text="刷新"-->
+                                    <!--android:text=""-->
                                     <!--android:textColor="#FFFFFF"-->
                                     <!--android:textSize="11sp" />-->
                             </LinearLayout>
@@ -443,7 +443,7 @@
         android:layout_width="60dp"
         android:layout_height="match_parent"
         android:textSize="14sp"
-        android:text="删除"/>
+        android:text="@string/delete"/>
 </FrameLayout>
 
 

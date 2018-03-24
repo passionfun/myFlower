@@ -124,15 +124,15 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     void onUpdateClick() {
         //  501:有升级的新版本
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(EquipmentInfoActivity.this);
-        deleteDialog.setTitle("有新版本，确定升级？");
-        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        deleteDialog.setTitle(Application.getStringText(R.string.have_new_version_ensure_update));
+        deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //升级操作
                 doUpdate();
             }
         });
-        deleteDialog.setNegativeButton("取消", null);
+        deleteDialog.setNegativeButton(getResources().getString(R.string.cancel), null);
         deleteDialog.show();
     }
 
@@ -230,7 +230,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                                     imgUpgrade.setVisibility(View.VISIBLE);
                                 }
                             });
-                            Application.showToast("升级失败，稍后再试");
+                            Application.showToast(Application.getStringText(R.string.update_failed_retry_later));
                         }
                     }
                 });
@@ -271,7 +271,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                                     mFramUpdate.setVisibility(View.GONE);
                                 }
                             });
-                            Application.showToast("升级成功");
+                            Application.showToast(R.string.update_success);
                         } else if (code == 3) {//code=3:升级失败
                             times++;
                             if (times > 2)  {
@@ -285,7 +285,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
                                         imgUpgrade.setVisibility(View.VISIBLE);
                                     }
                                 });
-                                Application.showToast("升级失败");
+                                Application.showToast(R.string.update_failed);
                             }
                         }
                     }
@@ -327,7 +327,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("设备信息");
+        mTitle.setText(Application.getStringText(R.string.equipment_information));
 
         map.put("Token", Account.getToken());
         map.put("Id", id);
@@ -340,7 +340,7 @@ public class EquipmentInfoActivity extends PresenterActivity<EquipmentInfoContra
         if (!TextUtils.isEmpty(model.getSerialNum())){
             tvSerialNumber.setText(model.getSerialNum());
         }else {
-            tvSerialNumber.setText("未知");
+            tvSerialNumber.setText(Application.getStringText(R.string.unknown));
         }
         tvEquipmentType.setText(model.getEquipName());
         tvVersion.setText(model.getVersion());

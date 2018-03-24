@@ -98,10 +98,10 @@ public class GroupListPopupWindow extends PopupWindow implements GroupListContra
             public void onClick(View view) {
                 //  添加分组
                 final EditText editText = new EditText(view.getContext());
-                editText.setHint("请输入组名");
+                editText.setHint(Application.getStringText(R.string.please_input_group_name));
                 AlertDialog.Builder addGroupDialog = new AlertDialog.Builder(view.getContext());
-                addGroupDialog.setTitle("添加分组").setView(editText);
-                addGroupDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                addGroupDialog.setTitle(Application.getStringText(R.string.add_group)).setView(editText);
+                addGroupDialog.setPositiveButton(Application.getStringText(R.string.ensure), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mPresenter.addGroup(Account.getToken(), editText.getText().toString());
@@ -109,7 +109,7 @@ public class GroupListPopupWindow extends PopupWindow implements GroupListContra
                     }
                 });
 
-                addGroupDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                addGroupDialog.setNegativeButton(Application.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         GroupListPopupWindow.this.dismiss();

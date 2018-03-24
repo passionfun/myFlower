@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Toast;
 
+import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.model.VersionInfoModel;
 import bocai.com.yanghuaji.updateVersion.DownLoadService;
 import bocai.com.yanghuaji.updateVersion.util.DeviceUtils;
@@ -51,10 +53,10 @@ public class UpdateManager {
     private void showNoticeDialog(String versionInfo,boolean isForceupdating,final String url) {
         // 构造对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("版本更新：");
+        builder.setTitle(Application.getStringText(R.string.version_update));
         builder.setMessage(versionInfo);
         // 更新
-        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(Application.getStringText(R.string.immediate_update), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -65,7 +67,7 @@ public class UpdateManager {
         });
         if (isForceupdating){
             //强制更新，不更新就退出
-            builder.setNegativeButton("退出应用", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(Application.getStringText(R.string.exit_app), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ActivityUtil.finishActivity();
@@ -74,7 +76,7 @@ public class UpdateManager {
             });
         }else {
             // 稍后更新
-            builder.setNegativeButton("以后更新", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(Application.getStringText(R.string.update_later), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();

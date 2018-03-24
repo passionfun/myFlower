@@ -187,7 +187,7 @@ public class FirstSettingActivity extends PresenterActivity<FirstSettingContract
                     if (!isRspSuccess) {
                         hideLoading();
                         isReturn = true;
-                        Application.showToast("植物设置失败");
+                        Application.showToast(R.string.plant_setting_failed);
                         MainActivity.show(FirstSettingActivity.this);
                         finish();
                     }
@@ -227,7 +227,7 @@ public class FirstSettingActivity extends PresenterActivity<FirstSettingContract
 
     @Override
     public void getAutoParaFailed() {
-        Application.showToast("植物设置失败");
+        Application.showToast(R.string.plant_setting_failed);
         MainActivity.show(this);
         finish();
     }

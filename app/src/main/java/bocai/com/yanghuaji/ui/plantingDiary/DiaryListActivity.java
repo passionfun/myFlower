@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.common.Common;
 import bocai.com.yanghuaji.base.presenter.PresenterActivity;
 import bocai.com.yanghuaji.model.DiaryCardModel;
@@ -170,14 +171,14 @@ public class DiaryListActivity extends PresenterActivity<DiaryListContract.Prese
     void onDeleteClick() {
         //删除操作
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
-        deleteDialog.setTitle("确认删除该日记？");
-        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        deleteDialog.setTitle(Application.getStringText(R.string.ensure_delete_this_diary));
+        deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mPresenter.deleteDiary(mDiaryId);
             }
         });
-        deleteDialog.setNegativeButton("取消", null);
+        deleteDialog.setNegativeButton(getResources().getString(R.string.cancel), null);
         deleteDialog.show();
     }
 

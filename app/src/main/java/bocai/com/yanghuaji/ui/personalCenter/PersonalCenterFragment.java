@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import bocai.com.yanghuaji.R;
 import boc.com.imgselector.GlideApp;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.base.presenter.PrensterFragment;
 import bocai.com.yanghuaji.model.MessageEvent;
 import bocai.com.yanghuaji.model.NoticeStatusRspModel;
@@ -130,8 +131,8 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
     @OnClick(R.id.tv_exit)
     void onExitClick() {
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext());
-        deleteDialog.setTitle("确定退出登录？");
-        deleteDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        deleteDialog.setTitle(Application.getStringText(R.string.ensure_logout));
+        deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //确定
@@ -140,7 +141,7 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
                 getActivity().finish();
             }
         });
-        deleteDialog.setNegativeButton("取消",null);
+        deleteDialog.setNegativeButton(getResources().getString(R.string.cancel),null);
         deleteDialog.show();
     }
 

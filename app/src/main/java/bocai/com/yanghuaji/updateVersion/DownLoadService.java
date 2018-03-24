@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import bocai.com.yanghuaji.R;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.updateVersion.manager.UpdateManager;
 import bocai.com.yanghuaji.updateVersion.manager.fileload.FileCallback;
 import bocai.com.yanghuaji.updateVersion.manager.fileload.FileResponseBody;
@@ -183,7 +184,7 @@ public class DownLoadService extends Service {
      */
     public void initNotification() {
         progressDialog = new ProgressDialog(mContext);
-        progressDialog.setTitle("慕奈花舍更新");
+        progressDialog.setTitle(Application.getStringText(R.string.app_update));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);

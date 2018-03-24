@@ -9,6 +9,8 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
+import bocai.com.yanghuaji.R;
+
 /**
  * 作者 yuanfei on 2017/12/12.
  * 邮箱 yuanfei221@126.com
@@ -50,7 +52,7 @@ public class PermissionUtils {
                 context.startActivity(intent);
             }
         });
-        builder.setNegativeButton("取消", null);
+        builder.setNegativeButton(context.getString(R.string.cancel), null);
         builder.show();
     }
 

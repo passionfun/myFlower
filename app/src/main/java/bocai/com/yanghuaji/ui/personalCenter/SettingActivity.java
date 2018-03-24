@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
+import bocai.com.yanghuaji.base.Application;
 import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,7 +34,7 @@ public class SettingActivity extends Activity {
     protected void initData() {
         super.initData();
         UiTool.setBlod(mTitle);
-        mTitle.setText("设置");
+        mTitle.setText(Application.getInstance().getString(R.string.select));
     }
 
 

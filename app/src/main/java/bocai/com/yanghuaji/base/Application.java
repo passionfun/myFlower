@@ -127,4 +127,8 @@ public class Application extends android.app.Application {
         showToast(instance.getString(msgId));
     }
 
+    public static String getStringText(@StringRes int resourceId) {
+        return instance.getString(resourceId);
+    }
+
 }

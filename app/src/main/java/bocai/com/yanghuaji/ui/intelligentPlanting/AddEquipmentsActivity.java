@@ -149,7 +149,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
     private void addEquipments() {
         if (equipmentModels == null || equipmentModels.size() == 0) {
             hideLoading();
-            Application.showToast("请选择要添加的设备");
+            Application.showToast(Application.getStringText(R.string.please_select_equipment_to_add));
             return;
         }
         isSaveClicked = true;
@@ -203,7 +203,7 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
                 @Override
                 public void run() {
                     if (!isRsp) {
-                        Application.showToast("绑定无响应");
+                        Application.showToast(R.string.bind_no_response);
 //                        EventBus.getDefault().post(new MessageEvent(equipmentModel.getLTID(),MessageEvent.FAILED));
                         isAllSuccess = false;
                     }
@@ -283,9 +283,9 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("连接设备");
+        mTitle.setText(Application.getStringText(R.string.connect_equipment));
         mSave.setVisibility(View.VISIBLE);
-        mSave.setText("保存");
+        mSave.setText(Application.getStringText(R.string.save));
         mRecyler.setLayoutManager(new LinearLayoutManager(this));
         mRecyler.setAdapter(mAdapter = new RecyclerAdapter<EquipmentModel>() {
             @Override
