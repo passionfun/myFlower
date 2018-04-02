@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import bocai.com.yanghuaji.R;
@@ -59,7 +62,6 @@ public class UpdateManager {
         builder.setPositiveButton(Application.getStringText(R.string.immediate_update), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
                 Intent intent = new Intent(mContext, DownLoadService.class);
                 intent.putExtra(APK_URL,url);
                 mContext.startService(intent);

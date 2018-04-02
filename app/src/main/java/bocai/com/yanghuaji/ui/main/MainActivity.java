@@ -1,7 +1,11 @@
 package bocai.com.yanghuaji.ui.main;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +20,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +51,9 @@ import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.PlantingDateAct;
 import bocai.com.yanghuaji.ui.intelligentPlanting.ShopActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
+import bocai.com.yanghuaji.updateVersion.DownLoadService;
 import bocai.com.yanghuaji.updateVersion.manager.UpdateManager;
+import bocai.com.yanghuaji.updateVersion.util.DeviceUtils;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.LongToothUtil;
 import bocai.com.yanghuaji.util.UiTool;
@@ -90,8 +97,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     @BindView(R.id.recycler_group)
     RecyclerView mRecyclerGroup;
 
-    //    private int page = 1;
-//    private int pageGroup = 1;
     private RecyclerAdapter<EquipmentCard> mAdapter;
     private RecyclerAdapter<GroupRspModel.ListBean> mGroupAdapter;
     public static final String MAIN_ACTIVITY_REFRESH = "MAIN_ACTIVITY_REFRESH";
@@ -181,7 +186,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         EventBus.getDefault().post(new MessageEvent("MAINACTIVITY_DESTROY"));
         EventBus.getDefault().unregister(this);
         UiTool.closeConflictDialog();
-//        Account.clearJPushAlias(this);
     }
 
     @Override
@@ -192,14 +196,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mNavigationFragment = NavigationFragment.newInstance();
         transaction.replace(R.id.frame_container, mNavigationFragment).commit();
-//        mDrawerLayout.addDrawerListener(new MyDrawerListener() {
-//            @Override
-//            public void onDrawerSlide(View drawerView, float slideOffset) {
-//                mFrameLayout.layout(mFrameLeft.getRight(), -UiTool.getHeight(MainActivity.this),
-//                        UiTool.getScreenWidth(MainActivity.this) + mFrameLeft.getRight(),
-//                        UiTool.getScreenHeight(MainActivity.this));
-//            }
-//        });
         initAllEquipments();
         initAllGroups();
 
@@ -271,8 +267,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             }
         });
 
-
-//        page = 1;
         mPresenter.getDefaultEquipments(Account.getToken());
     }
 
@@ -288,12 +282,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         GroupManagerActivity.show(this);
     }
 
-
-//    @OnClick(R.id.frame_shopping)
-//    void onShoppingClick() {
-//        ShopActivity.show(this);
-//        hideLeft();
-//    }
 
     public void showLeft() {
         mDrawerLayout.openDrawer(GravityCompat.START);
@@ -319,14 +307,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         return super.onKeyUp(keyCode, event);
     }
 
-//    @Override
-//    public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
-//        mAdapter.replace(listBeans);
-//        if (mAdapter.getItems().size() == 0) {
-//            mRecyclerDefault.setVisibility(View.GONE);
-//            mDivideAllEquipments.setVisibility(View.VISIBLE);
-//        }
-//    }
 
     @Override
     public void getAllGroupsSuccess(List<GroupRspModel.ListBean> listBeans) {
@@ -362,7 +342,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             this.model = model;
             String version = model.getVersion();
             if (!TextUtils.isEmpty(version)) {
-                checkWindowPermission(model);
+                checkUpdate(model);
 
             }
         }
@@ -370,45 +350,93 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     private VersionInfoModel model;
     private int OVERLAY_PERMISSION_REQ_CODE = 10011;
 
-    private void checkWindowPermission(VersionInfoModel model) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (Settings.canDrawOverlays(this)) {
-                //有悬浮窗权限
-                new UpdateManager(this).checkUpdate(model);
 
-            } else {
-                //没有悬浮窗权限m,去开启悬浮窗权限
-                try {
-                    Application.showToast("请打开慕奈花舍悬浮窗权限");
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                    startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        } else {
-            new UpdateManager(this).checkUpdate(model);
-        }
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (!Settings.canDrawOverlays(this)) {
-                    //没有开启
-                    Application.showToast("请打开慕奈花舍悬浮窗权限");
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                    startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
-                } else {
-                    new UpdateManager(this).checkUpdate(model);
-                }
-            }
+            checkUpdate(model);
         }
     }
+
+
+    /**
+     * 检测软件更新
+     */
+    public void checkUpdate(VersionInfoModel model) {
+        /**
+         * 在这里请求后台接口，获取更新的内容和最新的版本号
+         */
+        // 版本的更新信息
+        boolean isForceupdating = model.isForceupdating();
+        String versionInfo = model.getTitle();
+        int mVersion_code = DeviceUtils.getVersionCode(this);// 当前的版本号
+        int nVersion_code = Integer.valueOf(model.getVersion());
+        if (mVersion_code < nVersion_code) {
+            // 显示提示对话
+            showNoticeDialog(versionInfo,isForceupdating,model.getUrl());
+        }
+    }
+
+    /**
+     * 显示更新对话框
+     *
+     */
+    public static final String APK_URL = "APK_URL";
+    private void showNoticeDialog(String versionInfo,boolean isForceupdating,final String url) {
+        // 构造对话框
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(Application.getStringText(R.string.version_update));
+        builder.setMessage(versionInfo);
+        // 更新
+        builder.setPositiveButton(Application.getStringText(R.string.immediate_update), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (!Settings.canDrawOverlays(MainActivity.this)) {
+
+                        Toast.makeText(MainActivity.this,"请打开悬浮窗权限",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                Uri.parse("package:" + getPackageName()));
+                        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                    }else {
+                        Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+                        intent.putExtra(APK_URL,url);
+                        startService(intent);
+                    }
+                }else {
+                    Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+                    intent.putExtra(APK_URL,url);
+                    startService(intent);
+                }
+
+
+
+            }
+        });
+        if (isForceupdating){
+            //强制更新，不更新就退出
+            builder.setNegativeButton(Application.getStringText(R.string.exit_app), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityUtil.finishActivity();
+                    dialog.dismiss();
+                }
+            });
+        }else {
+            // 稍后更新
+            builder.setNegativeButton(Application.getStringText(R.string.update_later), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        Dialog noticeDialog = builder.create();
+        noticeDialog.show();
+    }
+
 
     @Override
     public void getDefaultEquipmentsSuccess(List<EquipmentCard> equipmentCards) {
