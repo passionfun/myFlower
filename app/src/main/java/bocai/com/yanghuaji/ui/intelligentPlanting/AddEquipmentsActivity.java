@@ -179,9 +179,12 @@ public class AddEquipmentsActivity extends PresenterActivity<AddEquipmentsContra
         final String timeStamp = DateUtils.getCurrentDateTimes();
         BindEquipmentModel model = new BindEquipmentModel("BR", timeStamp);
         final String request = gson.toJson(model);
+        if (mEquipmentModel==null||mEquipmentModel.getLTID()==null){
+            return;
+        }
         Log.d("sunhengchao", "startbind: " + request);
-        LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
-                0, request.getBytes().length,
+        LongTooth.request(mEquipmentModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS,
+                request.getBytes(), 0, request.getBytes().length,
                 new SampleAttachment(), new MyLongToothServiceResponseHandler(models, mEquipmentModel,timeStamp));
 
     }

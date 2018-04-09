@@ -424,7 +424,10 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             mNoDistrubStart = DateUtils.getTimeSecond(banStart) + "";
             mNoDistrubEnd = DateUtils.getTimeSecond(banStop) + "";
         }
-        leastNoLedTime = Integer.valueOf(model.getBanTime());
+        if (model.getBanTime()!=null){
+            leastNoLedTime = Integer.valueOf(model.getBanTime());
+        }
+
     }
 
     final Gson gson = new Gson();
