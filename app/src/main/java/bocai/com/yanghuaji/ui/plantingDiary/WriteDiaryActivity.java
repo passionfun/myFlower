@@ -51,6 +51,7 @@ import bocai.com.yanghuaji.presenter.plantingDiary.WriteDiaryPresenter;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.BitmapUtils;
 import bocai.com.yanghuaji.util.PermissionUtils;
+import bocai.com.yanghuaji.util.ScalTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -285,7 +286,6 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                             return;
                         }
                         soSelectPhonts();
-                        //fragment.setMaxCount(10 - mAdapter.getItemCount());
                         break;
                     case R.id.tv_cancel:
                         picPopupWindow.dismiss();
@@ -300,15 +300,6 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     private void soSelectPhonts() {
 
         ImageSelectorUtils.openPhoto(this, PHOTO_FROM_GALLERY);
-
-//        MyGalleryFragment fragment = new MyGalleryFragment().setListener(new MyGalleryFragment.OnSelectedListener() {
-//            @Override
-//            public void onSelectedImage(String[] paths) {
-//                mAdapter.add(paths);
-//                switchVisibility(true);
-//            }
-//        });
-//        fragment.show(getSupportFragmentManager(), MyGalleryFragment.class.getName());
     }
 
 
@@ -339,7 +330,8 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
 
         if (pathList != null && pathList.size() > 0) {
             for (int i = 0; i < pathList.size(); i++) {
-                File file = new File(pathList.get(i));
+//                File file = new File(pathList.get(i));
+                File file = ScalTool.scal(pathList.get(i));
                 RequestBody body = RequestBody.create(MediaType.parse("image/jpeg;charset=utf-8"), file);
                 params.put("pic_head" + (i + 1) + "\";" + "filename=\"" + file, body);
             }

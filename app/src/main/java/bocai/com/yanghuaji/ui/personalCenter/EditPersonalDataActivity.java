@@ -47,6 +47,7 @@ import bocai.com.yanghuaji.ui.plantingDiary.WriteDiaryActivity;
 import bocai.com.yanghuaji.util.ActivityUtil;
 import bocai.com.yanghuaji.util.BitmapUtils;
 import bocai.com.yanghuaji.util.PermissionUtils;
+import bocai.com.yanghuaji.util.ScalTool;
 import bocai.com.yanghuaji.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -352,7 +353,8 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
     private void modifyPortrait(String filePath) {
         Log.d("shc", "modifyPortrait: "+filePath);
         Map<String, RequestBody> params = new HashMap<>();
-        File file = new File(filePath);
+//        File file = new File(filePath);
+        File file = ScalTool.scal(filePath);
         RequestBody body = RequestBody.create(MediaType.parse("image/jpeg;charset=utf-8"), file);
         params.put("pic_head" + "\";" + "filename=\"" + file, body);
         mPresenter.modifyPortrait(params);

@@ -148,7 +148,7 @@ public class DiaryDetailActivity extends PresenterActivity<DiaryDetailContract.P
                 mPresenter.deleteDiaryItem(mDiaryItemId);
             }
         });
-        deleteDialog.setNegativeButton(getResources().getString(R.string.please_input_group_name), null);
+        deleteDialog.setNegativeButton(getResources().getString(R.string.cancel), null);
         deleteDialog.show();
     }
 
