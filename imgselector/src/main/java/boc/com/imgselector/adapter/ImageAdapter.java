@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
@@ -70,6 +72,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                     // 还没有达到最大限制，就直接选中当前图片。
                     selectImage(image);
                     setItemSelect(holder, true);
+                }else {
+                    Toast.makeText(mContext,"已到最大上限",Toast.LENGTH_SHORT).show();
                 }
             }
         });

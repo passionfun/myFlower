@@ -298,8 +298,9 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     }
 
     private void soSelectPhonts() {
-
-        ImageSelectorUtils.openPhoto(this, PHOTO_FROM_GALLERY);
+        //最多9张
+        int currentCount = mAdapter.getItemCount()==0?0:mAdapter.getItemCount()-1;
+        ImageSelectorUtils.openPhoto(this, PHOTO_FROM_GALLERY,false,9-currentCount);
     }
 
 
@@ -460,16 +461,16 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                         .into(photo);
                 delete.setVisibility(View.VISIBLE);
             }
-//            //最多只能九张
-//            if (mAdapter.getItemCount() > 9) {
-//                if (s.equals("add")) {
-//                    photo.setVisibility(View.GONE);
-//                    delete.setVisibility(View.GONE);
-//                } else {
-//                    photo.setVisibility(View.VISIBLE);
-//                    delete.setVisibility(View.VISIBLE);
-//                }
-//            }
+            //最多只能九张
+            if (mAdapter.getItemCount() > 9) {
+                if (s.equals("add")) {
+                    photo.setVisibility(View.GONE);
+                    delete.setVisibility(View.GONE);
+                } else {
+                    photo.setVisibility(View.VISIBLE);
+                    delete.setVisibility(View.VISIBLE);
+                }
+            }
         }
 
         @OnClick(R.id.img_delete)
