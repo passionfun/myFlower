@@ -7,6 +7,7 @@ import android.widget.TextView;
 import bocai.com.yanghuaji.R;
 import bocai.com.yanghuaji.base.Activity;
 import bocai.com.yanghuaji.base.Application;
+import bocai.com.yanghuaji.updateVersion.util.DeviceUtils;
 import bocai.com.yanghuaji.util.UiTool;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,6 +20,10 @@ import butterknife.OnClick;
 public class SettingActivity extends Activity {
     @BindView(R.id.tv_title)
     TextView mTitle;
+
+    @BindView(R.id.tv_version_information)
+    TextView tvVersion;
+
 
     //显示的入口
     public static void show(Context context) {
@@ -35,6 +40,7 @@ public class SettingActivity extends Activity {
         super.initData();
         UiTool.setBlod(mTitle);
         mTitle.setText(Application.getInstance().getString(R.string.select));
+        tvVersion.setText(DeviceUtils.getVersionName(this));
     }
 
 
