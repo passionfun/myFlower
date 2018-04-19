@@ -394,31 +394,33 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         builder.setPositiveButton(Application.getStringText(R.string.immediate_update), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (!Settings.canDrawOverlays(MainActivity.this)) {
-
-                        Toast.makeText(MainActivity.this,"请打开悬浮窗权限",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                Uri.parse("package:" + getPackageName()));
-                        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
-                    }else {
-//                        Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+//                if (Build.VERSION.SDK_INT >= 23) {
+//                    if (!Settings.canDrawOverlays(MainActivity.this)) {
+//
+//                        Toast.makeText(MainActivity.this,"请打开悬浮窗权限",Toast.LENGTH_LONG).show();
+//                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                                Uri.parse("package:" + getPackageName()));
+//                        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+//                    }else {
+////                        Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+////                        intent.putExtra(APK_URL,url);
+////                        startService(intent);
+//                        Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
 //                        intent.putExtra(APK_URL,url);
-//                        startService(intent);
-                        Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
-                        intent.putExtra(APK_URL,url);
-                        startActivity(intent);
-                    }
-                }else {
-//                    Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+//                        startActivity(intent);
+//                    }
+//                }else {
+////                    Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+////                    intent.putExtra(APK_URL,url);
+////                    startService(intent);
+//                    Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
 //                    intent.putExtra(APK_URL,url);
-//                    startService(intent);
-                    Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
-                    intent.putExtra(APK_URL,url);
-                    startActivity(intent);
-                }
+//                    startActivity(intent);
+//                }
 
-
+                Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
+                intent.putExtra(APK_URL,url);
+                startActivity(intent);
 
             }
         });

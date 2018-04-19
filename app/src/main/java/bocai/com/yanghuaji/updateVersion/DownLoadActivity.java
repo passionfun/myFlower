@@ -181,6 +181,9 @@ public class DownLoadActivity extends Activity {
      * 初始化Notification通知
      */
     public void initNotification() {
+
+
+
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setTitle(Application.getStringText(R.string.app_update));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -189,13 +192,13 @@ public class DownLoadActivity extends Activity {
         progressDialog.setMax(100);
         progressDialog.setProgress(1);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M&&Build.VERSION.SDK_INT < Build.VERSION_CODES.O){//6.0
-            progressDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
-        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY));
-        }else {
-            progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M&&Build.VERSION.SDK_INT < Build.VERSION_CODES.O){//6.0
+//            progressDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
+//        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//            progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY));
+//        }else {
+//            progressDialog.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
+//        }
         Run.onUiAsync(new Action() {
             @Override
             public void call() {
