@@ -51,6 +51,7 @@ import bocai.com.yanghuaji.ui.intelligentPlanting.GroupManagerActivity;
 import bocai.com.yanghuaji.ui.intelligentPlanting.PlantingDateAct;
 import bocai.com.yanghuaji.ui.intelligentPlanting.ShopActivity;
 import bocai.com.yanghuaji.ui.personalCenter.EditPersonalDataActivity;
+import bocai.com.yanghuaji.updateVersion.DownLoadActivity;
 import bocai.com.yanghuaji.updateVersion.DownLoadService;
 import bocai.com.yanghuaji.updateVersion.manager.UpdateManager;
 import bocai.com.yanghuaji.updateVersion.util.DeviceUtils;
@@ -401,14 +402,20 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                                 Uri.parse("package:" + getPackageName()));
                         startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
                     }else {
-                        Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+//                        Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+//                        intent.putExtra(APK_URL,url);
+//                        startService(intent);
+                        Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
                         intent.putExtra(APK_URL,url);
-                        startService(intent);
+                        startActivity(intent);
                     }
                 }else {
-                    Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+//                    Intent intent = new Intent(MainActivity.this, DownLoadService.class);
+//                    intent.putExtra(APK_URL,url);
+//                    startService(intent);
+                    Intent intent = new Intent(MainActivity.this, DownLoadActivity.class);
                     intent.putExtra(APK_URL,url);
-                    startService(intent);
+                    startActivity(intent);
                 }
 
 

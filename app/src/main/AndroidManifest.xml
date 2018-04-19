@@ -234,6 +234,8 @@
             android:theme="@style/BaseTheme"/>
         <activity android:name=".ui.intelligentPlanting.ShopActivity"
             android:theme="@style/BaseTheme"/>
+        <activity android:name=".updateVersion.DownLoadActivity"
+            android:theme="@style/TranslucentTheme"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
