@@ -13,7 +13,7 @@
         android:background="@drawable/ll_diary_content_bg"
         android:orientation="vertical">
 
-        <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+        <bocai.com.yanghuajien.util.widget.RoundAngleImageView
             android:id="@+id/img_diary_cover"
             android:layout_width="match_parent"
             android:layout_height="170dp"

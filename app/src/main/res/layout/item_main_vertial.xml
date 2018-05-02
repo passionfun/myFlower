@@ -29,7 +29,7 @@
                 <FrameLayout
                     android:layout_width="66dp"
                     android:layout_height="71dp">
-                    <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+                    <bocai.com.yanghuajien.util.widget.RoundAngleImageView
                         android:id="@+id/image"
                         android:layout_width="66dp"
                         android:layout_height="71dp"

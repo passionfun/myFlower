@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<bocai.com.yanghuaji.media.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<bocai.com.yanghuajien.media.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -36,4 +36,4 @@
         android:padding="0dp"
         android:visibility="gone"
         tools:visibility="visible" />
-</bocai.com.yanghuaji.media.widget.SquareLayout>
+</bocai.com.yanghuajien.media.widget.SquareLayout>

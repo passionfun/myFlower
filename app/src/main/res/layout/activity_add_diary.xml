@@ -14,7 +14,7 @@
 
         <include layout="@layout/layout_toolbar" />
 
-        <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+        <bocai.com.yanghuajien.util.widget.RoundAngleImageView
             android:layout_marginStart="29dp"
             android:id="@+id/img_add_cover"
             app:roundHeightLeftUp="5dp"

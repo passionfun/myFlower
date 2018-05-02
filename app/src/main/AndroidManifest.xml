@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="bocai.com.yanghuaji">
+    package="bocai.com.yanghuajien">
 
 
     <!-- 这个权限用于进行网络定位 -->
@@ -54,7 +54,7 @@
 
 
     <application
-        android:name=".base.Application"
+        android:name="bocai.com.yanghuajien.base.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_icon"
         android:label="@string/app_name"
@@ -69,7 +69,7 @@
         <service android:name="com.amap.api.location.APSService"></service>
         <!--高德地图end-->
         <activity
-            android:name=".ui.account.LoginActivity"
+            android:name="bocai.com.yanghuajien.ui.account.LoginActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -100,7 +100,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="bocai.com.yanghuajien.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -111,64 +111,64 @@
             android:value="5a260a79f29d980ba7000024" />
         <!--友盟分享end-->
         <activity
-            android:name=".ui.account.BindPhoneActivity"
+            android:name="bocai.com.yanghuajien.ui.account.BindPhoneActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.account.RegisterActivity"
+            android:name="bocai.com.yanghuajien.ui.account.RegisterActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.account.ForgetPasswordActivity"
+            android:name="bocai.com.yanghuajien.ui.account.ForgetPasswordActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name="bocai.com.yanghuajien.ui.main.MainActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.personalCenter.EditPersonalDataActivity"
+            android:name="bocai.com.yanghuajien.ui.personalCenter.EditPersonalDataActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.personalCenter.ModifyPasswordActivity"
+            android:name="bocai.com.yanghuajien.ui.personalCenter.ModifyPasswordActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.personalCenter.PlantingRecordActivity"
+            android:name="bocai.com.yanghuajien.ui.personalCenter.PlantingRecordActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.personalCenter.SystemNotificationActivity"
+            android:name="bocai.com.yanghuajien.ui.personalCenter.SystemNotificationActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.personalCenter.SettingActivity"
+            android:name="bocai.com.yanghuajien.ui.personalCenter.SettingActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.plantingDiary.AddDiaryActivity"
+            android:name="bocai.com.yanghuajien.ui.plantingDiary.AddDiaryActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.plantingDiary.DiaryListActivity"
+            android:name="bocai.com.yanghuajien.ui.plantingDiary.DiaryListActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.plantingDiary.DiaryDetailActivity"
+            android:name="bocai.com.yanghuajien.ui.plantingDiary.DiaryDetailActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.plantingDiary.LocationActivity"
+            android:name="bocai.com.yanghuajien.ui.plantingDiary.LocationActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.intelligentPlanting.AddEquipmentActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.AddEquipmentActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.intelligentPlanting.AddEquipmentDisplayActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.AddEquipmentDisplayActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.intelligentPlanting.AddWifiActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.AddWifiActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.intelligentPlanting.FirstSettingActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.FirstSettingActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.intelligentPlanting.SecondSettingActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.SecondSettingActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.intelligentPlanting.EquipmentSettingActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.EquipmentSettingActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateHidden" />
         <!--图片剪切-->
@@ -176,33 +176,33 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ui.intelligentPlanting.PlantSettingActivity"
+        <activity android:name="bocai.com.yanghuajien.ui.intelligentPlanting.PlantSettingActivity"
             android:theme="@style/BaseTheme"/>
-        <activity android:name=".ui.intelligentPlanting.EquipmentInfoActivity"
+        <activity android:name="bocai.com.yanghuajien.ui.intelligentPlanting.EquipmentInfoActivity"
             android:theme="@style/BaseTheme"/>
-        <activity android:name=".ui.intelligentPlanting.ConnectActivity"
+        <activity android:name="bocai.com.yanghuajien.ui.intelligentPlanting.ConnectActivity"
             android:theme="@style/BaseTheme"/>
-        <activity android:name=".ui.intelligentPlanting.ConnectSuccessActivity"
+        <activity android:name="bocai.com.yanghuajien.ui.intelligentPlanting.ConnectSuccessActivity"
             android:theme="@style/BaseTheme"/>
-        <activity android:name=".ui.intelligentPlanting.ConnectFailedActivity"
+        <activity android:name="bocai.com.yanghuajien.ui.intelligentPlanting.ConnectFailedActivity"
             android:theme="@style/BaseTheme"/>
-        <activity android:name=".ui.personalCenter.GuideActivity"
+        <activity android:name="bocai.com.yanghuajien.ui.personalCenter.GuideActivity"
             android:theme="@style/BaseTheme"/>
         <activity
-            android:name=".ui.intelligentPlanting.AddPlantActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.AddPlantActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.intelligentPlanting.GroupManagerActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.GroupManagerActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.intelligentPlanting.EditGroupActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.EditGroupActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.intelligentPlanting.PlantingDateAct"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.PlantingDateAct"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.plantingDiary.WriteDiaryActivity"
+            android:name="bocai.com.yanghuajien.ui.plantingDiary.WriteDiaryActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme" />
 
@@ -210,10 +210,10 @@
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".ui.intelligentPlanting.AddEquipmentsActivity"
+            android:name="bocai.com.yanghuajien.ui.intelligentPlanting.AddEquipmentsActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".ui.plantingDiary.PlantingDiaryActivity"
+            android:name="bocai.com.yanghuajien.ui.plantingDiary.PlantingDiaryActivity"
             android:theme="@style/BaseTheme" />
 
         //图片选择Activity
@@ -230,11 +230,11 @@
         <activity
             android:name="boc.com.imgselector.ClipImageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ui.intelligentPlanting.zxing.ScanActivity"
+        <activity android:name="bocai.com.yanghuajien.ui.intelligentPlanting.zxing.ScanActivity"
             android:theme="@style/BaseTheme"/>
-        <activity android:name=".ui.intelligentPlanting.ShopActivity"
+        <activity android:name="bocai.com.yanghuajien.ui.intelligentPlanting.ShopActivity"
             android:theme="@style/BaseTheme"/>
-        <activity android:name=".updateVersion.DownLoadActivity"
+        <activity android:name="bocai.com.yanghuajien.updateVersion.DownLoadActivity"
             android:theme="@style/TranslucentTheme"/>
 
         <provider
@@ -261,7 +261,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
-            android:name=".receiver.MyReceiver"
+            android:name="bocai.com.yanghuajien.receiver.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -275,7 +275,7 @@
         </receiver>
 
         <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调 -->
-        <receiver android:name=".receiver.MyJPushMessageReceiver">
+        <receiver android:name="bocai.com.yanghuajien.receiver.MyJPushMessageReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
 
@@ -283,7 +283,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".updateVersion.DownLoadService"/>
+        <service android:name="bocai.com.yanghuajien.updateVersion.DownLoadService"/>
 
 
     </application>

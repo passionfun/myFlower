@@ -16,7 +16,7 @@
         android:background="@drawable/ll_diary_content_bg"
         android:orientation="vertical">
 
-        <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+        <bocai.com.yanghuajien.util.widget.RoundAngleImageView
             app:roundHeightLeftUp="5dp"
             app:roundHeightRightUp="5dp"
             android:id="@+id/img_diary_cover"

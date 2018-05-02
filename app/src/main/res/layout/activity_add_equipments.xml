@@ -87,7 +87,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <bocai.com.yanghuaji.util.widget.EmptyView
+        <bocai.com.yanghuajien.util.widget.EmptyView
             android:id="@+id/empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

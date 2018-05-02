@@ -57,13 +57,13 @@
         android:layout_height="match_parent">
 
 
-        <bocai.com.yanghuaji.util.widget.EmptyView
+        <bocai.com.yanghuajien.util.widget.EmptyView
             android:id="@+id/empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">
 
-        </bocai.com.yanghuaji.util.widget.EmptyView>
+        </bocai.com.yanghuajien.util.widget.EmptyView>
 
         <com.jcodecraeer.xrecyclerview.XRecyclerView
             android:id="@+id/recycler_planting_diary"

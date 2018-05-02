@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="bocai.com.yanghuaji.media.GalleryFragment">
+    tools:context="bocai.com.yanghuajien.media.GalleryFragment">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <bocai.com.yanghuaji.media.widget.GalleryView
+    <bocai.com.yanghuajien.media.widget.GalleryView
         android:id="@+id/galleryView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

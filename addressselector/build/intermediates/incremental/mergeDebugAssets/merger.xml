@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\Users\shc\Desktop\boca\YangHuaJi\addressselector\src\main\assets"><file name="area.db" path="C:\Users\shc\Desktop\boca\YangHuaJi\addressselector\src\main\assets\area.db"/></source><source path="C:\Users\shc\Desktop\boca\YangHuaJi\addressselector\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="C:\Users\shc\Desktop\boca\YangHuaJi\addressselector\src\debug\assets"/></dataSet></merger>

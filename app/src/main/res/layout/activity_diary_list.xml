@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:id="@+id/ll_root"
     android:background="#ffffff"
-    tools:context="bocai.com.yanghuaji.ui.plantingDiary.DiaryListActivity">
+    tools:context="bocai.com.yanghuajien.ui.plantingDiary.DiaryListActivity">
 
     <android.support.v7.widget.Toolbar
         android:layout_marginTop="26dp"

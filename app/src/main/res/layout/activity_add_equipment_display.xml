@@ -60,7 +60,7 @@
         </LinearLayout>
 
 
-        <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+        <bocai.com.yanghuajien.util.widget.RoundAngleImageView
             android:layout_width="320dp"
             android:id="@+id/img_photo"
             android:layout_height="198dp"

@@ -56,7 +56,7 @@
         android:layout_gravity="center"
         android:layout_height="70dp" />
 
-    <bocai.com.yanghuaji.util.widget.RoundAngleImageView
+    <bocai.com.yanghuajien.util.widget.RoundAngleImageView
         android:layout_width="70dp"
         app:roundHeightLeftBottom="35dp"
         app:roundHeightLeftUp="35dp"

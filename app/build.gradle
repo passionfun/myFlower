@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "bocai.com.yanghuaji"
+        applicationId "bocai.com.yanghuajien"
         minSdkVersion 17
         targetSdkVersion 22
         versionCode 4

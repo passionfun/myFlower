@@ -16,7 +16,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="47dp">
 
-        <bocai.com.yanghuaji.util.widget.WaterRippleView
+        <bocai.com.yanghuajien.util.widget.WaterRippleView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
