@@ -28,6 +28,16 @@ public class User extends BaseModel{
     private String RelativePath;
     @Column
     private String SmallThumbnail;
+    @Column
+    private String Email;
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
 
     public String getId() {
         return Id;

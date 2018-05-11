@@ -35,6 +35,7 @@ public class Account {
     private static final String KEY_PORT = "KEY_PORT";
     private static final String KEY_REGISTER_HOST = "KEY_REGISTER_HOST";
     private static final String KEY_SERVICE_NAME = "KEY_SERVICE_NAME";
+    private static final String KEY_EMAIL = "KEY_EMAIL";
 
 
     private static String token;
@@ -49,6 +50,7 @@ public class Account {
     private static String port;
     private static String registerHost;
     private static String serviceName;
+    private static String email;
 
 
     //所有已经添加过的设备
@@ -67,6 +69,7 @@ public class Account {
         sp.edit()
                 .putString(KEY_PUSH_ID, pushId)
                 .putString(KEY_TOKEN, token)
+                .putString(KEY_EMAIL, email)
                 .putString(KEY_PHONE, phone)
                 .putString(KEY_USER_ID, userId)
                 .apply();
@@ -127,6 +130,7 @@ public class Account {
         token = sp.getString(KEY_TOKEN, "");
         userId = sp.getString(KEY_USER_ID, "");
         phone = sp.getString(KEY_PHONE, "");
+        email = sp.getString(KEY_EMAIL, "");
     }
 
 
@@ -134,6 +138,7 @@ public class Account {
         // 存储当前登录的账户, token, 用户Id
         Account.token = model.getToken();
         Account.phone = model.getPhone();
+        Account.email = model.getEmail();
         Account.userId = model.getId();
         save(Application.getInstance());
     }
@@ -176,7 +181,7 @@ public class Account {
     public static boolean isLogin() {
         SharedPreferences sp = Application.getInstance().getSharedPreferences(Account.class.getName(),
                 Context.MODE_PRIVATE);
-        return !TextUtils.isEmpty(sp.getString(KEY_TOKEN, "")) && !TextUtils.isEmpty(sp.getString(KEY_PHONE, ""));
+        return !TextUtils.isEmpty(sp.getString(KEY_TOKEN, "")) && !TextUtils.isEmpty(sp.getString(KEY_EMAIL, ""));
     }
 
 
@@ -212,7 +217,11 @@ public class Account {
     }
 
     public static String getPhone() {
-        return phone;
+        return email;
+    }
+
+    public static String getEmile() {
+        return email;
     }
 
     public static void setPhone(String phone) {

@@ -1,8 +1,11 @@
 <resources>
-    <string name="app_name">Wisgrow</string>
+
+    <string name="app_name">imageselector</string>
     <string name="image">Photos</string>
     <string name="preview">Preview</string>
     <string name="select">Choose</string>
+    <string name="confirm">Confirm</string>
+    <string name="hint">Permission</string>
     <string name="verification_code_login">Log in by verification code</string>
     <string name="password_login">Log in by password</string>
     <string name="input_phone_number">Please enter your mobile NO.</string>

@@ -58,11 +58,17 @@ public interface RemoteService {
                                                        @Field("Password") String password, @Field("RePassword")String rePassword);
 
 
-    //密码登录
+//    //密码登录
+//    @POST("member/pwd_login")
+//    @FormUrlEncoded
+//    Observable<BaseRspModel<AccountRspModel>> passwordLogin(@Field("Phone") String phone,
+//                                                            @Field("Password")String password,@Field("MobileDevice")String pushId);
+
+    //密码登录(英文版)
     @POST("member/pwd_login")
     @FormUrlEncoded
-    Observable<BaseRspModel<AccountRspModel>> passwordLogin(@Field("Phone") String phone,
-                                                            @Field("Password")String password,@Field("MobileDevice")String pushId);
+    Observable<BaseRspModel<AccountRspModel>> passwordLogin(@Field("Email") String phone,
+                                                            @Field("Password")String password);
 
     //验证码登录
     @POST("member/phone_login")

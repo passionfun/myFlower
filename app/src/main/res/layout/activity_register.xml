@@ -37,9 +37,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:maxLength="11"
                 android:textColor="#333333"
-                android:inputType="phone"
+                android:inputType="textEmailAddress"
                 android:background="@null"
                 android:textSize="14sp"
                 android:hint="@string/input_phone_number" />

@@ -13,20 +13,43 @@ public class AccountRspModel {
     /**
      * Id : 3
      * Token : g4nIbm5A8xpUhS8m2qW0xCspUNr5gpDiSLA6FA34qNa9KCz2ZzobhTwvBrRqWUPo
-     * Phone : 18357876718
+     * Email: "1990994609@qq.com"
      * NickName : null
      * Sex : null
      * Birthday : null
      * Avatar : {"RelativePath":null,"SmallThumbnail":null}
      */
 
+
+
+
+
+
+
     private String Id;
     private String Token;
+    private String Email;
     private String Phone;
     private String NickName;
     private String Sex;
     private String Birthday;
     private AvatarBean Avatar;
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
 
     public String getId() {
         return Id;
@@ -44,13 +67,6 @@ public class AccountRspModel {
         this.Token = Token;
     }
 
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String Phone) {
-        this.Phone = Phone;
-    }
 
     public String getNickName() {
         return NickName;
@@ -101,7 +117,7 @@ public class AccountRspModel {
             User user = new User();
             user.setId(Id);
             user.setToken(Token);
-            user.setPhone(Phone);
+            user.setEmail(Email);
             user.setNickName(NickName);
             user.setSex(Sex);
             user.setBirthday(Birthday);

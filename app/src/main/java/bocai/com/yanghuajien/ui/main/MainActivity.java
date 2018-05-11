@@ -138,9 +138,9 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     public void onResume() {
         super.onResume();
         User user = Account.getUser();
-        String phone = Account.getPhone();
-        Log.d(TAG, "onResume: " + phone);
-        String account = phone.substring(0, 3) + "****" + phone.substring(7);
+        String emile = user.getEmail();
+        Log.d(TAG, "onResume: " + emile);
+        String account = emile.substring(0, 3) + "****" + emile.substring(7);
         if (user != null) {
             if (!TextUtils.isEmpty(user.getNickName())) {
                 mName.setText(user.getNickName());

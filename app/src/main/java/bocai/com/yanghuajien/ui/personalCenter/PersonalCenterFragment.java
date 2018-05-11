@@ -83,8 +83,8 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
     public void onResume() {
         super.onResume();
         User user = Account.getUser();
-        String phone = Account.getPhone();
-        String account = phone.substring(0,3)+"****"+phone.substring(7);
+        String emile = Account.getEmile();
+        String account = emile.substring(0,3)+"****"+emile.substring(7);
         if (user != null) {
             if (!TextUtils.isEmpty(user.getNickName())){
                 mName.setText(user.getNickName());

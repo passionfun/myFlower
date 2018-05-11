@@ -30,7 +30,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     @Override
     public void passwordLogin(String phone, String password) {
         view.showLoading();
-        Observable<BaseRspModel<AccountRspModel>> observable = Network.remote().passwordLogin(phone, password, Account.getPushId());
+//Observable<BaseRspModel<AccountRspModel>> observable = Network.remote().passwordLogin(phone, password, Account.getPushId());
+        Observable<BaseRspModel<AccountRspModel>> observable = Network.remote().passwordLogin(phone, password);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel<AccountRspModel>>() {

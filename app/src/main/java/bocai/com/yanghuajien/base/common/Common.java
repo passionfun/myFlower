@@ -13,7 +13,10 @@ public class Common {
         // 测试服务器地址
 //        String API_URL = "http://121.41.128.239:8082/yhj/web/api/index.php/";
         //正式服务器地址
-        String API_URL = "http://47.98.46.78/web/api/index.php/";
+//        String API_URL = "http://47.98.46.78/web/api/index.php/";
+        //英文版服务器地址
+        String API_URL = "http://demo.188388.cn:8082/yhjen/web/api/index.php/";
+
         //H5测试地址
 //        String H5_BASE = "http://121.41.128.239:8082/yhj/web/h5/yhj/";
         //H5正式地址 http://47.98.46.78/web/h5/yhj/product.html?id=123
