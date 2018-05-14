@@ -120,7 +120,7 @@ class HorizontalRecyclerFragmentHelper {
                                 } else {
                                     timer.cancel();
                                     timer=null;
-                                    Application.showToast("升级失败");
+                                    Application.showToast(Application.getStringText(R.string.update_failed));
                                     progressDialog.cancel();
                                 }
                             }
@@ -293,7 +293,7 @@ class HorizontalRecyclerFragmentHelper {
                                         @Override
                                         public void call() {
                                             mLedMode.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_light_on,0,0,0);
-                                            mLedMode.setText("台灯");
+                                            mLedMode.setText("Lamp");
                                         }
                                     });
 
@@ -305,7 +305,7 @@ class HorizontalRecyclerFragmentHelper {
                                         @Override
                                         public void call() {
                                             mLedMode.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_light,0,0,0);
-                                            mLedMode.setText("补光");
+                                            mLedMode.setText("Light");
                                         }
                                     });
 
@@ -315,7 +315,7 @@ class HorizontalRecyclerFragmentHelper {
                                         @Override
                                         public void call() {
                                             mLedMode.setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.img_light,0,0,0);
-                                            mLedMode.setText("待机");
+                                            mLedMode.setText("Standby");
                                         }
                                     });
 
@@ -377,7 +377,7 @@ class HorizontalRecyclerFragmentHelper {
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
-                                mUpdate.setText("设备升级");
+                                mUpdate.setText("Device Upgrade");
                                 mUpdate.setEnabled(true);
                                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal, 0, 0);
                             }
@@ -386,7 +386,7 @@ class HorizontalRecyclerFragmentHelper {
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
-                                mUpdate.setText("设备升级");
+                                mUpdate.setText("Device Upgrade");
                                 mUpdate.setEnabled(true);
                                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical, 0, 0);
                             }
@@ -401,7 +401,7 @@ class HorizontalRecyclerFragmentHelper {
                             @Override
                             public void call() {
                                 mUpdate.setEnabled(false);
-                                mUpdate.setText("最新版本");
+                                mUpdate.setText("Latest Version");
                                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_horizontal_nomal, 0, 0);
                             }
                         });
@@ -409,7 +409,7 @@ class HorizontalRecyclerFragmentHelper {
                         Run.onUiAsync(new Action() {
                             @Override
                             public void call() {
-                                mUpdate.setText("最新版本");
+                                mUpdate.setText("Latest Version");
                                 mUpdate.setEnabled(false);
                                 mUpdate.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_update_vertical_nomal, 0, 0);
                             }
@@ -465,11 +465,12 @@ class HorizontalRecyclerFragmentHelper {
     public static String getWaStatus(String code) {
         switch (code) {
             case "1":
-                return "正常";
+                return Application.getStringText(R.string.normal);
             case "2":
-                return "偏低";
+                return Application.getStringText(R.string.too_low);
             case "3":
-                return "缺水";
+                //缺水
+                return Application.getStringText(R.string.water_Shortage);
             default:
                 return HorizontalRecyclerFragment.UNKNOWN;
         }

@@ -40,11 +40,11 @@
 
         <Button
             android:id="@+id/bt_add_diary"
-            android:layout_width="128dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="24dp"
-            android:background="@mipmap/img_add_diary"
+            android:background="@mipmap/img_go_to_add"
             android:textColor="#FFFFFF"
             android:textSize="12dp" />
 

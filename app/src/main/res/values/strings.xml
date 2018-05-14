@@ -175,6 +175,7 @@
     <string name="too_low">Low</string>
     <string name="normal">Normal</string>
     <string name="too_high">High</string>
+    <string name="water_Shortage">Water Shortage</string>
     <string name="account_conflict_please_login_again">The account has been logged in at other terminals ,log in again？</string>
     <string name="ensure_logout">Do you want to log out?</string>
     <string name="updating">Upgrading…</string>
