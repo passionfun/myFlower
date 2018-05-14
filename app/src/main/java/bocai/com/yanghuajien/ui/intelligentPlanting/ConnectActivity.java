@@ -116,7 +116,7 @@ public class ConnectActivity extends PresenterActivity<ConnectContract.Presenter
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("连接设备");
+        mTitle.setText(Application.getStringText(R.string.connect_equipment));
         //1.1.2353.356.439
 //        mPresenter.addEquipment(Account.getToken(), "WG301", "B0:F8:93:15:22:DB", "666",
 //                "1.0.4", "1.1.2353.356.439", "1504608600", "WG301");

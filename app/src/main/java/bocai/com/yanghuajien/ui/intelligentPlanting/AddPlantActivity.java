@@ -112,7 +112,7 @@ public class AddPlantActivity extends PresenterActivity<AddPlantContract.Present
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("添加植物");
+        mTitle.setText(Application.getStringText(R.string.add_plant));
         if (!TextUtils.isEmpty(className)){
             mSkip.setVisibility(View.GONE);
         }else {

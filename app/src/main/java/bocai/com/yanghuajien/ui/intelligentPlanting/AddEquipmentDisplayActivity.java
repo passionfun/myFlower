@@ -25,6 +25,7 @@ import java.util.List;
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Activity;
 import boc.com.imgselector.GlideApp;
+import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.model.EquipmentPhotoModel;
 import bocai.com.yanghuajien.model.PlantSeriesModel;
 import bocai.com.yanghuajien.util.ActivityUtil;
@@ -107,7 +108,7 @@ public class AddEquipmentDisplayActivity extends Activity {
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("添加设备");
+        mTitle.setText(Application.getStringText(R.string.add_equipment));
         if (mEquipmentPhotoModel!=null&&mEquipmentPhotoModel.getPhoto()!=null&&
                 mEquipmentPhotoModel.getPhoto().endsWith(".gif")){
             GlideApp.with(this)

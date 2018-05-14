@@ -213,7 +213,7 @@
     <string name="year">Year</string>
     <string name="month">Month</string>
     <string name="day">Day</string>
-    <string name="plant_record">Planting Records </string>
+    <string name="plant_record">Planting Records</string>
     <string name="edit">Edit</string>
     <string name="have_no_equipment">No device in planting</string>
     <string name="update_time">Update the date:</string>

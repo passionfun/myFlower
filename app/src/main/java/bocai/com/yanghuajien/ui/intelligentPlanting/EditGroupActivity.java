@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bocai.com.yanghuajien.R;
+import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.RecyclerAdapter;
 import bocai.com.yanghuajien.base.presenter.PresenterActivity;
 import bocai.com.yanghuajien.model.EquipmentCard;
@@ -119,9 +120,9 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("编辑分组");
+        mTitle.setText(Application.getStringText(R.string.edit_group));
         mSave.setVisibility(View.VISIBLE);
-        mSave.setText("保存");
+        mSave.setText(Application.getStringText(R.string.save));
         mEtName.setText(mGroupName);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
         mRecycler.setAdapter(mAdapter = new RecyclerAdapter<EquipmentCard>() {

@@ -98,7 +98,7 @@ public class ConnectSuccessActivity extends PresenterActivity<ConnectSuccessCont
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("连接设备");
+        mTitle.setText(Application.getStringText(R.string.connect_equipment));
         new CountDownTimer(4000, 1000) {
             @Override
             public void onTick(long l) {

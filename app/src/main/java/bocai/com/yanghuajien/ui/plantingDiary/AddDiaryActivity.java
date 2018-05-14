@@ -107,7 +107,7 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("添加日记本");
+        mTitle.setText(Application.getStringText(R.string.add_diary));
         mSave.setVisibility(View.VISIBLE);
     }
 

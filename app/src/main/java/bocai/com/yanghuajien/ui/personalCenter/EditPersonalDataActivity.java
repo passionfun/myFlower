@@ -291,7 +291,9 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
             mYear = year;
             mMonth = monthOfYear;
             mDay = dayOfMonth;
-            mBirthday.setText(new StringBuffer().append(mYear).append("年").append(mMonth + 1).append("月").append(mDay).append("日"));
+            mBirthday.setText(new StringBuffer().append(mYear).append(Application.getStringText(R.string.year))
+                    .append(mMonth + 1).append(Application.getStringText(R.string.month))
+                    .append(mDay).append(Application.getStringText(R.string.day)));
         }
     };
 

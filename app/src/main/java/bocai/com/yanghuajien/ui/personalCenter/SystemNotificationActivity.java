@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Activity;
+import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.common.Common;
 import bocai.com.yanghuajien.model.MessageEvent;
 import bocai.com.yanghuajien.util.ActivityUtil;
@@ -55,7 +56,7 @@ public class SystemNotificationActivity extends Activity {
         super.initData();
         mTitle.setVisibility(View.GONE);
         mRight.setVisibility(View.VISIBLE);
-        mRight.setText("编辑");
+        mRight.setText(Application.getStringText(R.string.edit));
         ActivityUtil.initWebSetting(webView.getSettings());
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -94,11 +95,11 @@ public class SystemNotificationActivity extends Activity {
 
     @OnClick(R.id.tv_right)
     void onRightClick() {
-        if (mRight.getText().equals("编辑")){
-            mRight.setText("完成");
+        if (mRight.getText().equals(Application.getStringText(R.string.edit))){
+            mRight.setText(Application.getStringText(R.string.complete));
             webView.loadUrl("javascript:edit()");
         }else {
-            mRight.setText("编辑");
+            mRight.setText(Application.getStringText(R.string.edit));
             webView.loadUrl("javascript:editOk()");
         }
     }

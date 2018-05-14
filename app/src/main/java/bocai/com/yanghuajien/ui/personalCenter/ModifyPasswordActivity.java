@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import bocai.com.yanghuajien.R;
+import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.presenter.PresenterActivity;
 import bocai.com.yanghuajien.presenter.personalCenter.ModifyPasswordContract;
 import bocai.com.yanghuajien.presenter.personalCenter.ModifyPasswordPresenter;
@@ -48,7 +49,7 @@ public class ModifyPasswordActivity extends PresenterActivity<ModifyPasswordCont
     protected void initData() {
         super.initData();
         UiTool.setBlod(mTitle);
-        mTitle.setText("修改密码");
+        mTitle.setText(Application.getStringText(R.string.modify_password));
     }
 
     @OnClick(R.id.img_back)

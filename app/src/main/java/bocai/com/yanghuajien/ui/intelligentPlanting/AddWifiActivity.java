@@ -100,7 +100,7 @@ public class AddWifiActivity extends Activity {
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("添加设备");
+        mTitle.setText(Application.getStringText(R.string.add_equipment));
 //        micodev = new MiCODevice(this);
         elink = new EasyLink(this);
 
