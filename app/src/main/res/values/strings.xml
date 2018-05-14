@@ -28,7 +28,7 @@
     <string name="phone_register">Mobile Registration</string>
     <string name="save">Save</string>
     <string name="check_and_edit_personal_data">View and edit personal data</string>
-    <string name="my_planting_record">我的种植记录</string>
+    <string name="my_planting_record">My planting record</string>
     <string name="system_notification">System notification</string>
     <string name="modify_password">Change the password</string>
     <string name="setting">Setting</string>
@@ -221,6 +221,8 @@
     <string name="please_open_take_photo_permission">Please open camera permission</string>
     <string name="photo_and_content_can_not_both_empty">Photo and text cannot be empty at the same time</string>
     <string name="not_display">Not displayed</string>
+    <string name="edit_profile">Edit  profile</string>
+
 
 
 </resources>

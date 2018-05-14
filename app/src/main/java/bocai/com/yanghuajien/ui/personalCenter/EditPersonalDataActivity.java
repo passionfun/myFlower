@@ -110,13 +110,13 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
             if (user.getSex() != null) {
                 switch (user.getSex()) {
                     case "0":
-                        mSex.setText("保密");
+                        mSex.setText(Application.getStringText(R.string.secrecy));
                         break;
                     case "1":
-                        mSex.setText("男");
+                        mSex.setText(Application.getStringText(R.string.male));
                         break;
                     default:
-                        mSex.setText("女");
+                        mSex.setText(Application.getStringText(R.string.female));
                         break;
                 }
             }
@@ -148,17 +148,17 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
                 switch (view.getId()) {
                     case R.id.tv_take_photo:
                         // 男
-                        mSex.setText("男");
+                        mSex.setText(Application.getStringText(R.string.male));
                         popupWindow.dismiss();
                         break;
                     case R.id.tv_from_gallery:
                         // 女
-                        mSex.setText("女");
+                        Application.getStringText(R.string.female);
                         popupWindow.dismiss();
                         break;
                     case R.id.tv_secret:
                         // 保密
-                        mSex.setText("保密");
+                        Application.getStringText(R.string.secrecy);
                         popupWindow.dismiss();
                         break;
                 }
@@ -306,7 +306,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
                 loadPortrait(resultUri);
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
-            Application.showToast("未知错误");
+            Application.showToast(Application.getStringText(R.string.unknown_error));
         }
 
         if (requestCode == WriteDiaryActivity.TAKE_PHOTO_REQUEST_ONE) {
