@@ -20,6 +20,7 @@ import java.util.List;
 
 import bocai.com.yanghuajien.R;
 import boc.com.imgselector.GlideApp;
+import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.RecyclerAdapter;
 import bocai.com.yanghuajien.base.presenter.PresenterActivity;
 import bocai.com.yanghuajien.model.DiaryListModel;
@@ -185,7 +186,7 @@ public class PlantingDiaryActivity extends PresenterActivity<PlantDiaryListContr
         @Override
         protected void onBind(DiaryListModel.DiaryModl diaryListModel) {
             mTitle.setText(diaryListModel.getBookName());
-            mTime.setText("更新日期:" + DateUtils.timet(diaryListModel.getTimeline()));
+            mTime.setText(Application.getStringText(R.string.update_date)  + DateUtils.timet(diaryListModel.getTimeline()));
             List<String> photos = diaryListModel.getPhotos();
             mFirst.setVisibility(View.INVISIBLE);
             mSecond.setVisibility(View.INVISIBLE);

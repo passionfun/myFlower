@@ -270,7 +270,7 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
                 }
             });
         } else {
-            Application.showToast("暂无种植中设备");
+            Application.showToast(Application.getStringText(R.string.have_no_equipment));
         }
 
     }

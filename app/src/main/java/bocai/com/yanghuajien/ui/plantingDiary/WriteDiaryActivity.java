@@ -187,7 +187,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
             }
         });
 
-        mLocation.setText("定位中...");
+        mLocation.setText(Application.getStringText(R.string.positioning));
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听
@@ -214,7 +214,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                         if (aBoolean) {
                             mLocationClient.startLocation();
                         } else {
-                            mLocation.setText("定位失败");
+                            mLocation.setText(Application.getStringText(R.string.position_failed));
 //                        getLocationFail();
                         }
                     }
@@ -229,7 +229,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
     @OnClick(R.id.tv_location)
     void onLocationClick() {
         if (TextUtils.isEmpty(mCityName)) {
-            Toast.makeText(this, "无法获取当前定位城市", Toast.LENGTH_SHORT).show();
+            Application.showToast(Application.getStringText(R.string.can_not_position_this_city));
             return;
         }
         LocationActivity.show(this, mCityName);
@@ -271,7 +271,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                                             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                                             startActivityForResult(intent, TAKE_PHOTO_REQUEST_ONE);
                                         } else {
-                                            Toast.makeText(WriteDiaryActivity.this, "请打开拍照权限", Toast.LENGTH_SHORT).show();
+                                            Application.showToast(Application.getStringText(R.string.please_open_camera_permission));
                                         }
                                     }
                                 });
@@ -340,7 +340,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
         } else {
             String content = mContent.getText().toString();
             if (TextUtils.isEmpty(content)){
-                Application.showToast("图片和文字内容不能同时为空");
+                Application.showToast(Application.getStringText(R.string.photo_and_text_cannot_empty_same_time));
                 return;
             }
             String token = Account.getToken();
@@ -492,7 +492,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
         if (messageEvent.getType().equals(LocationActivity.LOCATION)){
             mLocationStr = messageEvent.getMessage();
             if (TextUtils.isEmpty(mLocationStr)) {
-                mLocation.setText("不显示");
+                mLocation.setText(Application.getStringText(R.string.not_display));
             } else {
                 mLocation.setText(mLocationStr);
             }

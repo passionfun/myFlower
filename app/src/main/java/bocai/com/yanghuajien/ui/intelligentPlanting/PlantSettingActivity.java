@@ -148,14 +148,14 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
 //        }
         if (!TextUtils.isEmpty(mPlantBean.getPlantName())){
             mTvPlantName.setText(mPlantBean.getPlantName());
-            tvPlantMethod.setText("智能");
-            plantMode = "智能";
+            tvPlantMethod.setText(Application.getStringText(R.string.smart_mode));
+            plantMode = Application.getStringText(R.string.smart_mode);
             pMid = "14";
             isPlantsetted = true;
         }else {
-            mTvPlantName.setText("去添加");
-            tvPlantMethod.setText("手动");
-            plantMode = "手动";
+            mTvPlantName.setText(Application.getStringText(R.string.add));
+            tvPlantMethod.setText(Application.getStringText(R.string.manual_mode));
+            plantMode = Application.getStringText(R.string.manual_mode);
             pMid = "15";
             isPlantsetted = false;
         }
@@ -186,7 +186,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
             intent.putExtra(KEY_CLASS_NAME, PlantSettingActivity.class.getName());
             startActivityForResult(intent,1);
         }else {
-            Application.showToast("已添加过植物");
+            Application.showToast(Application.getStringText(R.string.has_added_plant));
         }
 
     }
@@ -198,7 +198,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         if (data!=null){
             mPlantcard = (PlantRspModel.PlantCard) data.getSerializableExtra(AddPlantActivity.KEY_PLANT_CARD);
             mTvPlantName.setText(mPlantcard.getPlantName());
-            tvPlantMethod.setText("智能");
+            tvPlantMethod.setText(Application.getStringText(R.string.smart_mode));
             pId = mPlantcard.getId();
         }
     }
@@ -215,11 +215,12 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         map.put("Lid", lid);//生长周期id
         map.put("Id", id);//设备id
         if (TextUtils.isEmpty(lid)){
-            Application.showToast("生长周期不能id为空");
+            Application.showToast(Application.getStringText(R.string.growth_circle_id_can_not_empty));
             return;
         }
-        if (plantName.equals("去添加")||TextUtils.isEmpty(plantName)){
-            Application.showToast("植物不能为空");
+        if (plantName.equals(Application.getStringText(R.string.add))
+                ||TextUtils.isEmpty(plantName)){
+            Application.showToast(Application.getStringText(R.string.plant_id_can_not_empty));
             return;
         }
         getAutoPara();
@@ -256,7 +257,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
                 }
             });
         } else {
-            Application.showToast("暂无数据");
+            Application.showToast(Application.getStringText(R.string.no_data));
         }
     }
 
@@ -276,7 +277,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
                 }
             });
         } else {
-            Application.showToast("暂无数据");
+            Application.showToast(Application.getStringText(R.string.no_data));
         }
     }
 
@@ -303,7 +304,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
                     if (!isRspSuccess){
                         hideLoading();
                         isReturn = true;
-                        Application.showToast("设备无响应，保存失败");
+                        Application.showToast(Application.getStringText(R.string.the_device_has_no_response_save_failed));
                     }
                 }
             },3000);
@@ -343,7 +344,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
      */
     @Override
     public void getAutoParaFailed() {
-        Application.showToast("智能参数设置失败");
+        Application.showToast(Application.getStringText(R.string.smart_parameter_set_failed));
 //        mPresenter.setupPlant(map);
     }
 

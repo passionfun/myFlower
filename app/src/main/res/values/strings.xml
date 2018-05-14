@@ -38,6 +38,7 @@
     <string name="my_equipment">My Device</string>
     <string name="planting_diary_title">Plant Diary</string>
     <string name="go_to_add">Add +</string>
+    <string name="add">Add</string>
     <string name="add_diary">Add +</string>
     <string name="intelligent_planting">Planting</string>
     <string name="planting_diary">Diary</string>
@@ -151,7 +152,6 @@
     <string name="secrecy">Keep secret</string>
     <string name="how_to_into_state">How to set into pairing status</string>
     <string name="check_state_button">Choose the state button</string>
-    <string name="add">Add</string>
     <string name="ensure">Confirm</string>
     <string name="ensure_delete_this_group">Do you want to delete the group？</string>
     <string name="have_new_version_ensure_update">New version available, confirm to upgrade？</string>
@@ -190,7 +190,7 @@
     <string name="plant_setting_not_perfect_not_open_save_water">Water saving mode can not be opened as the planting setting is not complete</string>
     <string name="start_time_not_between_forbid_time">Opening time canot be among the blackout time</string>
     <string name="please_select_correct_time">Please choose the right time</string>
-    <string name="forbid_time_not_more_than_hour">Blackout time cannot exceed %s hours</string>
+    <string name="forbid_time_not_more_than_hour">Blackout time cannot exceed %d hours</string>
     <string name="setting_failed">Setting failed</string>
     <string name="equipment_not_response_save_water_set_failed">The device has no response, and fail to start the water-saving mode</string>
     <string name="intelligent_data_get_failed_save_water_set_failed">Fail to get the parameters, and fail to start the water-saving mode</string>
@@ -201,6 +201,7 @@
     <string name="analysis_two_dimensional_failure">Fail to parse the QR code</string>
     <string name="add_plant">Add plant</string>
     <string name="no_more">No more</string>
+    //暂无数据
     <string name="no_data">No data</string>
     <string name="password_must_grater_than_8_bits">The password must be more than 8 bits</string>
     <string name="series_is_null">Product series are empty</string>
@@ -208,7 +209,10 @@
     <string name="equipment_have_bind">This device has been binded</string>
     <string name="edit_group">Edit the group</string>
     <string name="added_equipment">%s devices have been added</string>
+    //生长周期不能id为空
     <string name="growth_circle_id_can_not_empty">Device ID can not be empty in growing period</string>
+    //植物不能为空
+    <string name="plant_id_can_not_empty">Plant ID can not be empty</string>
     <string name="exit_app_press_again">Press it again to exit</string>
     <string name="please_open_window_permission">Please open the floating window permission of Wisgrow APP</string>
     <string name="year">Year</string>
@@ -221,8 +225,33 @@
     <string name="can_not_get_current_city">The local address is inaccessible</string>
     <string name="please_open_take_photo_permission">Please open camera permission</string>
     <string name="photo_and_content_can_not_both_empty">Photo and text cannot be empty at the same time</string>
+    //不显示
     <string name="not_display">Not displayed</string>
     <string name="edit_profile">Edit  profile</string>
+    //手动
+    <string name="manual_mode">Manual Mode</string>
+    //智能
+    <string name="smart_mode">Smart Mode</string>
+    //设备无响应，保存失败
+    <string name="the_device_has_no_response_save_failed">The device has no response,and save failed</string>
+
+    //智能参数设置失败
+    <string name="smart_parameter_set_failed">智能参数设置失败</string>
+    //已添加过植物
+    <string name="has_added_plant">已添加过植物</string>
+    //定位中
+    <string name="positioning">定位中...</string>
+    //定位失败
+    <string name="position_failed">定位失败</string>
+    //"无法获取当前定位城市"
+    <string name="can_not_position_this_city">无法获取当前定位城市</string>
+    //请打开拍照权限
+    <string name="please_open_camera_permission">Please open camera permission</string>
+    //图片和文字内容不能同时为空
+    <string name="photo_and_text_cannot_empty_same_time">Photo and text cannot be empty at the same time</string>
+    //更新日期:
+    <string name="update_date">更新日期:</string>
+
 
 
 

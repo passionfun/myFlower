@@ -151,7 +151,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
                 public void onClick(View view) {
                     if (TextUtils.isEmpty(mPlantBean.getPid()) || TextUtils.isEmpty(mPlantBean.getLid())) {
                         checkbox.setChecked(false);
-                        Application.showToast("植物设置不完善，不可开启节水模式");
+                        Application.showToast(Application.getStringText(R.string.plant_setting_not_perfect_not_open_save_water));
                     }
                 }
             });
@@ -216,20 +216,20 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             int begin = DateUtils.getTimeSecondNoZone(lightStart);
             if (noDisStop>noDisStrart){
                 if (begin >= noDisStrart && begin <= noDisStop) {
-                    Application.showToast("开启时间不能再禁止时间之间");
+                    Application.showToast(Application.getStringText(R.string.start_time_not_between_forbid_time));
                     return;
                 }
             }else {
                 //隔天的情况
                 if (begin<=noDisStop||begin>=noDisStrart){
-                    Application.showToast("开启时间不能再禁止时间之间");
+                    Application.showToast(Application.getStringText(R.string.start_time_not_between_forbid_time));
                     return;
                 }
             }
         }
         if ((TextUtils.isEmpty(mNoDistrubStart) && !TextUtils.isEmpty(mNoDistrubEnd)) ||
                 (!TextUtils.isEmpty(mNoDistrubStart) && TextUtils.isEmpty(mNoDistrubEnd))) {
-            Application.showToast("请选择正确的时间");
+            Application.showToast(Application.getStringText(R.string.please_select_correct_time));
             return;
         }
         //设置免打扰时间
@@ -240,12 +240,15 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
             if ((DateUtils.getTimeSecondNoZone(banStop) - DateUtils.getTimeSecondNoZone(banStart)) < 0) {
                 //禁止光照时间为隔天的情况
                 if ((DateUtils.getTimeSecondNoZone(banStop) + 24 * 3600 - DateUtils.getTimeSecondNoZone(banStart)) > leastNoLedTime * 3600) {
-                    Application.showToast("禁止光照时间不能超过" + leastNoLedTime + "小时");
+                    Application.showToast(String.format(Application.
+                            getStringText(R.string.forbid_time_not_more_than_hour),leastNoLedTime));
                     return;
                 }
             }
+
             if ((DateUtils.getTimeSecondNoZone(banStop) - DateUtils.getTimeSecondNoZone(banStart)) > leastNoLedTime * 3600) {
-                Application.showToast("禁止光照时间不能超过" + leastNoLedTime + "小时");
+                Application.showToast(String.format(Application.
+                        getStringText(R.string.forbid_time_not_more_than_hour),leastNoLedTime));
                 return;
             }
         } else {
@@ -274,7 +277,7 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
                         }
                     });
                 } else {
-                    Application.showToast("设置失败");
+                    Application.showToast(Application.getStringText(R.string.setting_failed));
                 }
             }
         }, 3500);
@@ -451,7 +454,8 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
                     if (!isRspSuccess) {
                         hideLoading();
 //                        isReturn = true;
-                        Application.showToast("设备无响应，节水状态下发失败");
+                        Application.showToast(Application.
+                                getStringText(R.string.equipment_not_response_save_water_set_failed));
                         finish();
                     }
                 }
