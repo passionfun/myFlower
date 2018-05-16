@@ -7,15 +7,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.regex.Pattern;
-
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Application;
-import bocai.com.yanghuajien.base.common.Common;
 import bocai.com.yanghuajien.base.presenter.PresenterActivity;
 import bocai.com.yanghuajien.presenter.account.ForgetPasswordContract;
 import bocai.com.yanghuajien.presenter.account.ForgetPasswordPresenter;
@@ -42,8 +38,6 @@ public class ForgetPasswordActivity extends PresenterActivity<ForgetPasswordCont
     EditText etPassword;
     @BindView(R.id.iv_show_psw)
     ImageView ivShowPsw;
-    @BindView(R.id.frame_show_pwd)
-    FrameLayout frameShowPwd;
     @BindView(R.id.et_re_password)
     EditText etRePassword;
     @BindView(R.id.btn_confirm)

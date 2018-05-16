@@ -18,8 +18,8 @@ public interface RegisterContract {
 
     interface Presenter extends BaseContract.Presenter{
 
-        void getSmsCode(String phone);
+        void getSmsCode(String email);
 
-        void register(String phone,String smsCode,String password,String rePassword);
+        void register(String email,String smsCode,String password,String rePassword);
     }
 }

@@ -2,25 +2,22 @@ package bocai.com.yanghuajien.ui.account;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.regex.Pattern;
-
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Application;
-import bocai.com.yanghuajien.base.common.Common;
 import bocai.com.yanghuajien.base.presenter.PresenterActivity;
 import bocai.com.yanghuajien.presenter.account.RegisterContract;
 import bocai.com.yanghuajien.presenter.account.RegisterPresenter;
 import bocai.com.yanghuajien.ui.main.MainActivity;
 import bocai.com.yanghuajien.ui.personalCenter.GuideActivity;
 import bocai.com.yanghuajien.util.UiTool;
-import bocai.com.yanghuajien.util.adapter.TextWatcherAdapter;
 import bocai.com.yanghuajien.util.adapter.account.CountDownTimerUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,30 +32,20 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
         implements RegisterContract.View {
     @BindView(R.id.tv_title)
     TextView mTitle;
-
-    @BindView(R.id.bt_register)
-    Button mRegister;
-
-    @BindView(R.id.img_back)
-    ImageView mImgBack;
-
-    @BindView(R.id.et_input_phone_number)
-    EditText mEditInputPhoneNumber;
-
-    @BindView(R.id.img_check)
-    ImageView mImgCheck;
-
-    @BindView(R.id.et_input_verification_code)
-    EditText mEditInputVerificationCode;
-
+    @BindView(R.id.et_email)
+    EditText etEmail;
+    @BindView(R.id.et_verification_code)
+    EditText etVerificationCode;
     @BindView(R.id.tv_get_verification_code)
-    TextView mTvGetVerification;
-
-    @BindView(R.id.et_input_password)
-    EditText mEditInputPassword;
-
-    @BindView(R.id.et_confirm_password)
-    EditText mEditConfirmPasswrd;
+    TextView tvGetVerificationCode;
+    @BindView(R.id.et_password)
+    EditText etPassword;
+    @BindView(R.id.iv_show_psw)
+    ImageView ivShowPsw;
+    @BindView(R.id.et_re_password)
+    EditText etRePassword;
+    @BindView(R.id.btn_confirm)
+    Button btnConfirm;
 
 
     //显示的入口
@@ -75,75 +62,79 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText(R.string.phone_register);
-        initEditContent();
+        mTitle.setText("E-mail Registration");
     }
 
-    private void initEditContent() {
-        mEditInputPhoneNumber.addTextChangedListener(new TextWatcherAdapter() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                String phone = s.toString().trim();
-                // 校验手机号
-                if (Pattern.matches(Common.Constance.REGEX_MOBILE, phone)){
-                    mImgCheck.setVisibility(View.VISIBLE);
-                }else {
-                    mImgCheck.setVisibility(View.GONE);
+
+    @OnClick({R.id.img_back,R.id.btn_confirm,R.id.tv_get_verification_code,R.id.frame_show_pwd,
+    R.id.tv_register})
+    void onViewClick(View view) {
+        String email = etEmail.getText().toString();
+        switch (view.getId()){
+            case R.id.img_back:
+                finish();
+                break;
+            case R.id.tv_register:
+                //注册协议
+                GuideActivity.show(this,0);
+                break;
+            case R.id.frame_show_pwd:
+                //显示隐藏密码
+                if (etPassword.getInputType() != InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                    etPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    ivShowPsw.setImageResource(R.mipmap.img_show_psw);
+                } else {
+                    etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    ivShowPsw.setImageResource(R.mipmap.img_hide_psw);
                 }
-            }
-        });
-    }
-
-    @OnClick(R.id.img_back)
-    void onBackClick() {
-        finish();
-    }
-
-    //  获取验证码
-    @OnClick(R.id.tv_get_verification_code)
-    void onGetVerificationCodeClick() {
-        String phone = mEditInputPhoneNumber.getText().toString();
-        if (!Pattern.matches(Common.Constance.REGEX_MOBILE, phone)){
-            Application.showToast("请输入正确的手机号");
-        }else {
-            CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(mTvGetVerification, 60000, 1000);
-            mCountDownTimerUtils.start();
-            mPresenter.getSmsCode(phone);
+                break;
+            case R.id.tv_get_verification_code:
+                if (TextUtils.isEmpty(email)){
+                    Application.showToast(Application.getStringText(R.string.email_can_not_empty));
+                }else {
+                    CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(tvGetVerificationCode,
+                            60000, 1000);
+                    mCountDownTimerUtils.start();
+                    mPresenter.getSmsCode(email);
+                }
+                break;
+            case R.id.btn_confirm:
+                //提交按钮
+                String smsCode = etVerificationCode.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+                String rePassword = etRePassword.getText().toString().trim();
+                if (TextUtils.isEmpty(email)){
+                    Application.showToast(Application.getStringText(R.string.email_can_not_empty));
+                    return;
+                }
+                if (TextUtils.isEmpty(smsCode)||
+                        TextUtils.isEmpty(password)||
+                        TextUtils.isEmpty(rePassword)){
+                    Application.showToast(Application.getStringText(R.string.parameter_error));
+                    return;
+                }
+                mPresenter.register(email,smsCode,password,rePassword);
+                break;
         }
-    }
 
-
-    //  注册账户
-    @OnClick(R.id.bt_register)
-    void onRegisterSubmit() {
-        String phone = mEditInputPhoneNumber.getText().toString();
-        String smsCode = mEditInputVerificationCode.getText().toString();
-        String passWord = mEditInputPassword.getText().toString();
-        String rePassWord = mEditConfirmPasswrd.getText().toString();
-        mPresenter.register(phone,smsCode,passWord,rePassWord);
-    }
-
-    @OnClick(R.id.tv_register)
-    void registerAgree(){
-        GuideActivity.show(this,0);
     }
 
     @Override
     public void showLoading() {
         super.showLoading();
-        mRegister.setEnabled(false);
+        btnConfirm.setEnabled(false);
     }
 
     @Override
     public void hideLoading() {
         super.hideLoading();
-        mRegister.setEnabled(true);
+        btnConfirm.setEnabled(true);
     }
 
     @Override
     public void showError(int str) {
         super.showError(str);
-        mRegister.setEnabled(true);
+        btnConfirm.setEnabled(true);
     }
 
     @Override

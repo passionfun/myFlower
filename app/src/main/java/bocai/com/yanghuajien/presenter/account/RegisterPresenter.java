@@ -30,10 +30,11 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
 
 
     @Override
-    public void getSmsCode(String phone) {
-        GetSmsCodeModel model = new GetSmsCodeModel(phone, "0");
+    public void getSmsCode(String email) {
+        view.showLoading();
+        GetSmsCodeModel model = new GetSmsCodeModel(email, "0");
         //请求类型， 0：注册， 1：找回密码， 2：修改手机， 3：验证码登陆， 4：绑定手机 开发阶段默认为1234
-        Observable<BaseRspModel> observable = Network.remote().getSmsCode(phone, "0");
+        Observable<BaseRspModel> observable = Network.remote().getSmsCode(email, "0");
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel>() {
@@ -44,6 +45,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
 
                     @Override
                     public void onNext(BaseRspModel baseRspModel) {
+                        view.hideLoading();
                         if (baseRspModel.getReturnCode().equals("200")){
                             view.getVerifiCationcodeSuccess(baseRspModel.getMsg());
                         }else {
@@ -63,9 +65,10 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
     }
 
     @Override
-    public void register(String phone, String smsCode, String password, String rePassword) {
+    public void register(String email, String smsCode, String password, String rePassword) {
         view.showLoading();
-        Observable<BaseRspModel<AccountRspModel>> observable = Network.remote().register(phone, smsCode, password, rePassword);
+        Observable<BaseRspModel<AccountRspModel>> observable = Network.remote().
+                register(email, smsCode, password, rePassword);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel<AccountRspModel>>() {

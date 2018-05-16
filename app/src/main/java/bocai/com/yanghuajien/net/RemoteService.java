@@ -54,7 +54,7 @@ public interface RemoteService {
     //注册接口
     @POST("member/signup")
     @FormUrlEncoded
-    Observable<BaseRspModel<AccountRspModel>> register(@Field("Phone") String phone, @Field("SmsCode")String smsCode,
+    Observable<BaseRspModel<AccountRspModel>> register(@Field("Email") String email, @Field("SmsCode")String smsCode,
                                                        @Field("Password") String password, @Field("RePassword")String rePassword);
 
 
