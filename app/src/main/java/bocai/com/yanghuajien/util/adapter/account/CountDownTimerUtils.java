@@ -7,6 +7,9 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
+import bocai.com.yanghuajien.R;
+import bocai.com.yanghuajien.base.Application;
+
 
 /**
  * 作者 yuanfei on 2017/11/15.
@@ -24,7 +27,9 @@ public class CountDownTimerUtils extends CountDownTimer {
     @Override
     public void onTick(long millisUntilFinished) {
         mTextView.setClickable(false); //设置不可点击
-        mTextView.setText(millisUntilFinished / 1000 + "秒后可重新发送");  //设置倒计时时间
+        mTextView.setText(String.format(Application.getStringText(R.string.resend),
+                millisUntilFinished / 1000));  //设置倒计时时间
+//        mTextView.setText(millisUntilFinished / 1000 + "秒后可重新发送");  //设置倒计时时间
         mTextView.setTextColor(Color.parseColor("#C0C0C0"));
 
         /**

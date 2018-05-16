@@ -25,9 +25,9 @@ public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContrac
     }
 
     @Override
-    public void modifyPassword(String phone, String smsCode, String newPassword, String rePassword) {
+    public void modifyPassword(String email, String smsCode, String newPassword, String rePassword) {
         view.showLoading();
-        Observable<BaseRspModel> observable = Network.remote().modifyPassword(phone, smsCode, newPassword, rePassword);
+        Observable<BaseRspModel> observable = Network.remote().modifyPassword(email, smsCode, newPassword, rePassword);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BaseRspModel>() {

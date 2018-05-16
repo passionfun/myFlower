@@ -48,7 +48,7 @@ public interface RemoteService {
     //获取验证码接口
     @POST("member/send_sms")
     @FormUrlEncoded
-    Observable<BaseRspModel> getSmsCode(@Field("Phone") String phone,@Field("Type")String type);
+    Observable<BaseRspModel> getSmsCode(@Field("Email") String phone,@Field("Type")String type);
 
 
     //注册接口
@@ -79,7 +79,7 @@ public interface RemoteService {
     //找回密码
     @POST("member/find")
     @FormUrlEncoded
-    Observable<BaseRspModel> modifyPassword(@Field("Phone") String phone,@Field("SmsCode")String smsCode,
+    Observable<BaseRspModel> modifyPassword(@Field("Email") String phone,@Field("SmsCode")String smsCode,
                                             @Field("Password")String password,@Field("RePassword")String rePassword);
 
     //修改个人信息

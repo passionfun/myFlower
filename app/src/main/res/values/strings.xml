@@ -252,6 +252,9 @@
     //更新日期:
     <string name="update_date">更新日期:</string>
 
+    <string name="email_can_not_empty">邮箱不能为空</string>
+    <string name="resend">%d秒后可重新发送</string>
+
 
 
 

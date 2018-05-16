@@ -13,7 +13,7 @@ public interface ForgetPasswordContract {
     }
 
     interface Presenter extends BaseContract.Presenter{
-        void modifyPassword(String phone ,String smsCode,String newPassword,String rePassword);
+        void modifyPassword(String email ,String smsCode,String newPassword,String rePassword);
         void getMsmCode(String phone);
     }
 
