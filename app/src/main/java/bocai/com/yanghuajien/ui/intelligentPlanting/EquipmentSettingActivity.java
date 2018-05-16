@@ -66,13 +66,10 @@ public class EquipmentSettingActivity extends PresenterActivity<EquipmentSetting
         implements EquipmentSettingContract.View {
     @BindView(R.id.scroll_root)
     ScrollView mRoot;
-
     @BindView(R.id.tv_title)
     TextView mTitle;
-
     @BindView(R.id.img_back)
     ImageView mImgBack;
-
     @BindView(R.id.tv_group)
     TextView mGroupName;
     @BindView(R.id.img_right)
