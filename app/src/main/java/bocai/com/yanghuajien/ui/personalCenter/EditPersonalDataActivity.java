@@ -103,7 +103,6 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
     @Override
     protected void initData() {
         super.initData();
-        mSex.setText("去设置");
         User user = Account.getUser();
         if (user != null) {
             mName.setText(user.getNickName());

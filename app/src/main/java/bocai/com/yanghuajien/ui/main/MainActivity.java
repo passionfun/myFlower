@@ -289,7 +289,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         if (keyCode == KeyEvent.KEYCODE_BACK) {     //KEYCODE_BACK：回退键
             long secondTime = System.currentTimeMillis();
             if (secondTime - firstTime > 2000) {
-                Application.showToast("再按一次退出程序");
+                Application.showToast(Application.getStringText(R.string.more_click_to_exit));
                 firstTime = System.currentTimeMillis();
                 return true;
             } else {

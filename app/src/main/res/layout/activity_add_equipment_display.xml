@@ -77,7 +77,7 @@
             android:layout_marginTop="17dp"
             android:drawablePadding="15dp"
             android:drawableTop="@mipmap/img_wireless_network"
-            android:text="接通电源，确认设备进入配网状态"
+            android:text="@string/plug_in_and_make_sure_pairing"
             android:textColor="#696969"
             android:textSize="12sp" />
 
@@ -101,7 +101,7 @@
             android:button="@null"
             android:drawablePadding="5dp"
             android:layout_height="wrap_content"
-            android:text="指示灯闪烁中"/>
+            android:text="@string/the_indicator_id_flashing"/>
 
 
         <ImageView

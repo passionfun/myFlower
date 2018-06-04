@@ -507,7 +507,7 @@ public class HorizontalRecyclerFragment extends PrensterFragment<IntelligentPlan
             @OnLongClick(R.id.frame_root)
             boolean onItemLongClick(){
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext());
-                deleteDialog.setTitle(Application.getStringText(R.string.delete_will_reset_equipment_if_ensure));
+                deleteDialog.setMessage(Application.getStringText(R.string.delete_will_reset_equipment_if_ensure));
                 deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

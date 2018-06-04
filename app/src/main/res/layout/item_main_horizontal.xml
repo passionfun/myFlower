@@ -386,12 +386,16 @@
                     android:textColor="#FFFFFF"
                     android:textSize="11sp" />
 
-
-                <ImageView
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@mipmap/img_more_horizontal" />
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:text="..."
+                    android:paddingBottom="30dp"
+                    android:textColor="#818181"
+                    android:textSize="50sp" />
 
 
             </LinearLayout>

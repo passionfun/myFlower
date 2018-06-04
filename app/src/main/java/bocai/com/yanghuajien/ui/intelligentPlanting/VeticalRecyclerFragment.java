@@ -402,7 +402,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext());
-                    deleteDialog.setTitle(Application.getStringText(R.string.delete_will_reset_equipment_if_ensure));
+                    deleteDialog.setMessage(Application.getStringText(R.string.delete_will_reset_equipment_if_ensure));
                     deleteDialog.setPositiveButton(getResources().getString(R.string.ensure), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

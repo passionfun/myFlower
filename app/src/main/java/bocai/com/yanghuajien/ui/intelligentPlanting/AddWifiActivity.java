@@ -65,7 +65,7 @@ public class AddWifiActivity extends Activity {
     public static void show(Context context, PlantSeriesModel.PlantSeriesCard plantSeriesCard) {
         Intent intent = new Intent(context, AddWifiActivity.class);
         if (plantSeriesCard == null) {
-            Application.showToast("参数异常");
+            Application.showToast(Application.getStringText(R.string.parameter_error));
             return;
         }
         intent.putExtra(AddEquipmentsActivity.KEY_PLANT_CARD, plantSeriesCard);

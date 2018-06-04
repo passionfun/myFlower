@@ -110,7 +110,7 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
                     Log.e("AmapError", "location Error, ErrCode:"
                             + aMapLocation.getErrorCode() + ", errInfo:"
                             + aMapLocation.getErrorInfo());
-                    mLocation.setText("定位失败");
+                    mLocation.setText(Application.getStringText(R.string.position_failed));
                     mLocationStr = "";
                     mCityName = "";
                 }
