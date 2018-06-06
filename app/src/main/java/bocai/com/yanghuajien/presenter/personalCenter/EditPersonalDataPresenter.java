@@ -37,10 +37,10 @@ public class EditPersonalDataPresenter extends BasePresenter<EditPersonalDataCon
         view.showLoading();
         int sexPara;
         switch (sex) {
-            case "保密":
+            case "Keep secret":
                 sexPara = 0;
                 break;
-            case "男":
+            case "Man":
                 sexPara = 1;
                 break;
             default:

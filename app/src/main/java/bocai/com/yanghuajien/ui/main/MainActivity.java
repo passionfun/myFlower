@@ -138,14 +138,14 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     public void onResume() {
         super.onResume();
         User user = Account.getUser();
-        String emile = user.getEmail();
-        Log.d(TAG, "onResume: " + emile);
-        String account = emile.substring(0, 3) + "****" + emile.substring(7);
+        String emile = user.getEmail()==null?"":user.getEmail();
+        //Log.d(TAG, "onResume: " + emile);
+        //String account = emile.substring(0, 3) + "****" + emile.substring(7);
         if (user != null) {
             if (!TextUtils.isEmpty(user.getNickName())) {
                 mName.setText(user.getNickName());
             } else {
-                mName.setText(account);
+                mName.setText(emile);
             }
             GlideApp.with(this)
                     .load(user.getRelativePath())
@@ -153,7 +153,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                     .centerCrop()
                     .into(mPortrait);
         } else {
-            mName.setText(account);
+            mName.setText(emile);
         }
     }
 

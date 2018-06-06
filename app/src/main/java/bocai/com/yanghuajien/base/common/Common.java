@@ -14,7 +14,7 @@ public class Common {
         String API_URL = "http://demo.188388.cn:8082/yhjen/web/api/index.php/";
 
         //H5英文版地址
-        String H5_BASE = "http://47.98.46.78/web/h5/yhj/";
+        String H5_BASE = "http://demo.188388.cn:8082/yhjen/web/h5/yhj/";
 
 
     }

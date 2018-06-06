@@ -160,7 +160,7 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
     @Override
     public void getEquipmentsByGroupSuccess(EquipmentsByGroupModel model) {
         mAdapter.replace(model.getList());
-        mContent.setText("Added" + mAdapter.getItemCount() + "Devices");
+        mContent.setText(String.format(Application.getStringText(R.string.added_devices),mAdapter.getItemCount()));
         mEtName.setText(model.getGroupName());
         mAdapterDefaultGroup.replace(model.getNoGroupList());
     }
@@ -171,7 +171,7 @@ public class EditGroupActivity extends PresenterActivity<EditGroupContract.Prese
         EventBus.getDefault().post(new MessageEvent(HORIZONTALRECYLER_REFRESH));
         EventBus.getDefault().post(new MessageEvent(VERTICAL_RECYLER_REFRESH));
         mAdapter.replace(model.getList());
-        mContent.setText("Added" + mAdapter.getItemCount() + "Devices");
+        mContent.setText(String.format(Application.getStringText(R.string.added_devices),mAdapter.getItemCount()));
         mEtName.setText(model.getGroupName());
         mAdapterDefaultGroup.replace(model.getNoGroupList());
     }

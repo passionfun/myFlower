@@ -83,13 +83,13 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
     public void onResume() {
         super.onResume();
         User user = Account.getUser();
-        String emile = Account.getEmile();
-        String account = emile.substring(0,3)+"****"+emile.substring(7);
+        String emile = Account.getEmile()==null?"":Account.getEmile();
+        //String account = emile.substring(0,3)+"****"+emile.substring(7);
         if (user != null) {
             if (!TextUtils.isEmpty(user.getNickName())){
                 mName.setText(user.getNickName());
             }else {
-                mName.setText(account);
+                mName.setText(emile);
             }
             GlideApp.with(getActivity())
                     .load(user.getRelativePath())
@@ -97,7 +97,7 @@ public class PersonalCenterFragment extends PrensterFragment<PersonalCenterContr
                     .centerCrop()
                     .into(mPortrait);
         }else {
-            mName.setText(account);
+            mName.setText(emile);
         }
     }
 

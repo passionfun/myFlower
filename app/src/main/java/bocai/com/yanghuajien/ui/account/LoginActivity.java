@@ -2,6 +2,7 @@ package bocai.com.yanghuajien.ui.account;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +54,7 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
                 MainActivity.show(this);
                 finish();
             }
+            tvForgetPassword.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
     }
 
 

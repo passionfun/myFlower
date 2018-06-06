@@ -237,6 +237,9 @@
     //设备无响应，保存失败
     <string name="the_device_has_no_response_save_failed">The device has no response,and save failed</string>
 
+    <string name="added_devices">Added %d Devices</string>
+
+
     //智能参数设置失败
     <string name="smart_parameter_set_failed">智能参数设置失败</string>
     //已添加过植物

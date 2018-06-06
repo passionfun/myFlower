@@ -127,7 +127,7 @@
         android:drawablePadding="10dp"
         android:gravity="center"
         android:text="Forget the password ？"
-        android:textColor="#BDBDBD"
+        android:textColor="#87BC52"
         android:textSize="12sp" />
 
     <View

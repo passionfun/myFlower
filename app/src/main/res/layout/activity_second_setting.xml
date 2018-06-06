@@ -71,7 +71,7 @@
             android:text="@string/message_push"
             android:textSize="15sp"
             android:drawablePadding="18dp"
-            android:drawableStart="@mipmap/img_equipment_setting"
+            android:drawableStart="@mipmap/img_push"
             android:layout_marginEnd="20dp"
             />
         <CheckBox

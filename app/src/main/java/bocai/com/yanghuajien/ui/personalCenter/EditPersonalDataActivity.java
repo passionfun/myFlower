@@ -152,12 +152,12 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
                         break;
                     case R.id.tv_from_gallery:
                         // 女
-                        Application.getStringText(R.string.female);
+                        mSex.setText(Application.getStringText(R.string.female));
                         popupWindow.dismiss();
                         break;
                     case R.id.tv_secret:
                         // 保密
-                        Application.getStringText(R.string.secrecy);
+                        mSex.setText(Application.getStringText(R.string.secrecy));
                         popupWindow.dismiss();
                         break;
                 }
