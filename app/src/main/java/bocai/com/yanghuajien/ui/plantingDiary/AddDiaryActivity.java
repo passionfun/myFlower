@@ -40,6 +40,7 @@ import bocai.com.yanghuajien.ui.personalCenter.EquipmentListPopupWindow;
 import bocai.com.yanghuajien.util.ActivityUtil;
 import bocai.com.yanghuajien.util.BitmapUtils;
 import bocai.com.yanghuajien.util.DateUtils;
+import bocai.com.yanghuajien.util.ScalTool;
 import bocai.com.yanghuajien.util.UiTool;
 import bocai.com.yanghuajien.util.persistence.Account;
 import bocai.com.yanghuajien.util.widget.RoundAngleImageView;
@@ -122,18 +123,6 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
             //应用还未获取读取本地文件 的权限，询问是否允许
             ActivityCompat.requestPermissions(AddDiaryActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSON_STORGE);
         } else {
-//            new GalleryFragment().setListener(new GalleryFragment.OnSelectedListener() {
-//                @Override
-//                public void onSelectedImage(String path) {
-//                    GlideApp.with(AddDiaryActivity.this)
-//                            .load(path)
-//                            .centerCrop()
-//                            .into(mCover);
-//                    loadCover(path);
-//                }
-//            }).show(getSupportFragmentManager(), GalleryFragment.class.getName());
-
-
             final SelectPicPopupWindow picPopupWindow = new SelectPicPopupWindow(this);
             picPopupWindow.setOnTtemClickListener(new SelectPicPopupWindow.ItemClickListener() {
                 @Override
@@ -217,7 +206,8 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
 
     private void loadCover(String filePath) {
         Map<String, RequestBody> params = new HashMap<>();
-        File file = new File(filePath);
+        //File file = new File(filePath);
+        File file = ScalTool.scal(filePath);
         RequestBody body = RequestBody.create(MediaType.parse("image/jpeg;charset=utf-8"), file);
         params.put("pic_head" + "\";" + "filename=\"" + file, body);
         mPresenter.loadCover(params);
