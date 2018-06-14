@@ -400,11 +400,20 @@
                                 android:textSize="11sp" />
 
 
-                            <ImageView
+                            <!--<ImageView-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:src="@mipmap/img_more_vertical" />-->
+                            <TextView
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:src="@mipmap/img_more_vertical" />
+                                android:gravity="center"
+                                android:text="..."
+                                android:paddingBottom="15dp"
+                                android:textColor="#818181"
+                                android:textSize="30sp" />
 
 
                         </LinearLayout>

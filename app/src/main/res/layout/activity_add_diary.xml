@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@null"
-            android:text="@string/please_input_diary_name"
+            android:hint="@string/please_input_diary_name"
             android:textColor="#333333"
             android:textSize="14sp" />
 
