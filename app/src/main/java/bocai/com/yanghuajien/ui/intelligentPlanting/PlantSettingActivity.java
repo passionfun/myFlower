@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
@@ -36,6 +37,7 @@ import bocai.com.yanghuajien.model.LifeCycleModel;
 import bocai.com.yanghuajien.model.MessageEvent;
 import bocai.com.yanghuajien.model.PlantRspModel;
 import bocai.com.yanghuajien.model.PlantSettingModel;
+import bocai.com.yanghuajien.model.PlantSettingModel_Table;
 import bocai.com.yanghuajien.presenter.intelligentPlanting.PlantSettingContract;
 import bocai.com.yanghuajien.presenter.intelligentPlanting.PlantSettingPresenter;
 import bocai.com.yanghuajien.util.ActivityUtil;
@@ -125,10 +127,10 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     protected void initData() {
         super.initData();
         tvPlantMethod.setEnabled(false);
-//        PlantSettingModel model = SQLite.select()
-//                .from(PlantSettingModel.class)
-//                .where(PlantSettingModel_Table.Id.eq(id))
-//                .querySingle();
+        PlantSettingModel model = SQLite.select()
+                .from(PlantSettingModel.class)
+                .where(PlantSettingModel_Table.Id.eq(id))
+                .querySingle();
 //        if (model!=null){
 //            plantMode = model.getPlantMode();
 //            lifeCycle = model.getLifeCycle();
@@ -159,8 +161,12 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
             pMid = "15";
             isPlantsetted = false;
         }
-        tvPlantCycle.setText(mPlantBean.getLifeCycle());
         lifeCycle= mPlantBean.getLifeCycle();
+        if (model!=null){
+            tvPlantCycle.setText(model.getLifeCycle());
+        }else {
+            tvPlantCycle.setText(lifeCycle);
+        }
         lid = mPlantBean.getLid();
     }
 
