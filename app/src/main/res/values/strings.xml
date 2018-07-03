@@ -241,9 +241,9 @@
 
 
     //智能参数设置失败
-    <string name="smart_parameter_set_failed">智能参数设置失败</string>
+    <string name="smart_parameter_set_failed">Fail to set parameters</string>
     //已添加过植物
-    <string name="has_added_plant">已添加过植物</string>
+    <string name="has_added_plant">Plant already added</string>
     //定位中
     <string name="positioning">Locating</string>
     //定位失败
@@ -257,9 +257,9 @@
     //更新日期:
     <string name="update_date">Updating date:</string>
 
-    <string name="email_can_not_empty">邮箱不能为空</string>
-    <string name="resend">%d秒后可重新发送</string>
-    <string name="more_click_to_exit">再按一次退出程序</string>
+    <string name="email_can_not_empty">Email cannot be empty</string>
+    <string name="resend">Resend in %d seconds</string>
+    <string name="more_click_to_exit">press again to exit</string>
 
 
 

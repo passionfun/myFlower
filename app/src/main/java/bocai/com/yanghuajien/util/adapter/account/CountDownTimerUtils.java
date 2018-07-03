@@ -48,13 +48,13 @@ public class CountDownTimerUtils extends CountDownTimer {
          * 主要是start跟end，start是起始位置,无论中英文，都算一个。
          * 从0开始计算起。end是结束位置，所以处理的文字，包含开始位置，但不包含结束位置。
          */
-        spannableString.setSpan(span, 0, 2, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);//将倒计时的时间设置为红色
+//        spannableString.setSpan(span, 0, 2, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);//将倒计时的时间设置为红色
         mTextView.setText(spannableString);
     }
 
     @Override
     public void onFinish() {
-        mTextView.setText("重新获取验证码");
+        mTextView.setText(Application.getStringText(R.string.get_verification_code));
         mTextView.setTextColor(Color.parseColor("#87BC52"));
         mTextView.setClickable(true);//重新获得点击
     }
