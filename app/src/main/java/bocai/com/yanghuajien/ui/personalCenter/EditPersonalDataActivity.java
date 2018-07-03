@@ -376,6 +376,7 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
     @Override
     public void modifyDataSuccess() {
+        Application.showToast("Amend successfully");
         EventBus.getDefault().post(new MessageEvent(MODIFY_PERSONAL_DATA_SUCCESS));
         finish();
     }
