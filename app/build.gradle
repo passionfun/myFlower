@@ -117,9 +117,9 @@ dependencies {
     implementation files('libs/umeng_social_tool.jar')
     implementation files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
     compile 'com.android.support:multidex:1.0.0'
-    compile 'com.amap.api:location:latest.integration'
+    compile 'com.amap.api:location:4.0.1'
     //搜索功能
-    compile 'com.amap.api:search:latest.integration'
+    compile 'com.amap.api:search:6.1.0'
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     //bugly 日志捕捉

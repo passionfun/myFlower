@@ -260,6 +260,11 @@
     <string name="email_can_not_empty">Email cannot be empty</string>
     <string name="resend">Resend in %d seconds</string>
     <string name="more_click_to_exit">press again to exit</string>
+    //没有授权，程序无法使用
+    <string name="no_permission_not_used">No permission allowed, the APP cannot be used</string>
+    //需要权限，请到 “应用信息 -> 权限” 中授予！
+    <string name="require_permission_please_goto_set">Require permission, please go to "Application Information -> Permissions" to open the related options
+</string>
 
 
 

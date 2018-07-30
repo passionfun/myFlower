@@ -90,7 +90,7 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
             }
             if (!permission) {
                 // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
-                Application.showToast("没有授权，程序无法使用");
+                Application.showToast(R.string.no_permission_not_used);
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override

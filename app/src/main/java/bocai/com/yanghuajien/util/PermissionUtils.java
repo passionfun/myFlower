@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
 import bocai.com.yanghuajien.R;
+import bocai.com.yanghuajien.base.Application;
 
 /**
  * 作者 yuanfei on 2017/12/12.
@@ -38,7 +39,7 @@ public class PermissionUtils {
      */
     public static void openAppDetails(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("需要权限，请到 “应用信息 -> 权限” 中授予！");
+        builder.setMessage(Application.getStringText(R.string.require_permission_please_goto_set));
         builder.setPositiveButton("去手动授权", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
