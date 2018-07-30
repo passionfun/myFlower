@@ -47,6 +47,7 @@ import bocai.com.yanghuajien.util.ActivityUtil;
 import bocai.com.yanghuajien.util.BitmapUtils;
 import bocai.com.yanghuajien.util.PermissionUtils;
 import bocai.com.yanghuajien.util.ScalTool;
+import bocai.com.yanghuajien.util.UiTool;
 import bocai.com.yanghuajien.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -189,6 +190,9 @@ public class EditPersonalDataActivity extends PresenterActivity<EditPersonalData
 
     @OnClick(R.id.img_add_portrait)
     void onPortraitClick() {
+        if (UiTool.isSoftShowing(this)) {
+            UiTool.hideSoftInput(this,mName);
+        }
         boolean isHavePermission = PermissionUtils.checkPermissionAllGranted(EditPersonalDataActivity.this, storagePermissions);
         if (!isHavePermission) {
             //申请权限

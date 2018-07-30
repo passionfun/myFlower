@@ -119,6 +119,9 @@ public class AddDiaryActivity extends PresenterActivity<AddDiaryContract.Present
 
     @OnClick(R.id.img_add_cover)
     void onAddCoverClick() {
+        if (UiTool.isSoftShowing(this)) {
+            UiTool.hideSoftInput(this,tvPlantingTime);
+        }
         if (ContextCompat.checkSelfPermission(AddDiaryActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             //应用还未获取读取本地文件 的权限，询问是否允许
             ActivityCompat.requestPermissions(AddDiaryActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSON_STORGE);

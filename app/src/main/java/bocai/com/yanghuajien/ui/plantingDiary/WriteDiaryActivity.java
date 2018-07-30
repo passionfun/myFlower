@@ -52,6 +52,7 @@ import bocai.com.yanghuajien.util.ActivityUtil;
 import bocai.com.yanghuajien.util.BitmapUtils;
 import bocai.com.yanghuajien.util.PermissionUtils;
 import bocai.com.yanghuajien.util.ScalTool;
+import bocai.com.yanghuajien.util.UiTool;
 import bocai.com.yanghuajien.util.persistence.Account;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -246,6 +247,9 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
 
     @OnClick(R.id.img_add_picture)
     void onAddPictureClick() {
+        if (UiTool.isSoftShowing(this)) {
+            UiTool.hideSoftInput(this,mAdd);
+        }
         showPop();
     }
 

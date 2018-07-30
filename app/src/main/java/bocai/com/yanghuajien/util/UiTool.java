@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -262,6 +263,29 @@ public class UiTool {
         }
 
         return true;
+    }
+
+
+    /**
+     * 隐藏软键盘
+     *
+     */
+    public static void hideSoftInput(Context context, View view) {
+        InputMethodManager immHide = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE); // 隐藏软键盘
+        if (immHide != null) {
+            immHide.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+
+    public static boolean isSoftShowing(Activity activity) {
+        //获取当前屏幕内容的高度
+        int screenHeight = activity.getWindow().getDecorView().getHeight();
+        //获取View可见区域的bottom
+        Rect rect = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+
+        return screenHeight - rect.bottom != 0;
     }
 
 }
