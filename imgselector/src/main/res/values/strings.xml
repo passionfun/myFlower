@@ -10,5 +10,6 @@
     <string name="cancel">Cancel</string>
     <string name="ensure">Confirm</string>
 
-
+    //"已到最大上限"
+    <string name="max_limit_reached">Maximum limit reached</string>
 </resources>

@@ -40,7 +40,7 @@ public class PermissionUtils {
     public static void openAppDetails(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(Application.getStringText(R.string.require_permission_please_goto_set));
-        builder.setPositiveButton("去手动授权", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(Application.getStringText(R.string.go_to_set), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();

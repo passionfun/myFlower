@@ -1,5 +1,6 @@
 package boc.com.imgselector.adapter;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,7 +74,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                     selectImage(image);
                     setItemSelect(holder, true);
                 }else {
-                    Toast.makeText(mContext,"已到最大上限",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,mContext.getString(R.string.max_limit_reached),Toast.LENGTH_SHORT).show();
                 }
             }
         });
