@@ -16,17 +16,17 @@ public class BaseRspModel<T> {
      * Data : t
      */
 
-    private int ReturnTime;
+    private long ReturnTime;
     private String ReturnCode;
     private String Msg;
     private int Secure;
     private T Data;
 
-    public int getReturnTime() {
+    public long getReturnTime() {
         return ReturnTime;
     }
 
-    public void setReturnTime(int ReturnTime) {
+    public void setReturnTime(long ReturnTime) {
         this.ReturnTime = ReturnTime;
     }
 

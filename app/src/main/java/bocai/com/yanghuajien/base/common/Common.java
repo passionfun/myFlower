@@ -11,10 +11,10 @@ public class Common {
         String REGEX_MOBILE = "[1][3,4,5,7,8][0-9]{9}$";
 
         //英文版服务器地址
-        String API_URL = "http://demo.188388.cn:8082/yhjen/web/api/index.php/";
+        String API_URL = "http://47.90.188.18/web/api/index.php/";
 
         //H5英文版地址
-        String H5_BASE = "http://demo.188388.cn:8082/yhjen/web/h5/yhj/";
+        String H5_BASE = "http://47.90.188.18/web/h5/yhj/";
 
 
     }
