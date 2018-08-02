@@ -103,8 +103,14 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
             if (aMapLocation != null) {
                 if (aMapLocation.getErrorCode() == 0) {
                     //可在其中解析amapLocation获取相应内容。
-                    mLocation.setText(aMapLocation.getAoiName());
-                    mLocationStr = aMapLocation.getAoiName();
+                    if (!TextUtils.isEmpty(aMapLocation.getAoiName())){
+                        mLocationStr = aMapLocation.getAoiName();
+                    }else if (!TextUtils.isEmpty(aMapLocation.getStreet())){
+                        mLocationStr = aMapLocation.getStreet();
+                    }else {
+                        mLocationStr = aMapLocation.getCity();
+                    }
+                    mLocation.setText(mLocationStr);
                     mCityName = aMapLocation.getCity();
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -199,6 +205,8 @@ public class WriteDiaryActivity extends PresenterActivity<WriteDiaryContract.Pre
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //获取一次定位结果：
         mLocationOption.setOnceLocation(true);
+        //设置语言为英文
+        mLocationOption.setGeoLanguage(AMapLocationClientOption.GeoLanguage.EN);
         //获取最近3s内精度最高的一次定位结果：
         mLocationOption.setOnceLocationLatest(true);
         //设置是否返回地址信息（默认返回地址信息）

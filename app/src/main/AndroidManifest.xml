@@ -65,7 +65,7 @@
         <!--高德地图-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="c72492e9d220679ac45b4ab22f42d073" />
+            android:value="8e1eb03dfb5a523bf08778ec98edfff9" />
         <service android:name="com.amap.api.location.APSService"></service>
         <!--高德地图end-->
         <activity
