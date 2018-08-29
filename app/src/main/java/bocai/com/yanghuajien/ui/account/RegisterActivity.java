@@ -62,7 +62,8 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
     protected void initWidget() {
         super.initWidget();
         UiTool.setBlod(mTitle);
-        mTitle.setText("E-mail Registration");
+        //fun add ,hard to soft code
+        mTitle.setText(Application.getStringText(R.string.register_title));
     }
 
 
@@ -116,7 +117,6 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
                 mPresenter.register(email,smsCode,password,rePassword);
                 break;
         }
-
     }
 
     @Override
@@ -126,7 +126,7 @@ public class RegisterActivity extends PresenterActivity<RegisterContract.Present
     }
 
     @Override
-    public void hideLoading() {
+    public void hideLoading(){
         super.hideLoading();
         btnConfirm.setEnabled(true);
     }

@@ -30,24 +30,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_equipment_name"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="WG301+2222"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="#333333"
                 android:textSize="17sp" />
 
             <ImageView
                 android:id="@+id/img_lineOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="6dp"
                 android:src="@mipmap/img_line_off"
-                android:visibility="invisible" />
+                android:layout_gravity="center"
+                android:visibility="visible" />
+            <ImageView
+                android:id="@+id/iv_device_bind_exp"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="6dp"
+                android:src="@mipmap/device_bind_exp"
+                android:visibility="gone" />
         </LinearLayout>
 
 
@@ -194,7 +206,6 @@
                     android:text="- -"
                     android:textColor="#9FD166"
                     android:textSize="12dp" />
-
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
@@ -328,21 +339,6 @@
                         android:textColor="#FFFFFF"
                         android:textSize="11sp" />
 
-                    <!--<TextView-->
-                    <!--android:foreground="@drawable/ic_touch_fg"-->
-                    <!--android:id="@+id/tv_refresh"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="5dp"-->
-                    <!--android:layout_marginTop="10dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:checked="true"-->
-                    <!--android:drawablePadding="4dp"-->
-                    <!--android:drawableTop="@mipmap/img_refresh_horizontal"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="刷新"-->
-                    <!--android:textColor="#FFFFFF"-->
-                    <!--android:textSize="11sp" />-->
                 </LinearLayout>
 
 
@@ -350,6 +346,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_secSet"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -385,21 +382,63 @@
                     android:text="@string/newest_version"
                     android:textColor="#FFFFFF"
                     android:textSize="11sp" />
-
                 <TextView
+                    android:id="@+id/tv_more"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:enabled="false"
                     android:gravity="center"
                     android:text="..."
+                    android:visibility="gone"
                     android:paddingBottom="30dp"
                     android:textColor="#818181"
                     android:textSize="50sp" />
 
+                <LinearLayout
+                    android:id="@+id/ll_recycle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/img_waterRecycle"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/h_water_recycle_off" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:checked="true"
+                        android:gravity="center_horizontal"
+                        android:text="@string/water_recycle"
+                        android:textColor="#FFFFFF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_waterRecycle"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:visibility="visible"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="5dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:drawablePadding="4dp"-->
+                    <!--android:drawableTop="@mipmap/h_water_recycle_on"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="@string/water_recycle"-->
+                    <!--android:textColor="#FFFFFF"-->
+                    <!--android:textSize="11sp" />-->
+
 
             </LinearLayout>
-
 
         </LinearLayout>
 

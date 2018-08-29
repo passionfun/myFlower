@@ -57,7 +57,7 @@ public class ForgetPasswordActivity extends PresenterActivity<ForgetPasswordCont
     @Override
     protected void initWidget() {
         super.initWidget();
-        mTitle.setText("Recover Password");
+        mTitle.setText(Application.getStringText(R.string.recover_pwd_title));
     }
 
     @OnClick({R.id.img_back,R.id.btn_confirm,R.id.tv_get_verification_code,R.id.frame_show_pwd})

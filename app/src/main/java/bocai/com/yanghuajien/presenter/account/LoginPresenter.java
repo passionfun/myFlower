@@ -1,5 +1,9 @@
 package bocai.com.yanghuajien.presenter.account;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.presenter.BasePresenter;
@@ -7,6 +11,7 @@ import bocai.com.yanghuajien.model.AccountRspModel;
 import bocai.com.yanghuajien.model.BaseRspModel;
 import bocai.com.yanghuajien.model.db.User;
 import bocai.com.yanghuajien.net.Network;
+import bocai.com.yanghuajien.util.LogUtil;
 import bocai.com.yanghuajien.util.persistence.Account;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -20,6 +25,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
+    private static final String TAG = "LoginPresenter";
     LoginContract.View view = getView();
 
     public LoginPresenter(LoginContract.View view) {
@@ -41,6 +47,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
                     @Override
                     public void onNext(BaseRspModel<AccountRspModel> accountRspModelBaseRspModel) {
+                        LogUtil.d(TAG,"登录(邮箱)接口返回的数据："+new Gson().toJson(accountRspModelBaseRspModel));
                         if (accountRspModelBaseRspModel.getReturnCode().equals("200")) {
                             AccountRspModel model = accountRspModelBaseRspModel.getData();
                             User user = model.build();
@@ -48,6 +55,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                             Account.login(model);
                             view.loginSuccess();
                         } else {
+                            LogUtil.d(TAG,"CODE != 200:"+accountRspModelBaseRspModel.getMsg());
                             Application.showToast(accountRspModelBaseRspModel.getMsg());
                             view.hideLoading();
                         }
@@ -55,6 +63,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
                     @Override
                     public void onError(Throwable e) {
+                        LogUtil.d(TAG,"onError:"+e.getMessage());
                         view.showError(R.string.net_error);
                     }
 
@@ -65,11 +74,5 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 });
 
     }
-
-
-
-
-
-
 
 }

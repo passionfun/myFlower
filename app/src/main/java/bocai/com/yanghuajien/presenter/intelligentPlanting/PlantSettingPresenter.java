@@ -1,5 +1,7 @@
 package bocai.com.yanghuajien.presenter.intelligentPlanting;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import bocai.com.yanghuajien.model.BaseRspModel;
 import bocai.com.yanghuajien.model.LifeCycleModel;
 import bocai.com.yanghuajien.model.PlantSettingModel;
 import bocai.com.yanghuajien.net.Network;
+import bocai.com.yanghuajien.util.LogUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.View>
         implements PlantSettingContract.Presenter {
-
+    private static final String TAG = "PlantSettingPresenter";
     PlantSettingContract.View view = getView();
 
     public PlantSettingPresenter(PlantSettingContract.View view) {
@@ -152,6 +155,7 @@ public class PlantSettingPresenter extends BasePresenter<PlantSettingContract.Vi
 
                     @Override
                     public void onNext(BaseRspModel<List<AutoModel.ParaBean>> listBaseRspModel) {
+                        LogUtil.d(TAG,"调用plant_info接口返回的数据："+new Gson().toJson(listBaseRspModel));
                         if (listBaseRspModel.getReturnCode().equals("200")) {
                             view.getAutoParaSuccess(listBaseRspModel.getData());
                         }else {

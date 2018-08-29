@@ -70,13 +70,13 @@ public class Factory {
             return;
         }
         switch (longToothRspModel.getCODE()) {
-            case LongToothRspModel.SUCCEED:
+            case LongToothRspModel.SUCCEED://0
                 //绑定成功
                 break;
-            case LongToothRspModel.BIND_FAILED:
+            case LongToothRspModel.BIND_FAILED://1
                 Application.showToast("绑定失败");
                 break;
-            case LongToothRspModel.EQUIPMENT_HAVE_BINDED:
+            case LongToothRspModel.EQUIPMENT_HAVE_BINDED://2
                 Application.showToast("设备已被绑定");
                 break;
         }

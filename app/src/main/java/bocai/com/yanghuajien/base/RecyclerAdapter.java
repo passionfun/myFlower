@@ -2,9 +2,12 @@ package bocai.com.yanghuajien.base;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,8 +24,6 @@ public abstract class RecyclerAdapter<Data>
         implements View.OnClickListener, View.OnLongClickListener, AdapterCallback<Data> {
     private final List<Data> mDataList;
     private AdapterListener<Data> mListener;
-
-
     public RecyclerAdapter() {
         this(null);
     }
@@ -45,8 +46,6 @@ public abstract class RecyclerAdapter<Data>
 
     @LayoutRes
     protected abstract int getItemViewType(int position, Data data);
-
-
     @Override
     public ViewHolder<Data> onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -54,13 +53,9 @@ public abstract class RecyclerAdapter<Data>
         ViewHolder<Data> holder = onCreateViewHolder(root, viewType);
 
         root.setTag(R.id.tag_recycler_holder, holder);
-
         root.setOnClickListener(this);
         root.setOnLongClickListener(this);
-
-
         holder.unbinder = ButterKnife.bind(holder, root);
-
         holder.callback = this;
 
         return holder;
@@ -69,12 +64,13 @@ public abstract class RecyclerAdapter<Data>
 
     protected abstract ViewHolder<Data> onCreateViewHolder(View root, int viewType);
 
-
+    public int getPos(){
+        return index;
+    }
+    public int index = -1;
     @Override
     public void onBindViewHolder(ViewHolder<Data> holder, int position) {
-
         Data data = mDataList.get(position);
-
         holder.bind(data);
     }
 
@@ -153,17 +149,15 @@ public abstract class RecyclerAdapter<Data>
             notifyItemChanged(pos);
         }
     }
-
     @Override
     public void onClick(View v) {
         ViewHolder viewHolder = (ViewHolder) v.getTag(R.id.tag_recycler_holder);
         if (this.mListener != null) {
             int pos = viewHolder.getAdapterPosition();
+            index = pos;
             this.mListener.onItemClick(viewHolder, mDataList.get(pos));
         }
-
     }
-
     @Override
     public boolean onLongClick(View v) {
         ViewHolder viewHolder = (ViewHolder) v.getTag(R.id.tag_recycler_holder);
@@ -191,7 +185,6 @@ public abstract class RecyclerAdapter<Data>
         private Unbinder unbinder;
         private AdapterCallback<Data> callback;
         protected Data mData;
-
         public ViewHolder(View itemView) {
             super(itemView);
         }

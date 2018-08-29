@@ -1,5 +1,7 @@
 package bocai.com.yanghuajien.presenter.account;
 
+import com.google.gson.Gson;
+
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.presenter.BasePresenter;
@@ -8,6 +10,7 @@ import bocai.com.yanghuajien.model.BaseRspModel;
 import bocai.com.yanghuajien.model.GetSmsCodeModel;
 import bocai.com.yanghuajien.model.db.User;
 import bocai.com.yanghuajien.net.Network;
+import bocai.com.yanghuajien.util.LogUtil;
 import bocai.com.yanghuajien.util.persistence.Account;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -22,6 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RegisterPresenter extends BasePresenter<RegisterContract.View>
         implements RegisterContract.Presenter {
+    private static final String TAG = "RegisterPresenter";
     final RegisterContract.View view = getView();
 
     public RegisterPresenter(RegisterContract.View view) {
@@ -46,6 +50,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
                     @Override
                     public void onNext(BaseRspModel baseRspModel) {
                         view.hideLoading();
+                        LogUtil.d(TAG,"注册时发送验证码的接口返回的数据："+new Gson().toJson(baseRspModel));
                         if (baseRspModel.getReturnCode().equals("200")){
                             view.getVerifiCationcodeSuccess(baseRspModel.getMsg());
                         }else {
@@ -79,6 +84,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
 
                     @Override
                     public void onNext(BaseRspModel<AccountRspModel> accountRspModelBaseRspModel) {
+                        LogUtil.d(TAG,"新用户注册接口返回的数据："+new Gson().toJson(accountRspModelBaseRspModel));
                         if (accountRspModelBaseRspModel.getReturnCode().equals("200") ) {
                             AccountRspModel model = accountRspModelBaseRspModel.getData();
                             User user = model.build();

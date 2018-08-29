@@ -6,8 +6,8 @@ android {
         applicationId "bocai.com.yanghuajien"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 4
-        versionName "1.4"
+        versionCode 10
+        versionName "2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -58,7 +58,6 @@ afterEvaluate {
 }
 
 
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -107,7 +106,7 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //万能adapter
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
-//    implementation files('libs/lt4-a-4.0.e_h_20170310.jar')
+    //    implementation files('libs/lt4-a-4.0.e_h_20170310.jar')
     compile 'cn.jiguang.sdk:jpush:3.1.0'
     compile 'cn.jiguang.sdk:jcore:1.1.8'
     implementation files('libs/SocialSDK_QQ_Simplify.jar')
@@ -129,5 +128,5 @@ dependencies {
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     implementation project(':imgselector')
     compile 'cn.yipianfengye.android:zxing-library:2.2'
-    implementation files('libs/lt4-a-4.tmp_20180130143727.jar')
+    implementation files('libs/lt4-a-4.0.x4_b_20180814[2].jar')
 }

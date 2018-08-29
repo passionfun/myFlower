@@ -43,7 +43,8 @@ public class Application extends android.app.Application {
         JPushInterface.init(this);
         UMShareAPI.get(this);
         //bugly初始化
-        CrashReport.initCrashReport(getApplicationContext(), "6d18085e76", true);
+//        CrashReport.initCrashReport(getApplicationContext(), "6d18085e76", true);//之前的项目中有
+        CrashReport.initCrashReport(getApplicationContext(), "3647eca298", true);//公司申请20180829
 //        //扫一扫初始化
         ZXingLibrary.initDisplayOpinion(this);
     }

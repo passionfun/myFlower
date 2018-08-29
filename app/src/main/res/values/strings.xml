@@ -138,6 +138,9 @@
     <string name="refresh">Refresh</string>
     <string name="planting_setting">Setting</string>
     <string name="newest_version">Upgrade</string>
+    <string name="water_recycle">Recycle</string>
+    <string name="firmware_pic_desc">Firmware picture description</string>
+    <string name="device_firmware_text">Device Firmware Upgrade</string>
     <string name="add_group">Add a group</string>
     <string name="please_input_group_name">Enter group name</string>
     <string name="default_equipment">Default Group</string>
@@ -172,6 +175,7 @@
     <string name="light_close_success">Turn off  LED successfully</string>
     <string name="light_close_failed_retry_later">Failed to turn off  LED, and please try again later</string>
     <string name="delete_will_reset_equipment_if_ensure">Deletion will restore the device to factory setting，please confirm</string>
+    <string name="tv_update_device_firmware_text">New firmware detected,would you like to upgrade?</string>
     <string name="too_low">Low</string>
     <string name="normal">Normal</string>
     <string name="too_high">High</string>
@@ -210,9 +214,10 @@
     <string name="edit_group">Edit the group</string>
     <string name="added_equipment">%s devices have been added</string>
     //生长周期不能id为空
-    <string name="growth_circle_id_can_not_empty">Device ID can not be empty in growing period</string>
+    <string name="growth_cycle_id_can_not_empty">Device ID can not be empty in growing period</string>
     //植物不能为空
     <string name="plant_id_can_not_empty">Plant ID can not be empty</string>
+    <string name="plant_cycle_can_not_empty">Plant Growth Cycle can not be empty</string>
     <string name="exit_app_press_again">Press it again to exit</string>
     <string name="please_open_window_permission">Please open the floating window permission of Wisgrow APP</string>
     <string name="year">Year</string>
@@ -227,6 +232,8 @@
     <string name="photo_and_content_can_not_both_empty">Photo and text cannot be empty at the same time</string>
     <string name="plug_in_and_make_sure_pairing">Plug in and make sure the device is pairing mode</string>
     <string name="the_indicator_id_flashing">The indicator is flashing</string>
+    <string name="all_devices_bind_fail">The device bind exception.</string>
+    <string name="old_devices_send_auto_fail">The device restore exception.</string>
     //不显示
     <string name="not_display">Not displayed</string>
     <string name="edit_profile">Edit  profile</string>
@@ -236,9 +243,21 @@
     <string name="smart_mode">Smart Mode</string>
     //设备无响应，保存失败
     <string name="the_device_has_no_response_save_failed">The device has no response,and save failed</string>
+    <string name="bind_device_null_text">Bind device isnot null</string>
+    <string name="upgrade_success_check_all_text">All the devices you choose to upgrade have been successfully upgraded. </string>
+    <string name="upgrade_fail_check_all_text">All the devices you choose to upgrade have been failure upgraded. </string>
+    <string name="update_device_not_checked_text">Please chose the device you want to upgrade</string>
+    <string name="server_timeout_exp">Network connect timeout,please try again later</string>
+    <string name="restore_device_null_text">Restore device isnot null</string>
+    <string name="pump_set_on_success_text">The pump turn on successful</string>
+    <string name="pump_set_off_success_text">The pump turn off successful</string>
+    <string name="pump_set_fail_text">The pump set failed</string>
 
     <string name="added_devices">Added %d Devices</string>
-
+    <!--already exists, whether to restore the Settings? -->
+    <string name="chose_before_bind_device_text">already exists,Whether to restore the following equipment factory Settings?</string>
+    <string name="tip_chose_bind_device_single">The following device has already exists,whether to restore or rebind?</string>
+    <string name="tip_chose_bind_device_multiple">The following devices have already exist,whether to restore or rebind?</string>
 
     //智能参数设置失败
     <string name="smart_parameter_set_failed">Fail to set parameters</string>
@@ -269,4 +288,10 @@
     <string name="go_to_set">Go to set</string>
     //删除成功
     <string name="delete_success">Delete Successfully</string>
+    //用户注册-邮箱
+    <string name="register_title">E-mail Registration</string>
+    //找回密码-邮箱
+    <string name="recover_pwd_title">Recover Password</string>
+
+    <string name="upgrade_checked_device_success_text">The selected device has been upgraded successfully. Please do not repeat the upgrade. </string>
 </resources>

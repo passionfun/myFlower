@@ -51,6 +51,7 @@ import butterknife.OnClick;
 
 public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract.Presenter>
         implements AddEquipmentContract.View, XRecyclerView.LoadingListener, ScanActivity.OnResultCallback {
+    private static final String TAG = "AddEquipmentActivity";
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
@@ -210,7 +211,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String content = bundle.getString(CodeUtils.RESULT_STRING);
-                    Log.d("shc", "扫描结果为: " + content);
+                    Log.d(TAG, "扫描结果为: " + content);
                     if (content==null)
                         return;
 //                    Application.showToast(content);
@@ -274,9 +275,7 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
             Toast.makeText(this, "从设置页面返回...", Toast.LENGTH_SHORT)
                     .show();
         }
-
     }
-
 
     @Override
     public void getEquipmentSeriesSuccess(List<PlantSeriesModel.PlantSeriesCard> cards) {
@@ -288,7 +287,6 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
             mRecyler.loadMoreComplete();
             mAdapter.add(cards);
         }
-
     }
 
     @Override
@@ -338,7 +336,6 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
         @BindView(R.id.img_plant)
         ImageView mPlant;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
         }
@@ -369,6 +366,4 @@ public class AddEquipmentActivity extends PresenterActivity<AddEquipmentContract
             });
         }
     }
-
-
 }

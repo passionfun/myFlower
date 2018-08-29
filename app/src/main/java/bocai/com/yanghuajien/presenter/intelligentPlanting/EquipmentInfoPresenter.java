@@ -1,5 +1,7 @@
 package bocai.com.yanghuajien.presenter.intelligentPlanting;
 
+import com.google.gson.Gson;
+
 import java.util.Map;
 
 import bocai.com.yanghuajien.R;
@@ -9,6 +11,7 @@ import bocai.com.yanghuajien.model.BaseRspModel;
 import bocai.com.yanghuajien.model.EquipmentInfoModel;
 import bocai.com.yanghuajien.model.UpdateVersionRspModel;
 import bocai.com.yanghuajien.net.Network;
+import bocai.com.yanghuajien.util.LogUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,6 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EquipmentInfoPresenter extends BasePresenter<EquipmentInfoContract.View>
         implements EquipmentInfoContract.Presenter {
+    private static final String TAG = "EquipmentInfoPresenter";
     EquipmentInfoContract.View view = getView();
 
     public EquipmentInfoPresenter(EquipmentInfoContract.View view) {
@@ -41,6 +45,7 @@ public class EquipmentInfoPresenter extends BasePresenter<EquipmentInfoContract.
 
                     @Override
                     public void onNext(BaseRspModel<UpdateVersionRspModel> updateVersionRspModelBaseRspModel) {
+                        LogUtil.d(TAG,"调用edit_version接口的返回数据："+new Gson().toJson(updateVersionRspModelBaseRspModel));
                         if (updateVersionRspModelBaseRspModel.getReturnCode().equals("200")) {
                             view.updateVersionSuccess(updateVersionRspModelBaseRspModel.getData());
                         }else if (updateVersionRspModelBaseRspModel.getReturnCode().equals("9997")) {
@@ -73,6 +78,7 @@ public class EquipmentInfoPresenter extends BasePresenter<EquipmentInfoContract.
 
                     @Override
                     public void onNext(BaseRspModel<EquipmentInfoModel> equipmentInfoModelBaseRspModel) {
+                        LogUtil.d(TAG,"调用equipment_info接口的返回数据："+new Gson().toJson(equipmentInfoModelBaseRspModel));
                         if (equipmentInfoModelBaseRspModel.getReturnCode().equals("200")) {
                             view.equipmentInfoSuccess(equipmentInfoModelBaseRspModel.getData());
                         } else if (equipmentInfoModelBaseRspModel.getReturnCode().equals("9997")){

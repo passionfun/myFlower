@@ -39,7 +39,6 @@ public class NavigationFragment extends Fragment {
     @BindView(R.id.tv_shop)
     TextView mTvShop;
 
-
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_navigation;

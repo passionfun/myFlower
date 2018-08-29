@@ -1,5 +1,7 @@
 package bocai.com.yanghuajien.model;
 
+import android.widget.RelativeLayout;
+
 import bocai.com.yanghuajien.model.db.User;
 
 /**
@@ -153,5 +155,15 @@ public class AccountRspModel {
         public void setSmallThumbnail(String smallThumbnail) {
             SmallThumbnail = smallThumbnail;
         }
+
+        @Override
+        public String toString() {
+            return "RelativePath:"+ RelativePath+",SmallThumbnail:"+SmallThumbnail;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "id:"+Id+",Token:"+Token+",Email:"+Email+",Phone:"+Phone+",NickName:"+NickName+",Sex:"+Sex+",Birthday:"+Birthday+",AvatarBean:"+Avatar.toString();
     }
 }

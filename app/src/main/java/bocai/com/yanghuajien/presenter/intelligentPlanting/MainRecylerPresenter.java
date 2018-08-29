@@ -2,6 +2,8 @@ package bocai.com.yanghuajien.presenter.intelligentPlanting;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.presenter.BasePresenter;
@@ -9,6 +11,7 @@ import bocai.com.yanghuajien.model.BaseRspModel;
 import bocai.com.yanghuajien.model.CheckboxStatusModel;
 import bocai.com.yanghuajien.model.EquipmentDataModel;
 import bocai.com.yanghuajien.net.Network;
+import bocai.com.yanghuajien.util.LogUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,6 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View>
         implements MainRecylerContract.Presenter {
+    private static final String TAG = "MainRecylerPresenter";
     MainRecylerContract.View view = getView();
 
     public MainRecylerPresenter(MainRecylerContract.View view) {
@@ -41,7 +45,7 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
 
                     @Override
                     public void onNext(BaseRspModel<EquipmentDataModel> equipmentDataModelBaseRspModel) {
-                        Log.d("sunhengchao","equipmentDataModelBaseRspModel"+equipmentDataModelBaseRspModel.getReturnCode());
+                        LogUtil.d(TAG,"调用equipment_data接口返回的数据(设备数据输入)："+new Gson().toJson(equipmentDataModelBaseRspModel));
                         if (equipmentDataModelBaseRspModel.getReturnCode().equals("200")) {
                             view.setDataSuccess(equipmentDataModelBaseRspModel.getData());
                         } else if (equipmentDataModelBaseRspModel.getReturnCode().equals("9997")) {
@@ -77,6 +81,7 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
 
                     @Override
                     public void onNext(BaseRspModel<CheckboxStatusModel> checkboxStatusModelBaseRspModel) {
+                        LogUtil.d(TAG,"setCheckBox设备状态设置（equipment_status）接口返回的数据："+new Gson().toJson(checkboxStatusModelBaseRspModel));
                         if (checkboxStatusModelBaseRspModel.getReturnCode().equals("200")) {
 //                            view.setCheckBoxSuccess(checkboxStatusModelBaseRspModel.getData());
                         } else if (checkboxStatusModelBaseRspModel.getReturnCode().equals("9997")) {
@@ -113,6 +118,7 @@ public class MainRecylerPresenter extends BasePresenter<MainRecylerContract.View
 
                     @Override
                     public void onNext(BaseRspModel baseRspModel) {
+                        LogUtil.d(TAG,"删除设备的返回数据（del_equipment）:"+new Gson().toJson(baseRspModel));
                         if (baseRspModel.getReturnCode().equals("200")) {
                             view.deleteEquipmentSuccess();
                         }

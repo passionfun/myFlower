@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -25,10 +27,14 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
+import org.eclipse.jetty.security.authentication.ClientCertAuthenticator;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -51,7 +57,10 @@ import bocai.com.yanghuajien.presenter.intelligentPlanting.IntelligentPlantContr
 import bocai.com.yanghuajien.presenter.intelligentPlanting.IntelligentPlantPresenter;
 import bocai.com.yanghuajien.presenter.intelligentPlanting.MainRecylerContract;
 import bocai.com.yanghuajien.presenter.intelligentPlanting.MainRecylerPresenter;
+import bocai.com.yanghuajien.service.MyLongToothService;
 import bocai.com.yanghuajien.ui.main.MainActivity;
+import bocai.com.yanghuajien.util.ConstUtil;
+import bocai.com.yanghuajien.util.LogUtil;
 import bocai.com.yanghuajien.util.UiTool;
 import bocai.com.yanghuajien.util.persistence.Account;
 import bocai.com.yanghuajien.util.widget.EmptyView;
@@ -72,13 +81,11 @@ import static bocai.com.yanghuajien.ui.intelligentPlanting.HorizontalRecyclerFra
  */
 
 public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantContract.Presenter>
-        implements XRecyclerView.LoadingListener, IntelligentPlantContract.View {
+        implements XRecyclerView.LoadingListener, IntelligentPlantContract.View, MyLongToothService.MyLongToothListener {
     @BindView(R.id.empty)
     EmptyView mEmptyView;
-
     @BindView(R.id.recycler)
     XRecyclerView mRecycler;
-
     private static final String TAG = VeticalRecyclerFragment.class.getName();
     public static final String VERTICAL_RECYLER_REFRESH = "VERTICAL_RECYLER_REFRESH";
     private int page = 1;
@@ -87,7 +94,17 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     public static final String VERTICALRECYCLER_DELETE_SUCCESS = "VERTICALRECYCLER_DELETE_SUCCESS";
     public static final String EQUIPMENT_LINE_ON = "EQUIPMENT_LINE_ON";
     public static final String VERTICALRECYCLER_VISIABLE = "VERTICALRECYCLER_VISIABLE";
+    public static final String PUMP_ON = "pumpOn";
+    public static final String PUMP_OFF = "pumpOff";
     private boolean isNeedLoadData = false;
+    private boolean isPumpOn = false;
+    private static boolean isPumpControl = false;
+    private String deviceSeries = "";
+    private String deviceLtid = "";
+    private String deviceUUID = "";
+    private String pumpLtid = "";
+    private ImageView iv_recycle;
+    private ImageView iv_bindExp;
 
     @Override
     protected int getContentLayoutId() {
@@ -121,7 +138,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Log.d(TAG, "getEquip:.......... ");
+                    LogUtil.d(TAG, "verticalRecyclerView 下拉刷新啦 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                     EventBus.getDefault().postSticky(new MessageEvent(VERTICALRECYCLER_VISIABLE, linearLayoutManager.findFirstVisibleItemPosition()));
                 }
             }
@@ -135,6 +152,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        LogUtil.d(TAG,"onHiddenChanged executed:"+hidden);
         if (!hidden && isNeedLoadData) {
             if (UiTool.isNetworkAvailable(getContext())) {
                 isNeedLoadData = false;
@@ -146,6 +164,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void fresh(MessageEvent messageEvent) {
         if (messageEvent.getMessage().equals(VERTICAL_RECYLER_REFRESH)) {
+            LogUtil.d(TAG,"收到消息啦（vrf）get allequipment+++++++++++++++++++++++++++++++++"+new Gson().toJson(messageEvent));
             onRefresh();
         }
     }
@@ -185,6 +204,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
     @Override
     public void getAllEquipmentsSuccess(List<EquipmentRspModel.ListBean> listBeans) {
+        LogUtil.d(TAG,"verticalFragment getAllEquipmentsSuccess:"+new Gson().toJson(listBeans));
         if (page == 1) {
             mRecycler.refreshComplete();
             mAdapter.replace(listBeans);
@@ -198,6 +218,16 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
     @Override
     protected IntelligentPlantContract.Presenter initPresenter() {
         return new IntelligentPlantPresenter(this);
+    }
+
+    @Override
+    public void updateUI(Message msg) {
+        mVerticalPumpHandler.sendMessage(msg);
+    }
+
+    @Override
+    public void timeOutMsg(Message msg) {
+
     }
 
 
@@ -259,6 +289,18 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @BindView(R.id.img_refresh)
         ImageView mRefresh;
 
+        @BindView(R.id.tv_more)
+        TextView tv_more;
+
+        @BindView(R.id.img_waterRecycle)
+        ImageView iv_waterRecycle;
+
+        @BindView(R.id.ll_recycle)
+        LinearLayout ll_recycle;
+
+        @BindView(R.id.iv_device_bind_exp)
+        ImageView iv_bindException;
+
         private MainRecylerContract.Presenter mPresenter;
         private TimerTask task;
         private boolean isLedOn = false;
@@ -272,6 +314,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
         @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
         public void fresh(MessageEvent messageEvent) {
+            LogUtil.d(TAG,"收到消息了（vrf ViewHolder）："+new Gson().toJson(messageEvent));
             if (messageEvent.getMessage().equals(EQUIPMENT_LINE_ON) &&
                     (messageEvent.getType().equals(mData.getLTID()))) {
                 mImgTent.setVisibility(View.INVISIBLE);
@@ -281,12 +324,24 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                 timer.cancel();
             } else if (messageEvent.getMessage().equals(LED_ON) &&
                     (messageEvent.getType().equals(mData.getLTID()))) {
+//                iv_bindExp.setVisibility(View.GONE);
                 isLedOn = true;
                 mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_open, 0, 0);
             } else if (messageEvent.getMessage().equals(HorizontalRecyclerFragmentHelper.LED_OFF) &&
                     (messageEvent.getType().equals(mData.getLTID()))) {
+//                iv_bindExp.setVisibility(View.GONE);
                 isLedOn = false;
                 mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_close, 0, 0);
+            } else if (messageEvent.getMessage().equals(PUMP_ON) &&
+                    (messageEvent.getType().equals(mData.getLTID()))) {
+//                iv_bindExp.setVisibility(View.GONE);
+                isPumpOn = true;
+                iv_waterRecycle.setImageResource(R.mipmap.v_water_recycle_on);
+            } else if (messageEvent.getMessage().equals(PUMP_OFF) &&
+                    (messageEvent.getType().equals(mData.getLTID()))) {
+//                iv_bindExp.setVisibility(View.GONE);
+                isPumpOn = false;
+                iv_waterRecycle.setImageResource(R.mipmap.v_water_recycle_off);
             } else if (messageEvent.getMessage().equals(MainActivity.MAINACTIVITY_DESTROY)) {
                 if (task != null) {
                     task.cancel();
@@ -336,11 +391,27 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         @Override
         protected void onBind(final EquipmentRspModel.ListBean plantModel) {
             //初始化数据
+            iv_recycle = iv_waterRecycle;
+//            iv_bindExp = iv_bindException;
             setDataSuccess(plantModel.buildEquipmentDataModel());
             mEquipmentName.setText(plantModel.getEquipName());
             mPlantName.setText(plantModel.getPlantName());
             mGroupName.setText(plantModel.getGroupName());
-            mTime.setText(plantModel.getDays() + "");
+            mTime.setText(String.valueOf(plantModel.getDays()));
+            deviceSeries = plantModel.getSeries();
+            if (deviceSeries.equals("WG201")) {
+                isPumpControl = false;
+                deviceLtid = plantModel.getLTID();
+                deviceUUID = plantModel.getPSIGN();
+                LogUtil.d(TAG,"onBind(deviceSeries:deviceLtid:deviceUUID):"+deviceSeries+",deviceLtid:"+deviceLtid+",deviceUUID:"+deviceUUID);
+                sendPumpSetCmd(2);
+                tv_more.setVisibility(View.GONE);
+                ll_recycle.setVisibility(View.VISIBLE);
+            } else {
+                tv_more.setVisibility(View.VISIBLE);
+                ll_recycle.setVisibility(View.GONE);
+            }
+
             //设置是否需要升级
             HorizontalRecyclerFragmentHelper.isHaveNewVersion(plantModel, mUpdate, false);
             mPush.setChecked(plantModel.getPushStatus().equals("1"));
@@ -353,12 +424,15 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             mPlantData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    Log.d("test", Common.Constance.H5_BASE + "product_data.html?id=" + plantModel.getId());
-                    PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + plantModel.getId(), plantModel);
+                    Log.d(TAG,"Vertical mPlantData onclick:" + Common.Constance.H5_BASE + "product_data.html?id=" + plantModel.getId());
+                    if (deviceSeries.equals("WG201")) {
+                        LogUtil.d(TAG,"Vertical onclick pump test");
+                    }else{
+                        LogUtil.d(TAG,"Vertical onclick h5 page");
+                        PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product_data.html?id=" + plantModel.getId(), plantModel);
+                    }
                 }
             });
-
             mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -366,7 +440,38 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     PlantingDateAct.show(getContext(), Common.Constance.H5_BASE + "product.html?id=" + plantModel.getId(), plantModel);
                 }
             });
-
+            ll_recycle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UiTool.showLoading(getContext());
+                    iv_recycle = iv_waterRecycle;
+                    isPumpControl = true;
+                    deviceLtid = plantModel.getLTID();
+                    deviceUUID = plantModel.getPSIGN();
+                    if(isPumpOn){
+                        LogUtil.d(TAG,"vertical pump state is on ,turn off pump");
+                        sendPumpSetCmd(0);
+                    }else{
+                        LogUtil.d(TAG,"vertical pump state is off ,turn on pump");
+                        sendPumpSetCmd(1);
+                    }
+//                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.recycle_animation);
+//                iv_waterRecycle.startAnimation(animation);
+//
+//                Timer timer = new Timer();
+//                timer.schedule(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        Run.onUiAsync(new Action() {
+//                            @Override
+//                            public void call() {
+//                                iv_waterRecycle.clearAnimation();
+//                            }
+//                        });
+//                    }
+//                }, 3000);
+                }
+            });
             mUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -413,7 +518,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                     deleteDialog.show();
                 }
             });
-
         }
 
         private void getEquipmentData(EquipmentRspModel.ListBean plantModel) {
@@ -437,6 +541,7 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                         mPresenter.setCheckBox(Account.getToken(), "1", "1", plantModel.getId());
                         LedSetModel model = new LedSetModel("On", plantModel.getPSIGN());
                         String request = gson.toJson(model);
+                        LogUtil.d(TAG,"led set ltid:"+plantModel.getLTID()+",name:"+plantModel.getEquipName()+",deviceUUID:"+plantModel.getPSIGN());
                         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(), 0, request.getBytes().length,
                                 null, new LongToothServiceResponseHandler() {
                                     @Override
@@ -447,21 +552,25 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                         String jsonContent = new String(bytes);
                                         if (TextUtils.isEmpty(jsonContent) || !jsonContent.contains("CODE"))
                                             return;
-                                        LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
-                                        if (plantStatusRspModel.getCODE() == 0) {
-                                            Application.showToast(Application.getStringText(R.string.light_open_success));
-                                            isLedOn = true;
-                                            EventBus.getDefault().post(new MessageEvent(LED_ON, plantModel.getLTID()));
-                                            Run.onUiAsync(new Action() {
-                                                @Override
-                                                public void call() {
+                                        final LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+
+                                        Run.onUiAsync(new Action() {
+                                            @Override
+                                            public void call() {
+                                                if (plantStatusRspModel.getCODE() == 0) {
+//                                                    iv_bindExp.setVisibility(View.GONE);
+                                                    Application.showToast(Application.getStringText(R.string.light_open_success));
+                                                    isLedOn = true;
+                                                    EventBus.getDefault().post(new MessageEvent(LED_ON, plantModel.getLTID()));
+
                                                     mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_open,
                                                             0, 0);
+                                                } else {
+//                                                    iv_bindExp.setVisibility(View.VISIBLE);
+                                                    Application.showToast(Application.getStringText(R.string.light_open_failed_retry_later));
                                                 }
-                                            });
-                                        } else {
-                                            Application.showToast(Application.getStringText(R.string.light_open_failed_retry_later));
-                                        }
+                                            }
+                                        });
                                     }
                                 });
                     } else {
@@ -478,21 +587,25 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
                                         String jsonContent = new String(bytes);
                                         if (TextUtils.isEmpty(jsonContent) || !jsonContent.contains("CODE"))
                                             return;
-                                        LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
-                                        if (plantStatusRspModel.getCODE() == 0) {
-                                            Application.showToast(Application.getStringText(R.string.light_close_success));
-                                            EventBus.getDefault().post(new MessageEvent(LED_OFF, plantModel.getLTID()));
-                                            isLedOn = false;
-                                            Run.onUiAsync(new Action() {
-                                                @Override
-                                                public void call() {
+                                        final LedSetRspModel plantStatusRspModel = gson.fromJson(jsonContent, LedSetRspModel.class);
+
+                                        Run.onUiAsync(new Action() {
+                                            @Override
+                                            public void call() {
+                                                if (plantStatusRspModel.getCODE() == 0) {
+//                                                    iv_bindExp.setVisibility(View.GONE);
+                                                    Application.showToast(Application.getStringText(R.string.light_close_success));
+                                                    EventBus.getDefault().post(new MessageEvent(LED_OFF, plantModel.getLTID()));
+                                                    isLedOn = false;
                                                     mLed.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.mipmap.img_light_close,
                                                             0, 0);
+                                                } else {
+//                                                    iv_bindExp.setVisibility(View.VISIBLE);
+                                                    Application.showToast(Application.getStringText(R.string.light_close_failed_retry_later));
                                                 }
-                                            });
-                                        } else {
-                                            Application.showToast(Application.getStringText(R.string.light_close_failed_retry_later));
-                                        }
+                                            }
+                                        });
+
                                     }
                                 });
                     }
@@ -510,7 +623,6 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
         void onCloseClick() {
             mMoreRoot.setVisibility(View.GONE);
         }
-
 
         @OnClick(R.id.liner_refresh)
         void onRefreshClick() {
@@ -613,8 +725,13 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
             EventBus.getDefault().post(new MessageEvent(HorizontalRecyclerFragment.HORIZONTALRECYLER_REFRESH));
             //通知MainActivity刷新页面
             EventBus.getDefault().post(new MessageEvent(MainActivity.MAIN_ACTIVITY_REFRESH));
-            timer.cancel();
-            task.cancel();
+            //fun add
+            if(timer != null){
+                timer.cancel();
+                task.cancel();
+            }
+//            timer.cancel();
+//            task.cancel();
             //设备设置为出厂状态
             HorizontalRecyclerFragmentHelper.equipmentReset(mData);
         }
@@ -723,5 +840,94 @@ public class VeticalRecyclerFragment extends PrensterFragment<IntelligentPlantCo
 
     }
 
+    /**
+     * 水循环泵操作
+     */
+    public void sendPumpSetCmd(int pumpState) {
+        JSONObject pumpSet = null;
+        try {
+            pumpSet = new JSONObject();
+            pumpSet.put("CMD", ConstUtil.CMD_PUMP_SET);
+            pumpSet.put("UUID", deviceUUID);
+            if (pumpState == 0) {//关闭
+                pumpSet.put("SWITCH", "Off");
+                pumpSet.put("DURATION", 100);//100S
+            } else if (pumpState == 1) {//打开
+                pumpSet.put("SWITCH", "On");
+                pumpSet.put("DURATION", 100);//100S
+            } else if (pumpState == 2) {//查询
+
+            }
+            String pumpSetCmd = String.valueOf(pumpSet);//PUMPSET CMD:{"CMD":"pumpSet","UUID":1534061416,"SWITCH":"On","DURATION":100}
+            LogUtil.d(TAG, "PUMPSET CMD(deviceLtid:deviceUUID):" + pumpSetCmd+"==>"+deviceLtid+",deviceUUID:"+deviceUUID);
+            MyLongToothService.sendDataFrame(getActivity(), ConstUtil.OP_PUMP_SET, deviceLtid, pumpSetCmd);
+            MyLongToothService.setMyLongToothListener(this);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            LogUtil.d(TAG, "sendPumpSetCmd json exp:" + e.getMessage());
+        }
+    }
+
+    private MyPumpSetHandler mVerticalPumpHandler = new MyPumpSetHandler(this);
+
+    private class MyPumpSetHandler extends Handler {
+        private WeakReference<VeticalRecyclerFragment> weakReference = null;
+
+        private MyPumpSetHandler(VeticalRecyclerFragment mFragment) {
+            weakReference = new WeakReference<>(mFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            VeticalRecyclerFragment veticalRecyclerFragment = weakReference.get();
+            if (veticalRecyclerFragment == null) {
+                return;
+            }
+            LogUtil.d(TAG, "pump set handleMessage:" + msg.toString() + "\n" + msg.obj.toString());
+            if (msg.what == ConstUtil.PUMP_SET_SUCCESS) {
+                try {
+                    UiTool.hideLoading();
+                    String msgRes = msg.obj.toString();
+                    String[] resArr = msgRes.split("==");
+                    pumpLtid = resArr[1];
+
+                    JSONObject joMsgRes = new JSONObject(resArr[0]);
+                    int code = joMsgRes.getInt("CODE");
+                    //{ "SWITCH": "Off", "DURATION": 0, "CODE": 0 }
+
+                    if (code == 0) {
+//                        iv_bindExp.setVisibility(View.GONE);
+                        String pumpState = joMsgRes.getString("SWITCH");
+                        if (pumpState.equals("Off")) {
+                            isPumpOn = false;
+                            iv_recycle.setImageResource(R.mipmap.v_water_recycle_off);
+                            if(isPumpControl){
+                                Application.showToast(Application.getStringText(R.string.pump_set_off_success_text));
+                            }else{
+                                LogUtil.d(TAG,"水泵状态查询成功：关闭");
+                            }
+                            EventBus.getDefault().post(new MessageEvent(PUMP_OFF,pumpLtid));
+                        } else {
+                            isPumpOn = true;
+                            iv_recycle.setImageResource(R.mipmap.v_water_recycle_on);
+                            if (isPumpControl) {
+                                Application.showToast(Application.getStringText(R.string.pump_set_on_success_text));
+                            }else{
+                                LogUtil.d(TAG,"水泵状态查询成功：开启");
+                            }
+                            EventBus.getDefault().post(new MessageEvent(PUMP_ON,pumpLtid));
+                        }
+                    } else {
+//                        iv_bindExp.setVisibility(View.VISIBLE);
+                        if(isPumpControl){
+                            Application.showToast(Application.getStringText(R.string.pump_set_fail_text));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
 }

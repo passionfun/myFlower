@@ -1,5 +1,10 @@
 package bocai.com.yanghuajien.presenter.main;
 
+import android.util.Log;
+
+import com.ashokvarma.bottomnavigation.behaviour.BottomVerticalScrollBehavior;
+import com.google.gson.Gson;
+
 import java.util.List;
 
 import bocai.com.yanghuajien.R;
@@ -12,6 +17,7 @@ import bocai.com.yanghuajien.model.GroupRspModel;
 import bocai.com.yanghuajien.model.VersionInfoModel;
 import bocai.com.yanghuajien.model.db.EquipmentListModel;
 import bocai.com.yanghuajien.net.Network;
+import bocai.com.yanghuajien.util.LogUtil;
 import bocai.com.yanghuajien.util.persistence.Account;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -26,6 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivityPresenter extends BasePresenter<MainActivityContract.View>
         implements MainActivityContract.Presenter {
+    private static final String TAG = "MainActivityPresenter";
     MainActivityContract.View view = getView();
 
     public MainActivityPresenter(MainActivityContract.View view) {
@@ -79,6 +86,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
 
                     @Override
                     public void onNext(BaseRspModel<GroupRspModel> groupRspModelBaseRspModel) {
+                        LogUtil.d(TAG,"获取所有的设备列表返回的数据(all_equipment)："+new Gson().toJson(groupRspModelBaseRspModel));
                         if (groupRspModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getAllGroupsSuccess(groupRspModelBaseRspModel.getData().getList());
                         }else if (groupRspModelBaseRspModel.getReturnCode().equals("9997")) {
@@ -117,6 +125,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
 
                     @Override
                     public void onNext(BaseRspModel<EquipmentConfigModel> equipmentConfigModelBaseRspModel) {
+                        LogUtil.d(TAG,"设备配置数据获取返回的数据(config_data)："+new Gson().toJson(equipmentConfigModelBaseRspModel));
                         if (equipmentConfigModelBaseRspModel.getReturnCode().equals("200")) {
                             EquipmentConfigModel model = equipmentConfigModelBaseRspModel.getData();
                             if (model != null) {
@@ -153,6 +162,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
 
                     @Override
                     public void onNext(BaseRspModel<VersionInfoModel> versionInfoModelBaseRspModel) {
+                        LogUtil.d(TAG,"获取app version检测版本的接口(version)："+new Gson().toJson(versionInfoModelBaseRspModel));
                         if (versionInfoModelBaseRspModel.getReturnCode().equals("200")){
                             view.checkVersionSuccess(versionInfoModelBaseRspModel.getData());
                         }
@@ -184,6 +194,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityContract.Vi
 
                     @Override
                     public void onNext(BaseRspModel<EquipmentListModel> equipmentListModelBaseRspModel) {
+                        LogUtil.d(TAG,"获取默认分组下的设备列表返回的数据(nogroup_equip)："+new Gson().toJson(equipmentListModelBaseRspModel));
                         if (equipmentListModelBaseRspModel.getReturnCode().equals("200")) {
                             EquipmentListModel model = equipmentListModelBaseRspModel.getData();
                             List<EquipmentCard> list = model.getList();

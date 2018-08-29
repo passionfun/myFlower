@@ -28,6 +28,7 @@ import bocai.com.yanghuajien.model.LongToothRspModel;
 import bocai.com.yanghuajien.model.MessageEvent;
 import bocai.com.yanghuajien.model.PushModel;
 import bocai.com.yanghuajien.presenter.intelligentPlanting.MainRecylerContract;
+import bocai.com.yanghuajien.util.LogUtil;
 import bocai.com.yanghuajien.util.UiTool;
 import bocai.com.yanghuajien.util.persistence.Account;
 import xpod.longtooth.LongTooth;
@@ -206,7 +207,7 @@ class HorizontalRecyclerFragmentHelper {
     public static void equipmentReset(EquipmentRspModel.ListBean modell) {
         BindEquipmentModel resetModel = new BindEquipmentModel("FactoryReset", modell.getPSIGN());
         String request = gson.toJson(resetModel);
-        Log.d(TAG, "equipmentReset: ");
+        LogUtil.d(TAG, "设备发送出厂设置的数据帧equipmentReset: "+request);
         LongTooth.request(modell.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                 0, request.getBytes().length, null, new EquipmentResetLongToothServiceResponseHandler(modell));
 
@@ -239,10 +240,10 @@ class HorizontalRecyclerFragmentHelper {
         public void handleServiceResponse(LongToothTunnel ltt, String ltid_str,
                                           String service_str, int data_type, byte[] args,
                                           LongToothAttachment attachment) {
-            Log.d(TAG, "equipmentReset: args");
             if (args==null)
                 return;
             String result = new String(args);
+            LogUtil.d(TAG,"恢复出厂设置返回的数据帧："+result);
             if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
                 return;
             }
@@ -342,6 +343,7 @@ class HorizontalRecyclerFragmentHelper {
         }
         BindEquipmentModel model = new BindEquipmentModel("isUpdate", plantModel.getPSIGN());
         String request = gson.toJson(model);
+        LogUtil.d(TAG,"发送检查设备固件是否有新版本的数据帧（isUpdate）："+request);
         LongTooth.request(plantModel.getLTID(), "longtooth", LongToothTunnel.LT_ARGUMENTS, request.getBytes(),
                 0, request.getBytes().length, null, new MyLongToothServiceResponseHandler(mUpdate, isHorizontal));
 
@@ -364,11 +366,11 @@ class HorizontalRecyclerFragmentHelper {
             if (args==null)
                 return;
             String result = new String(args);
+            LogUtil.d(TAG,"检查固件升级数据帧（isUpdate）返回："+result);
             if (TextUtils.isEmpty(result)||!result.contains("CODE")) {
                 return;
             }
             LongToothRspModel longToothRspModel = gson.fromJson(result, LongToothRspModel.class);
-            Log.d(TAG, "update:" + result);
             int code = longToothRspModel.getCODE();
             switch (code) {
                 case 501:

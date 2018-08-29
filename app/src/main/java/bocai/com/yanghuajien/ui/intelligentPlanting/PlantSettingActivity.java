@@ -212,6 +212,23 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
     @OnClick(R.id.tv_right)
     void onSetupPlant() {
         plantName=mTvPlantName.getText().toString().trim();
+
+        if (TextUtils.isEmpty(lid)){
+            Application.showToast(Application.getStringText(R.string.growth_cycle_id_can_not_empty));
+            return;
+        }
+
+        if (plantName.equals(Application.getStringText(R.string.add))
+                ||TextUtils.isEmpty(plantName)){
+            Application.showToast(Application.getStringText(R.string.plant_id_can_not_empty));
+            return;
+        }
+
+        if(TextUtils.isEmpty(lifeCycle)){
+            Application.showToast(Application.getStringText(R.string.plant_cycle_can_not_empty));
+            return;
+        }
+
         map.put("Token", Account.getToken());
         map.put("PlantMode", plantMode==null?"":plantMode);//种植模式
         map.put("PMid", pMid==null?"":pMid);//种植模式id
@@ -220,15 +237,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
         map.put("LifeCycle", lifeCycle);//生长周期
         map.put("Lid", lid);//生长周期id
         map.put("Id", id);//设备id
-        if (TextUtils.isEmpty(lid)){
-            Application.showToast(Application.getStringText(R.string.growth_circle_id_can_not_empty));
-            return;
-        }
-        if (plantName.equals(Application.getStringText(R.string.add))
-                ||TextUtils.isEmpty(plantName)){
-            Application.showToast(Application.getStringText(R.string.plant_id_can_not_empty));
-            return;
-        }
+
         getAutoPara();
     }
 
@@ -279,7 +288,7 @@ public class PlantSettingActivity extends PresenterActivity<PlantSettingContract
                 public void selected(LifeCycleModel.ListBean listBean) {
                     lid= listBean.getId();
                     lifeCycle = listBean.getTitle();
-                    tvPlantCycle.setText(listBean.getTitle());
+                    tvPlantCycle.setText(lifeCycle);
                 }
             });
         } else {

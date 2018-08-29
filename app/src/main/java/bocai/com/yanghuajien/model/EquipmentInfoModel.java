@@ -6,7 +6,6 @@ package bocai.com.yanghuajien.model;
 
 public class EquipmentInfoModel {
 
-
     /**
      * Id : 1
      * Mac : 00-11-22-33-44

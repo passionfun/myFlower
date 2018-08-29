@@ -19,6 +19,8 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -47,6 +49,7 @@ import bocai.com.yanghuajien.ui.personalCenter.EditPersonalDataActivity;
 import bocai.com.yanghuajien.updateVersion.DownLoadActivity;
 import bocai.com.yanghuajien.updateVersion.util.DeviceUtils;
 import bocai.com.yanghuajien.util.ActivityUtil;
+import bocai.com.yanghuajien.util.LogUtil;
 import bocai.com.yanghuajien.util.LongToothUtil;
 import bocai.com.yanghuajien.util.UiTool;
 import bocai.com.yanghuajien.util.persistence.Account;
@@ -112,7 +115,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         hideLeft();
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEidtPersonDataSuccess(MessageEvent messageEvent) {
         if (messageEvent.getMessage().equals(EditPersonalDataActivity.MODIFY_PERSONAL_DATA_SUCCESS)) {
@@ -138,14 +140,14 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     public void onResume() {
         super.onResume();
         User user = Account.getUser();
-        String emile = user.getEmail()==null?"":user.getEmail();
+        String email = user.getEmail()==null?"":user.getEmail();
         //Log.d(TAG, "onResume: " + emile);
         //String account = emile.substring(0, 3) + "****" + emile.substring(7);
         if (user != null) {
             if (!TextUtils.isEmpty(user.getNickName())) {
                 mName.setText(user.getNickName());
             } else {
-                mName.setText(emile);
+                mName.setText(email);
             }
             GlideApp.with(this)
                     .load(user.getRelativePath())
@@ -153,7 +155,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                     .centerCrop()
                     .into(mPortrait);
         } else {
-            mName.setText(emile);
+            mName.setText(email);
         }
     }
 
@@ -161,6 +163,7 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
     protected void initWidget() {
         super.initWidget();
         //	2 (Android)  3 (iOS)  4 (Java)
+        //配置数据获取
         mPresenter.getEquipmentConfig("2");
         EventBus.getDefault().register(this);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -188,7 +191,9 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mNavigationFragment = NavigationFragment.newInstance();
         transaction.replace(R.id.frame_container, mNavigationFragment).commit();
+        //默认分组
         initAllEquipments();
+        //用户手动分组的设备列表数据
         initAllGroups();
 
         JPushInterface.resumePush(this);
@@ -212,9 +217,14 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                 return new GroupViewHolder(root);
             }
         });
+        //首页左拉所有设备列表(分组)
+        LogUtil.d(TAG,"获取所有的设备列表时token："+Account.getToken());
         mPresenter.getAllGroups(Account.getToken(), "0", "0");
     }
 
+    /**
+     * 默认分组的设备列表
+     */
     private void initAllEquipments() {
         mRecyclerDefault.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerDefault.setAdapter(mAdapter = new RecyclerAdapter<EquipmentCard>() {
@@ -234,16 +244,19 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             public void onItemClick(RecyclerAdapter.ViewHolder holder, EquipmentCard equipmentCard) {
                 super.onItemClick(holder, equipmentCard);
                 List<EquipmentRspModel.ListBean> listBeans = Account.getListBeans();
+                LogUtil.d(TAG,"onItemClick(listBeans):"+listBeans.size());
                 for (EquipmentRspModel.ListBean bean : listBeans) {
+                    LogUtil.d(TAG,"侧边栏选取设备（信息）："+new Gson().toJson(bean));
                     if (bean.getEquipName().equals(equipmentCard.getEquipName())) {
+                        //url = http://47.90.188.18/web/h5/yhj/product.html?id=19148
+                        //"http://47.98.46.78/web/h5/yhj/product.html?id=" + var4.getId();
                         String url = Common.Constance.H5_BASE + "product.html?id=" + bean.getId();
+
                         PlantingDateAct.show(mName.getContext(), url, bean);
                     }
                 }
             }
         });
-
-
         mCbDefaultEquipments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -258,10 +271,9 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
                 }
             }
         });
-
+        //默认分组下的设备列表
         mPresenter.getDefaultEquipments(Account.getToken());
     }
-
 
     @OnClick(R.id.tv_edit_personal_data)
     void onEditPersonalClick() {
@@ -308,8 +320,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         } else {
             mRecyclerGroup.setVisibility(View.GONE);
         }
-
-
     }
 
     @Override
@@ -317,7 +327,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
         if (!LongToothUtil.isInitSuccess) {
             LongToothUtil.longToothInit();
         }
-
     }
 
     @Override
@@ -335,7 +344,6 @@ public class MainActivity extends PresenterActivity<MainActivityContract.Present
             String version = model.getVersion();
             if (!TextUtils.isEmpty(version)) {
                 checkUpdate(model);
-
             }
         }
     }

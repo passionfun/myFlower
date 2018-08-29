@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,8 @@ import bocai.com.yanghuajien.base.presenter.PresenterActivity;
 import bocai.com.yanghuajien.presenter.account.LoginContract;
 import bocai.com.yanghuajien.presenter.account.LoginPresenter;
 import bocai.com.yanghuajien.ui.main.MainActivity;
+import bocai.com.yanghuajien.util.LogUtil;
+import bocai.com.yanghuajien.util.LongToothUtil;
 import bocai.com.yanghuajien.util.PermissionUtils;
 import bocai.com.yanghuajien.util.persistence.Account;
 import butterknife.BindView;
@@ -74,6 +77,7 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
             }
             tvForgetPassword.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         }
+
     }
 
 
@@ -115,8 +119,11 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.bt_login:
+                if (!LongToothUtil.isInitSuccess) {
+                    LongToothUtil.longToothInit();
+                }
                 String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
+                final String password = etPassword.getText().toString();
                 mPresenter.login(email, password);
                 break;
             case R.id.tv_create_new_account:
@@ -155,8 +162,7 @@ public class LoginActivity extends PresenterActivity<LoginContract.Presenter>
     }
 
     @Override
-    protected LoginContract.Presenter initPresenter() {
+    protected LoginContract.Presenter initPresenter(){
         return new LoginPresenter(this);
     }
-
 }

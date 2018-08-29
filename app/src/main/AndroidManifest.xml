@@ -51,8 +51,6 @@
     <uses-permission  android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission  android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
-
-
     <application
         android:name="bocai.com.yanghuajien.base.Application"
         android:allowBackup="true"
@@ -74,7 +72,6 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -191,13 +188,16 @@
         <activity
             android:name="bocai.com.yanghuajien.ui.intelligentPlanting.AddPlantActivity"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name="bocai.com.yanghuajien.ui.intelligentPlanting.GroupManagerActivity"
             android:theme="@style/BaseTheme" />
+
         <activity
             android:name="bocai.com.yanghuajien.ui.intelligentPlanting.EditGroupActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/BaseTheme" />
+
         <activity
             android:name="bocai.com.yanghuajien.ui.intelligentPlanting.PlantingDateAct"
             android:theme="@style/BaseTheme" />
@@ -284,7 +284,7 @@
         </receiver>
 
         <service android:name="bocai.com.yanghuajien.updateVersion.DownLoadService"/>
-
+        <service android:name=".service.MyLongToothService"/>
 
     </application>
 

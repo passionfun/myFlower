@@ -57,6 +57,7 @@ public class IntelligentPlantingFragment extends Fragment {
             if (mVerticalFragment != null) {
                 transaction.hide(mVerticalFragment);
             }
+
             if (mHorizontalFragment == null) {
                 mHorizontalFragment = new HorizontalRecyclerFragment();
                 transaction.add(R.id.container, mHorizontalFragment);

@@ -1,0 +1,541 @@
+[33mcommit ed652c774144d1f823a2ef2145a25442f54a06ff[m[33m ([m[1;36mHEAD -> [m[1;32mfirstStage[m[33m, [m[1;32mnewJxDev[m[33m)[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Aug 2 16:16:42 2018 +0800
+
+    修改了正式服务器地址
+
+[33mcommit 3cdf3ab633f054e938988ff460c0bb8499a6b88b[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Aug 2 14:15:03 2018 +0800
+
+    修改了定位问题
+
+[33mcommit 67e5d639603cf4cb50120bdc94c2338dee1e57df[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jul 31 11:09:03 2018 +0800
+
+    修改了选择照片页面，修改了个人中心页面
+
+[33mcommit ac5f7adc5769499f2753658080a39402bfa7878e[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Jul 30 17:15:50 2018 +0800
+
+    替换了部分中文资源
+
+[33mcommit 65c3b2323546a4c6c131425fa60338c228d55779[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Jul 30 10:54:49 2018 +0800
+
+    修改了添加照片时软键盘没有及时隐藏
+
+[33mcommit 6a6972c9b1752588bd48daaae357bdd3945ca8ef[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Jul 30 10:20:03 2018 +0800
+
+    修改了targetSdkVersion 增加了动态权限申请
+
+[33mcommit 5f9741e79bf35ad18c0c19b3617947e0ec15a1dd[m[33m ([m[1;31menglish/firstStage[m[33m)[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jul 3 13:45:03 2018 +0800
+
+    替换中文资源
+
+[33mcommit aab445fe7a0a371022808b1e845d75548ecf8ac0[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jul 3 09:23:33 2018 +0800
+
+    完成修改信息成功后的提示
+
+[33mcommit c23326398213037a88b3d05c2e374a3f91b21b82[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed Jun 27 13:42:06 2018 +0800
+
+    隐藏商城模块
+
+[33mcommit 57fcf62ebb5c3b9f53ddfa405be10a3513f4f0a3[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jun 19 17:38:07 2018 +0800
+
+    修改生命周期显示不全
+
+[33mcommit 59dac03a2eea7a34b13f38bd1655643f829ba74a[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Jun 14 10:57:36 2018 +0800
+
+    修改了中文资源
+
+[33mcommit a4de1fd7731ab5fd0ae097c9b1d8f6653c50787a[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Jun 14 10:50:19 2018 +0800
+
+    修改了养花机养花机英文版客户提出的问题
+
+[33mcommit 1874feb1548d1b116018444c8e61b4224ff716f5[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Jun 11 14:18:20 2018 +0800
+
+    修改了上传日记封面出现的错误
+
+[33mcommit adcc04774bf3bacf11652d4417e5a35bb02918e7[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed Jun 6 10:41:26 2018 +0800
+
+    替换了部分中文资源
+
+[33mcommit e878bb6fd78c7ecb597d7eba8b47ae04875a484f[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Jun 4 11:05:30 2018 +0800
+
+    修改了客户提出的问题
+
+[33mcommit b51ba275c1e76fcab2e2ef3219d9813fc68c903d[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon May 21 13:58:50 2018 +0800
+
+    修改了编辑分组页面的中文资源
+
+[33mcommit 7168bb6b7e2567b8480ff6ad5c466e219990c837[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri May 18 17:34:58 2018 +0800
+
+    去除了分享
+
+[33mcommit a4ae815e2a4b88f4a94c600b82cb7eb3edc81ea1[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed May 16 16:40:33 2018 +0800
+
+    修改一些中文资源
+
+[33mcommit fb3a38f33b829b66fd2a9b3f266d8e5f1cf12785[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed May 16 16:01:27 2018 +0800
+
+    完成注册页面，注册接口
+
+[33mcommit f5c099aa9f076bb85b4b225d0fa69e5c3107f22c[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed May 16 15:22:29 2018 +0800
+
+    完成找回密码页面，完成找回密码接口，完成回去邮箱验证码接口
+
+[33mcommit 43fba3b97f402acb9348b06a87dddcc682d54fca[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed May 16 14:03:48 2018 +0800
+
+    万成了英文版的登录页面和登录接口
+
+[33mcommit 4a02c3aac249eb3849ef421eb9c7a089842885ef[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon May 14 16:22:38 2018 +0800
+
+    替换了部分页面中文
+
+[33mcommit 3627d32a2ddfae2bf01e4499c64b452e8707f3f2[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon May 14 14:48:57 2018 +0800
+
+    增加了部分页面中文
+
+[33mcommit f023dc8fc0751b645801d2de70d5b7581d35cc89[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon May 14 10:24:17 2018 +0800
+
+    修改了部分页面中文
+
+[33mcommit b2570bfe500d62763995d421d8df77f2a1054a45[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon May 14 09:39:07 2018 +0800
+
+    替换了部分页面中文
+
+[33mcommit 64487e8707b8ad40cd4a90ab3944d32a15ec4b95[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri May 11 14:02:31 2018 +0800
+
+    修改了登录接口，完成英文资源替换
+
+[33mcommit a5b6d0173f4ba5a577be79b9d945307f40f500a5[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed May 2 17:47:42 2018 +0800
+
+    更改项目名称
+
+[33mcommit be21f48e6e346a44985445e5c038ccf9b12985e9[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed May 2 17:19:56 2018 +0800
+
+    英文版初次提交
+
+[33mcommit f33971249873ebd2780586cb1002c4e360b155f1[m[33m ([m[1;31morigin/firstStage[m[33m)[m
+Merge: 842756f 401e6f7
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Apr 19 17:31:48 2018 +0800
+
+    Merge remote-tracking branch 'origin/firstStage' into firstStage
+    
+    # Conflicts:
+    #       app/release/app-release.apk
+    #       app/src/main/res/values-en/strings.xml
+    #       app/src/main/res/values-zh/strings.xml
+    #       app/src/main/res/values/strings.xml
+    #       imgselector/src/main/res/values-zh/strings.xml
+
+[33mcommit 842756f1fd48f3f7b765632874872568e7e8538f[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Apr 19 17:25:45 2018 +0800
+
+    修改了国际化问题
+
+[33mcommit 401e6f72eeb9c78d748144164984684c12fd2ef3[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Apr 19 15:01:33 2018 +0800
+
+    优化了部分内容
+
+[33mcommit a50a6e68b387e64eba8686b557d6818a22408c1c[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Apr 19 14:51:36 2018 +0800
+
+    修改了一个空指针异常
+
+[33mcommit 5ee6aa12aa94f7d87b37ac5c1f596c2de4995d15[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Apr 19 14:46:38 2018 +0800
+
+    优化了版本升级
+
+[33mcommit 5a35df2eb7ab2bd606c724da7704ceb6bf7354eb[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Apr 19 14:33:49 2018 +0800
+
+    修改了权限和版本升级问题
+
+[33mcommit 770350a12d9341ff2da50703dd517e1699869485[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Apr 17 23:02:58 2018 +0800
+
+    优化图片数量限制
+
+[33mcommit 1332681520bb62bf6dc308318995189dd84cefd2[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Apr 17 15:53:07 2018 +0800
+
+    增加图片数量限制
+
+[33mcommit 6d5cff0c3489767607938a0be22404feb14597e2[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Apr 17 15:19:42 2018 +0800
+
+    增加了版本信息的设置
+
+[33mcommit 47fc00e6e7482213cdb3619ec91b80ad189398bb[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Apr 16 14:10:35 2018 +0800
+
+    增加了压缩图片的功能
+
+[33mcommit e8fe96cfe74a81556b7e1d37e35c3420c0f8b269[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Apr 16 13:45:24 2018 +0800
+
+    完善了APP应用图标
+
+[33mcommit e83c31b66e8418701add9dc5ae129c1f3e9d332b[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Apr 9 13:54:11 2018 +0800
+
+    修复了三星s8的概率性闪退
+
+[33mcommit ea6963115ee8992d9ce3f07ba8656a71a29d914e[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Apr 2 17:50:56 2018 +0800
+
+    修改了悬浮窗权限问题
+
+[33mcommit 064887c6bf8aea280e17890e947382350bdc3cf0[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Sat Mar 24 16:33:55 2018 +0800
+
+    提取代码中的中文
+
+[33mcommit f03023076110b070dce8c05013d58ede8bdd6ab4[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Mar 23 17:00:01 2018 +0800
+
+    修改布局中的中文
+
+[33mcommit 2ac4a72004e28dbae1fc6a93ae25fa0881411b6d[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Mar 23 14:14:39 2018 +0800
+
+    修改了扫描错误二维码闪退的bug
+
+[33mcommit 5e2e90116ab2cc81c4bbc58f645e995d8ffea4cd[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed Mar 14 22:01:08 2018 +0800
+
+    修改了设备设置
+
+[33mcommit 7ad6861594cc762e3f5af2dadb2d14aa56e3533c[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed Mar 14 09:40:35 2018 +0800
+
+    修改了隔夜免打扰不能超过12小时
+
+[33mcommit d4e932e0c84a5f25411a777f236268a3947004f4[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Mar 9 09:36:02 2018 +0800
+
+    修改了系统通知小红点无法及时消失的问题
+
+[33mcommit 19591aa17523da300b0bb480a5a468fb146c98ea[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Mar 8 09:09:16 2018 +0800
+
+    增加了悬浮窗权限
+
+[33mcommit 72d2219226ea5d65de013ad742678dc6cf70546c[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Mar 6 19:54:03 2018 +0800
+
+    修改了7.0无法弹出安装页面的bug
+
+[33mcommit 790d055f11cb0e6125baa4cae98476d91b84ec2b[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Mar 6 15:41:58 2018 +0800
+
+    解决一个空指针异常
+
+[33mcommit b402401b4e17007707b33c733b0f1c6f64beb544[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Mar 6 14:32:31 2018 +0800
+
+    增加扫一扫成功后延时5秒后绑定
+
+[33mcommit bc0fdb4db33875d4aaf348d52c400b27b9a3d203[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Mar 6 13:34:18 2018 +0800
+
+    增加了设备免打扰时间可以隔天设置
+
+[33mcommit d6ae1129cef2b4c394508f83f966ebd44e2c86f5[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Mar 6 09:54:11 2018 +0800
+
+    修改了多设备添加的页面
+
+[33mcommit 14db09611615559fad9edbe2a86d5a5dab4a431f[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Feb 26 22:48:33 2018 +0800
+
+    修改了设备设置无响应处理
+
+[33mcommit 553cf79c4c5e372fed7126fb4d3a5135c2fe6ea4[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Feb 26 17:35:48 2018 +0800
+
+    修改了设备设置数据从服务器拉取
+
+[33mcommit 0cc747bf76ab3d2cc8d5ddab7eff84f3737222f6[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Sun Feb 25 11:19:49 2018 +0800
+
+    修改添加植物闪退bug
+
+[33mcommit 5d15571b329e928ed5b68c37cb870ddd93a1e565[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Sun Feb 25 10:16:51 2018 +0800
+
+    增加第一次植物设置页面的植物生命周期的选择
+
+[33mcommit 228d7007299e7c7cee4821dcfa667d0241fe5a7a[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Sat Feb 24 17:39:51 2018 +0800
+
+    增加扫码添加时候植物生长周期的设置，修改点击通知跳转主页面
+
+[33mcommit fa052dafa287342deafa4427270ae658e9f88e3c[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Feb 12 08:46:46 2018 +0800
+
+    增加侧滑页面分组下的设备跳转详情页
+
+[33mcommit de6ce0e395075f3875f5c297a90d4bcfba954372[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Sat Feb 10 11:47:02 2018 +0800
+
+    修改推送问题
+
+[33mcommit 7958cd7ae3e5731ef3bf92924d256d76fae368f6[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Feb 9 15:16:27 2018 +0800
+
+    更改UI
+
+[33mcommit 0f95915413263373c9947f7cf791ad6d557c488f[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Feb 8 15:02:50 2018 +0800
+
+    增加了植物设置的提示信息
+
+[33mcommit 58c252f3122f4f272d2790a58f309e17ae821992[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Feb 8 14:41:37 2018 +0800
+
+    完成编辑分组里面新增的功能
+
+[33mcommit 579cc46bb2965bd1d6c1f7897dadd6236cb39840[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Feb 8 11:22:11 2018 +0800
+
+    主页面侧滑页面添加默认分组列表
+
+[33mcommit 9f6f92049f392797c302e574b2469a804133559f[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed Feb 7 15:48:42 2018 +0800
+
+    修改leaked问题
+
+[33mcommit bee76c5c10ddd0116dfd2ff2c73cd30d4258d349[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Feb 1 09:53:21 2018 +0800
+
+    修改了验证码错误问题
+
+[33mcommit 7a62effcd9ad841d34dd176727448cc399e0007c[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed Jan 31 15:21:25 2018 +0800
+
+    修改编辑个人资料和写日记逻辑
+
+[33mcommit 270524b96e337a711766f52247797255a2308961[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jan 30 15:26:00 2018 +0800
+
+    修改多设备添加逻辑
+
+[33mcommit ba521e3662d8f330dd7fea461ff9dac1871f02ab[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Jan 26 15:06:13 2018 +0800
+
+    修改设备设置问题
+
+[33mcommit c7a995760fc06fdb03923a7dad7825ffea38b1b3[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed Jan 24 16:48:04 2018 +0800
+
+    修复设备同时离线问题
+
+[33mcommit c56574c491b5a22454d964abbe5bc3c467998533[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Wed Jan 24 09:11:36 2018 +0800
+
+    优化刷新数据
+
+[33mcommit 9a2beb3aa3039ddd36a9d71c6f13bc0d01476104[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jan 23 17:21:24 2018 +0800
+
+    修改只有设备可见时候才去刷新数据
+
+[33mcommit fe93f8c362f7ec4f9dad5986267adc589961d81e[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jan 23 16:08:54 2018 +0800
+
+    增加删除数据后，停止数据的请求
+
+[33mcommit 956c011691632349c13bedb43845f028f205f5a2[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jan 23 15:53:47 2018 +0800
+
+    增加卡片和列表在线的同步
+
+[33mcommit 96b9675ce47f82fc8d7aead7b34c7c5f0771424d[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Tue Jan 23 15:03:17 2018 +0800
+
+    修改光照开关显示问题
+
+[33mcommit 1de7c7d7b74035d398a909ba56a8b0bd74bd97f3[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Jan 22 17:43:35 2018 +0800
+
+    修改recyclerview复用错乱的问题
+
+[33mcommit 2fe4be5da452cb9f436fa70058f1db90b5ecd5b4[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Mon Jan 22 12:26:10 2018 +0800
+
+    修改版本升级问题
+
+[33mcommit a95f9106f81140356b7919c9858acf2af9e835ba[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Jan 19 17:09:46 2018 +0800
+
+    账号被挤掉后，跳转登录页面
+
+[33mcommit b9274a00f0a2ab9991192524171489879d9a7492[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Jan 19 16:57:14 2018 +0800
+
+    账号被挤掉后，点击重新登录会退出app
+
+[33mcommit 56861f78d4976e1c6b1f53426fcd21ea6f49e52c[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Jan 19 16:17:16 2018 +0800
+
+    修改升级成功后升级按钮没有隐藏
+
+[33mcommit 655e37f1a5bb146bf985da6ceedbc307348b4a16[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Jan 19 15:12:37 2018 +0800
+
+    修改删除日记本不能立即生效
+
+[33mcommit b816b2c82181a13ff34087aefad38fe853a34d78[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Jan 19 10:07:27 2018 +0800
+
+    修改设备设置保存顺序
+
+[33mcommit e03d80942f6ff255e2b8740f9192736ceedba53a[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Jan 19 09:20:22 2018 +0800
+
+    修改系统信息提示
+
+[33mcommit 188fe8922ec29cc1798027cbf7fd89c3f9a6ef13[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Fri Jan 19 08:57:45 2018 +0800
+
+    增加删除系统通知功能
+
+[33mcommit 2a07d908a42ce044a41fd0cf087ba79ef608f9e4[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Jan 18 17:22:14 2018 +0800
+
+    增加了设备设置页面的节水模式
+
+[33mcommit f7f159bfe7c126b3e5e9b30122fe78cf763b4038[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Jan 18 16:35:21 2018 +0800
+
+    修改了后台获取智能参数的接口
+
+[33mcommit eb94b2d5fd1c4365c435fafb9ec35eb2f825a0d4[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Jan 18 16:04:35 2018 +0800
+
+    增加如果没有植物或者没有生长周期，则无法开启节水模式
+
+[33mcommit 7fe491fbe4d05db61a60c12a2f7d86d260da9fa9[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Jan 18 15:16:58 2018 +0800
+
+    修改一些还原度问题
+
+[33mcommit 8d87a91337d11f6cdb19f3ee57070325919c1edc[m
+Author: sunhengchao <1029651026@qq.com>
+Date:   Thu Jan 18 14:30:23 2018 +0800
+
+    修改个人中心页面布局

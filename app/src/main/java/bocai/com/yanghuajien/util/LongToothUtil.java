@@ -2,6 +2,8 @@ package bocai.com.yanghuajien.util;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.common.Factory;
 import bocai.com.yanghuajien.ui.intelligentPlanting.SampleAttachment;
@@ -19,7 +21,7 @@ import xpod.longtooth.LongToothTunnel;
  */
 
 public class LongToothUtil {
-
+    public static final String TAG = "LongToothUtil";
     public static boolean isInitSuccess = false;
 
     public static void longToothInit(){
@@ -28,27 +30,20 @@ public class LongToothUtil {
             public void run() {
                 try {
                     //启动长牙
-                    Log.d("shcbind", "run: "+Account.getRegisterHost()+"\n"+
-                    "port:"+Integer.valueOf(Account.getPort())+"\n"
-                    +"DevelopId:"+Integer.valueOf(Account.getDevelopId())+"\n"
-                            +"AppId:"+Integer.valueOf(Account.getAppId())+"\n"
-                    +"appkey:"+Account.getAppKey());
                     LongTooth.setRegisterHost(Account.getRegisterHost(), Integer.valueOf(Account.getPort()));
                     LongTooth.start(Application.getInstance(),
                             Integer.valueOf(Account.getDevelopId()),
                             Integer.valueOf(Account.getAppId()),
                             Account.getAppKey(),
                             new LongToothHandler());
-
+                    LogUtil.d(TAG,"长牙信息longtooth info: "+  Account.getRegisterHost() + "\nport:" + Integer.valueOf(Account.getPort()) + "\nDevelopId:" + Integer.valueOf(Account.getDevelopId()) + "\nAppId:" + Integer.valueOf(Account.getAppId()) + "\nappkey:" + Account.getAppKey());
                 } catch (Exception e) {
                     e.printStackTrace();
+                    LogUtil.d(TAG,"长牙信息longtooth info(exp):"+e.getMessage());
                 }
             }
         });
-
     }
-
-
 
 
     private static class LongToothHandler implements LongToothEventHandler {
@@ -57,20 +52,19 @@ public class LongToothUtil {
 //            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
 //
 //            }
-            Log.d("shcbind", "handleEvent: "+code);
-
-            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {
-            } else if (code == LongToothEvent.EVENT_LONGTOOTH_ACTIVATED) {
+            LogUtil.d(TAG,"长牙初始化回调code："+code);
+            if (code == LongToothEvent.EVENT_LONGTOOTH_STARTED) {//长牙服务端与客户端连接被建立131073
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_ACTIVATED) {//长牙成功连接到长牙服务器131074
                 isInitSuccess = true;
                 LongTooth.addService("n22s", new LongToothNSServer());
                 LongTooth.addService(Account.getServiceName(), new LongToothServer());
-            } else if (code == LongToothEvent.EVENT_LONGTOOTH_OFFLINE) {
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_OFFLINE) {//本地长牙不在线163844
                 Log.d("shcbind", "handleEvent:1 "+code);
-            } else if (code == LongToothEvent.EVENT_LONGTOOTH_TIMEOUT) {
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_TIMEOUT) {//长牙响应超时163842
                 Log.d("shcbind", "handleEvent:2 "+code);
-            } else if (code == LongToothEvent.EVENT_LONGTOOTH_UNREACHABLE) {
+            } else if (code == LongToothEvent.EVENT_LONGTOOTH_UNREACHABLE) {//远程长牙不可访问163843
                 Log.d("shcbind", "handleEvent:3 "+code);
-            } else if (code == LongToothEvent.EVENT_SERVICE_NOT_EXIST) {
+            } else if (code == LongToothEvent.EVENT_SERVICE_NOT_EXIST) {//调用的远程服务不存在262145
                 Log.d("shcbind", "handleEvent:4 "+code);
             }
         }
@@ -112,7 +106,6 @@ public class LongToothUtil {
                                          String arg2, int arg3, byte[] arg4) {
             try {
                 if (arg4 != null) {
-
                     byte[] b = "longtooth response:".getBytes();
                     SampleAttachment a = new SampleAttachment();
                     LongTooth.respond(arg0, LongToothTunnel.LT_ARGUMENTS, b, 0,

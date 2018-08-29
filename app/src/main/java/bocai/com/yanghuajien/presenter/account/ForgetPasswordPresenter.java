@@ -1,10 +1,13 @@
 package bocai.com.yanghuajien.presenter.account;
 
+import com.google.gson.Gson;
+
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.presenter.BasePresenter;
 import bocai.com.yanghuajien.model.BaseRspModel;
 import bocai.com.yanghuajien.net.Network;
+import bocai.com.yanghuajien.util.LogUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,6 +21,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContract.View>
         implements ForgetPasswordContract.Presenter {
+    private static final String TAG = "ForgetPasswordPresenter";
     ForgetPasswordContract.View view = getView();
 
     public ForgetPasswordPresenter(ForgetPasswordContract.View view) {
@@ -38,6 +42,7 @@ public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContrac
 
                     @Override
                     public void onNext(BaseRspModel baseRspModel) {
+                        LogUtil.d(TAG,"忘记密码修改密码的接口返回的数据："+new Gson().toJson(baseRspModel));
                         if (baseRspModel.getReturnCode().equals("200")){
                             view.modifyPasswordSuccess();
                         }
@@ -72,6 +77,7 @@ public class ForgetPasswordPresenter extends BasePresenter<ForgetPasswordContrac
 
                     @Override
                     public void onNext(BaseRspModel baseRspModel) {
+                        LogUtil.d(TAG,"忘记密码发送邮箱验证码接口的返回数据："+new Gson().toJson(baseRspModel));
                         view.hideLoading();
                         Application.showToast(baseRspModel.getMsg());
                     }

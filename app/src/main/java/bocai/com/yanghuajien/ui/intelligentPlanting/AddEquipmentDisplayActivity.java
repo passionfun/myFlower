@@ -203,7 +203,6 @@ public class AddEquipmentDisplayActivity extends Activity {
             return;
         }
      doNext();
-
     }
 
     private void doNext(){

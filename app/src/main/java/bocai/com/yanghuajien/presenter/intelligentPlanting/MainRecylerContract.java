@@ -14,17 +14,14 @@ public interface MainRecylerContract {
         void setDataSuccess(EquipmentDataModel model);
 
 //        void setCheckBoxSuccess(CheckboxStatusModel model);
-
         void deleteEquipmentSuccess();
     }
-
 
     interface Presenter extends BaseContract.Presenter{
         void setData(String token,String mac,String temperature,String waterLevel,String isLightOn,String Ec);
 
         //type:类型区分   1光照状态   2消息推送状态
         void setCheckBox(String token,String type,String status,String equipmentId);
-
 
         void deleteEquipment(String equipmentId);
 

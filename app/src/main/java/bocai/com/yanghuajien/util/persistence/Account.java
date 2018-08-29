@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.nio.file.attribute.PosixFileAttributes;
 import java.util.List;
 
 import bocai.com.yanghuajien.base.Application;
@@ -15,6 +16,7 @@ import bocai.com.yanghuajien.model.EquipmentRspModel;
 import bocai.com.yanghuajien.model.db.User;
 import bocai.com.yanghuajien.model.db.User_Table;
 import bocai.com.yanghuajien.receiver.TagAliasOperatorHelper;
+import bocai.com.yanghuajien.util.LogUtil;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -24,6 +26,7 @@ import cn.jpush.android.api.JPushInterface;
  */
 
 public class Account {
+    public static final String TAG = "Account";
     private static final String KEY_TOKEN = "KEY_TOKEN";
     private static final String KEY_PHONE = "KEY_PHONE";
     private static final String KEY_USER_ID = "KEY_USER_ID";
@@ -119,6 +122,7 @@ public class Account {
         port = sp.getString(KEY_PORT, "");
         registerHost = sp.getString(KEY_REGISTER_HOST, "");
         serviceName = sp.getString(KEY_SERVICE_NAME, "");
+        LogUtil.d(TAG,"loadEquipmentConfig(developId)"+developId+"\n"+"appid:"+appId+"\n"+"appkey:"+appKey+"\n"+"port:"+port+"\n"+"registerHost:"+registerHost+"\n"+"serviceName:"+serviceName);
     }
 
     /**

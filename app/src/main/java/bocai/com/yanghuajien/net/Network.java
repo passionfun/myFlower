@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import bocai.com.yanghuajien.base.common.Common;
 import bocai.com.yanghuajien.base.common.Factory;
+import bocai.com.yanghuajien.util.LogUtil;
 import bocai.com.yanghuajien.util.persistence.Account;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -23,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class Network {
+    private static final String TAG = "Network";
     private static Network instance;
     private Retrofit retrofit;
 
@@ -41,10 +43,11 @@ public class Network {
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(10, TimeUnit.SECONDS)
                 .connectTimeout(10, TimeUnit.SECONDS)
-                .addInterceptor(httpLoggingInterceptor)
+//                .addInterceptor(httpLoggingInterceptor)
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
+                        LogUtil.d(TAG,"Interceptor:"+chain.toString()+",request:"+chain.request()+",token:"+Account.getToken());
                         Request original = chain.request();
                         Request.Builder builder = original.newBuilder();
                         if (!TextUtils.isEmpty(Account.getToken())){
@@ -56,6 +59,7 @@ public class Network {
                         return chain.proceed(newRequest);
                     }
                 })
+                .addInterceptor(httpLoggingInterceptor)
                 .build();
 
         Retrofit.Builder builder = new Retrofit.Builder();

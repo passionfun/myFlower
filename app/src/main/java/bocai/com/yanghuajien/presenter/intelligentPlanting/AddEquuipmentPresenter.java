@@ -1,5 +1,7 @@
 package bocai.com.yanghuajien.presenter.intelligentPlanting;
 
+import com.google.gson.Gson;
+
 import bocai.com.yanghuajien.R;
 import bocai.com.yanghuajien.base.Application;
 import bocai.com.yanghuajien.base.presenter.BasePresenter;
@@ -7,6 +9,7 @@ import bocai.com.yanghuajien.model.BaseRspModel;
 import bocai.com.yanghuajien.model.EquipmentPhotoModel;
 import bocai.com.yanghuajien.model.PlantSeriesModel;
 import bocai.com.yanghuajien.net.Network;
+import bocai.com.yanghuajien.util.LogUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,6 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 public class AddEquuipmentPresenter extends BasePresenter<AddEquipmentContract.View>
         implements AddEquipmentContract.Presenter {
     AddEquipmentContract.View view = getView();
+    private static final String TAG = "AddEquuipmentPresenter";
 
     public AddEquuipmentPresenter(AddEquipmentContract.View view) {
         super(view);
@@ -39,6 +43,7 @@ public class AddEquuipmentPresenter extends BasePresenter<AddEquipmentContract.V
 
                     @Override
                     public void onNext(BaseRspModel<PlantSeriesModel> plantSeriesModelBaseRspModel) {
+                        LogUtil.d(TAG,"获取设备系列（equipment_series）的返回数据："+ new Gson().toJson(plantSeriesModelBaseRspModel));
                         if (plantSeriesModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getEquipmentSeriesSuccess(plantSeriesModelBaseRspModel.getData().getList());
                         } else {
@@ -48,6 +53,7 @@ public class AddEquuipmentPresenter extends BasePresenter<AddEquipmentContract.V
 
                     @Override
                     public void onError(Throwable e) {
+                        LogUtil.d(TAG,"设备系列onError："+e.getMessage());
                         view.showError(R.string.net_error);
                     }
 
@@ -72,6 +78,7 @@ public class AddEquuipmentPresenter extends BasePresenter<AddEquipmentContract.V
 
                     @Override
                     public void onNext(BaseRspModel<EquipmentPhotoModel> equipmentPhotoModelBaseRspModel) {
+//                        LogUtil.d(TAG,"获取连接设备时页面配置图片（link_banner）："+ new Gson().toJson(equipmentPhotoModelBaseRspModel));
                         view.hideLoading();
                         if (equipmentPhotoModelBaseRspModel.getReturnCode().equals("200")) {
                             view.getEquipmentPhotoSuccess(equipmentPhotoModelBaseRspModel.getData());
@@ -82,6 +89,7 @@ public class AddEquuipmentPresenter extends BasePresenter<AddEquipmentContract.V
 
                     @Override
                     public void onError(Throwable e) {
+                        LogUtil.d(TAG,"获取连接设备时页面配置图片（link_banner）(onError):"+e.getMessage());
                         view.showError(R.string.net_error);
                     }
 

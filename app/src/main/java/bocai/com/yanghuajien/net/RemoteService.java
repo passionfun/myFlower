@@ -156,7 +156,6 @@ public interface RemoteService {
     @GET("plant/plant_habit")
     Observable<BaseRspModel<PlantRspModel>> searchCommonPlant();
 
-
     //首页设备列表
     @POST("equipment/equipment_list")
     @FormUrlEncoded
